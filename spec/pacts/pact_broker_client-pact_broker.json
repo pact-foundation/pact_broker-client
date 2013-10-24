@@ -1,0 +1,335 @@
+{
+  "provider": {
+    "name": "Pact Broker"
+  },
+  "consumer": {
+    "name": "Pact Broker Client"
+  },
+  "interactions": [
+    {
+      "description": "a request to publish a pact",
+      "request": {
+        "method": "put",
+        "path": "/Condor/versions/1.3.0/pacts/Pricing%20Service",
+        "body": {
+          "consumer": {
+            "name": "Condor"
+          },
+          "provider": {
+            "name": "Pricing Service"
+          },
+          "interactions": [
+
+          ]
+        },
+        "headers": {
+          "X-Pact-Broker-Client-Version": "2.0.0",
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "headers": {
+          "X-Pact-Broker-Version": "1.0.0"
+        },
+        "status": 201
+      }
+    },
+    {
+      "description": "a request to publish a pact",
+      "provider_state": "an error occurs while publishing a pact",
+      "request": {
+        "method": "put",
+        "path": "/Condor/versions/1.3.0/pacts/Pricing%20Service",
+        "body": {
+          "consumer": {
+            "name": "Condor"
+          },
+          "provider": {
+            "name": "Pricing Service"
+          },
+          "interactions": [
+
+          ]
+        },
+        "headers": {
+          "X-Pact-Broker-Client-Version": "2.0.0",
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "status": 500,
+        "headers": {
+          "X-Pact-Broker-Version": "1.0.0"
+        },
+        "body": {
+          "error": {
+            "json_class": "Pact::Term",
+            "data": {
+              "generate": "An error occurred",
+              "matcher": {"json_class":"Regexp","o":0,"s":".*"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to register the repository URL of a pacticipant",
+      "provider_state": "the 'Pricing Service' does not exist in the pact-broker",
+      "request": {
+        "method": "patch",
+        "path": "/Pricing%20Service",
+        "body": {
+          "repository_url": "git@git.realestate.com.au:business-systems/condor.git"
+        },
+        "headers": {
+          "X-Pact-Broker-Client-Version": "2.0.0",
+          "Content-Type": "application/json+patch"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "X-Pact-Broker-Version": "1.0.0"
+        }
+      }
+    },
+    {
+      "description": "a request to register the repository URL of a pacticipant",
+      "provider_state": "the 'Pricing Service' already exists in the pact-broker",
+      "request": {
+        "method": "patch",
+        "path": "/Pricing%20Service",
+        "body": {
+          "repository_url": "git@git.realestate.com.au:business-systems/condor.git"
+        },
+        "headers": {
+          "X-Pact-Broker-Client-Version": "2.0.0",
+          "Content-Type": "application/json+patch"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-Pact-Broker-Version": "1.0.0"
+        }
+      }
+    },
+    {
+      "description": "a request to retrieve the repository URL of the 'Pricing Service'",
+      "provider_state": "the 'Pricing Service' does not exist in the pact-broker",
+      "request": {
+        "method": "get",
+        "path": "/Pricing%20Service/repository_url",
+        "headers": {
+          "X-Pact-Broker-Client-Version": "2.0.0",
+          "Accept": "text/plain"
+        }
+      },
+      "response": {
+        "status": 404,
+        "headers": {
+          "X-Pact-Broker-Version": "1.0.0"
+        }
+      }
+    },
+    {
+      "description": "a request to retrieve the repository URL of the 'Pricing Service'",
+      "provider_state": "the 'Pricing Service' already exists in the pact-broker",
+      "request": {
+        "method": "get",
+        "path": "/Pricing%20Service/repository_url",
+        "headers": {
+          "X-Pact-Broker-Client-Version": "2.0.0",
+          "Accept": "text/plain"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-Pact-Broker-Version": "1.0.0"
+        },
+        "body": "git@git.realestate.com.au:business-systems/condor.git"
+      }
+    },
+    {
+      "description": "a request to tag the production version of Condor",
+      "provider_state": "'Condor' exists in the pact-broker",
+      "request": {
+        "method": "patch",
+        "path": "/Condor/versions/1.3.0",
+        "body": {
+          "tags": [
+            "prod"
+          ],
+          "repository_ref": "packages/condor-1.3.0",
+          "repository_url": "git@git.realestate.com.au:business-systems/condor.git"
+        },
+        "headers": {
+          "X-Pact-Broker-Client-Version": "2.0.0",
+          "Content-Type": "application/json+patch"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-Pact-Broker-Version": "1.0.0"
+        }
+      }
+    },
+    {
+      "description": "a request to tag the production version of Condor",
+      "provider_state": "'Condor' does not exist in the pact-broker",
+      "request": {
+        "method": "patch",
+        "path": "/Condor/versions/1.3.0",
+        "body": {
+          "tags": [
+            "prod"
+          ],
+          "repository_ref": "packages/condor-1.3.0",
+          "repository_url": "git@git.realestate.com.au:business-systems/condor.git"
+        },
+        "headers": {
+          "X-Pact-Broker-Client-Version": "2.0.0",
+          "Content-Type": "application/json+patch"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "X-Pact-Broker-Version": "1.0.0"
+        }
+      }
+    },
+    {
+      "description": "a request to retrieve the latest pact between Condor and the Pricing Service",
+      "provider_state": "a pact between Condor and the Pricing Service exists",
+      "request": {
+        "method": "get",
+        "path": "/Condor/versions/last/pacts/Pricing%20Service",
+        "headers": {
+          "X-Pact-Broker-Client-Version": "2.0.0",
+          "Accept": "application/json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-Pact-Broker-Version": "1.0.0",
+          "Content-Type": "application/json",
+          "X-Pact-Consumer-Version": "1.3.0"
+        },
+        "body": {
+          "consumer": {
+            "name": "Condor"
+          },
+          "provider": {
+            "name": "Pricing Service"
+          },
+          "interactions": [
+
+          ]
+        }
+      }
+    },
+    {
+      "description": "a request to retrieve the latest pact between Condor and the Pricing Service",
+      "provider_state": "no pact between Condor and the Pricing Service exists",
+      "request": {
+        "method": "get",
+        "path": "/Condor/versions/last/pacts/Pricing%20Service",
+        "headers": {
+          "X-Pact-Broker-Client-Version": "2.0.0",
+          "Accept": "application/json"
+        }
+      },
+      "response": {
+        "status": 404,
+        "headers": {
+          "X-Pact-Broker-Version": "1.0.0"
+        }
+      }
+    },
+    {
+      "description": "a request to retrieve the pact between the production verison of Condor and the Pricing Service",
+      "provider_state": "a pact between Condor and the Pricing Service exists for the production version of Condor",
+      "request": {
+        "method": "get",
+        "path": "/Condor/versions/last/pacts/Pricing%20Service",
+        "headers": {
+          "X-Pact-Broker-Client-Version": "2.0.0",
+          "Accept": "application/json"
+        },
+        "query": "tag=prod"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-Pact-Broker-Version": "1.0.0"
+        },
+        "body": {
+          "consumer": {
+            "name": "Condor"
+          },
+          "provider": {
+            "name": "Pricing Service"
+          },
+          "interactions": [
+
+          ]
+        }
+      }
+    },
+    {
+      "description": "a request for the latest version tagged with 'prod'",
+      "provider_state": "a version with production details exists for the Pricing Service",
+      "request": {
+        "method": "get",
+        "path": "/Pricing%20Service/versions/last",
+        "headers": {
+          "X-Pact-Broker-Client-Version": "2.0.0",
+          "Accept": "application/json"
+        },
+        "query": "tag=prod"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-Pact-Broker-Version": "1.0.0",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "number": "1.2.3",
+          "repository_url": "git@git.realestate.com.au:business-systems/pricing-service.git",
+          "repository_ref": "package/pricing-service-1.2.3",
+          "tags": [
+            "prod"
+          ]
+        }
+      }
+    },
+    {
+      "description": "a request for the latest version",
+      "provider_state": "no version exists for the Pricing Service",
+      "request": {
+        "method": "get",
+        "path": "/Pricing%20Service/versions/last",
+        "headers": {
+          "X-Pact-Broker-Client-Version": "2.0.0",
+          "Accept": "application/json"
+        }
+      },
+      "response": {
+        "status": 404,
+        "headers": {
+          "X-Pact-Broker-Version": "1.0.0"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pact_gem": {
+      "version": "1.0.15"
+    }
+  }
+}
