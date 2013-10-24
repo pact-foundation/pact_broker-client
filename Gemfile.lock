@@ -8,7 +8,6 @@ PATH
 
 GEM
   remote: https://rubygems.org/
-  remote: http://rea-rubygems/
   specs:
     awesome_print (1.1.0)
     coderay (1.0.9)

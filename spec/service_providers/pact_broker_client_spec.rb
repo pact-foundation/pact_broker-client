@@ -44,7 +44,7 @@ describe PactBroker::ClientSupport, :pact => true do
         upon_receiving("a request to publish a pact").
         with({
             method: :put,
-            path: '/Condor/versions/1.3.0/pacts/Pricing%20Service',
+            path: '/pacticipant/Condor/versions/1.3.0/pacts/Pricing%20Service',
             headers: default_request_headers,
             body: pact_hash }).
           will_respond_with( headers: pact_broker_response_headers,
@@ -61,7 +61,7 @@ describe PactBroker::ClientSupport, :pact => true do
         upon_receiving("a request to publish a pact").
         with({
             method: :put,
-            path: '/Condor/versions/1.3.0/pacts/Pricing%20Service',
+            path: '/pacticipant/Condor/versions/1.3.0/pacts/Pricing%20Service',
             headers: default_request_headers,
             body: pact_hash }).
           will_respond_with({
@@ -89,7 +89,7 @@ describe PactBroker::ClientSupport, :pact => true do
         upon_receiving("a request to register the repository URL of a pacticipant").
         with(
             method: :patch,
-            path: '/Pricing%20Service',
+            path: '/pacticipant/Pricing%20Service',
             headers: patch_request_headers,
             body: {repository_url: repository_url} ).
           will_respond_with(
@@ -108,7 +108,7 @@ describe PactBroker::ClientSupport, :pact => true do
         upon_receiving("a request to register the repository URL of a pacticipant").
         with(
             method: :patch,
-            path: '/Pricing%20Service',
+            path: '/pacticipant/Pricing%20Service',
             headers: patch_request_headers,
             body: {repository_url: repository_url} ).
           will_respond_with(
@@ -130,7 +130,7 @@ describe PactBroker::ClientSupport, :pact => true do
         upon_receiving("a request to retrieve the repository URL of the 'Pricing Service'").
         with(
             method: :get,
-            path: '/Pricing%20Service/repository_url',
+            path: '/pacticipant/Pricing%20Service/repository_url',
             headers: get_request_headers.merge({'Accept' => 'text/plain'})).
           will_respond_with(
             status: 404,
@@ -148,7 +148,7 @@ describe PactBroker::ClientSupport, :pact => true do
         upon_receiving("a request to retrieve the repository URL of the 'Pricing Service'").
         with(
             method: :get,
-            path: '/Pricing%20Service/repository_url',
+            path: '/pacticipant/Pricing%20Service/repository_url',
             headers: get_request_headers.merge({'Accept' => 'text/plain'})).
           will_respond_with(
             status: 200,
@@ -173,7 +173,7 @@ describe PactBroker::ClientSupport, :pact => true do
         upon_receiving("a request to tag the production version of Condor").
         with(
             method: :patch,
-            path: '/Condor/versions/1.3.0',
+            path: '/pacticipant/Condor/versions/1.3.0',
             headers: patch_request_headers,
             body: {:tags => ['prod'], :repository_ref => repository_ref, :repository_url => repository_url} ).
           will_respond_with(
@@ -192,7 +192,7 @@ describe PactBroker::ClientSupport, :pact => true do
         upon_receiving("a request to tag the production version of Condor").
         with(
             method: :patch,
-            path: '/Condor/versions/1.3.0',
+            path: '/pacticipant/Condor/versions/1.3.0',
             headers: patch_request_headers,
             body: {:tags => ['prod'], :repository_ref => repository_ref, :repository_url => repository_url} ).
           will_respond_with(
@@ -217,7 +217,7 @@ describe PactBroker::ClientSupport, :pact => true do
           upon_receiving("a request to retrieve the latest pact between Condor and the Pricing Service").
           with({
               method: :get,
-              path: '/Condor/versions/last/pacts/Pricing%20Service',
+              path: '/pacticipant/Condor/versions/last/pacts/Pricing%20Service',
               headers: get_request_headers
           }).
           will_respond_with({
@@ -240,7 +240,7 @@ describe PactBroker::ClientSupport, :pact => true do
           upon_receiving("a request to retrieve the latest pact between Condor and the Pricing Service").
           with({
               method: :get,
-              path: '/Condor/versions/last/pacts/Pricing%20Service',
+              path: '/pacticipant/Condor/versions/last/pacts/Pricing%20Service',
               headers: get_request_headers
           }).
           will_respond_with({
@@ -262,7 +262,7 @@ describe PactBroker::ClientSupport, :pact => true do
           upon_receiving("a request to retrieve the pact between the production verison of Condor and the Pricing Service").
           with({
               method: :get,
-              path: '/Condor/versions/last/pacts/Pricing%20Service',
+              path: '/pacticipant/Condor/versions/last/pacts/Pricing%20Service',
               query: 'tag=prod',
               headers: get_request_headers
           }).
@@ -293,7 +293,7 @@ describe PactBroker::ClientSupport, :pact => true do
           pact_broker.
             given("a version with production details exists for the Pricing Service").
             upon_receiving("a request for the latest version tagged with 'prod'").
-            with(method: :get, path: '/Pricing%20Service/versions/last', query: 'tag=prod', headers: get_request_headers).
+            with(method: :get, path: '/pacticipant/Pricing%20Service/versions/last', query: 'tag=prod', headers: get_request_headers).
             will_respond_with( status: 200,
               headers: pact_broker_response_headers.merge({'Content-Type' => 'application/json'}),
               body: body )
@@ -308,7 +308,7 @@ describe PactBroker::ClientSupport, :pact => true do
         pact_broker.
           given("no version exists for the Pricing Service").
           upon_receiving("a request for the latest version").
-          with(method: :get, path: '/Pricing%20Service/versions/last', headers: get_request_headers).
+          with(method: :get, path: '/pacticipant/Pricing%20Service/versions/last', headers: get_request_headers).
           will_respond_with( status: 404, headers: pact_broker_response_headers )
       end
       it 'returns nil' do

@@ -10,7 +10,7 @@
       "description": "a request to publish a pact",
       "request": {
         "method": "put",
-        "path": "/Condor/versions/1.3.0/pacts/Pricing%20Service",
+        "path": "/pacticipant/Condor/versions/1.3.0/pacts/Pricing%20Service",
         "body": {
           "consumer": {
             "name": "Condor"
@@ -39,7 +39,7 @@
       "provider_state": "an error occurs while publishing a pact",
       "request": {
         "method": "put",
-        "path": "/Condor/versions/1.3.0/pacts/Pricing%20Service",
+        "path": "/pacticipant/Condor/versions/1.3.0/pacts/Pricing%20Service",
         "body": {
           "consumer": {
             "name": "Condor"
@@ -77,7 +77,7 @@
       "provider_state": "the 'Pricing Service' does not exist in the pact-broker",
       "request": {
         "method": "patch",
-        "path": "/Pricing%20Service",
+        "path": "/pacticipant/Pricing%20Service",
         "body": {
           "repository_url": "git@git.realestate.com.au:business-systems/condor.git"
         },
@@ -98,7 +98,7 @@
       "provider_state": "the 'Pricing Service' already exists in the pact-broker",
       "request": {
         "method": "patch",
-        "path": "/Pricing%20Service",
+        "path": "/pacticipant/Pricing%20Service",
         "body": {
           "repository_url": "git@git.realestate.com.au:business-systems/condor.git"
         },
@@ -119,7 +119,7 @@
       "provider_state": "the 'Pricing Service' does not exist in the pact-broker",
       "request": {
         "method": "get",
-        "path": "/Pricing%20Service/repository_url",
+        "path": "/pacticipant/Pricing%20Service/repository_url",
         "headers": {
           "X-Pact-Broker-Client-Version": "2.0.0",
           "Accept": "text/plain"
@@ -137,7 +137,7 @@
       "provider_state": "the 'Pricing Service' already exists in the pact-broker",
       "request": {
         "method": "get",
-        "path": "/Pricing%20Service/repository_url",
+        "path": "/pacticipant/Pricing%20Service/repository_url",
         "headers": {
           "X-Pact-Broker-Client-Version": "2.0.0",
           "Accept": "text/plain"
@@ -156,7 +156,7 @@
       "provider_state": "'Condor' exists in the pact-broker",
       "request": {
         "method": "patch",
-        "path": "/Condor/versions/1.3.0",
+        "path": "/pacticipant/Condor/versions/1.3.0",
         "body": {
           "tags": [
             "prod"
@@ -181,7 +181,7 @@
       "provider_state": "'Condor' does not exist in the pact-broker",
       "request": {
         "method": "patch",
-        "path": "/Condor/versions/1.3.0",
+        "path": "/pacticipant/Condor/versions/1.3.0",
         "body": {
           "tags": [
             "prod"
@@ -206,7 +206,7 @@
       "provider_state": "a pact between Condor and the Pricing Service exists",
       "request": {
         "method": "get",
-        "path": "/Condor/versions/last/pacts/Pricing%20Service",
+        "path": "/pacticipant/Condor/versions/last/pacts/Pricing%20Service",
         "headers": {
           "X-Pact-Broker-Client-Version": "2.0.0",
           "Accept": "application/json"
@@ -237,7 +237,7 @@
       "provider_state": "no pact between Condor and the Pricing Service exists",
       "request": {
         "method": "get",
-        "path": "/Condor/versions/last/pacts/Pricing%20Service",
+        "path": "/pacticipant/Condor/versions/last/pacts/Pricing%20Service",
         "headers": {
           "X-Pact-Broker-Client-Version": "2.0.0",
           "Accept": "application/json"
@@ -255,7 +255,7 @@
       "provider_state": "a pact between Condor and the Pricing Service exists for the production version of Condor",
       "request": {
         "method": "get",
-        "path": "/Condor/versions/last/pacts/Pricing%20Service",
+        "path": "/pacticipant/Condor/versions/last/pacts/Pricing%20Service",
         "headers": {
           "X-Pact-Broker-Client-Version": "2.0.0",
           "Accept": "application/json"
@@ -285,7 +285,7 @@
       "provider_state": "a version with production details exists for the Pricing Service",
       "request": {
         "method": "get",
-        "path": "/Pricing%20Service/versions/last",
+        "path": "/pacticipant/Pricing%20Service/versions/last",
         "headers": {
           "X-Pact-Broker-Client-Version": "2.0.0",
           "Accept": "application/json"
@@ -313,7 +313,7 @@
       "provider_state": "no version exists for the Pricing Service",
       "request": {
         "method": "get",
-        "path": "/Pricing%20Service/versions/last",
+        "path": "/pacticipant/Pricing%20Service/versions/last",
         "headers": {
           "X-Pact-Broker-Client-Version": "2.0.0",
           "Accept": "application/json"

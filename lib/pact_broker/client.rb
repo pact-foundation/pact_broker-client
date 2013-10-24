@@ -123,7 +123,7 @@ module PactBroker
       private
       def version_base_url options
         pacticipant = encode_param(options[:pacticipant])
-        "/#{pacticipant}/versions"
+        "/pacticipant/#{pacticipant}/versions"
       end
     end
 
@@ -151,7 +151,7 @@ module PactBroker
       private
 
       def pacticipant_base_url options
-        "/#{encode_param(options[:pacticipant])}"
+        "/pacticipant/#{encode_param(options[:pacticipant])}"
       end
 
     end
@@ -183,14 +183,14 @@ module PactBroker
       def find_last_consumer_contract_url options
         consumer_name = encode_param(options[:consumer])
         provider_name = encode_param(options[:provider])
-        "/#{consumer_name}/versions/last/pacts/#{provider_name}"
+        "/pacticipant/#{consumer_name}/versions/last/pacts/#{provider_name}"
       end
 
       def save_consumer_contract_url consumer_contract, consumer_version
         consumer_name = encode_param(consumer_contract.consumer.name)
         provider_name = encode_param(consumer_contract.provider.name)
         version = encode_param(consumer_version)
-        "/#{consumer_name}/versions/#{version}/pacts/#{provider_name}"
+        "/pacticipant/#{consumer_name}/versions/#{version}/pacts/#{provider_name}"
       end
     end
   end
