@@ -29,7 +29,8 @@ describe PactBroker::ClientSupport, :pact => true do
   let(:pact_broker_client) { PactBroker::Client.new(base_url: 'http://localhost:1234') }
   let(:consumer_version) { '1.3.0' }
   let(:version) { '1.3.0' }
-  let(:pact_broker_response_headers) { {'X-Pact-Broker-Version' => '1.0.0'} }
+  let(:pact_broker_version) { Pact::Term.new(:matcher => /\d+\.\d+\.\d+/, :generate => '1.0.0') }
+  let(:pact_broker_response_headers) { {'X-Pact-Broker-Version' => pact_broker_version} }
   let(:default_request_headers) { {'X-Pact-Broker-Client-Version' => '2.0.0', 'Content-Type' => 'application/json'} }
   let(:patch_request_headers)   { {'X-Pact-Broker-Client-Version' => '2.0.0', 'Content-Type' => 'application/json+patch'} }
   let(:get_request_headers)     { {'X-Pact-Broker-Client-Version' => '2.0.0', 'Accept' => 'application/json'} }
