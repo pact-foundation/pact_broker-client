@@ -153,7 +153,7 @@ describe PactBroker::ClientSupport, :pact => true do
             headers: get_request_headers.merge({'Accept' => 'text/plain'})).
           will_respond_with(
             status: 200,
-            headers: pact_broker_response_headers,
+            headers: pact_broker_response_headers.merge({'Content-Type' => 'text/plain;charset=utf-8'}),
             body: repository_url
           )
       end
