@@ -29,13 +29,6 @@
       },
       "response": {
         "headers": {
-          "X-Pact-Broker-Version": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "1.0.0",
-              "matcher": {"json_class":"Regexp","o":0,"s":"\\d+\\.\\d+\\.\\d+"}
-            }
-          }
         },
         "status": 201
       }
@@ -65,13 +58,6 @@
       "response": {
         "status": 500,
         "headers": {
-          "X-Pact-Broker-Version": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "1.0.0",
-              "matcher": {"json_class":"Regexp","o":0,"s":"\\d+\\.\\d+\\.\\d+"}
-            }
-          }
         },
         "body": {
           "error": {
@@ -101,13 +87,6 @@
       "response": {
         "status": 201,
         "headers": {
-          "X-Pact-Broker-Version": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "1.0.0",
-              "matcher": {"json_class":"Regexp","o":0,"s":"\\d+\\.\\d+\\.\\d+"}
-            }
-          }
         }
       }
     },
@@ -128,13 +107,6 @@
       "response": {
         "status": 200,
         "headers": {
-          "X-Pact-Broker-Version": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "1.0.0",
-              "matcher": {"json_class":"Regexp","o":0,"s":"\\d+\\.\\d+\\.\\d+"}
-            }
-          }
         }
       }
     },
@@ -152,13 +124,6 @@
       "response": {
         "status": 404,
         "headers": {
-          "X-Pact-Broker-Version": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "1.0.0",
-              "matcher": {"json_class":"Regexp","o":0,"s":"\\d+\\.\\d+\\.\\d+"}
-            }
-          }
         }
       }
     },
@@ -176,13 +141,6 @@
       "response": {
         "status": 200,
         "headers": {
-          "X-Pact-Broker-Version": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "1.0.0",
-              "matcher": {"json_class":"Regexp","o":0,"s":"\\d+\\.\\d+\\.\\d+"}
-            }
-          }
         },
         "body": "git@git.realestate.com.au:business-systems/condor.git"
       }
@@ -208,13 +166,6 @@
       "response": {
         "status": 200,
         "headers": {
-          "X-Pact-Broker-Version": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "1.0.0",
-              "matcher": {"json_class":"Regexp","o":0,"s":"\\d+\\.\\d+\\.\\d+"}
-            }
-          }
         }
       }
     },
@@ -239,13 +190,6 @@
       "response": {
         "status": 201,
         "headers": {
-          "X-Pact-Broker-Version": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "1.0.0",
-              "matcher": {"json_class":"Regexp","o":0,"s":"\\d+\\.\\d+\\.\\d+"}
-            }
-          }
         }
       }
     },
@@ -263,13 +207,6 @@
       "response": {
         "status": 200,
         "headers": {
-          "X-Pact-Broker-Version": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "1.0.0",
-              "matcher": {"json_class":"Regexp","o":0,"s":"\\d+\\.\\d+\\.\\d+"}
-            }
-          },
           "Content-Type": "application/json",
           "X-Pact-Consumer-Version": "1.3.0"
         },
@@ -300,13 +237,6 @@
       "response": {
         "status": 404,
         "headers": {
-          "X-Pact-Broker-Version": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "1.0.0",
-              "matcher": {"json_class":"Regexp","o":0,"s":"\\d+\\.\\d+\\.\\d+"}
-            }
-          }
         }
       }
     },
@@ -325,13 +255,6 @@
       "response": {
         "status": 200,
         "headers": {
-          "X-Pact-Broker-Version": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "1.0.0",
-              "matcher": {"json_class":"Regexp","o":0,"s":"\\d+\\.\\d+\\.\\d+"}
-            }
-          }
         },
         "body": {
           "consumer": {
@@ -361,13 +284,6 @@
       "response": {
         "status": 200,
         "headers": {
-          "X-Pact-Broker-Version": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "1.0.0",
-              "matcher": {"json_class":"Regexp","o":0,"s":"\\d+\\.\\d+\\.\\d+"}
-            }
-          },
           "Content-Type": "application/json"
         },
         "body": {
@@ -394,13 +310,6 @@
       "response": {
         "status": 404,
         "headers": {
-          "X-Pact-Broker-Version": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "1.0.0",
-              "matcher": {"json_class":"Regexp","o":0,"s":"\\d+\\.\\d+\\.\\d+"}
-            }
-          }
         }
       }
     }
