@@ -39,9 +39,10 @@ describe PactBroker::ClientSupport, :pact => true do
 
     let(:options) { { pact: pact_json, consumer_version: consumer_version }}
 
-    context "when publishing is successful" do
-      it "returns true" do
+    context "when the provider already exists in the pact-broker" do
+      before do
         pact_broker.
+        given("the 'Pricing Service' already exists in the pact-broker").
         upon_receiving("a request to publish a pact").
         with({
             method: :put,
@@ -51,6 +52,27 @@ describe PactBroker::ClientSupport, :pact => true do
           will_respond_with( headers: pact_broker_response_headers,
             status: 201
           )
+      end
+      it "returns true" do
+          pact_broker_client.pacticipants.versions.pacts.publish options
+      end
+    end
+
+    context "when the provider, consumer, pact and version already exist in the pact-broker" do
+      before do
+        pact_broker.
+        given("the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0").
+        upon_receiving("a request to publish a pact").
+        with({
+            method: :put,
+            path: '/pacticipant/Condor/versions/1.3.0/pacts/Pricing%20Service',
+            headers: default_request_headers,
+            body: pact_hash }).
+          will_respond_with( headers: pact_broker_response_headers,
+            status: 200
+          )
+      end
+      it "returns true" do
           pact_broker_client.pacticipants.versions.pacts.publish options
       end
     end
@@ -69,7 +91,7 @@ describe PactBroker::ClientSupport, :pact => true do
             status: 500,
             headers: pact_broker_response_headers,
             body: {
-              error: Pact::Term.new(matcher: /.*/, generate: 'An error occurred')
+              message: Pact::Term.new(matcher: /.*/, generate: 'An error occurred')
             }
           })
       end
