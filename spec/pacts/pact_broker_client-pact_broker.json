@@ -64,6 +64,34 @@
     },
     {
       "description": "a request to publish a pact",
+      "provider_state": "'Condor' already exist in the pact-broker, but the 'Pricing Service' does not",
+      "request": {
+        "method": "put",
+        "path": "/pacticipant/Condor/versions/1.3.0/pacts/Pricing%20Service",
+        "body": {
+          "consumer": {
+            "name": "Condor"
+          },
+          "provider": {
+            "name": "Pricing Service"
+          },
+          "interactions": [
+
+          ]
+        },
+        "headers": {
+          "X-Pact-Broker-Client-Version": "2.0.0",
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "headers": {
+        },
+        "status": 201
+      }
+    },
+    {
+      "description": "a request to publish a pact",
       "provider_state": "an error occurs while publishing a pact",
       "request": {
         "method": "put",
