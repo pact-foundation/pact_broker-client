@@ -27,6 +27,7 @@ module PactBroker
       end
 
       def validate
+        raise "Please specify the consumer version" unless (@consumer_version && @consumer_version.to_s.strip.size > 0)
 
       end
 

@@ -29,7 +29,8 @@ module PactBroker
           task :publish do
             require 'pact_broker/client'
             pact_broker_client = PactBroker::Client.new(base_url: pacticipant_base_url)
-            PublishPacts.new(pact_broker_client, FileList[@pattern], consumer_version).call
+            success = PublishPacts.new(pact_broker_client, FileList[@pattern], consumer_version).call
+            raise "One or more pacts failed to be published"
           end
         end
       end

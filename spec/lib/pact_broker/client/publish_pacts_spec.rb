@@ -9,6 +9,7 @@ module PactBroker
 
       before do
         FakeFS.activate!
+        pacts_client.stub(:publish)
       end
 
       after do
@@ -38,13 +39,30 @@ module PactBroker
         end
         context "when publishing one pact fails" do
           let(:pacts) { ['spec/pacts/doesnotexist.json','spec/pacts/consumer-provider.json']}
+          before do
+            $stderr.stub(:puts)
+          end
+
+          it "logs an message to stderr" do
+            $stderr.should_receive(:puts).with(/Failed to publish pact/)
+            subject.call
+          end
 
           it "continues publishing the rest" do
             pacts_client.should_receive(:publish).with(pact_json: pact_hash.to_json, consumer_version: consumer_version)
             subject.call
           end
-        end
 
+          it "returns false" do
+            expect(subject.call).to be_false
+          end
+        end
+        context "when consumer_version is blank" do
+          let(:consumer_version) { " " }
+          it "raises a validation error" do
+            expect { subject.call }.to raise_error(/Please specify the consumer version/)
+          end
+        end
       end
     end
   end
