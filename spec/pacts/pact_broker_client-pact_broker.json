@@ -7,6 +7,61 @@
   },
   "interactions": [
     {
+      "description": "a request to list pacticipants",
+      "provider_state": "the 'Pricing Service' already exists in the pact-broker",
+      "request": {
+        "method": "get",
+        "path": "/pacticipants",
+        "headers": {
+        }
+      },
+      "response": {
+        "headers": {
+          "Content-Type": "application/json+hal"
+        },
+        "status": 200,
+        "body": {
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/pacticipants"
+            },
+            "item": [
+              {
+                "href": "http://localhost:1234/pacticipants/Condor",
+                "name": "Condor"
+              },
+              {
+                "href": "http://localhost:1234/pacticipants/Pricing%20Service",
+                "name": "Pricing Service"
+              }
+            ]
+          },
+          "_embedded": [
+            {
+              "name": "Condor",
+              "repository_url": null,
+              "_links": {
+                "self": {
+                  "href": "http://localhost:1234/pacticipants/Condor"
+                },
+                "http://pact-broker.com/rels#last_version": "http://localhost:1234/pacticipants/Condor/versions/last"
+              }
+            },
+            {
+              "name": "Pricing Service",
+              "repository_url": "git@git.realestate.com.au:business-systems/pricing-service",
+              "_links": {
+                "self": {
+                  "href": "http://localhost:1234/pacticipants/Pricing%20Service"
+                },
+                "http://pact-broker.com/rels#last_version": "http://localhost:1234/pacticipants/Pricing%20Service/versions/last"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
       "description": "a request to publish a pact",
       "provider_state": "the 'Pricing Service' already exists in the pact-broker",
       "request": {

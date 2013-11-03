@@ -16,6 +16,13 @@ module PactBroker
         end
       end
 
+      def list
+        response = get("/pacticipants", headers: default_get_headers)
+        handle_response(response) do
+          response.to_hash
+        end
+      end
+
       def repository_url options
         response = get("#{pacticipant_base_url(options)}/repository_url", headers: default_get_headers.merge('Accept' => 'text/plain'))
         handle_response(response) do
