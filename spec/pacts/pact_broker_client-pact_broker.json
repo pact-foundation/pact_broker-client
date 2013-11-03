@@ -35,29 +35,7 @@
                 "name": "Pricing Service"
               }
             ]
-          },
-          "_embedded": [
-            {
-              "name": "Condor",
-              "repository_url": null,
-              "_links": {
-                "self": {
-                  "href": "http://localhost:1234/pacticipants/Condor"
-                },
-                "http://pact-broker.com/rels#last_version": "http://localhost:1234/pacticipants/Condor/versions/last"
-              }
-            },
-            {
-              "name": "Pricing Service",
-              "repository_url": "git@git.realestate.com.au:business-systems/pricing-service",
-              "_links": {
-                "self": {
-                  "href": "http://localhost:1234/pacticipants/Pricing%20Service"
-                },
-                "http://pact-broker.com/rels#last_version": "http://localhost:1234/pacticipants/Pricing%20Service/versions/last"
-              }
-            }
-          ]
+          }
         }
       }
     },
@@ -80,20 +58,22 @@
             "self": {
               "href": "http://localhost:1234/pacticipants/Pricing%20Service"
             },
-            "http://pact-broker.com#last_version": {
-              "href": "http://localhost:1234/pacticipants/Pricing%20Service/versions/last"
-            },
             "http://pact-broker.com#versions": {
               "href": "http://localhost:1234/pacticipants/Pricing%20Service/versions"
+            },
+            "http://pact-broker.com#last_version": {
+              "href": "http://localhost:1234/pacticipants/Pricing%20Service/versions/last"
             }
           },
           "name": "Pricing Service",
           "repository_url": "git@git.realestate.com.au:business-systems/pricing-service",
-          "last_version": {
-            "_links": {
-              "self": "http://localhost:1234/pacticipants/Pricing%20Service/versions/last"
-            },
-            "number": "1.3.0"
+          "_embedded": {
+            "last_version": {
+              "_links": {
+                "self": "http://localhost:1234/pacticipants/Pricing%20Service/versions/last"
+              },
+              "number": "1.3.0"
+            }
           }
         }
       }
