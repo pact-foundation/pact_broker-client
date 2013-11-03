@@ -38,7 +38,7 @@ module PactBroker::Client
 
     describe "publishing a pact" do
 
-      let(:options) { { pact: pact_json, consumer_version: consumer_version }}
+      let(:options) { { pact_json: pact_json, consumer_version: consumer_version }}
 
       context "when the provider already exists in the pact-broker" do
         before do

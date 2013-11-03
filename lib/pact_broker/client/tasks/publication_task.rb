@@ -29,6 +29,7 @@ module PactBroker
 
       def rake_task
         namespace :pact do
+          desc "Publish pacts to pact broker"
           task task_name do
             require 'pact_broker/client/publish_pacts'
             success = PactBroker::Client::PublishPacts.new(pact_broker_base_url, FileList[@pattern], consumer_version).call

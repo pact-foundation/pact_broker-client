@@ -25,6 +25,7 @@ module PactBroker
 
       def publish_pact pact_file
         begin
+          puts "Publishing #{pact_file} to #{pact_broker_base_url}"
           pact_broker_client.pacticipants.versions.pacts.publish(pact_json: File.read(pact_file), consumer_version: consumer_version)
           true
         rescue => e

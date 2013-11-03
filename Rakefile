@@ -20,8 +20,8 @@ Bundler::GemHelper.install_tasks
 require 'rspec/core/rake_task'
 #require 'geminabox-client'
 
-Dir.glob('lib/tasks/**/*.rake').each { |task| load task }
-Dir.glob('tasks/**/*.rake').each { |task| load task }
+Dir.glob('lib/tasks/**/*.rake').each { |task| load "#{Dir.pwd}/#{task}" }
+Dir.glob('tasks/**/*.rake').each { |task| load "#{Dir.pwd}/#{task}" }
 RSpec::Core::RakeTask.new(:spec)
 
 task :default => [:spec]

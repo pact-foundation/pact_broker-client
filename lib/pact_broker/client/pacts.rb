@@ -8,7 +8,7 @@ module PactBroker
 
       def publish options
         consumer_version = options[:consumer_version]
-        pact_string = options[:pact]
+        pact_string = options[:pact_json]
         consumer_contract = ::Pact::ConsumerContract.from_json pact_string
         url = save_consumer_contract_url consumer_contract, consumer_version
         response = self.class.put(url, body: pact_string, headers: default_put_headers)
