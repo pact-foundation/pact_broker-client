@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+require 'pact_broker/client'
+
 module PactBroker
   describe Client do
 

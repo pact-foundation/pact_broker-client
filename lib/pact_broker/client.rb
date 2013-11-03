@@ -1,3 +1,4 @@
+require 'pact_broker/client/version'
 require 'httparty'
 require 'pact/consumer_contract'
 require 'uri'
