@@ -297,8 +297,7 @@
           "tags": [
             "prod"
           ],
-          "repository_ref": "packages/condor-1.3.0",
-          "repository_url": "git@git.realestate.com.au:business-systems/condor.git"
+          "repository_ref": "packages/condor-1.3.0"
         },
         "headers": {
           "Content-Type": "application/json+patch"
@@ -320,8 +319,7 @@
           "tags": [
             "prod"
           ],
-          "repository_ref": "packages/condor-1.3.0",
-          "repository_url": "git@git.realestate.com.au:business-systems/condor.git"
+          "repository_ref": "packages/condor-1.3.0"
         },
         "headers": {
           "Content-Type": "application/json+patch"
@@ -422,7 +420,6 @@
         },
         "body": {
           "number": "1.2.3",
-          "repository_url": "git@git.realestate.com.au:business-systems/pricing-service.git",
           "repository_ref": "package/pricing-service-1.2.3",
           "tags": [
             "prod"

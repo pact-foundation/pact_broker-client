@@ -201,7 +201,7 @@ module PactBroker::Client
     describe "tagging a version with prod details" do
       let(:repository_ref) { "packages/condor-#{version}" }
 
-      let(:tag_options) { {pacticipant: 'Condor', version: version, repository_ref: repository_ref, repository_url: repository_url, :tag => 'prod'} }
+      let(:tag_options) { {pacticipant: 'Condor', version: version, repository_ref: repository_ref, :tag => 'prod'} }
       context "when the component exists" do
         before do
           pact_broker.
@@ -211,7 +211,7 @@ module PactBroker::Client
               method: :patch,
               path: '/pacticipants/Condor/versions/1.3.0',
               headers: patch_request_headers,
-              body: {:tags => ['prod'], :repository_ref => repository_ref, :repository_url => repository_url} ).
+              body: {:tags => ['prod'], :repository_ref => repository_ref } ).
             will_respond_with(
               status: 200,
               headers: pact_broker_response_headers
@@ -230,7 +230,7 @@ module PactBroker::Client
               method: :patch,
               path: '/pacticipants/Condor/versions/1.3.0',
               headers: patch_request_headers,
-              body: {:tags => ['prod'], :repository_ref => repository_ref, :repository_url => repository_url} ).
+              body: {:tags => ['prod'], :repository_ref => repository_ref } ).
             will_respond_with(
               status: 201,
               headers: pact_broker_response_headers
@@ -321,10 +321,9 @@ module PactBroker::Client
     describe "retriving versions" do
       context "when retrieving the production details of a version" do
         context "when a version is found" do
-          let(:repository_url) { "git@git.realestate.com.au:business-systems/pricing-service.git" }
           let(:repository_ref) { "package/pricing-service-1.2.3"}
           let(:tags) { ['prod']}
-          let(:body) { { number: '1.2.3', repository_url: repository_url, repository_ref: repository_ref, tags: tags } }
+          let(:body) { { number: '1.2.3', repository_ref: repository_ref, tags: tags } }
           before do
             pact_broker.
               given("a version with production details exists for the Pricing Service").
