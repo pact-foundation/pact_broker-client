@@ -1,13 +1,6 @@
 require_relative 'pact_helper'
 require 'pact_broker/client'
 
-def silence_warnings
-  old_verbose, $VERBOSE = $VERBOSE, nil
-  yield
-ensure
-  $VERBOSE = old_verbose
-end
-
 module PactBroker::Client
   describe PactBrokerClient, :pact => true do
 
