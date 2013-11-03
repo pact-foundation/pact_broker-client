@@ -261,7 +261,7 @@ module PactBroker::Client
             with({
                 method: :get,
                 path: '/pacticipants/Condor/versions/last/pacts/Pricing%20Service',
-                headers: get_request_headers
+                headers: {}
             }).
             will_respond_with({
               status: 200,
@@ -284,7 +284,7 @@ module PactBroker::Client
             with({
                 method: :get,
                 path: '/pacticipants/Condor/versions/last/pacts/Pricing%20Service',
-                headers: get_request_headers
+                headers: {}
             }).
             will_respond_with({
               status: 404,

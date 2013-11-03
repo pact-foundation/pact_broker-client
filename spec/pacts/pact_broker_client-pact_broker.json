@@ -248,7 +248,6 @@
         "method": "get",
         "path": "/pacticipants/Condor/versions/last/pacts/Pricing%20Service",
         "headers": {
-          "Accept": "application/json"
         }
       },
       "response": {
@@ -277,7 +276,6 @@
         "method": "get",
         "path": "/pacticipants/Condor/versions/last/pacts/Pricing%20Service",
         "headers": {
-          "Accept": "application/json"
         }
       },
       "response": {
