@@ -23,7 +23,6 @@
           ]
         },
         "headers": {
-          "X-Pact-Broker-Client-Version": "2.0.0",
           "Content-Type": "application/json"
         }
       },
@@ -51,7 +50,6 @@
           ]
         },
         "headers": {
-          "X-Pact-Broker-Client-Version": "2.0.0",
           "Content-Type": "application/json"
         }
       },
@@ -79,7 +77,6 @@
           ]
         },
         "headers": {
-          "X-Pact-Broker-Client-Version": "2.0.0",
           "Content-Type": "application/json"
         }
       },
@@ -107,7 +104,6 @@
           ]
         },
         "headers": {
-          "X-Pact-Broker-Client-Version": "2.0.0",
           "Content-Type": "application/json"
         }
       },
@@ -136,7 +132,6 @@
           "repository_url": "git@git.realestate.com.au:business-systems/condor.git"
         },
         "headers": {
-          "X-Pact-Broker-Client-Version": "2.0.0",
           "Content-Type": "application/json+patch"
         }
       },
@@ -156,7 +151,6 @@
           "repository_url": "git@git.realestate.com.au:business-systems/condor.git"
         },
         "headers": {
-          "X-Pact-Broker-Client-Version": "2.0.0",
           "Content-Type": "application/json+patch"
         }
       },
@@ -173,7 +167,6 @@
         "method": "get",
         "path": "/pacticipant/Pricing%20Service/repository_url",
         "headers": {
-          "X-Pact-Broker-Client-Version": "2.0.0",
           "Accept": "text/plain"
         }
       },
@@ -190,7 +183,6 @@
         "method": "get",
         "path": "/pacticipant/Pricing%20Service/repository_url",
         "headers": {
-          "X-Pact-Broker-Client-Version": "2.0.0",
           "Accept": "text/plain"
         }
       },
@@ -216,7 +208,6 @@
           "repository_url": "git@git.realestate.com.au:business-systems/condor.git"
         },
         "headers": {
-          "X-Pact-Broker-Client-Version": "2.0.0",
           "Content-Type": "application/json+patch"
         }
       },
@@ -240,7 +231,6 @@
           "repository_url": "git@git.realestate.com.au:business-systems/condor.git"
         },
         "headers": {
-          "X-Pact-Broker-Client-Version": "2.0.0",
           "Content-Type": "application/json+patch"
         }
       },
@@ -257,7 +247,6 @@
         "method": "get",
         "path": "/pacticipant/Condor/versions/last/pacts/Pricing%20Service",
         "headers": {
-          "X-Pact-Broker-Client-Version": "2.0.0",
           "Accept": "application/json"
         }
       },
@@ -287,7 +276,6 @@
         "method": "get",
         "path": "/pacticipant/Condor/versions/last/pacts/Pricing%20Service",
         "headers": {
-          "X-Pact-Broker-Client-Version": "2.0.0",
           "Accept": "application/json"
         }
       },
@@ -304,7 +292,6 @@
         "method": "get",
         "path": "/pacticipant/Condor/versions/last/pacts/Pricing%20Service",
         "headers": {
-          "X-Pact-Broker-Client-Version": "2.0.0",
           "Accept": "application/json"
         },
         "query": "tag=prod"
@@ -333,7 +320,6 @@
         "method": "get",
         "path": "/pacticipant/Pricing%20Service/versions/last",
         "headers": {
-          "X-Pact-Broker-Client-Version": "2.0.0",
           "Accept": "application/json"
         },
         "query": "tag=prod"
@@ -360,7 +346,6 @@
         "method": "get",
         "path": "/pacticipant/Pricing%20Service/versions/last",
         "headers": {
-          "X-Pact-Broker-Client-Version": "2.0.0",
           "Accept": "application/json"
         }
       },

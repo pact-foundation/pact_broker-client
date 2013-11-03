@@ -1,7 +1,7 @@
 require 'pact_broker/client'
 
 module PactBroker
-  module ClientSupport
+  module Client
     class PublishPacts
 
       def initialize pact_broker_base_url, pact_files, consumer_version
@@ -20,7 +20,7 @@ module PactBroker
       attr_reader :pact_broker_base_url, :pact_files, :consumer_version
 
       def pact_broker_client
-        @pact_broker_client ||= PactBroker::Client.new(base_url: pact_broker_base_url)
+        @pact_broker_client ||= PactBroker::Client::PactBrokerClient.new(base_url: pact_broker_base_url)
       end
 
       def publish_pact pact_file

@@ -4,13 +4,13 @@ require 'pact_broker/client/publish_pacts'
 require 'json'
 
 module PactBroker
-  module ClientSupport
+  module Client
     describe PublishPacts do
 
       before do
         FakeFS.activate!
         pacts_client.stub(:publish)
-        PactBroker::Client.stub(:new).with(base_url: pact_broker_base_url).and_return(pact_broker_client)
+        PactBroker::Client::PactBrokerClient.stub(:new).with(base_url: pact_broker_base_url).and_return(pact_broker_client)
       end
 
       after do

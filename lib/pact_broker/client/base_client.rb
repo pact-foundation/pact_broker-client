@@ -1,0 +1,76 @@
+require 'erb'
+require 'httparty'
+
+module PactBroker
+  module Client
+
+    module UrlHelpers
+      def encode_param param
+        ERB::Util.url_encode param
+      end
+    end
+
+    module StringToSymbol
+
+      #Only works for one level, not recursive!
+      def string_keys_to_symbols hash
+        hash.keys.each_with_object({}) do | key, new_hash |
+          new_hash[key.to_sym] = hash[key]
+        end
+      end
+
+    end
+
+    class BaseClient
+      include UrlHelpers
+      include HTTParty
+      include StringToSymbol
+
+      attr_reader :base_url
+
+      def initialize options
+        @base_url = options[:base_url]
+        self.class.base_uri base_url
+      end
+
+      def default_request_headers
+        {'Accept' => 'application/json'}
+      end
+
+      def default_get_headers
+        default_request_headers
+      end
+
+      def default_patch_headers
+        default_request_headers.merge('Content-Type' => 'application/json+patch')
+      end
+
+      def default_put_headers
+        default_request_headers.merge('Content-Type' => 'application/json')
+      end
+
+      def handle_response response
+        if response.success?
+          yield
+        elsif response.code == 404
+          nil
+        else
+          raise response.body
+        end
+      end
+
+      def patch url, options
+        self.class.patch(url, options.merge(body: options[:body].to_json))
+      end
+
+      def put url, *args
+        self.class.put(url, *args)
+      end
+
+      def get url, *args
+        self.class.get(url, *args)
+      end
+
+    end
+  end
+end

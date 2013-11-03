@@ -1,0 +1,34 @@
+require 'pact_broker/client/base_client'
+
+module PactBroker
+  module Client
+    class Pacticipants < BaseClient
+
+      def versions
+        Versions.new base_url: base_url
+      end
+
+      def update options
+        body = options.select{ | key, v | [:repository_url].include?(key)}
+        response = patch(pacticipant_base_url(options), body: body, headers: default_patch_headers)
+        handle_response(response) do
+          true
+        end
+      end
+
+      def repository_url options
+        response = get("#{pacticipant_base_url(options)}/repository_url", headers: default_get_headers.merge('Accept' => 'text/plain'))
+        handle_response(response) do
+          response.body
+        end
+      end
+
+      private
+
+      def pacticipant_base_url options
+        "/pacticipant/#{encode_param(options[:pacticipant])}"
+      end
+
+    end
+  end
+end

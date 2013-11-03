@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'pact_broker/client/tasks/publication_task'
 require 'pact_broker/client/publish_pacts'
 
-module PactBroker
+module PactBroker::Client
 
   describe PublicationTask do
 
@@ -14,7 +14,7 @@ module PactBroker
     let(:pact_file_list) { ['spec/pact/consumer-provider.json'] }
 
     before do
-      PactBroker::ClientSupport::PublishPacts.stub(:new).and_return(publish_pacts)
+      PactBroker::Client::PublishPacts.stub(:new).and_return(publish_pacts)
       FileList.should_receive(:[]).with(pattern).and_return(pact_file_list)
     end
 
@@ -23,14 +23,14 @@ module PactBroker
     describe "default task" do
 
       before :all do
-        PactBroker::PublicationTask.new do | task |
+        PactBroker::Client::PublicationTask.new do | task |
           task.consumer_version = '1.2.3'
         end
       end
 
       context "when pacts are succesfully published" do
         it "invokes PublishPacts with the default values" do
-          PactBroker::ClientSupport::PublishPacts.should_receive(:new).with('http://pact-broker', pact_file_list, '1.2.3').and_return(publish_pacts)
+          PactBroker::Client::PublishPacts.should_receive(:new).with('http://pact-broker', pact_file_list, '1.2.3').and_return(publish_pacts)
           publish_pacts.should_receive(:call).and_return(true)
           Rake::Task['pact:publish'].execute
         end
@@ -50,7 +50,7 @@ module PactBroker
       before :all do
         @pact_broker_base_url = "http://some-host"
         @pattern = "pact/*.json"
-        PactBroker::PublicationTask.new(:custom) do | task |
+        PactBroker::Client::PublicationTask.new(:custom) do | task |
           task.consumer_version = '1.2.3'
           task.pact_broker_base_url = @pact_broker_base_url
           task.pattern = @pattern
@@ -60,7 +60,7 @@ module PactBroker
       let(:pattern) { @pattern }
 
       it "invokes PublishPacts with the customised values" do
-        PactBroker::ClientSupport::PublishPacts.should_receive(:new).with(@pact_broker_base_url, pact_file_list, '1.2.3')
+        PactBroker::Client::PublishPacts.should_receive(:new).with(@pact_broker_base_url, pact_file_list, '1.2.3')
         publish_pacts.should_receive(:call).and_return(true)
         Rake::Task['pact:publish:custom'].execute
       end
