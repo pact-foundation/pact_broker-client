@@ -31,14 +31,14 @@ module PactBroker
       def find_last_consumer_contract_url options
         consumer_name = encode_param(options[:consumer])
         provider_name = encode_param(options[:provider])
-        "/pacticipant/#{consumer_name}/versions/last/pacts/#{provider_name}"
+        "/pacticipants/#{consumer_name}/versions/last/pacts/#{provider_name}"
       end
 
       def save_consumer_contract_url consumer_contract, consumer_version
         consumer_name = encode_param(consumer_contract.consumer.name)
         provider_name = encode_param(consumer_contract.provider.name)
         version = encode_param(consumer_version)
-        "/pacticipant/#{consumer_name}/versions/#{version}/pacts/#{provider_name}"
+        "/pacticipants/#{consumer_name}/versions/#{version}/pacts/#{provider_name}"
       end
     end
   end

@@ -11,7 +11,7 @@
       "provider_state": "the 'Pricing Service' already exists in the pact-broker",
       "request": {
         "method": "put",
-        "path": "/pacticipant/Condor/versions/1.3.0/pacts/Pricing%20Service",
+        "path": "/pacticipants/Condor/versions/1.3.0/pacts/Pricing%20Service",
         "body": {
           "consumer": {
             "name": "Condor"
@@ -38,7 +38,7 @@
       "provider_state": "the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0",
       "request": {
         "method": "put",
-        "path": "/pacticipant/Condor/versions/1.3.0/pacts/Pricing%20Service",
+        "path": "/pacticipants/Condor/versions/1.3.0/pacts/Pricing%20Service",
         "body": {
           "consumer": {
             "name": "Condor"
@@ -65,7 +65,7 @@
       "provider_state": "'Condor' already exist in the pact-broker, but the 'Pricing Service' does not",
       "request": {
         "method": "put",
-        "path": "/pacticipant/Condor/versions/1.3.0/pacts/Pricing%20Service",
+        "path": "/pacticipants/Condor/versions/1.3.0/pacts/Pricing%20Service",
         "body": {
           "consumer": {
             "name": "Condor"
@@ -92,7 +92,7 @@
       "provider_state": "an error occurs while publishing a pact",
       "request": {
         "method": "put",
-        "path": "/pacticipant/Condor/versions/1.3.0/pacts/Pricing%20Service",
+        "path": "/pacticipants/Condor/versions/1.3.0/pacts/Pricing%20Service",
         "body": {
           "consumer": {
             "name": "Condor"
@@ -128,7 +128,7 @@
       "provider_state": "the 'Pricing Service' does not exist in the pact-broker",
       "request": {
         "method": "patch",
-        "path": "/pacticipant/Pricing%20Service",
+        "path": "/pacticipants/Pricing%20Service",
         "body": {
           "repository_url": "git@git.realestate.com.au:business-systems/condor.git"
         },
@@ -147,7 +147,7 @@
       "provider_state": "the 'Pricing Service' already exists in the pact-broker",
       "request": {
         "method": "patch",
-        "path": "/pacticipant/Pricing%20Service",
+        "path": "/pacticipants/Pricing%20Service",
         "body": {
           "repository_url": "git@git.realestate.com.au:business-systems/condor.git"
         },
@@ -166,7 +166,7 @@
       "provider_state": "the 'Pricing Service' does not exist in the pact-broker",
       "request": {
         "method": "get",
-        "path": "/pacticipant/Pricing%20Service/repository_url",
+        "path": "/pacticipants/Pricing%20Service/repository_url",
         "headers": {
           "Accept": "text/plain"
         }
@@ -182,7 +182,7 @@
       "provider_state": "the 'Pricing Service' already exists in the pact-broker",
       "request": {
         "method": "get",
-        "path": "/pacticipant/Pricing%20Service/repository_url",
+        "path": "/pacticipants/Pricing%20Service/repository_url",
         "headers": {
           "Accept": "text/plain"
         }
@@ -200,7 +200,7 @@
       "provider_state": "'Condor' exists in the pact-broker",
       "request": {
         "method": "patch",
-        "path": "/pacticipant/Condor/versions/1.3.0",
+        "path": "/pacticipants/Condor/versions/1.3.0",
         "body": {
           "tags": [
             "prod"
@@ -223,7 +223,7 @@
       "provider_state": "'Condor' does not exist in the pact-broker",
       "request": {
         "method": "patch",
-        "path": "/pacticipant/Condor/versions/1.3.0",
+        "path": "/pacticipants/Condor/versions/1.3.0",
         "body": {
           "tags": [
             "prod"
@@ -246,7 +246,7 @@
       "provider_state": "a pact between Condor and the Pricing Service exists",
       "request": {
         "method": "get",
-        "path": "/pacticipant/Condor/versions/last/pacts/Pricing%20Service",
+        "path": "/pacticipants/Condor/versions/last/pacts/Pricing%20Service",
         "headers": {
           "Accept": "application/json"
         }
@@ -275,7 +275,7 @@
       "provider_state": "no pact between Condor and the Pricing Service exists",
       "request": {
         "method": "get",
-        "path": "/pacticipant/Condor/versions/last/pacts/Pricing%20Service",
+        "path": "/pacticipants/Condor/versions/last/pacts/Pricing%20Service",
         "headers": {
           "Accept": "application/json"
         }
@@ -291,7 +291,7 @@
       "provider_state": "a pact between Condor and the Pricing Service exists for the production version of Condor",
       "request": {
         "method": "get",
-        "path": "/pacticipant/Condor/versions/last/pacts/Pricing%20Service",
+        "path": "/pacticipants/Condor/versions/last/pacts/Pricing%20Service",
         "headers": {
           "Accept": "application/json"
         },
@@ -319,7 +319,7 @@
       "provider_state": "a version with production details exists for the Pricing Service",
       "request": {
         "method": "get",
-        "path": "/pacticipant/Pricing%20Service/versions/last",
+        "path": "/pacticipants/Pricing%20Service/versions/last",
         "headers": {
           "Accept": "application/json"
         },
@@ -345,7 +345,7 @@
       "provider_state": "no version exists for the Pricing Service",
       "request": {
         "method": "get",
-        "path": "/pacticipant/Pricing%20Service/versions/last",
+        "path": "/pacticipants/Pricing%20Service/versions/last",
         "headers": {
           "Accept": "application/json"
         }

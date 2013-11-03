@@ -26,7 +26,7 @@ module PactBroker
       private
 
       def pacticipant_base_url options
-        "/pacticipant/#{encode_param(options[:pacticipant])}"
+        "/pacticipants/#{encode_param(options[:pacticipant])}"
       end
 
     end

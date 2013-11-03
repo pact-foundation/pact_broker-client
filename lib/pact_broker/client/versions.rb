@@ -31,7 +31,7 @@ module PactBroker
       private
       def version_base_url options
         pacticipant = encode_param(options[:pacticipant])
-        "/pacticipant/#{pacticipant}/versions"
+        "/pacticipants/#{pacticipant}/versions"
       end
     end
   end
