@@ -1,0 +1,15 @@
+{
+    "_links": {
+        "self": { "href": "http://localhost:1234/pacticipants/Pricing%20Service" },
+        "http://pact-broker.com#last_version": { "href": "http://localhost:1234/pacticipants/Pricing%20Service/versions/last" },
+        "http://pact-broker.com#versions": { "href": "http://localhost:1234/pacticipants/Pricing%20Service/versions" }
+    },
+    "name" : "Pricing Service",
+    "repository_url": "git@git.realestate.com.au:business-systems/pricing-service",
+    "last_version" : {
+        "_links" : {
+            "self": "http://localhost:1234/pacticipants/Pricing%20Service/versions/last"
+        },
+        "number" : "1.3.0"
+    }
+}
