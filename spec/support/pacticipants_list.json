@@ -1,9 +1,26 @@
 {
     "_links": {
         "self": { "href": "http://localhost:1234/pacticipants" },
-        "item": [
-            { "href": "http://localhost:1234/pacticipants/Condor", "name": "Condor" },
-            { "href": "http://localhost:1234/pacticipants/Pricing%20Service", "name": "Pricing Service" }
+        "pacticipants": [
+            { "href": "http://localhost:1234/pacticipants/Condor", "name": "Condor" }
         ]
-    }
+    },
+    "pacticipants" : [{
+      "_links": {
+          "self" : {
+            "href" : "http://localhost:1234/pacticipants/Condor"
+          }
+        },
+      "name" : "Condor",
+      "_embedded" : {
+          "last_version" : {
+              "_links" : {
+                  "self": {
+                      "href": "http://localhost:1234/pacticipants/Condor/versions/1.3.0"
+                  }
+              },
+              "number" : "1.3.0"
+          }
+      }
+    }]
 }

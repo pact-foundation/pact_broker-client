@@ -115,7 +115,7 @@ module PactBroker::Client
 
     end
 
-    let(:repository_url ) { "git@git.realestate.com.au:business-systems/condor.git" }
+    let(:repository_url ) { "git@git.realestate.com.au:business-systems/pricing-service" }
 
     describe "registering a repository url" do
       context "where the pacticipant does not already exist in the pact-broker" do
