@@ -17,6 +17,13 @@ module PactBroker
         end
       end
 
+      def latest
+        response = self.class.get("/pacts/latest", headers: default_get_headers)
+        handle_response(response) do
+          map_pact_list_do_hash response.to_hash["pacts"]
+        end
+      end
+
       def last options
         query = find_last_consumer_contract_query(options)
         response = self.class.get("/pacts/latest", headers: default_get_headers, query: query)
@@ -26,6 +33,23 @@ module PactBroker
       end
 
       private
+
+      #TODO Move into mapper class
+      def map_pact_list_do_hash pacts_list
+        pacts_list.collect do | pact_hash |
+          {
+            consumer: {
+              name: pact_hash["_embedded"]["consumer"]["name"],
+              version: {
+                number: pact_hash["_embedded"]["consumer"]["_embedded"]["version"]["number"]
+              }
+            },
+            provider: {
+              name: pact_hash["_embedded"]["provider"]["name"]
+            }
+          }
+        end
+      end
 
       def find_last_consumer_contract_query options
         query = {:consumer => options[:consumer], :provider => options[:provider]}

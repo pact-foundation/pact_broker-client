@@ -25,6 +25,10 @@ module PactBroker
         PactBroker::Client::Pacticipants.new base_url: base_url
       end
 
+      def pacts
+        PactBroker::Client::Pacts.new base_url: base_url
+      end
+
     end
   end
 
