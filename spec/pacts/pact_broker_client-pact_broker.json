@@ -347,9 +347,10 @@
       "provider_state": "a pact between Condor and the Pricing Service exists",
       "request": {
         "method": "get",
-        "path": "/pacticipants/Condor/versions/last/pacts/Pricing%20Service",
+        "path": "/pacts/latest",
         "headers": {
-        }
+        },
+        "query": "consumer=Condor&provider=Pricing%20Service"
       },
       "response": {
         "status": 200,
@@ -375,9 +376,10 @@
       "provider_state": "no pact between Condor and the Pricing Service exists",
       "request": {
         "method": "get",
-        "path": "/pacticipants/Condor/versions/last/pacts/Pricing%20Service",
+        "path": "/pacts/latest",
         "headers": {
-        }
+        },
+        "query": "consumer=Condor&provider=Pricing%20Service"
       },
       "response": {
         "status": 404,
@@ -390,11 +392,11 @@
       "provider_state": "a pact between Condor and the Pricing Service exists for the production version of Condor",
       "request": {
         "method": "get",
-        "path": "/pacticipants/Condor/versions/last/pacts/Pricing%20Service",
+        "path": "/pacts/latest",
         "headers": {
           "Accept": "application/json"
         },
-        "query": "tag=prod"
+        "query": "consumer=Condor&provider=Pricing%20Service&tag=prod"
       },
       "response": {
         "status": 200,

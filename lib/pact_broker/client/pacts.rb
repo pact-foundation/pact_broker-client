@@ -18,9 +18,8 @@ module PactBroker
       end
 
       def last options
-        url = find_last_consumer_contract_url options
-        query = options[:tag] ? {tag: options[:tag]} : {}
-        response = self.class.get(url, headers: default_get_headers, query: query)
+        query = find_last_consumer_contract_query(options)
+        response = self.class.get("/pacts/latest", headers: default_get_headers, query: query)
         handle_response(response) do
           response.body
         end
@@ -28,10 +27,10 @@ module PactBroker
 
       private
 
-      def find_last_consumer_contract_url options
-        consumer_name = encode_param(options[:consumer])
-        provider_name = encode_param(options[:provider])
-        "/pacticipants/#{consumer_name}/versions/last/pacts/#{provider_name}"
+      def find_last_consumer_contract_query options
+        query = {:consumer => options[:consumer], :provider => options[:provider]}
+        query[:tag] = options[:tag] if options[:tag]
+        query
       end
 
       def save_consumer_contract_url consumer_contract, consumer_version
