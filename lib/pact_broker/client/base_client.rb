@@ -42,7 +42,7 @@ module PactBroker
       end
 
       def default_patch_headers
-        default_request_headers.merge('Content-Type' => 'application/json+patch')
+        default_request_headers.merge('Content-Type' => 'application/json')
       end
 
       def default_put_headers

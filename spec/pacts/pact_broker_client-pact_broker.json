@@ -17,7 +17,7 @@
       },
       "response": {
         "headers": {
-          "Content-Type": "application/json+hal;charset=utf-8"
+          "Content-Type": "application/json+hal"
         },
         "status": 200,
         "body": {
@@ -72,7 +72,7 @@
       },
       "response": {
         "headers": {
-          "Content-Type": "application/json+hal;charset=utf-8"
+          "Content-Type": "application/json+hal"
         },
         "status": 200,
         "body": {
@@ -121,7 +121,7 @@
       },
       "response": {
         "headers": {
-          "Content-Type": "application/json+hal;charset=utf-8"
+          "Content-Type": "application/json+hal"
         },
         "status": 200,
         "body": {
@@ -269,6 +269,7 @@
       "response": {
         "status": 500,
         "headers": {
+          "Content-Type": "application/json"
         },
         "body": {
           "message": {
@@ -291,7 +292,7 @@
           "repository_url": "git@git.realestate.com.au:business-systems/pricing-service"
         },
         "headers": {
-          "Content-Type": "application/json+patch"
+          "Content-Type": "application/json"
         }
       },
       "response": {
@@ -310,47 +311,13 @@
           "repository_url": "git@git.realestate.com.au:business-systems/pricing-service"
         },
         "headers": {
-          "Content-Type": "application/json+patch"
+          "Content-Type": "application/json"
         }
       },
       "response": {
         "status": 200,
         "headers": {
         }
-      }
-    },
-    {
-      "description": "a request to retrieve the repository URL of the 'Pricing Service'",
-      "provider_state": "the 'Pricing Service' does not exist in the pact-broker",
-      "request": {
-        "method": "get",
-        "path": "/pacticipants/Pricing%20Service/repository_url",
-        "headers": {
-          "Accept": "text/plain"
-        }
-      },
-      "response": {
-        "status": 404,
-        "headers": {
-        }
-      }
-    },
-    {
-      "description": "a request to retrieve the repository URL of the 'Pricing Service'",
-      "provider_state": "the 'Pricing Service' already exists in the pact-broker",
-      "request": {
-        "method": "get",
-        "path": "/pacticipants/Pricing%20Service/repository_url",
-        "headers": {
-          "Accept": "text/plain"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        "body": "git@git.realestate.com.au:business-systems/pricing-service"
       }
     },
     {
@@ -366,7 +333,7 @@
           "repository_ref": "packages/condor-1.3.0"
         },
         "headers": {
-          "Content-Type": "application/json+patch"
+          "Content-Type": "application/json"
         }
       },
       "response": {
@@ -388,7 +355,7 @@
           "repository_ref": "packages/condor-1.3.0"
         },
         "headers": {
-          "Content-Type": "application/json+patch"
+          "Content-Type": "application/json"
         }
       },
       "response": {
@@ -435,7 +402,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json;charset=utf-8",
+          "Content-Type": "application/json",
           "X-Pact-Consumer-Version": "1.3.0"
         },
         "body": {
@@ -507,7 +474,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json;charset=utf-8"
+          "Content-Type": "application/json"
         },
         "body": {
           "number": "1.2.3",

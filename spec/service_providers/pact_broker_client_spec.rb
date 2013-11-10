@@ -26,7 +26,7 @@ module PactBroker::Client
     let(:pact_broker_version) { Pact::Term.new(:matcher => /\d+\.\d+\.\d+/, :generate => '1.0.0') }
     let(:pact_broker_response_headers) { {} }
     let(:default_request_headers) { { 'Content-Type' => 'application/json'} }
-    let(:patch_request_headers)   { { 'Content-Type' => 'application/json+patch'} }
+    let(:patch_request_headers)   { { 'Content-Type' => 'application/json'} }
     let(:get_request_headers)     { { 'Accept' => 'application/json'} }
 
     describe "publishing a pact" do
@@ -102,7 +102,7 @@ module PactBroker::Client
               body: pact_hash }).
             will_respond_with({
               status: 500,
-              headers: pact_broker_response_headers,
+              headers: {'Content-Type' => 'application/json'},
               body: {
                 message: Pact::Term.new(matcher: /.*/, generate: 'An error occurred')
               }
@@ -154,46 +154,6 @@ module PactBroker::Client
         end
         it "returns true" do
           expect(pact_broker_client.pacticipants.update({:pacticipant => 'Pricing Service', :repository_url => repository_url})).to be_true
-        end
-      end
-    end
-
-    describe "retrieving a repository url" do
-      context "where the pacticipant does not already exist in the pact-broker" do
-        before do
-          pact_broker.
-          given("the 'Pricing Service' does not exist in the pact-broker").
-          upon_receiving("a request to retrieve the repository URL of the 'Pricing Service'").
-          with(
-              method: :get,
-              path: '/pacticipants/Pricing%20Service/repository_url',
-              headers: get_request_headers.merge({'Accept' => 'text/plain'})).
-            will_respond_with(
-              status: 404,
-              headers: pact_broker_response_headers
-            )
-        end
-        it "returns nil" do
-          expect(pact_broker_client.pacticipants.repository_url({:pacticipant => 'Pricing Service'})).to eq(nil)
-        end
-      end
-      context "where the 'Pricing Service' exists in the pact-broker" do
-        before do
-          pact_broker.
-          given("the 'Pricing Service' already exists in the pact-broker").
-          upon_receiving("a request to retrieve the repository URL of the 'Pricing Service'").
-          with(
-              method: :get,
-              path: '/pacticipants/Pricing%20Service/repository_url',
-              headers: get_request_headers.merge({'Accept' => 'text/plain'})).
-            will_respond_with(
-              status: 200,
-              headers: pact_broker_response_headers.merge({'Content-Type' => 'text/plain;charset=utf-8'}),
-              body: repository_url
-            )
-        end
-        it "returns the URL" do
-          expect(pact_broker_client.pacticipants.repository_url({:pacticipant => 'Pricing Service'})).to eq repository_url
         end
       end
     end
@@ -266,7 +226,7 @@ module PactBroker::Client
       describe "finding the latest version" do
         context "when a pact is found" do
 
-          let(:response_headers) { pact_broker_response_headers.merge({'Content-Type' => 'application/json;charset=utf-8', 'X-Pact-Consumer-Version' => consumer_version}) }
+          let(:response_headers) { pact_broker_response_headers.merge({'Content-Type' => 'application/json', 'X-Pact-Consumer-Version' => consumer_version}) }
           before do
             pact_broker.
             given("a pact between Condor and the Pricing Service exists").
@@ -323,7 +283,7 @@ module PactBroker::Client
             }).
             will_respond_with({
               status: 200,
-              headers: {'Content-Type' => 'application/json;charset=utf-8', 'X-Pact-Consumer-Version' => consumer_version},
+              headers: {'Content-Type' => 'application/json', 'X-Pact-Consumer-Version' => consumer_version},
               body: pact_hash,
               headers: pact_broker_response_headers
             })
@@ -353,7 +313,7 @@ module PactBroker::Client
                 query: 'tag=prod',
                 headers: get_request_headers).
               will_respond_with( status: 200,
-                headers: pact_broker_response_headers.merge({'Content-Type' => 'application/json;charset=utf-8'}),
+                headers: pact_broker_response_headers.merge({'Content-Type' => 'application/json'}),
                 body: body )
           end
           it 'returns the version details' do
