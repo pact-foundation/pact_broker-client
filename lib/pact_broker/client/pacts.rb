@@ -17,6 +17,14 @@ module PactBroker
         end
       end
 
+      def get options
+        url = get_consumer_contract_url(options)
+        response = self.class.get(url, headers: default_get_headers)
+        handle_response(response) do
+          response.body
+        end
+      end
+
       def latest
         response = self.class.get("/pacts/latest", headers: default_get_headers)
         handle_response(response) do
@@ -25,8 +33,8 @@ module PactBroker
       end
 
       def last options
-        query = find_last_consumer_contract_query(options)
-        response = self.class.get("/pacts/latest", headers: default_get_headers, query: query)
+        url = get_latest_consumer_contract_url(options)
+        response = self.class.get(url, headers: default_get_headers)
         handle_response(response) do
           response.body
         end
@@ -57,11 +65,25 @@ module PactBroker
         query
       end
 
+      def get_latest_consumer_contract_url options
+        consumer_name = encode_param(options[:consumer])
+        provider_name = encode_param(options[:provider])
+        tag = options[:tag] ? "/#{options[:tag]}" : ""
+        "/pact/provider/#{provider_name}/consumer/#{consumer_name}/latest#{tag}"
+      end
+
+      def get_consumer_contract_url options
+        consumer_name = encode_param(options[:consumer])
+        provider_name = encode_param(options[:provider])
+        consumer_version = encode_param(options[:consumer_version])
+        "/pact/provider/#{provider_name}/consumer/#{consumer_name}/version/#{consumer_version}"
+      end
+
       def save_consumer_contract_url consumer_contract, consumer_version
         consumer_name = encode_param(consumer_contract.consumer.name)
         provider_name = encode_param(consumer_contract.provider.name)
         version = encode_param(consumer_version)
-        "/pacticipants/#{consumer_name}/versions/#{version}/pacts/#{provider_name}"
+        "/pact/provider/#{provider_name}/consumer/#{consumer_name}/version/#{version}"
       end
     end
   end

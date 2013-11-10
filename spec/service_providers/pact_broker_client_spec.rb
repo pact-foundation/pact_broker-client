@@ -40,7 +40,7 @@ module PactBroker::Client
           upon_receiving("a request to publish a pact").
           with({
               method: :put,
-              path: '/pacticipants/Condor/versions/1.3.0/pacts/Pricing%20Service',
+              path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
               headers: default_request_headers,
               body: pact_hash }).
             will_respond_with( headers: pact_broker_response_headers,
@@ -59,7 +59,7 @@ module PactBroker::Client
           upon_receiving("a request to publish a pact").
           with({
               method: :put,
-              path: '/pacticipants/Condor/versions/1.3.0/pacts/Pricing%20Service',
+              path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
               headers: default_request_headers,
               body: pact_hash }).
             will_respond_with( headers: pact_broker_response_headers,
@@ -78,7 +78,7 @@ module PactBroker::Client
           upon_receiving("a request to publish a pact").
           with({
               method: :put,
-              path: '/pacticipants/Condor/versions/1.3.0/pacts/Pricing%20Service',
+              path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
               headers: default_request_headers,
               body: pact_hash }).
             will_respond_with( headers: pact_broker_response_headers,
@@ -97,7 +97,7 @@ module PactBroker::Client
           upon_receiving("a request to publish a pact").
           with({
               method: :put,
-              path: '/pacticipants/Condor/versions/1.3.0/pacts/Pricing%20Service',
+              path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
               headers: default_request_headers,
               body: pact_hash }).
             will_respond_with({
@@ -243,6 +243,26 @@ module PactBroker::Client
     end
 
     describe "retrieving a pact" do
+      describe "retriving a specific version" do
+        before do
+          pact_broker.
+          given("the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0").
+          upon_receiving("a request retrieve a pact for a specific version").
+          with(
+              method: :get,
+              path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
+              headers: {} ).
+            will_respond_with( headers: pact_broker_response_headers,
+              status: 200,
+              body: pact_hash
+            )
+        end
+        it "returns the pact json" do
+          response = pact_broker_client.pacticipants.versions.pacts.get consumer: 'Condor', provider: 'Pricing Service', consumer_version: '1.3.0'
+          expect(response).to eq(pact_json)
+        end
+      end
+
       describe "finding the latest version" do
         context "when a pact is found" do
 
@@ -253,8 +273,7 @@ module PactBroker::Client
             upon_receiving("a request to retrieve the latest pact between Condor and the Pricing Service").
             with({
                 method: :get,
-                path: '/pacts/latest',
-                query: 'consumer=Condor&provider=Pricing%20Service',
+                path: '/pact/provider/Pricing%20Service/consumer/Condor/latest',
                 headers: {}
             }).
             will_respond_with({
@@ -277,8 +296,7 @@ module PactBroker::Client
             upon_receiving("a request to retrieve the latest pact between Condor and the Pricing Service").
             with({
                 method: :get,
-                path: '/pacts/latest',
-                query: 'consumer=Condor&provider=Pricing%20Service',
+                path: '/pact/provider/Pricing%20Service/consumer/Condor/latest',
                 headers: {}
             }).
             will_respond_with({
@@ -300,8 +318,7 @@ module PactBroker::Client
             upon_receiving("a request to retrieve the pact between the production verison of Condor and the Pricing Service").
             with({
                 method: :get,
-                path: '/pacts/latest',
-                query: 'consumer=Condor&provider=Pricing%20Service&tag=prod',
+                path: '/pact/provider/Pricing%20Service/consumer/Condor/latest/prod',
                 headers: get_request_headers
             }).
             will_respond_with({
@@ -330,7 +347,11 @@ module PactBroker::Client
             pact_broker.
               given("a version with production details exists for the Pricing Service").
               upon_receiving("a request for the latest version tagged with 'prod'").
-              with(method: :get, path: '/pacticipants/Pricing%20Service/versions/last', query: 'tag=prod', headers: get_request_headers).
+              with(
+                method: :get,
+                path: '/pacticipants/Pricing%20Service/versions/last',
+                query: 'tag=prod',
+                headers: get_request_headers).
               will_respond_with( status: 200,
                 headers: pact_broker_response_headers.merge({'Content-Type' => 'application/json;charset=utf-8'}),
                 body: body )
