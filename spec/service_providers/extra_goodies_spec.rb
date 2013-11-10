@@ -33,7 +33,7 @@ module PactBroker::Client
               method: :get,
               path: '/pacts/latest',
               headers: {} ).
-            will_respond_with( headers: {'Content-Type' => 'application/json+hal'},
+            will_respond_with( headers: {'Content-Type' => 'application/hal+json'},
               status: 200,
               body: response_body
             )
@@ -55,7 +55,7 @@ module PactBroker::Client
               method: :get,
               path: '/pacticipants',
               headers: {} ).
-            will_respond_with( headers: {'Content-Type' => 'application/json+hal'},
+            will_respond_with( headers: {'Content-Type' => 'application/hal+json'},
               status: 200,
               body: response_body
             )
@@ -78,7 +78,7 @@ module PactBroker::Client
               method: :get,
               path: '/pacticipants/Pricing%20Service',
               headers: {} ).
-            will_respond_with( headers: {'Content-Type' => 'application/json+hal'},
+            will_respond_with( headers: {'Content-Type' => 'application/hal+json'},
               status: 200,
               body: response_body
             )

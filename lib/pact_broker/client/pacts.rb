@@ -28,7 +28,7 @@ module PactBroker
       def latest
         response = self.class.get("/pacts/latest", headers: default_get_headers)
         handle_response(response) do
-          map_pact_list_do_hash response.to_hash["pacts"]
+          map_pact_list_do_hash JSON.parse(response.body)["pacts"]
         end
       end
 

@@ -17,7 +17,7 @@
       },
       "response": {
         "headers": {
-          "Content-Type": "application/json+hal"
+          "Content-Type": "application/hal+json"
         },
         "status": 200,
         "body": {
@@ -72,7 +72,7 @@
       },
       "response": {
         "headers": {
-          "Content-Type": "application/json+hal"
+          "Content-Type": "application/hal+json"
         },
         "status": 200,
         "body": {
@@ -121,7 +121,7 @@
       },
       "response": {
         "headers": {
-          "Content-Type": "application/json+hal"
+          "Content-Type": "application/hal+json"
         },
         "status": 200,
         "body": {

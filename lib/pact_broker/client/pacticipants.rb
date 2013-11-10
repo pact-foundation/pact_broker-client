@@ -19,14 +19,14 @@ module PactBroker
       def get1 options
         response = get(pacticipant_base_url(options), headers: default_get_headers)
         handle_response(response) do
-          response.to_hash
+          JSON.parse(response.body)
         end
       end
 
       def list
         response = get("/pacticipants", headers: default_get_headers)
         handle_response(response) do
-          response.to_hash
+          JSON.parse(response.body)
         end
       end
 
