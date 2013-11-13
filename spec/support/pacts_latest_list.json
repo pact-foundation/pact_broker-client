@@ -8,7 +8,7 @@
         {
             "_links": {
                 "self": {
-                    "href": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/pacts/Pricing%20Service"
+                    "href": "http://localhost:1234/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0"
                 }
             },
             "_embedded": {
