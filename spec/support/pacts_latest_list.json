@@ -1,14 +1,14 @@
 {
     "_links": {
         "self": {
-            "href": "http://localhost:1234/pacts/latest"
+            "href": "http://example.org/pacts/latest"
         }
     },
     "pacts": [
         {
             "_links": {
                 "self": {
-                    "href": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/pacts/Pricing%20Service"
+                    "href": "http://example.org/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0"
                 }
             },
             "_embedded": {
@@ -16,7 +16,7 @@
                     "name": "Condor",
                     "_links": {
                         "self": {
-                            "href": "http://localhost:1234/pacticipants/Condor"
+                            "href": "http://example.org/pacticipants/Condor"
                         }
                     },
                     "_embedded": {
@@ -28,7 +28,7 @@
                 "provider": {
                     "_links": {
                         "self": {
-                            "href": "http://localhost:1234/pacticipants/Pricing%20Service"
+                            "href": "http://example.org/pacticipants/Pricing%20Service"
                         }
                     },
                     "name": "Pricing Service"

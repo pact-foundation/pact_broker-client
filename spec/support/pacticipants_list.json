@@ -1,14 +1,14 @@
 {
     "_links": {
-        "self": { "href": "http://localhost:1234/pacticipants" },
+        "self": { "href": "http://example.org/pacticipants" },
         "pacticipants": [
-            { "href": "http://localhost:1234/pacticipants/Condor", "name": "Condor" }
+            { "href": "http://example.org/pacticipants/Condor", "name": "Condor" }
         ]
     },
     "pacticipants" : [{
       "_links": {
           "self" : {
-            "href" : "http://localhost:1234/pacticipants/Condor"
+            "href" : "http://example.org/pacticipants/Condor"
           }
         },
       "name" : "Condor",
@@ -16,7 +16,7 @@
           "last_version" : {
               "_links" : {
                   "self": {
-                      "href": "http://localhost:1234/pacticipants/Condor/versions/1.3.0"
+                      "href": "http://example.org/pacticipants/Condor/versions/1.3.0"
                   }
               },
               "number" : "1.3.0"
