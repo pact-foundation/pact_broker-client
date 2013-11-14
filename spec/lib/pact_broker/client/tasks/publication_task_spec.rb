@@ -15,7 +15,7 @@ module PactBroker::Client
 
     before do
       PactBroker::Client::PublishPacts.stub(:new).and_return(publish_pacts)
-      FileList.should_receive(:[]).with(pattern).and_return(pact_file_list)
+      FileList.stub(:[]).with(pattern).and_return(pact_file_list)
     end
 
     let(:pattern) { "spec/pacts/*.json" }
@@ -63,6 +63,19 @@ module PactBroker::Client
         PactBroker::Client::PublishPacts.should_receive(:new).with(@pact_broker_base_url, pact_file_list, '1.2.3')
         publish_pacts.should_receive(:call).and_return(true)
         Rake::Task['pact:publish:custom'].execute
+      end
+    end
+
+    describe "timing of block execution" do
+
+      before :all do
+        PactBroker::Client::PublicationTask.new(:exception) do | task |
+          raise 'A contrived exception'
+        end
+      end
+
+      it "does not execute the block passed to the publication task until the task is called" do
+        expect{ Rake::Task['pact:publish:exception'].execute }.to raise_error 'A contrived exception'
       end
     end
 

@@ -17,22 +17,22 @@ module PactBroker
 
       attr_accessor :pattern, :pact_broker_base_url, :consumer_version
 
-      def initialize name = nil
+      def initialize name = nil, &block
         @name = name
         @pattern = 'spec/pacts/*.json'
         @pact_broker_base_url = 'http://pact-broker'
-        yield self
-        rake_task
+        rake_task &block
       end
 
       private
 
-      def rake_task
+      def rake_task &block
         namespace :pact do
           desc "Publish pacts to pact broker"
           task task_name do
+            block.call(self)
             require 'pact_broker/client/publish_pacts'
-            success = PactBroker::Client::PublishPacts.new(pact_broker_base_url, FileList[@pattern], consumer_version).call
+            success = PactBroker::Client::PublishPacts.new(pact_broker_base_url, FileList[pattern], consumer_version).call
             raise "One or more pacts failed to be published" unless success
           end
         end
