@@ -2,6 +2,13 @@ Do this to generate your change history
 
     $ git log --date=relative --pretty=format:'  * %h - %s (%an, %ad)' 'package/pact_broker-client-0.0.PRODVERSION'..'package/pact_broker-client-0.0.NEWVERSION'
 
+#### 0.0.4 (2013-11-15)
+
+* cf33479 - Merge branch 'master' of github.com:bethesque/pact_broker-client (Beth, 20 hours ago)
+* 01087ae - Fixed problem where PublicationTask block was evaluated at load time, instead of run time. (Beth, 20 hours ago)
+* 2073234 - Updating to use example.org as the base URL (Beth, 2 days ago)
+* 07073de - Updating latest pact URL (Beth, 2 days ago)
+
 #### 0.0.3 (2013-11-13)
 
 * a3488bd - Fixing application/json+hal to application/hal+json (Beth, 2 days ago)
