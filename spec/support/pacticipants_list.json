@@ -2,7 +2,7 @@
     "_links": {
         "self": { "href": "http://example.org/pacticipants" },
         "pacticipants": [
-            { "href": "http://example.org/pacticipants/Condor", "name": "Condor" }
+            { "href": "http://example.org/pacticipants/Condor", "title": "Condor" }
         ]
     },
     "pacticipants" : [{

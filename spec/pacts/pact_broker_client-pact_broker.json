@@ -83,7 +83,7 @@
             "pacticipants": [
               {
                 "href": "http://example.org/pacticipants/Condor",
-                "name": "Condor"
+                "title": "Condor"
               }
             ]
           },
