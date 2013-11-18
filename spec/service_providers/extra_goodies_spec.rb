@@ -39,7 +39,7 @@ module PactBroker::Client
             )
         end
         it "returns the response body" do
-            expect(pact_broker_client.pacts.latest).to eq(expected_pacts)
+            expect(pact_broker_client.pacts.list_latest).to eq(expected_pacts)
         end
       end
     end

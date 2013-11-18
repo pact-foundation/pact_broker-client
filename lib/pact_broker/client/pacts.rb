@@ -25,14 +25,14 @@ module PactBroker
         end
       end
 
-      def latest
+      def list_latest
         response = self.class.get("/pacts/latest", headers: default_get_headers)
         handle_response(response) do
           map_pact_list_do_hash JSON.parse(response.body)["pacts"]
         end
       end
 
-      def last options
+      def latest options
         url = get_latest_consumer_contract_url(options)
         response = self.class.get(url, headers: default_get_headers)
         handle_response(response) do
@@ -59,7 +59,7 @@ module PactBroker
         end
       end
 
-      def find_last_consumer_contract_query options
+      def find_latest_consumer_contract_query options
         query = {:consumer => options[:consumer], :provider => options[:provider]}
         query[:tag] = options[:tag] if options[:tag]
         query

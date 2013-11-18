@@ -244,7 +244,7 @@ module PactBroker::Client
           end
 
           it "returns the pact json" do
-            response = pact_broker_client.pacticipants.versions.pacts.last consumer: 'Condor', provider: 'Pricing Service'
+            response = pact_broker_client.pacticipants.versions.pacts.latest consumer: 'Condor', provider: 'Pricing Service'
             expect(response).to eq(pact_json)
           end
 
@@ -265,7 +265,7 @@ module PactBroker::Client
             })
           end
           it "returns nil" do
-            response = pact_broker_client.pacticipants.versions.pacts.last consumer: 'Condor', provider: 'Pricing Service'
+            response = pact_broker_client.pacticipants.versions.pacts.latest consumer: 'Condor', provider: 'Pricing Service'
             expect(response).to eq(nil)
           end
         end
@@ -290,7 +290,7 @@ module PactBroker::Client
           end
 
           it "returns the pact json" do
-            response = pact_broker_client.pacticipants.versions.pacts.last consumer: 'Condor', provider: 'Pricing Service', tag: 'prod'
+            response = pact_broker_client.pacticipants.versions.pacts.latest consumer: 'Condor', provider: 'Pricing Service', tag: 'prod'
             expect(response).to eq(pact_json)
           end
         end
@@ -309,7 +309,7 @@ module PactBroker::Client
               upon_receiving("a request for the latest version tagged with 'prod'").
               with(
                 method: :get,
-                path: '/pacticipants/Pricing%20Service/versions/last',
+                path: '/pacticipants/Pricing%20Service/versions/latest',
                 query: 'tag=prod',
                 headers: get_request_headers).
               will_respond_with( status: 200,
@@ -317,7 +317,7 @@ module PactBroker::Client
                 body: body )
           end
           it 'returns the version details' do
-            expect( pact_broker_client.pacticipants.versions.last pacticipant: 'Pricing Service', tag: 'prod' ).to eq body
+            expect( pact_broker_client.pacticipants.versions.latest pacticipant: 'Pricing Service', tag: 'prod' ).to eq body
           end
         end
       end
@@ -326,11 +326,11 @@ module PactBroker::Client
           pact_broker.
             given("no version exists for the Pricing Service").
             upon_receiving("a request for the latest version").
-            with(method: :get, path: '/pacticipants/Pricing%20Service/versions/last', headers: get_request_headers).
+            with(method: :get, path: '/pacticipants/Pricing%20Service/versions/latest', headers: get_request_headers).
             will_respond_with( status: 404, headers: pact_broker_response_headers )
         end
         it 'returns nil' do
-          expect( pact_broker_client.pacticipants.versions.last pacticipant: 'Pricing Service' ).to eq nil
+          expect( pact_broker_client.pacticipants.versions.latest pacticipant: 'Pricing Service' ).to eq nil
         end
       end
     end

@@ -5,9 +5,9 @@ module PactBroker
     class Versions < BaseClient
 
 
-      def last options
+      def latest options
         query = options[:tag] ? {tag: options[:tag]} : {}
-        response = self.class.get("#{version_base_url(options)}/last", query: query, headers: default_get_headers)
+        response = self.class.get("#{version_base_url(options)}/latest", query: query, headers: default_get_headers)
 
         handle_response(response) do
           string_keys_to_symbols(response.to_hash)
