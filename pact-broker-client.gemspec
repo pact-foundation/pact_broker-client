@@ -28,5 +28,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'pry'
   gem.add_development_dependency 'fakefs', '~> 0.4'
   gem.add_development_dependency 'rspec-fire'
-  gem.add_development_dependency 'debugger'
+  #gem.add_development_dependency 'debugger'
 end
