@@ -168,6 +168,386 @@
       "response": {
         "status": 404
       }
+    },
+    {
+      "description": "a request to publish a pact",
+      "provider_state": "the 'Pricing Service' already exists in the pact-broker",
+      "request": {
+        "method": "put",
+        "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+        "body": {
+          "consumer": {
+            "name": "Condor"
+          },
+          "provider": {
+            "name": "Pricing Service"
+          },
+          "interactions": [
+
+          ]
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "headers": {
+        },
+        "status": 201
+      }
+    },
+    {
+      "description": "a request to publish a pact",
+      "provider_state": "the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0",
+      "request": {
+        "method": "put",
+        "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+        "body": {
+          "consumer": {
+            "name": "Condor"
+          },
+          "provider": {
+            "name": "Pricing Service"
+          },
+          "interactions": [
+
+          ]
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "headers": {
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to publish a pact",
+      "provider_state": "'Condor' already exist in the pact-broker, but the 'Pricing Service' does not",
+      "request": {
+        "method": "put",
+        "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+        "body": {
+          "consumer": {
+            "name": "Condor"
+          },
+          "provider": {
+            "name": "Pricing Service"
+          },
+          "interactions": [
+
+          ]
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "headers": {
+        },
+        "status": 201
+      }
+    },
+    {
+      "description": "a request to publish a pact",
+      "provider_state": "an error occurs while publishing a pact",
+      "request": {
+        "method": "put",
+        "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+        "body": {
+          "consumer": {
+            "name": "Condor"
+          },
+          "provider": {
+            "name": "Pricing Service"
+          },
+          "interactions": [
+
+          ]
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "status": 500,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "message": {
+            "json_class": "Pact::Term",
+            "data": {
+              "generate": "An error occurred",
+              "matcher": {"json_class":"Regexp","o":0,"s":".*"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to register the repository URL of a pacticipant",
+      "provider_state": "the 'Pricing Service' does not exist in the pact-broker",
+      "request": {
+        "method": "patch",
+        "path": "/pacticipants/Pricing%20Service",
+        "body": {
+          "repository_url": "git@git.realestate.com.au:business-systems/pricing-service"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+        }
+      }
+    },
+    {
+      "description": "a request to register the repository URL of a pacticipant",
+      "provider_state": "the 'Pricing Service' already exists in the pact-broker",
+      "request": {
+        "method": "patch",
+        "path": "/pacticipants/Pricing%20Service",
+        "body": {
+          "repository_url": "git@git.realestate.com.au:business-systems/pricing-service"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        }
+      }
+    },
+    {
+      "description": "a request retrieve a pact for a specific version",
+      "provider_state": "the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0",
+      "request": {
+        "method": "get",
+        "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+        "headers": {
+        }
+      },
+      "response": {
+        "headers": {
+        },
+        "status": 200,
+        "body": {
+          "consumer": {
+            "name": "Condor"
+          },
+          "provider": {
+            "name": "Pricing Service"
+          },
+          "interactions": [
+
+          ]
+        }
+      }
+    },
+    {
+      "description": "a request to retrieve the latest pact between Condor and the Pricing Service",
+      "provider_state": "a pact between Condor and the Pricing Service exists",
+      "request": {
+        "method": "get",
+        "path": "/pact/provider/Pricing%20Service/consumer/Condor/latest",
+        "headers": {
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json",
+          "X-Pact-Consumer-Version": "1.3.0"
+        },
+        "body": {
+          "consumer": {
+            "name": "Condor"
+          },
+          "provider": {
+            "name": "Pricing Service"
+          },
+          "interactions": [
+
+          ]
+        }
+      }
+    },
+    {
+      "description": "a request to retrieve the latest pact between Condor and the Pricing Service",
+      "provider_state": "no pact between Condor and the Pricing Service exists",
+      "request": {
+        "method": "get",
+        "path": "/pact/provider/Pricing%20Service/consumer/Condor/latest",
+        "headers": {
+        }
+      },
+      "response": {
+        "status": 404,
+        "headers": {
+        }
+      }
+    },
+    {
+      "description": "a request to retrieve the pact between the production verison of Condor and the Pricing Service",
+      "provider_state": "a pact between Condor and the Pricing Service exists for the production version of Condor",
+      "request": {
+        "method": "get",
+        "path": "/pact/provider/Pricing%20Service/consumer/Condor/latest/prod",
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "consumer": {
+            "name": "Condor"
+          },
+          "provider": {
+            "name": "Pricing Service"
+          },
+          "interactions": [
+
+          ]
+        }
+      }
+    },
+    {
+      "description": "a request for the latest version tagged with 'prod'",
+      "provider_state": "a version with production details exists for the Pricing Service",
+      "request": {
+        "method": "get",
+        "path": "/pacticipants/Pricing%20Service/versions/latest",
+        "headers": {
+          "Accept": "application/json"
+        },
+        "query": "tag=prod"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "number": "1.2.3",
+          "repository_ref": "package/pricing-service-1.2.3",
+          "tags": [
+            "prod"
+          ]
+        }
+      }
+    },
+    {
+      "description": "a request for the latest version",
+      "provider_state": "no version exists for the Pricing Service",
+      "request": {
+        "method": "get",
+        "path": "/pacticipants/Pricing%20Service/versions/latest",
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "response": {
+        "status": 404,
+        "headers": {
+        }
+      }
+    },
+    {
+      "description": "a request to tag the production version of Condor",
+      "provider_state": "'Condor' exists in the pact-broker",
+      "request": {
+        "method": "put",
+        "path": "/pacticipants/Condor/versions/1.3.0/tags/prod",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+        },
+        "body": {
+          "_links": {
+            "self": {
+              "href": {
+                "json_class": "Pact::Term",
+                "data": {
+                  "generate": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/tags/prod",
+                  "matcher": {"json_class":"Regexp","o":0,"s":"http://.*/pacticipants/Condor/versions/1.3.0/tags/prod"}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to tag the production version of Condor",
+      "provider_state": "'Condor' does not exist in the pact-broker",
+      "request": {
+        "method": "put",
+        "path": "/pacticipants/Condor/versions/1.3.0/tags/prod",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+        },
+        "body": {
+          "_links": {
+            "self": {
+              "href": {
+                "json_class": "Pact::Term",
+                "data": {
+                  "generate": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/tags/prod",
+                  "matcher": {"json_class":"Regexp","o":0,"s":"http://.*/pacticipants/Condor/versions/1.3.0/tags/prod"}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to tag the production version of Condor",
+      "provider_state": "'Condor' exists in the pact-broker with version 1.3.0, tagged with 'prod'",
+      "request": {
+        "method": "put",
+        "path": "/pacticipants/Condor/versions/1.3.0/tags/prod",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "_links": {
+            "self": {
+              "href": {
+                "json_class": "Pact::Term",
+                "data": {
+                  "generate": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/tags/prod",
+                  "matcher": {"json_class":"Regexp","o":0,"s":"http://.*/pacticipants/Condor/versions/1.3.0/tags/prod"}
+                }
+              }
+            }
+          }
+        }
+      }
     }
   ],
   "metadata": {

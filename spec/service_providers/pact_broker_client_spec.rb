@@ -17,17 +17,7 @@ module PactBroker::Client
       end
     end
 
-    let(:pact_hash) { {consumer: {name: 'Condor'}, provider: {name: 'Pricing Service'}, interactions: []} }
-    let(:consumer_contract) { Pact::ConsumerContract.from_hash pact_hash }
-    let(:pact_json) { pact_hash.to_json }
-    let(:pact_broker_client) { PactBrokerClient.new(base_url: 'http://localhost:1234') }
-    let(:consumer_version) { '1.3.0' }
-    let(:version) { '1.3.0' }
-    let(:pact_broker_version) { Pact::Term.new(:matcher => /\d+\.\d+\.\d+/, :generate => '1.0.0') }
-    let(:pact_broker_response_headers) { {} }
-    let(:default_request_headers) { { 'Content-Type' => 'application/json'} }
-    let(:patch_request_headers)   { { 'Content-Type' => 'application/json'} }
-    let(:get_request_headers)     { { 'Accept' => 'application/json'} }
+    include_context "pact broker"
 
     describe "publishing a pact" do
 
@@ -154,50 +144,6 @@ module PactBroker::Client
         end
         it "returns true" do
           expect(pact_broker_client.pacticipants.update({:pacticipant => 'Pricing Service', :repository_url => repository_url})).to be_true
-        end
-      end
-    end
-
-    describe "tagging a version with prod details" do
-      let(:repository_ref) { "packages/condor-#{version}" }
-
-      let(:tag_options) { {pacticipant: 'Condor', version: version, repository_ref: repository_ref, :tag => 'prod'} }
-      context "when the component exists" do
-        before do
-          pact_broker.
-          given("'Condor' exists in the pact-broker").
-          upon_receiving("a request to tag the production version of Condor").
-          with(
-              method: :patch,
-              path: '/pacticipants/Condor/versions/1.3.0',
-              headers: patch_request_headers,
-              body: {:tags => ['prod'], :repository_ref => repository_ref } ).
-            will_respond_with(
-              status: 200,
-              headers: pact_broker_response_headers
-            )
-        end
-        it "returns true" do
-          expect(pact_broker_client.pacticipants.versions.update tag_options).to be_true
-        end
-      end
-      context "when the component does not exist" do
-        before do
-          pact_broker.
-          given("'Condor' does not exist in the pact-broker").
-          upon_receiving("a request to tag the production version of Condor").
-          with(
-              method: :patch,
-              path: '/pacticipants/Condor/versions/1.3.0',
-              headers: patch_request_headers,
-              body: {:tags => ['prod'], :repository_ref => repository_ref } ).
-            will_respond_with(
-              status: 201,
-              headers: pact_broker_response_headers
-            )
-        end
-        it "returns true" do
-          expect(pact_broker_client.pacticipants.versions.update tag_options).to be_true
         end
       end
     end
