@@ -5,10 +5,3 @@ RSpec.configure do | config |
 end
 
 require "./spec/support/shared_context.rb"
-
-def silence_warnings
-  old_verbose, $VERBOSE = $VERBOSE, nil
-  yield
-ensure
-  $VERBOSE = old_verbose
-end
