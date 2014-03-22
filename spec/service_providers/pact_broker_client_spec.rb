@@ -28,14 +28,15 @@ module PactBroker::Client
           pact_broker.
           given("the 'Pricing Service' already exists in the pact-broker").
           upon_receiving("a request to publish a pact").
-          with({
-              method: :put,
-              path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
-              headers: default_request_headers,
-              body: pact_hash }).
-            will_respond_with( headers: pact_broker_response_headers,
-              status: 201
-            )
+          with(
+            method: :put,
+            path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
+            headers: default_request_headers,
+            body: pact_hash ).
+          will_respond_with(
+            headers: pact_broker_response_headers,
+            status: 201
+          )
         end
         it "returns true" do
             expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to be_true
@@ -45,14 +46,15 @@ module PactBroker::Client
       context "when the provider, consumer, pact and version already exist in the pact-broker" do
         before do
           pact_broker.
-          given("the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0").
-          upon_receiving("a request to publish a pact").
-          with({
+            given("the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0").
+            upon_receiving("a request to publish a pact").
+            with(
               method: :put,
               path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
               headers: default_request_headers,
-              body: pact_hash }).
-            will_respond_with( headers: pact_broker_response_headers,
+              body: pact_hash ).
+            will_respond_with(
+              headers: pact_broker_response_headers,
               status: 200
             )
         end
@@ -64,14 +66,15 @@ module PactBroker::Client
       context "when the provider does not exist, but the consumer, pact and version already exist in the pact-broker" do
         before do
           pact_broker.
-          given("'Condor' already exist in the pact-broker, but the 'Pricing Service' does not").
-          upon_receiving("a request to publish a pact").
-          with({
+            given("'Condor' already exist in the pact-broker, but the 'Pricing Service' does not").
+            upon_receiving("a request to publish a pact").
+            with(
               method: :put,
               path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
               headers: default_request_headers,
-              body: pact_hash }).
-            will_respond_with( headers: pact_broker_response_headers,
+              body: pact_hash ).
+            will_respond_with(
+              headers: pact_broker_response_headers,
               status: 201
             )
         end
@@ -83,20 +86,20 @@ module PactBroker::Client
       context "when publishing is not successful" do
         before do
           pact_broker.
-          given("an error occurs while publishing a pact").
-          upon_receiving("a request to publish a pact").
-          with({
+            given("an error occurs while publishing a pact").
+            upon_receiving("a request to publish a pact").
+            with(
               method: :put,
               path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
               headers: default_request_headers,
-              body: pact_hash }).
-            will_respond_with({
+              body: pact_hash ).
+            will_respond_with(
               status: 500,
               headers: {'Content-Type' => 'application/json'},
               body: {
                 message: Pact::Term.new(matcher: /.*/, generate: 'An error occurred')
               }
-            })
+            )
         end
         it "raises an error" do
           expect { pact_broker_client.pacticipants.versions.pacts.publish options }.to raise_error /An error occurred/
@@ -111,17 +114,17 @@ module PactBroker::Client
       context "where the pacticipant does not already exist in the pact-broker" do
         before do
           pact_broker.
-          given("the 'Pricing Service' does not exist in the pact-broker").
-          upon_receiving("a request to register the repository URL of a pacticipant").
-          with(
-              method: :patch,
-              path: '/pacticipants/Pricing%20Service',
-              headers: patch_request_headers,
-              body: {repository_url: repository_url} ).
-            will_respond_with(
-              status: 201,
-              headers: pact_broker_response_headers
-            )
+            given("the 'Pricing Service' does not exist in the pact-broker").
+            upon_receiving("a request to register the repository URL of a pacticipant").
+            with(
+                method: :patch,
+                path: '/pacticipants/Pricing%20Service',
+                headers: patch_request_headers,
+                body: {repository_url: repository_url} ).
+              will_respond_with(
+                status: 201,
+                headers: pact_broker_response_headers
+              )
         end
         it "returns true" do
           expect(pact_broker_client.pacticipants.update({:pacticipant => 'Pricing Service', :repository_url => repository_url})).to be_true
@@ -130,13 +133,13 @@ module PactBroker::Client
       context "where the 'Pricing Service' exists in the pact-broker" do
         before do
           pact_broker.
-          given("the 'Pricing Service' already exists in the pact-broker").
-          upon_receiving("a request to register the repository URL of a pacticipant").
-          with(
+            given("the 'Pricing Service' already exists in the pact-broker").
+            upon_receiving("a request to register the repository URL of a pacticipant").
+            with(
               method: :patch,
               path: '/pacticipants/Pricing%20Service',
               headers: patch_request_headers,
-              body: {repository_url: repository_url} ).
+              body: { repository_url: repository_url }).
             will_respond_with(
               status: 200,
               headers: pact_broker_response_headers
@@ -152,13 +155,14 @@ module PactBroker::Client
       describe "retriving a specific version" do
         before do
           pact_broker.
-          given("the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0").
-          upon_receiving("a request retrieve a pact for a specific version").
-          with(
+            given("the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0").
+            upon_receiving("a request retrieve a pact for a specific version").
+            with(
               method: :get,
               path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
               headers: {} ).
-            will_respond_with( headers: pact_broker_response_headers,
+            will_respond_with(
+              headers: pact_broker_response_headers,
               status: 200,
               body: pact_hash
             )
@@ -175,18 +179,18 @@ module PactBroker::Client
           let(:response_headers) { pact_broker_response_headers.merge({'Content-Type' => 'application/json', 'X-Pact-Consumer-Version' => consumer_version}) }
           before do
             pact_broker.
-            given("a pact between Condor and the Pricing Service exists").
-            upon_receiving("a request to retrieve the latest pact between Condor and the Pricing Service").
-            with({
+              given("a pact between Condor and the Pricing Service exists").
+              upon_receiving("a request to retrieve the latest pact between Condor and the Pricing Service").
+              with(
                 method: :get,
                 path: '/pact/provider/Pricing%20Service/consumer/Condor/latest',
                 headers: {}
-            }).
-            will_respond_with({
-              status: 200,
-              headers: response_headers,
-              body: pact_hash
-            })
+              ).
+              will_respond_with(
+                status: 200,
+                headers: response_headers,
+                body: pact_hash
+              )
           end
 
           it "returns the pact json" do
@@ -198,17 +202,17 @@ module PactBroker::Client
         context "when no pact is found" do
           before do
             pact_broker.
-            given("no pact between Condor and the Pricing Service exists").
-            upon_receiving("a request to retrieve the latest pact between Condor and the Pricing Service").
-            with({
+              given("no pact between Condor and the Pricing Service exists").
+              upon_receiving("a request to retrieve the latest pact between Condor and the Pricing Service").
+              with(
                 method: :get,
                 path: '/pact/provider/Pricing%20Service/consumer/Condor/latest',
                 headers: {}
-            }).
-            will_respond_with({
-              status: 404,
-              headers: pact_broker_response_headers
-            })
+              ).
+              will_respond_with(
+                status: 404,
+                headers: pact_broker_response_headers
+              )
           end
           it "returns nil" do
             response = pact_broker_client.pacticipants.versions.pacts.latest consumer: 'Condor', provider: 'Pricing Service'
@@ -220,19 +224,19 @@ module PactBroker::Client
         context "when a pact is found" do
           before do
             pact_broker.
-            given("a pact between Condor and the Pricing Service exists for the production version of Condor").
-            upon_receiving("a request to retrieve the pact between the production verison of Condor and the Pricing Service").
-            with({
-                method: :get,
-                path: '/pact/provider/Pricing%20Service/consumer/Condor/latest/prod',
-                headers: get_request_headers
-            }).
-            will_respond_with({
-              status: 200,
-              headers: {'Content-Type' => 'application/json', 'X-Pact-Consumer-Version' => consumer_version},
-              body: pact_hash,
-              headers: pact_broker_response_headers
-            })
+              given("a pact between Condor and the Pricing Service exists for the production version of Condor").
+              upon_receiving("a request to retrieve the pact between the production verison of Condor and the Pricing Service").
+              with(
+                  method: :get,
+                  path: '/pact/provider/Pricing%20Service/consumer/Condor/latest/prod',
+                  headers: get_request_headers
+              ).
+              will_respond_with(
+                status: 200,
+                headers: {'Content-Type' => 'application/json', 'X-Pact-Consumer-Version' => consumer_version},
+                body: pact_hash,
+                headers: pact_broker_response_headers
+              )
           end
 
           it "returns the pact json" do
@@ -258,7 +262,8 @@ module PactBroker::Client
                 path: '/pacticipants/Pricing%20Service/versions/latest',
                 query: 'tag=prod',
                 headers: get_request_headers).
-              will_respond_with( status: 200,
+              will_respond_with(
+                status: 200,
                 headers: pact_broker_response_headers.merge({'Content-Type' => 'application/json'}),
                 body: body )
           end
@@ -272,8 +277,13 @@ module PactBroker::Client
           pact_broker.
             given("no version exists for the Pricing Service").
             upon_receiving("a request for the latest version").
-            with(method: :get, path: '/pacticipants/Pricing%20Service/versions/latest', headers: get_request_headers).
-            will_respond_with( status: 404, headers: pact_broker_response_headers )
+            with(
+              method: :get,
+              path: '/pacticipants/Pricing%20Service/versions/latest',
+              headers: get_request_headers).
+            will_respond_with(
+              status: 404,
+              headers: pact_broker_response_headers )
         end
         it 'returns nil' do
           expect( pact_broker_client.pacticipants.versions.latest pacticipant: 'Pricing Service' ).to eq nil
