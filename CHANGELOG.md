@@ -1,6 +1,17 @@
 Do this to generate your change history
 
-    $ git log --date=relative --pretty=format:'  * %h - %s (%an, %ad)' 'package/pact_broker-client-0.0.PRODVERSION'..'package/pact_broker-client-0.0.NEWVERSION'
+    $ git log --pretty=format:'  * %h - %s (%an, %ad)'
+
+#### 0.0.6 (2014-03-24)
+
+* 2ad5f7d - Updated method of tagging versions (bethesque, Sat Mar 22 16:54:37 2014 +1100)
+* b74128f - Added 'latest' pact url to pact representation in the 'latest pacts' response (bethesque, Sat Mar 22 09:04:31 2014 +1100)
+
+#### 0.0.5 (2014-01-03)
+
+* 194183c - Removing debugger for Travis CI (bethesque, Fri Jan 3 12:45:07 2014 +1100)
+* b42aba9 - Changed 'last' to 'latest' (bethesque, Tue Nov 19 09:30:12 2013 +1100)
+* 30d63b7 - Changed name to title in list pacticipants response (bethesque, Mon Nov 18 09:37:11 2013 +1100)
 
 #### 0.0.4 (2013-11-15)
 
