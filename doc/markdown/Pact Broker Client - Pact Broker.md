@@ -65,10 +65,10 @@ Given **a version with production details exists for the Pricing Service**, upon
 {
   "method": "get",
   "path": "/pacticipants/Pricing%20Service/versions/latest",
+  "query": "tag=prod",
   "headers": {
     "Accept": "application/json"
-  },
-  "query": "tag=prod"
+  }
 }
 ```
 Pact Broker will respond with:
@@ -123,10 +123,10 @@ Given **the 'Pricing Service' already exists in the pact-broker**, upon receivin
 Pact Broker will respond with:
 ```json
 {
+  "status": 200,
   "headers": {
     "Content-Type": "application/hal+json"
   },
-  "status": 200,
   "body": {
     "_links": {
       "self": {
@@ -179,10 +179,10 @@ Given **'Condor' exists in the pact-broker**, upon receiving **a request to list
 Pact Broker will respond with:
 ```json
 {
+  "status": 200,
   "headers": {
     "Content-Type": "application/hal+json"
   },
-  "status": 200,
   "body": {
     "_links": {
       "self": {
@@ -229,10 +229,10 @@ Given **a pact between Condor and the Pricing Service exists**, upon receiving *
 Pact Broker will respond with:
 ```json
 {
+  "status": 200,
   "headers": {
     "Content-Type": "application/hal+json"
   },
-  "status": 200,
   "body": {
     "_links": {
       "self": {
@@ -285,6 +285,9 @@ Given **the 'Pricing Service' and 'Condor' already exist in the pact-broker, and
 {
   "method": "put",
   "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+  "headers": {
+    "Content-Type": "application/json"
+  },
   "body": {
     "consumer": {
       "name": "Condor"
@@ -295,9 +298,6 @@ Given **the 'Pricing Service' and 'Condor' already exist in the pact-broker, and
     "interactions": [
 
     ]
-  },
-  "headers": {
-    "Content-Type": "application/json"
   }
 }
 ```
@@ -313,6 +313,9 @@ Given **'Condor' already exist in the pact-broker, but the 'Pricing Service' doe
 {
   "method": "put",
   "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+  "headers": {
+    "Content-Type": "application/json"
+  },
   "body": {
     "consumer": {
       "name": "Condor"
@@ -323,9 +326,6 @@ Given **'Condor' already exist in the pact-broker, but the 'Pricing Service' doe
     "interactions": [
 
     ]
-  },
-  "headers": {
-    "Content-Type": "application/json"
   }
 }
 ```
@@ -341,6 +341,9 @@ Given **the 'Pricing Service' already exists in the pact-broker**, upon receivin
 {
   "method": "put",
   "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+  "headers": {
+    "Content-Type": "application/json"
+  },
   "body": {
     "consumer": {
       "name": "Condor"
@@ -351,9 +354,6 @@ Given **the 'Pricing Service' already exists in the pact-broker**, upon receivin
     "interactions": [
 
     ]
-  },
-  "headers": {
-    "Content-Type": "application/json"
   }
 }
 ```
@@ -369,6 +369,9 @@ Given **an error occurs while publishing a pact**, upon receiving **a request to
 {
   "method": "put",
   "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+  "headers": {
+    "Content-Type": "application/json"
+  },
   "body": {
     "consumer": {
       "name": "Condor"
@@ -379,9 +382,6 @@ Given **an error occurs while publishing a pact**, upon receiving **a request to
     "interactions": [
 
     ]
-  },
-  "headers": {
-    "Content-Type": "application/json"
   }
 }
 ```
@@ -403,11 +403,11 @@ Given **the 'Pricing Service' already exists in the pact-broker**, upon receivin
 {
   "method": "patch",
   "path": "/pacticipants/Pricing%20Service",
-  "body": {
-    "repository_url": "git@git.realestate.com.au:business-systems/pricing-service"
-  },
   "headers": {
     "Content-Type": "application/json"
+  },
+  "body": {
+    "repository_url": "git@git.realestate.com.au:business-systems/pricing-service"
   }
 }
 ```
@@ -423,11 +423,11 @@ Given **the 'Pricing Service' does not exist in the pact-broker**, upon receivin
 {
   "method": "patch",
   "path": "/pacticipants/Pricing%20Service",
-  "body": {
-    "repository_url": "git@git.realestate.com.au:business-systems/pricing-service"
-  },
   "headers": {
     "Content-Type": "application/json"
+  },
+  "body": {
+    "repository_url": "git@git.realestate.com.au:business-systems/pricing-service"
   }
 }
 ```
