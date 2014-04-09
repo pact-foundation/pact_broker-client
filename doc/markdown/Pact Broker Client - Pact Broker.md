@@ -56,9 +56,7 @@ Given **no version exists for the Pricing Service**, upon receiving **a request 
 Pact Broker will respond with:
 ```json
 {
-  "status": 404,
-  "headers": {
-  }
+  "status": 404
 }
 ```
 <a name="a_request_for_the_latest_version_tagged_with_'prod'_given_a_version_with_production_details_exists_for_the_Pricing_Service"></a>
@@ -94,16 +92,12 @@ Given **the 'Pricing Service' and 'Condor' already exist in the pact-broker, and
 ```json
 {
   "method": "get",
-  "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
-  "headers": {
-  }
+  "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0"
 }
 ```
 Pact Broker will respond with:
 ```json
 {
-  "headers": {
-  },
   "status": 200,
   "body": {
     "consumer": {
@@ -123,9 +117,7 @@ Given **the 'Pricing Service' already exists in the pact-broker**, upon receivin
 ```json
 {
   "method": "get",
-  "path": "/pacticipants/Pricing%20Service",
-  "headers": {
-  }
+  "path": "/pacticipants/Pricing%20Service"
 }
 ```
 Pact Broker will respond with:
@@ -167,9 +159,7 @@ Given **the 'Pricing Service' does not exist in the pact-broker**, upon receivin
 ```json
 {
   "method": "get",
-  "path": "/pacticipants/Pricing%20Service",
-  "headers": {
-  }
+  "path": "/pacticipants/Pricing%20Service"
 }
 ```
 Pact Broker will respond with:
@@ -183,9 +173,7 @@ Given **'Condor' exists in the pact-broker**, upon receiving **a request to list
 ```json
 {
   "method": "get",
-  "path": "/pacticipants",
-  "headers": {
-  }
+  "path": "/pacticipants"
 }
 ```
 Pact Broker will respond with:
@@ -235,9 +223,7 @@ Given **a pact between Condor and the Pricing Service exists**, upon receiving *
 ```json
 {
   "method": "get",
-  "path": "/pacts/latest",
-  "headers": {
-  }
+  "path": "/pacts/latest"
 }
 ```
 Pact Broker will respond with:
@@ -318,8 +304,6 @@ Given **the 'Pricing Service' and 'Condor' already exist in the pact-broker, and
 Pact Broker will respond with:
 ```json
 {
-  "headers": {
-  },
   "status": 200
 }
 ```
@@ -348,8 +332,6 @@ Given **'Condor' already exist in the pact-broker, but the 'Pricing Service' doe
 Pact Broker will respond with:
 ```json
 {
-  "headers": {
-  },
   "status": 201
 }
 ```
@@ -378,8 +360,6 @@ Given **the 'Pricing Service' already exists in the pact-broker**, upon receivin
 Pact Broker will respond with:
 ```json
 {
-  "headers": {
-  },
   "status": 201
 }
 ```
@@ -434,9 +414,7 @@ Given **the 'Pricing Service' already exists in the pact-broker**, upon receivin
 Pact Broker will respond with:
 ```json
 {
-  "status": 200,
-  "headers": {
-  }
+  "status": 200
 }
 ```
 <a name="a_request_to_register_the_repository_URL_of_a_pacticipant_given_the_'Pricing_Service'_does_not_exist_in_the_pact-broker"></a>
@@ -456,9 +434,7 @@ Given **the 'Pricing Service' does not exist in the pact-broker**, upon receivin
 Pact Broker will respond with:
 ```json
 {
-  "status": 201,
-  "headers": {
-  }
+  "status": 201
 }
 ```
 <a name="a_request_to_retrieve_the_latest_pact_between_Condor_and_the_Pricing_Service_given_a_pact_between_Condor_and_the_Pricing_Service_exists"></a>
@@ -466,9 +442,7 @@ Given **a pact between Condor and the Pricing Service exists**, upon receiving *
 ```json
 {
   "method": "get",
-  "path": "/pact/provider/Pricing%20Service/consumer/Condor/latest",
-  "headers": {
-  }
+  "path": "/pact/provider/Pricing%20Service/consumer/Condor/latest"
 }
 ```
 Pact Broker will respond with:
@@ -497,17 +471,13 @@ Given **no pact between Condor and the Pricing Service exists**, upon receiving 
 ```json
 {
   "method": "get",
-  "path": "/pact/provider/Pricing%20Service/consumer/Condor/latest",
-  "headers": {
-  }
+  "path": "/pact/provider/Pricing%20Service/consumer/Condor/latest"
 }
 ```
 Pact Broker will respond with:
 ```json
 {
-  "status": 404,
-  "headers": {
-  }
+  "status": 404
 }
 ```
 <a name="a_request_to_retrieve_the_pact_between_the_production_verison_of_Condor_and_the_Pricing_Service_given_a_pact_between_Condor_and_the_Pricing_Service_exists_for_the_production_version_of_Condor"></a>
@@ -525,8 +495,6 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
-  "headers": {
-  },
   "body": {
     "consumer": {
       "name": "Condor"
@@ -555,8 +523,6 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
-  "headers": {
-  },
   "body": {
     "_links": {
       "self": {
@@ -581,8 +547,6 @@ Pact Broker will respond with:
 ```json
 {
   "status": 201,
-  "headers": {
-  },
   "body": {
     "_links": {
       "self": {
@@ -607,8 +571,6 @@ Pact Broker will respond with:
 ```json
 {
   "status": 201,
-  "headers": {
-  },
   "body": {
     "_links": {
       "self": {
