@@ -1,5 +1,7 @@
 ### A pact between Pact Broker Client and Pact Broker
 
+#### Index
+
 [A request for the latest version](#a_request_for_the_latest_version_given_no_version_exists_for_the_Pricing_Service) given no version exists for the Pricing Service
 
 [A request for the latest version tagged with 'prod'](#a_request_for_the_latest_version_tagged_with_'prod'_given_a_version_with_production_details_exists_for_the_Pricing_Service) given a version with production details exists for the Pricing Service
@@ -38,6 +40,7 @@
 
 [A request to tag the production version of Condor](#a_request_to_tag_the_production_version_of_Condor_given_'Condor'_exists_in_the_pact-broker) given 'Condor' exists in the pact-broker
 
+#### Interactions
 
 <a name="a_request_for_the_latest_version_given_no_version_exists_for_the_Pricing_Service"></a>
 Given **no version exists for the Pricing Service**, upon receiving **a request for the latest version** from Pact Broker Client, with
