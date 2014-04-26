@@ -2,11 +2,11 @@
 
 A client for the Pact Broker. Publishes pacts to, and retrieves pacts from, the pact broker.
 
-# Usage
+## Usage
 
 You will need an instance of a [Pact Broker](https://github.com/bethesque/pact_broker).
 
-## Consumer
+### Consumer
 
 ```ruby
 # In Gemfile
@@ -32,7 +32,7 @@ end
 rake pact:publish
 ```
 
-## Provider
+### Provider
 
 ```ruby
 # In spec/service_consumers/pact_helper.rb
