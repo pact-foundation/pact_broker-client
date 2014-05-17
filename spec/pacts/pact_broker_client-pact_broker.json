@@ -422,47 +422,6 @@
       }
     },
     {
-      "description": "a request for the latest version tagged with 'prod'",
-      "provider_state": "a version with production details exists for the Pricing Service",
-      "request": {
-        "method": "get",
-        "path": "/pacticipants/Pricing%20Service/versions/latest",
-        "headers": {
-          "Accept": "application/json"
-        },
-        "query": "tag=prod"
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "number": "1.2.3",
-          "repository_ref": "package/pricing-service-1.2.3",
-          "tags": [
-            "prod"
-          ]
-        }
-      }
-    },
-    {
-      "description": "a request for the latest version",
-      "provider_state": "no version exists for the Pricing Service",
-      "request": {
-        "method": "get",
-        "path": "/pacticipants/Pricing%20Service/versions/latest",
-        "headers": {
-          "Accept": "application/json"
-        }
-      },
-      "response": {
-        "status": 404,
-        "headers": {
-        }
-      }
-    },
-    {
       "description": "a request to tag the production version of Condor",
       "provider_state": "'Condor' exists in the pact-broker",
       "request": {

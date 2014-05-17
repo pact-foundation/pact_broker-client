@@ -102,48 +102,5 @@ module PactBroker::Client
       end
     end
 
-    describe "retriving versions" do
-      context "when retrieving the production details of a version" do
-        context "when a version is found" do
-          let(:repository_ref) { "package/pricing-service-1.2.3"}
-          let(:tags) { ['prod']}
-          let(:body) { { number: '1.2.3', repository_ref: repository_ref, tags: tags } }
-          before do
-            pact_broker.
-              given("a version with production details exists for the Pricing Service").
-              upon_receiving("a request for the latest version tagged with 'prod'").
-              with(
-                method: :get,
-                path: '/pacticipants/Pricing%20Service/versions/latest',
-                query: 'tag=prod',
-                headers: get_request_headers).
-              will_respond_with(
-                status: 200,
-                headers: pact_broker_response_headers.merge({'Content-Type' => 'application/json'}),
-                body: body )
-          end
-          it 'returns the version details' do
-            expect( pact_broker_client.pacticipants.versions.latest pacticipant: 'Pricing Service', tag: 'prod' ).to eq body
-          end
-        end
-      end
-      context "when a version is not found" do
-        before do
-          pact_broker.
-            given("no version exists for the Pricing Service").
-            upon_receiving("a request for the latest version").
-            with(
-              method: :get,
-              path: '/pacticipants/Pricing%20Service/versions/latest',
-              headers: get_request_headers).
-            will_respond_with(
-              status: 404,
-              headers: pact_broker_response_headers )
-        end
-        it 'returns nil' do
-          expect( pact_broker_client.pacticipants.versions.latest pacticipant: 'Pricing Service' ).to eq nil
-        end
-      end
-    end
   end
 end
