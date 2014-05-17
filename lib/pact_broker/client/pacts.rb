@@ -69,21 +69,21 @@ module PactBroker
         consumer_name = encode_param(options[:consumer])
         provider_name = encode_param(options[:provider])
         tag = options[:tag] ? "/#{options[:tag]}" : ""
-        "/pact/provider/#{provider_name}/consumer/#{consumer_name}/latest#{tag}"
+        "/pacts/provider/#{provider_name}/consumer/#{consumer_name}/latest#{tag}"
       end
 
       def get_consumer_contract_url options
         consumer_name = encode_param(options[:consumer])
         provider_name = encode_param(options[:provider])
         consumer_version = encode_param(options[:consumer_version])
-        "/pact/provider/#{provider_name}/consumer/#{consumer_name}/version/#{consumer_version}"
+        "/pacts/provider/#{provider_name}/consumer/#{consumer_name}/version/#{consumer_version}"
       end
 
       def save_consumer_contract_url consumer_contract, consumer_version
         consumer_name = encode_param(consumer_contract.consumer.name)
         provider_name = encode_param(consumer_contract.provider.name)
         version = encode_param(consumer_version)
-        "/pact/provider/#{provider_name}/consumer/#{consumer_name}/version/#{version}"
+        "/pacts/provider/#{provider_name}/consumer/#{consumer_name}/version/#{version}"
       end
     end
   end

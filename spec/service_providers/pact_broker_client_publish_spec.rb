@@ -14,7 +14,7 @@ module PactBroker::Client
           upon_receiving("a request to publish a pact").
           with(
             method: :put,
-            path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
+            path: '/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
             headers: default_request_headers,
             body: pact_hash ).
           will_respond_with(
@@ -34,7 +34,7 @@ module PactBroker::Client
             upon_receiving("a request to publish a pact").
             with(
               method: :put,
-              path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
+              path: '/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
               headers: default_request_headers,
               body: pact_hash ).
             will_respond_with(
@@ -54,7 +54,7 @@ module PactBroker::Client
             upon_receiving("a request to publish a pact").
             with(
               method: :put,
-              path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
+              path: '/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
               headers: default_request_headers,
               body: pact_hash ).
             will_respond_with(
@@ -74,7 +74,7 @@ module PactBroker::Client
             upon_receiving("a request to publish a pact").
             with(
               method: :put,
-              path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
+              path: '/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
               headers: default_request_headers,
               body: pact_hash ).
             will_respond_with(

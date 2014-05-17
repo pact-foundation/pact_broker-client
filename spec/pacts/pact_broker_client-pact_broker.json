@@ -31,10 +31,10 @@
               "_links": {
                 "self": [
                   {
-                    "href": "http://example.org/pact/provider/Pricing%20Service/consumer/Condor/latest"
+                    "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest"
                   },
                   {
-                    "href": "http://example.org/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0"
+                    "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0"
                   }
                 ]
               },
@@ -174,7 +174,7 @@
       "provider_state": "the 'Pricing Service' already exists in the pact-broker",
       "request": {
         "method": "put",
-        "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+        "path": "/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
         "body": {
           "consumer": {
             "name": "Condor"
@@ -201,7 +201,7 @@
       "provider_state": "the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0",
       "request": {
         "method": "put",
-        "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+        "path": "/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
         "body": {
           "consumer": {
             "name": "Condor"
@@ -228,7 +228,7 @@
       "provider_state": "'Condor' already exist in the pact-broker, but the 'Pricing Service' does not",
       "request": {
         "method": "put",
-        "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+        "path": "/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
         "body": {
           "consumer": {
             "name": "Condor"
@@ -255,7 +255,7 @@
       "provider_state": "an error occurs while publishing a pact",
       "request": {
         "method": "put",
-        "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+        "path": "/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
         "body": {
           "consumer": {
             "name": "Condor"
@@ -330,7 +330,7 @@
       "provider_state": "the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0",
       "request": {
         "method": "get",
-        "path": "/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+        "path": "/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
         "headers": {
         }
       },
@@ -356,7 +356,7 @@
       "provider_state": "a pact between Condor and the Pricing Service exists",
       "request": {
         "method": "get",
-        "path": "/pact/provider/Pricing%20Service/consumer/Condor/latest",
+        "path": "/pacts/provider/Pricing%20Service/consumer/Condor/latest",
         "headers": {
         }
       },
@@ -384,7 +384,7 @@
       "provider_state": "no pact between Condor and the Pricing Service exists",
       "request": {
         "method": "get",
-        "path": "/pact/provider/Pricing%20Service/consumer/Condor/latest",
+        "path": "/pacts/provider/Pricing%20Service/consumer/Condor/latest",
         "headers": {
         }
       },
@@ -399,7 +399,7 @@
       "provider_state": "a pact between Condor and the Pricing Service exists for the production version of Condor",
       "request": {
         "method": "get",
-        "path": "/pact/provider/Pricing%20Service/consumer/Condor/latest/prod",
+        "path": "/pacts/provider/Pricing%20Service/consumer/Condor/latest/prod",
         "headers": {
           "Accept": "application/json"
         }
@@ -551,8 +551,6 @@
     }
   ],
   "metadata": {
-    "pact_gem": {
-      "version": "1.0.23"
-    }
+    "pactSpecificationVersion": "1.0.0"
   }
 }

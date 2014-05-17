@@ -14,7 +14,7 @@ module PactBroker::Client
             upon_receiving("a request retrieve a pact for a specific version").
             with(
               method: :get,
-              path: '/pact/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
+              path: '/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
               headers: {} ).
             will_respond_with(
               headers: pact_broker_response_headers,
@@ -38,7 +38,7 @@ module PactBroker::Client
               upon_receiving("a request to retrieve the latest pact between Condor and the Pricing Service").
               with(
                 method: :get,
-                path: '/pact/provider/Pricing%20Service/consumer/Condor/latest',
+                path: '/pacts/provider/Pricing%20Service/consumer/Condor/latest',
                 headers: {}
               ).
               will_respond_with(
@@ -61,7 +61,7 @@ module PactBroker::Client
               upon_receiving("a request to retrieve the latest pact between Condor and the Pricing Service").
               with(
                 method: :get,
-                path: '/pact/provider/Pricing%20Service/consumer/Condor/latest',
+                path: '/pacts/provider/Pricing%20Service/consumer/Condor/latest',
                 headers: {}
               ).
               will_respond_with(
@@ -83,7 +83,7 @@ module PactBroker::Client
               upon_receiving("a request to retrieve the pact between the production verison of Condor and the Pricing Service").
               with(
                   method: :get,
-                  path: '/pact/provider/Pricing%20Service/consumer/Condor/latest/prod',
+                  path: '/pacts/provider/Pricing%20Service/consumer/Condor/latest/prod',
                   headers: get_request_headers
               ).
               will_respond_with(
