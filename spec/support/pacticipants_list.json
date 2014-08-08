@@ -13,7 +13,7 @@
         },
       "name" : "Condor",
       "_embedded" : {
-          "latest_version" : {
+          "latest-version" : {
               "_links" : {
                   "self": {
                       "href": "http://example.org/pacticipants/Condor/versions/1.3.0"
