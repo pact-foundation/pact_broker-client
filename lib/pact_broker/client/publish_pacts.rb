@@ -1,4 +1,5 @@
 require 'pact_broker/client'
+require 'pact_broker/client/retry'
 
 module PactBroker
   module Client
@@ -25,9 +26,12 @@ module PactBroker
 
       def publish_pact pact_file
         begin
+          pact_file_contents = File.read(pact_file)
           puts "Publishing #{pact_file} to pact broker at #{pact_broker_base_url}"
-          pact_broker_client.pacticipants.versions.pacts.publish(pact_json: File.read(pact_file), consumer_version: consumer_version)
-          true
+          Retry.until_true do
+            pact_broker_client.pacticipants.versions.pacts.publish(pact_json: pact_file_contents, consumer_version: consumer_version)
+            true
+          end
         rescue => e
           $stderr.puts "Failed to publish pact: #{pact_file} due to error: #{e.to_s}\n#{e.backtrace.join("\n")}"
           false

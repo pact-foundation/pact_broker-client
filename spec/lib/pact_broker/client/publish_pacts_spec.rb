@@ -47,6 +47,7 @@ module PactBroker
 
         context "when publishing one or more pacts fails" do
           let(:pact_files) { ['spec/pacts/doesnotexist.json','spec/pacts/consumer-provider.json']}
+
           before do
             $stderr.stub(:puts)
           end
@@ -86,6 +87,52 @@ module PactBroker
             expect { subject.call }.to raise_error(/Please specify the pact_broker_base_url/)
           end
         end
+
+        context "when an error occurs every time while publishing a pact" do
+
+          before do
+            allow(Retry).to receive(:sleep)
+            allow(pacts_client).to receive(:publish).and_raise("an error")
+            allow($stderr).to receive(:puts)
+          end
+
+          it "retries multiple times" do
+            expect(pacts_client).to receive(:publish).exactly(3).times
+            subject.call
+          end
+
+          it "returns false" do
+            expect(subject.call).to eq false
+          end
+        end
+
+        context "when an error occurs less than the maximum number of retries" do
+
+          before do
+            allow(Retry).to receive(:sleep)
+            tries = 0
+            allow(pacts_client).to receive(:publish) do
+              if tries == 0
+                tries += 1
+                raise "an error"
+              else
+                true
+              end
+            end
+            allow($stderr).to receive(:puts)
+          end
+
+          it "retries multiple times" do
+            expect(pacts_client).to receive(:publish).exactly(2).times
+            subject.call
+          end
+
+          it "returns true" do
+            expect(subject.call).to eq true
+          end
+
+        end
+
       end
     end
   end
