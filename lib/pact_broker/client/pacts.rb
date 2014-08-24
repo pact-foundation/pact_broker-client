@@ -17,7 +17,7 @@ module PactBroker
           if response_body["_links"] && response_body["_links"]["latest-pact"]
             response_body["_links"]["latest-pact"]["href"]
           else
-            "Please upgrade to the latest version of the pact_broker-client to see the URL!"
+            "Please upgrade to the latest version of the pact broker to see the URL!"
           end
         end
       end
