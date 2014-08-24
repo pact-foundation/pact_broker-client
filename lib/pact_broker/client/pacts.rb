@@ -13,7 +13,12 @@ module PactBroker
         url = save_consumer_contract_url consumer_contract, consumer_version
         response = self.class.put(url, body: pact_string, headers: default_put_headers)
         handle_response(response) do
-          JSON.parse(response.body)["_links"]["latest-pact"]["href"]
+          response_body = JSON.parse(response.body)
+          if response_body["_links"] && response_body["_links"]["latest-pact"]
+            response_body["_links"]["latest-pact"]["href"]
+          else
+            "Please upgrade to the latest version of the pact_broker-client to see the URL!"
+          end
         end
       end
 
