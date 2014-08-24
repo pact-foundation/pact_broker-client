@@ -13,6 +13,7 @@ module PactBroker
 
       def call
         validate
+        $stdout.puts("")
         pact_files.collect{ | pact_file | publish_pact pact_file }.all?
       end
 
@@ -26,7 +27,7 @@ module PactBroker
 
       def publish_pact pact_file
         begin
-          puts "Publishing #{pact_file} to pact broker at #{pact_broker_base_url}"
+          $stdout.puts ">> Publishing #{pact_file} to pact broker at #{pact_broker_base_url}"
           publish_pact_contents File.read(pact_file)
         rescue => e
           $stderr.puts "Failed to publish pact: #{pact_file} due to error: #{e.to_s}\n#{e.backtrace.join("\n")}"
