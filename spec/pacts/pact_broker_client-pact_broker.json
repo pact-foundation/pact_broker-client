@@ -193,7 +193,14 @@
       "response": {
         "headers": {
         },
-        "status": 201
+        "status": 201,
+        "body": {
+          "_links": {
+            "latest-pact": {
+              "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest"
+            }
+          }
+        }
       }
     },
     {
@@ -220,7 +227,14 @@
       "response": {
         "headers": {
         },
-        "status": 200
+        "status": 200,
+        "body": {
+          "_links": {
+            "latest-pact": {
+              "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest"
+            }
+          }
+        }
       }
     },
     {
@@ -247,7 +261,14 @@
       "response": {
         "headers": {
         },
-        "status": 201
+        "status": 201,
+        "body": {
+          "_links": {
+            "latest-pact": {
+              "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest"
+            }
+          }
+        }
       }
     },
     {

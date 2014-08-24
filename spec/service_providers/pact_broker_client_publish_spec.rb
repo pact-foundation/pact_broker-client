@@ -6,8 +6,9 @@ module PactBroker::Client
     describe "publishing a pact" do
 
       let(:options) { { pact_json: pact_json, consumer_version: consumer_version }}
-
+      let(:location) { 'http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest' }
       context "when the provider already exists in the pact-broker" do
+
         before do
           pact_broker.
           given("the 'Pricing Service' already exists in the pact-broker").
@@ -19,11 +20,18 @@ module PactBroker::Client
             body: pact_hash ).
           will_respond_with(
             headers: pact_broker_response_headers,
-            status: 201
+            status: 201,
+            body: {
+              _links: {
+                :'latest-pact' => {
+                  href: location
+                }
+              }
+            }
           )
         end
-        it "returns true" do
-            expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to be_true
+        it "returns the URL to find the newly published pact" do
+          expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to eq location
         end
       end
 
@@ -39,7 +47,14 @@ module PactBroker::Client
               body: pact_hash ).
             will_respond_with(
               headers: pact_broker_response_headers,
-              status: 200
+              status: 200,
+              body: {
+                _links: {
+                  :'latest-pact' => {
+                    href: location
+                  }
+                }
+              }
             )
         end
         it "returns true" do
@@ -59,7 +74,14 @@ module PactBroker::Client
               body: pact_hash ).
             will_respond_with(
               headers: pact_broker_response_headers,
-              status: 201
+              status: 201,
+              body: {
+                _links: {
+                  :'latest-pact' => {
+                    href: location
+                  }
+                }
+              }
             )
         end
         it "returns true" do

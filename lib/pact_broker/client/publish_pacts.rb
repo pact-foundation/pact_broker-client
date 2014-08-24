@@ -26,15 +26,19 @@ module PactBroker
 
       def publish_pact pact_file
         begin
-          pact_file_contents = File.read(pact_file)
           puts "Publishing #{pact_file} to pact broker at #{pact_broker_base_url}"
-          Retry.until_true do
-            pact_broker_client.pacticipants.versions.pacts.publish(pact_json: pact_file_contents, consumer_version: consumer_version)
-            true
-          end
+          publish_pact_contents File.read(pact_file)
         rescue => e
           $stderr.puts "Failed to publish pact: #{pact_file} due to error: #{e.to_s}\n#{e.backtrace.join("\n")}"
           false
+        end
+      end
+
+      def publish_pact_contents pact_file_contents
+        Retry.until_true do
+          latest_pact_url = pact_broker_client.pacticipants.versions.pacts.publish(pact_json: pact_file_contents, consumer_version: consumer_version)
+          $stdout.puts "The latest version of this pact can be accessed at the following URL (use this to configure the provider verification):\n#{latest_pact_url}\n\n"
+          true
         end
       end
 

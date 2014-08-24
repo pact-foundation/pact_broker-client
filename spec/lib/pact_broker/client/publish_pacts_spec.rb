@@ -9,7 +9,7 @@ module PactBroker
 
       before do
         FakeFS.activate!
-        pacts_client.stub(:publish)
+        pacts_client.stub(:publish).and_return(latest_pact_url)
         PactBroker::Client::PactBrokerClient.stub(:new).with(base_url: pact_broker_base_url).and_return(pact_broker_client)
       end
 
@@ -17,6 +17,7 @@ module PactBroker
         FakeFS.deactivate!
       end
 
+      let(:latest_pact_url) { 'http://example.org/latest/pact' }
       let(:pact_broker_client) { double("PactBroker::Client")}
       let(:pact_files) { ['spec/pacts/consumer-provider.json']}
       let(:consumer_version) { "1.2.3" }
@@ -40,6 +41,12 @@ module PactBroker
         end
 
         context "when publishing is successful" do
+
+          it "puts the location of the latest pact" do
+            allow($stdout).to receive(:puts)
+            expect($stdout).to receive(:puts).with(/#{latest_pact_url}/)
+            subject.call
+          end
           it "returns true" do
             expect(subject.call).to be_true
           end
@@ -116,7 +123,7 @@ module PactBroker
                 tries += 1
                 raise "an error"
               else
-                true
+                latest_pact_url
               end
             end
             allow($stderr).to receive(:puts)

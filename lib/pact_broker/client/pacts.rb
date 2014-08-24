@@ -13,7 +13,7 @@ module PactBroker
         url = save_consumer_contract_url consumer_contract, consumer_version
         response = self.class.put(url, body: pact_string, headers: default_put_headers)
         handle_response(response) do
-          true
+          JSON.parse(response.body)["_links"]["latest-pact"]["href"]
         end
       end
 
@@ -28,7 +28,7 @@ module PactBroker
       def list_latest
         response = self.class.get("/pacts/latest", headers: default_get_headers)
         handle_response(response) do
-          map_pact_list_do_hash JSON.parse(response.body)["pacts"]
+          map_pact_list_to_hash JSON.parse(response.body)["pacts"]
         end
       end
 
@@ -43,7 +43,7 @@ module PactBroker
       private
 
       #TODO Move into mapper class
-      def map_pact_list_do_hash pacts_list
+      def map_pact_list_to_hash pacts_list
         pacts_list.collect do | pact_hash |
           {
             consumer: {
