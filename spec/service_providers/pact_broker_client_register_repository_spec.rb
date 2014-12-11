@@ -22,7 +22,7 @@ module PactBroker::Client
               )
         end
         it "returns true" do
-          expect(pact_broker_client.pacticipants.update({:pacticipant => 'Pricing Service', :repository_url => repository_url})).to be_true
+          expect(pact_broker_client.pacticipants.update({:pacticipant => 'Pricing Service', :repository_url => repository_url})).to be true
         end
       end
       context "where the 'Pricing Service' exists in the pact-broker" do
@@ -41,7 +41,7 @@ module PactBroker::Client
             )
         end
         it "returns true" do
-          expect(pact_broker_client.pacticipants.update({:pacticipant => 'Pricing Service', :repository_url => repository_url})).to be_true
+          expect(pact_broker_client.pacticipants.update({:pacticipant => 'Pricing Service', :repository_url => repository_url})).to be true
         end
       end
     end

@@ -35,7 +35,7 @@ describe PactBroker::Client::Versions, pact: true do
           )
       end
       it "returns true" do
-        expect(pact_broker_client.pacticipants.versions.tag tag_options).to be_true
+        expect(pact_broker_client.pacticipants.versions.tag tag_options).to be true
       end
     end
     context "when the component does not exist" do
@@ -63,7 +63,7 @@ describe PactBroker::Client::Versions, pact: true do
           )
       end
       it "returns true" do
-        expect(pact_broker_client.pacticipants.versions.tag tag_options).to be_true
+        expect(pact_broker_client.pacticipants.versions.tag tag_options).to be true
       end
     end
 
@@ -93,7 +93,7 @@ describe PactBroker::Client::Versions, pact: true do
         end
 
         it "returns true" do
-          expect(pact_broker_client.pacticipants.versions.tag tag_options).to be_true
+          expect(pact_broker_client.pacticipants.versions.tag tag_options).to be true
         end
     end
   end

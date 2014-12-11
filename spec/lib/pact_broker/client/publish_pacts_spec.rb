@@ -48,7 +48,7 @@ module PactBroker
             subject.call
           end
           it "returns true" do
-            expect(subject.call).to be_true
+            expect(subject.call).to be true
           end
         end
 
@@ -70,7 +70,7 @@ module PactBroker
           end
 
           it "returns false" do
-            expect(subject.call).to be_false
+            expect(subject.call).to be false
           end
         end
 

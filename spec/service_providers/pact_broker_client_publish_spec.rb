@@ -58,7 +58,7 @@ module PactBroker::Client
             )
         end
         it "returns true" do
-            expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to be_true
+            expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to be_truthy
         end
       end
 
@@ -85,7 +85,7 @@ module PactBroker::Client
             )
         end
         it "returns true" do
-            expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to be_true
+            expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to be_truthy
         end
       end
 
