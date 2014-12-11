@@ -16,6 +16,8 @@ module PactBroker
           response_body = JSON.parse(response.body)
           if response_body["_links"] && response_body["_links"]["latest-pact"]
             response_body["_links"]["latest-pact"]["href"]
+          elsif response_body["_links"] && response_body["_links"]["pb:latest-pact"]
+              response_body["_links"]["pb:latest-pact"]["href"]
           else
             "Please upgrade to the latest version of the pact broker to see the URL!"
           end

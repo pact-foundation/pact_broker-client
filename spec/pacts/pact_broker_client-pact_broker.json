@@ -1,9 +1,9 @@
 {
-  "provider": {
-    "name": "Pact Broker"
-  },
   "consumer": {
     "name": "Pact Broker Client"
+  },
+  "provider": {
+    "name": "Pact Broker"
   },
   "interactions": [
     {
@@ -16,10 +16,10 @@
         }
       },
       "response": {
+        "status": 200,
         "headers": {
           "Content-Type": "application/hal+json"
         },
-        "status": 200,
         "body": {
           "_links": {
             "self": {
@@ -76,10 +76,10 @@
         }
       },
       "response": {
+        "status": 200,
         "headers": {
           "Content-Type": "application/hal+json"
         },
-        "status": 200,
         "body": {
           "_links": {
             "self": {
@@ -125,10 +125,10 @@
         }
       },
       "response": {
+        "status": 200,
         "headers": {
           "Content-Type": "application/hal+json"
         },
-        "status": 200,
         "body": {
           "_links": {
             "self": {
@@ -166,7 +166,9 @@
         }
       },
       "response": {
-        "status": 404
+        "status": 404,
+        "headers": {
+        }
       }
     },
     {
@@ -175,6 +177,9 @@
       "request": {
         "method": "put",
         "path": "/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+        "headers": {
+          "Content-Type": "application/json"
+        },
         "body": {
           "consumer": {
             "name": "Condor"
@@ -185,18 +190,15 @@
           "interactions": [
 
           ]
-        },
-        "headers": {
-          "Content-Type": "application/json"
         }
       },
       "response": {
+        "status": 201,
         "headers": {
         },
-        "status": 201,
         "body": {
           "_links": {
-            "latest-pact": {
+            "pb:latest-pact": {
               "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest"
             }
           }
@@ -209,6 +211,9 @@
       "request": {
         "method": "put",
         "path": "/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+        "headers": {
+          "Content-Type": "application/json"
+        },
         "body": {
           "consumer": {
             "name": "Condor"
@@ -219,18 +224,15 @@
           "interactions": [
 
           ]
-        },
-        "headers": {
-          "Content-Type": "application/json"
         }
       },
       "response": {
+        "status": 200,
         "headers": {
         },
-        "status": 200,
         "body": {
           "_links": {
-            "latest-pact": {
+            "pb:latest-pact": {
               "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest"
             }
           }
@@ -243,6 +245,9 @@
       "request": {
         "method": "put",
         "path": "/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+        "headers": {
+          "Content-Type": "application/json"
+        },
         "body": {
           "consumer": {
             "name": "Condor"
@@ -253,18 +258,15 @@
           "interactions": [
 
           ]
-        },
-        "headers": {
-          "Content-Type": "application/json"
         }
       },
       "response": {
+        "status": 201,
         "headers": {
         },
-        "status": 201,
         "body": {
           "_links": {
-            "latest-pact": {
+            "pb:latest-pact": {
               "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest"
             }
           }
@@ -277,6 +279,9 @@
       "request": {
         "method": "put",
         "path": "/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+        "headers": {
+          "Content-Type": "application/json"
+        },
         "body": {
           "consumer": {
             "name": "Condor"
@@ -287,9 +292,6 @@
           "interactions": [
 
           ]
-        },
-        "headers": {
-          "Content-Type": "application/json"
         }
       },
       "response": {
@@ -302,7 +304,11 @@
             "json_class": "Pact::Term",
             "data": {
               "generate": "An error occurred",
-              "matcher": {"json_class":"Regexp","o":0,"s":".*"}
+              "matcher": {
+                "json_class": "Regexp",
+                "o": 0,
+                "s": ".*"
+              }
             }
           }
         }
@@ -314,11 +320,11 @@
       "request": {
         "method": "patch",
         "path": "/pacticipants/Pricing%20Service",
-        "body": {
-          "repository_url": "git@git.realestate.com.au:business-systems/pricing-service"
-        },
         "headers": {
           "Content-Type": "application/json"
+        },
+        "body": {
+          "repository_url": "git@git.realestate.com.au:business-systems/pricing-service"
         }
       },
       "response": {
@@ -333,11 +339,11 @@
       "request": {
         "method": "patch",
         "path": "/pacticipants/Pricing%20Service",
-        "body": {
-          "repository_url": "git@git.realestate.com.au:business-systems/pricing-service"
-        },
         "headers": {
           "Content-Type": "application/json"
+        },
+        "body": {
+          "repository_url": "git@git.realestate.com.au:business-systems/pricing-service"
         }
       },
       "response": {
@@ -356,9 +362,9 @@
         }
       },
       "response": {
+        "status": 200,
         "headers": {
         },
-        "status": 200,
         "body": {
           "consumer": {
             "name": "Condor"
@@ -463,7 +469,11 @@
                 "json_class": "Pact::Term",
                 "data": {
                   "generate": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/tags/prod",
-                  "matcher": {"json_class":"Regexp","o":0,"s":"http://.*/pacticipants/Condor/versions/1.3.0/tags/prod"}
+                  "matcher": {
+                    "json_class": "Regexp",
+                    "o": 0,
+                    "s": "http://.*/pacticipants/Condor/versions/1.3.0/tags/prod"
+                  }
                 }
               }
             }
@@ -492,7 +502,11 @@
                 "json_class": "Pact::Term",
                 "data": {
                   "generate": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/tags/prod",
-                  "matcher": {"json_class":"Regexp","o":0,"s":"http://.*/pacticipants/Condor/versions/1.3.0/tags/prod"}
+                  "matcher": {
+                    "json_class": "Regexp",
+                    "o": 0,
+                    "s": "http://.*/pacticipants/Condor/versions/1.3.0/tags/prod"
+                  }
                 }
               }
             }
@@ -521,7 +535,11 @@
                 "json_class": "Pact::Term",
                 "data": {
                   "generate": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/tags/prod",
-                  "matcher": {"json_class":"Regexp","o":0,"s":"http://.*/pacticipants/Condor/versions/1.3.0/tags/prod"}
+                  "matcher": {
+                    "json_class": "Regexp",
+                    "o": 0,
+                    "s": "http://.*/pacticipants/Condor/versions/1.3.0/tags/prod"
+                  }
                 }
               }
             }
