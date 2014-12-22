@@ -13,14 +13,11 @@ module PactBroker
         url = save_consumer_contract_url consumer_contract, consumer_version
         response = self.class.put(url, body: pact_string, headers: default_put_headers)
         handle_response(response) do
-          response_body = JSON.parse(response.body)
-          if response_body["_links"] && response_body["_links"]["latest-pact"]
-            response_body["_links"]["latest-pact"]["href"]
-          elsif response_body["_links"] && response_body["_links"]["pb:latest-pact"]
-              response_body["_links"]["pb:latest-pact"]["href"]
-          else
-            "Please upgrade to the latest version of the pact broker to see the URL!"
+          latest_link = find_latest_link JSON.parse(response.body)
+          if latest_link.nil?
+            "Please upgrade to the latest version of the pact broker to see the URL of the latest pact!"
           end
+          latest_link
         end
       end
 
@@ -65,6 +62,18 @@ module PactBroker
           }
         end
       end
+
+      def find_latest_link response
+        links = response['_links']
+        return nil unless links
+        key = links.keys.find{ | key | key =~ /latest/ && key =~ /pact/ && key =~ /version/ }
+        return links[key]['href'] if key
+        key = links.keys.find{ | key | key =~ /latest/ && key =~ /pact/ }
+        return links[key]['href'] if key
+        nil
+      end
+
+
 
       def find_latest_consumer_contract_query options
         query = {:consumer => options[:consumer], :provider => options[:provider]}

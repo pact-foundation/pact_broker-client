@@ -23,7 +23,7 @@ module PactBroker::Client
             status: 201,
             body: {
               _links: {
-                :'pb:latest-pact' => {
+                :'pb:latest-pact-version' => {
                   href: location
                 }
               }
@@ -50,7 +50,7 @@ module PactBroker::Client
               status: 200,
               body: {
                 _links: {
-                  :'pb:latest-pact' => {
+                  :'pb:latest-pact-version' => {
                     href: location
                   }
                 }
@@ -77,7 +77,7 @@ module PactBroker::Client
               status: 201,
               body: {
                 _links: {
-                  :'pb:latest-pact' => {
+                  :'pb:latest-pact-version' => {
                     href: location
                   }
                 }
