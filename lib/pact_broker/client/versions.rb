@@ -32,7 +32,7 @@ module PactBroker
       end
 
       def pacts
-        Pacts.new base_url: base_url
+        Pacts.new base_url: base_url, client_options: client_options
       end
 
       private

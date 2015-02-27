@@ -30,7 +30,7 @@ module PactBroker::Client
 
       context "when pacts are succesfully published" do
         it "invokes PublishPacts with the default values" do
-          PactBroker::Client::PublishPacts.should_receive(:new).with('http://pact-broker', pact_file_list, '1.2.3').and_return(publish_pacts)
+          PactBroker::Client::PublishPacts.should_receive(:new).with('http://pact-broker', pact_file_list, '1.2.3', {}).and_return(publish_pacts)
           publish_pacts.should_receive(:call).and_return(true)
           Rake::Task['pact:publish'].execute
         end
@@ -50,17 +50,19 @@ module PactBroker::Client
       before :all do
         @pact_broker_base_url = "http://some-host"
         @pattern = "pact/*.json"
+        @pact_broker_basic_auth = { username: 'user', password: 'pass'}
         PactBroker::Client::PublicationTask.new(:custom) do | task |
           task.consumer_version = '1.2.3'
           task.pact_broker_base_url = @pact_broker_base_url
           task.pattern = @pattern
+          task.pact_broker_basic_auth = @pact_broker_basic_auth
         end
       end
 
       let(:pattern) { @pattern }
 
       it "invokes PublishPacts with the customised values" do
-        PactBroker::Client::PublishPacts.should_receive(:new).with(@pact_broker_base_url, pact_file_list, '1.2.3')
+        PactBroker::Client::PublishPacts.should_receive(:new).with(@pact_broker_base_url, pact_file_list, '1.2.3', {basic_auth: @pact_broker_basic_auth})
         publish_pacts.should_receive(:call).and_return(true)
         Rake::Task['pact:publish:custom'].execute
       end

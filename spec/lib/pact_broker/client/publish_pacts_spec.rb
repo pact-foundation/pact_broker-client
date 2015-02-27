@@ -10,7 +10,7 @@ module PactBroker
       before do
         FakeFS.activate!
         pacts_client.stub(:publish).and_return(latest_pact_url)
-        PactBroker::Client::PactBrokerClient.stub(:new).with(base_url: pact_broker_base_url).and_return(pact_broker_client)
+        PactBroker::Client::PactBrokerClient.stub(:new).with(base_url: pact_broker_base_url, client_options: pact_broker_client_options).and_return(pact_broker_client)
       end
 
       after do
@@ -24,8 +24,16 @@ module PactBroker
       let(:pact_hash) { {consumer: {name: 'Consumer'}, provider: {name: 'Provider'} } }
       let(:pacts_client) { instance_double("PactBroker::ClientSupport::Pacts")}
       let(:pact_broker_base_url) { 'http://some-host'}
+      let(:pact_broker_client_options) do
+        {
+          basic_auth: {
+            username: 'user',
+            password: 'pass'
+          }
+        }
+      end
 
-      subject { PublishPacts.new(pact_broker_base_url, pact_files, consumer_version) }
+      subject { PublishPacts.new(pact_broker_base_url, pact_files, consumer_version, pact_broker_client_options) }
 
       before do
         FileUtils.mkdir_p "spec/pacts"

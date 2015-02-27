@@ -5,10 +5,11 @@ module PactBroker
   module Client
     class PublishPacts
 
-      def initialize pact_broker_base_url, pact_files, consumer_version
+      def initialize pact_broker_base_url, pact_files, consumer_version, pact_broker_client_options={}
         @pact_broker_base_url = pact_broker_base_url
         @pact_files = pact_files
         @consumer_version = consumer_version
+        @pact_broker_client_options = pact_broker_client_options
       end
 
       def call
@@ -19,10 +20,10 @@ module PactBroker
 
       private
 
-      attr_reader :pact_broker_base_url, :pact_files, :consumer_version
+      attr_reader :pact_broker_base_url, :pact_files, :consumer_version, :pact_broker_client_options
 
       def pact_broker_client
-        @pact_broker_client ||= PactBroker::Client::PactBrokerClient.new(base_url: pact_broker_base_url)
+        @pact_broker_client ||= PactBroker::Client::PactBrokerClient.new(base_url: pact_broker_base_url, client_options: pact_broker_client_options)
       end
 
       def publish_pact pact_file

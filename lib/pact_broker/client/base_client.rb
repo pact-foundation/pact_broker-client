@@ -26,11 +26,13 @@ module PactBroker
       include HTTParty
       include StringToSymbol
 
-      attr_reader :base_url
+      attr_reader :base_url, :client_options
 
       def initialize options
         @base_url = options[:base_url]
+        @client_options = options[:client_options] || {}
         self.class.base_uri base_url
+        self.class.basic_auth(client_options[:basic_auth][:username], client_options[:basic_auth][:password]) if client_options[:basic_auth]
       end
 
       def default_request_headers
