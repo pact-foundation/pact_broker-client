@@ -5,7 +5,7 @@ module PactBroker
     class Pacticipants < BaseClient
 
       def versions
-        Versions.new base_url: base_url
+        Versions.new base_url: base_url, client_options: client_options
       end
 
       def update options

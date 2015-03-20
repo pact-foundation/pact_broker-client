@@ -14,19 +14,20 @@ module PactBroker
 
       DEFAULT_OPTIONS = {base_url: DEFAULT_PACT_BROKER_BASE_URL}
 
-      attr_reader :base_url
+      attr_reader :base_url, :client_options
 
       def initialize options = {}
         merged_options = DEFAULT_OPTIONS.merge(options)
         @base_url = merged_options[:base_url]
+        @client_options = merged_options[:client_options] || {}
       end
 
       def pacticipants
-        PactBroker::Client::Pacticipants.new base_url: base_url
+        PactBroker::Client::Pacticipants.new base_url: base_url, client_options: client_options
       end
 
       def pacts
-        PactBroker::Client::Pacts.new base_url: base_url
+        PactBroker::Client::Pacts.new base_url: base_url, client_options: client_options
       end
 
     end
