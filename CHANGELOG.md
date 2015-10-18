@@ -2,6 +2,18 @@ Do this to generate your change history
 
     $ git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+#### 1.0.0 (2014-10-09)
+
+* 2c08da2 - added pact_broker_basic_auth options to publish task (lifei zhou, Fri Feb 27 21:33:09 2015 +1100)
+* 1b84a54 - Updated pact-version rel name (Beth, Mon Dec 22 11:30:57 2014 +1100)
+* 04c1e4e - Updated link rels (Beth, Thu Dec 11 14:32:27 2014 +1100)
+* d1b2cad - Correcting pact publish message (Beth Skurrie, Mon Aug 25 07:15:57 2014 +1000)
+* 6b1d147 - Added backwards compatibility for pact broker publish response (Beth Skurrie, Sun Aug 24 17:50:16 2014 +1000)
+* 8c8aa89 - Added location of latest pact to output of pact:publish (Beth Skurrie, Sun Aug 24 17:43:02 2014 +1000)
+* e6b56d0 - Added retries for pact publishing (Beth Skurrie, Sun Aug 24 16:55:10 2014 +1000)
+* 27c00e5 - Disabled pacticipant version interactions, not needed yet. (Beth Skurrie, Sat May 17 17:57:33 2014 +1000)
+* cfefdc4 - Changed path from /pact to /pacts (Beth Skurrie, Sat May 17 15:58:32 2014 +1000)
+
 #### 0.0.6 (2014-03-24)
 
 * 2ad5f7d - Updated method of tagging versions (bethesque, Sat Mar 22 16:54:37 2014 +1100)
