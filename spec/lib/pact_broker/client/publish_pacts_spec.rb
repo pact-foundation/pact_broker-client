@@ -9,8 +9,9 @@ module PactBroker
 
       before do
         FakeFS.activate!
-        pacts_client.stub(:publish).and_return(latest_pact_url)
-        PactBroker::Client::PactBrokerClient.stub(:new).with(base_url: pact_broker_base_url, client_options: pact_broker_client_options).and_return(pact_broker_client)
+        allow(pacts_client).to receive(:publish).and_return(latest_pact_url)
+        allow(PactBroker::Client::PactBrokerClient).to receive(:new).with(base_url: pact_broker_base_url, client_options: pact_broker_client_options).and_return(pact_broker_client)
+        allow($stdout).to receive(:puts)
       end
 
       after do
@@ -38,13 +39,13 @@ module PactBroker
       before do
         FileUtils.mkdir_p "spec/pacts"
         File.open("spec/pacts/consumer-provider.json", "w") { |file| file << pact_hash.to_json }
-        pact_broker_client.stub_chain(:pacticipants, :versions, :pacts).and_return(pacts_client)
+        allow(pact_broker_client).to receive_message_chain(:pacticipants, :versions, :pacts).and_return(pacts_client)
       end
 
       describe "call" do
 
         it "uses the pact_broker client to publish the given pact" do
-          pacts_client.should_receive(:publish).with(pact_json: pact_hash.to_json, consumer_version: consumer_version)
+          expect(pacts_client).to receive(:publish).with(pact_json: pact_hash.to_json, consumer_version: consumer_version)
           subject.call
         end
 
@@ -64,16 +65,16 @@ module PactBroker
           let(:pact_files) { ['spec/pacts/doesnotexist.json','spec/pacts/consumer-provider.json']}
 
           before do
-            $stderr.stub(:puts)
+            allow($stderr).to receive(:puts)
           end
 
           it "logs an message to stderr" do
-            $stderr.should_receive(:puts).with(/Failed to publish pact/)
+            expect($stderr).to receive(:puts).with(/Failed to publish pact/)
             subject.call
           end
 
           it "continues publishing the rest" do
-            pacts_client.should_receive(:publish).with(pact_json: pact_hash.to_json, consumer_version: consumer_version)
+            expect(pacts_client).to receive(:publish).with(pact_json: pact_hash.to_json, consumer_version: consumer_version)
             subject.call
           end
 
@@ -145,9 +146,7 @@ module PactBroker
           it "returns true" do
             expect(subject.call).to eq true
           end
-
         end
-
       end
     end
   end
