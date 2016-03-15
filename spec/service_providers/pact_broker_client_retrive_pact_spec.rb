@@ -93,7 +93,6 @@ module PactBroker::Client
               ).
               will_respond_with(
                 status: 200,
-                headers: {'Content-Type' => 'application/json', 'X-Pact-Consumer-Version' => consumer_version},
                 body: pact_hash,
                 headers: pact_broker_response_headers
               )
