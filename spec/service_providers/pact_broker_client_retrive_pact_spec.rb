@@ -31,7 +31,12 @@ module PactBroker::Client
       describe "finding the latest version" do
         context "when a pact is found" do
 
-          let(:response_headers) { pact_broker_response_headers.merge({'Content-Type' => 'application/json', 'X-Pact-Consumer-Version' => consumer_version}) }
+          let(:response_headers) do
+            pact_broker_response_headers.merge(
+              'Content-Type' => Pact.term(generate: 'application/json', matcher: %r{application/json}),
+              'X-Pact-Consumer-Version' => consumer_version
+            )
+          end
           before do
             pact_broker.
               given("a pact between Condor and the Pricing Service exists").
@@ -88,7 +93,6 @@ module PactBroker::Client
               ).
               will_respond_with(
                 status: 200,
-                headers: {'Content-Type' => 'application/json', 'X-Pact-Consumer-Version' => consumer_version},
                 body: pact_hash,
                 headers: pact_broker_response_headers
               )
