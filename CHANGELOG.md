@@ -1,6 +1,16 @@
 Do this to generate your change history
 
-    $ git log --pretty=format:'  * %h - %s (%an, %ad)'
+    $ git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
+
+#### 1.0.1 (2016-04-29)
+
+* 72c099b - Add release instructions (Sergei Matheson, Fri Apr 29 11:54:01 2016 +1000)
+* 12f0054 - :headers is duplicated and overwritten (Taiki Ono, Tue Mar 15 21:46:23 2016 +0900)
+* e9251f7 - Commit pact files (Taiki Ono, Tue Mar 15 21:30:15 2016 +0900)
+* 0278731 - Loosen content type header expectation (Taiki Ono, Tue Mar 15 21:26:03 2016 +0900)
+* fff1838 - Remove `Gemfile.lock` and do not check-in (Taiki Ono, Sun Mar 13 21:49:36 2016 +0900)
+* 48c1434 - Add Travis CI setting not to test with ruby1.9 (Taiki Ono, Sun Mar 13 21:17:11 2016 +0900)
+* 0365b94 - Updated to RSpec 3 syntax (Beth, Mon Oct 19 08:54:48 2015 +1100)
 
 #### 1.0.0 (2014-10-09)
 
