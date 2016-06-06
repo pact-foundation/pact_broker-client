@@ -1,3 +1,4 @@
+require 'term/ansicolor'
 require 'pact_broker/client'
 require 'pact_broker/client/retry'
 
@@ -36,9 +37,15 @@ module PactBroker
         end
       end
 
-      def publish_pact_contents pact_file_contents
+      def publish_pact_contents(pact_file_contents)
         Retry.until_true do
-          latest_pact_url = pact_broker_client.pacticipants.versions.pacts.publish(pact_json: pact_file_contents, consumer_version: consumer_version)
+          contract = ::Pact::ConsumerContract.from_json(pact_file_contents)
+          pacts = pact_broker_client.pacticipants.versions.pacts
+          if pacts.version_published?(consumer: contract.consumer.name, provider: contract.provider.name, consumer_version: consumer_version)
+            $stdout.puts ::Term::ANSIColor.yellow("The given version of pact is already published. Will Overwrite...")
+          end
+
+          latest_pact_url = pacts.publish(pact_json: pact_file_contents, consumer_version: consumer_version)
           $stdout.puts "The latest version of this pact can be accessed at the following URL (use this to configure the provider verification):\n#{latest_pact_url}\n\n"
           true
         end

@@ -22,6 +22,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'pact'
   gem.add_runtime_dependency 'httparty'
   gem.add_runtime_dependency 'json' #Not locking down a version because buncher gem requires 1.6, while other projects use 1.7.
+  gem.add_runtime_dependency 'term-ansicolor'
 
   #gem.add_development_dependency 'geminabox-client'
   gem.add_development_dependency 'rake', '~> 10.0.3'

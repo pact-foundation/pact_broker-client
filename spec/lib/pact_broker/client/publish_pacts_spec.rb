@@ -22,7 +22,7 @@ module PactBroker
       let(:pact_broker_client) { double("PactBroker::Client")}
       let(:pact_files) { ['spec/pacts/consumer-provider.json']}
       let(:consumer_version) { "1.2.3" }
-      let(:pact_hash) { {consumer: {name: 'Consumer'}, provider: {name: 'Provider'} } }
+      let(:pact_hash) { {consumer: {name: 'Consumer'}, provider: {name: 'Provider'}, interactions: [] } }
       let(:pacts_client) { instance_double("PactBroker::ClientSupport::Pacts")}
       let(:pact_broker_base_url) { 'http://some-host'}
       let(:pact_broker_client_options) do
@@ -40,6 +40,7 @@ module PactBroker
         FileUtils.mkdir_p "spec/pacts"
         File.open("spec/pacts/consumer-provider.json", "w") { |file| file << pact_hash.to_json }
         allow(pact_broker_client).to receive_message_chain(:pacticipants, :versions, :pacts).and_return(pacts_client)
+        allow(pacts_client).to receive(:version_published?).and_return(false)
       end
 
       describe "call" do
