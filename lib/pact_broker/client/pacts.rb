@@ -21,6 +21,10 @@ module PactBroker
         end
       end
 
+      def version_published?(args)
+        !get(consumer: args.fetch(:consumer), provider: args.fetch(:provider), consumer_version: args.fetch(:consumer_version)).nil?
+      end
+
       def get options
         url = get_consumer_contract_url(options)
         response = self.class.get(url, headers: default_get_headers)
