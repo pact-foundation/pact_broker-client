@@ -2,6 +2,10 @@ Do this to generate your change history
 
     $ git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
 
+#### 1.0.2 (2016-06-20)
+
+* 4637978 - Warn on overwritting (Taiki Ono, Mon Jun 6 14:50:37 2016 +0900)
+
 #### 1.0.1 (2016-04-29)
 
 * 72c099b - Add release instructions (Sergei Matheson, Fri Apr 29 11:54:01 2016 +1000)
