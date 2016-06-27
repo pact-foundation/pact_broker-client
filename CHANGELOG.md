@@ -2,6 +2,10 @@ Do this to generate your change history
 
     $ git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
 
+#### 1.0.3 (2016-06-27)
+
+* 04bd518 - Clarify that pact_broker-client will only work with ruby >= 2.0 (Sergei Matheson, Mon Jun 27 11:17:57 2016 +1000)
+
 #### 1.0.2 (2016-06-20)
 
 * 4637978 - Warn on overwritting (Taiki Ono, Mon Jun 6 14:50:37 2016 +0900)
