@@ -44,6 +44,20 @@ module PactBroker::Client
       end
     end
 
+    describe "merge method configuration" do
+      before :all do
+        PactBroker::Client::PublicationTask.new(:merge) do | task |
+          task.consumer_version = '1.2.3'
+          task.overwrite_method = :merge
+        end
+      end
+
+      it "invokes PublishPacts with the overwrite method set" do
+        PactBroker::Client::PublishPacts.should_receive(:new).with('http://pact-broker', pact_file_list, '1.2.3', {overwrite: :merge}).and_return(publish_pacts)
+        publish_pacts.should_receive(:call).and_return(true)
+        Rake::Task['pact:publish:merge'].execute
+      end
+    end
 
     describe "custom task" do
 

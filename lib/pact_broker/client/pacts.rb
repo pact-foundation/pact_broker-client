@@ -11,7 +11,13 @@ module PactBroker
         pact_string = options[:pact_json]
         consumer_contract = ::Pact::ConsumerContract.from_json pact_string
         url = save_consumer_contract_url consumer_contract, consumer_version
-        response = self.class.put(url, body: pact_string, headers: default_put_headers)
+
+        if @client_options[:overwrite] == :merge
+          response = self.class.patch(url, body: pact_string, headers: default_patch_headers)
+        else
+          response = self.class.put(url, body: pact_string, headers: default_put_headers)
+        end
+
         handle_response(response) do
           latest_link = find_latest_link JSON.parse(response.body)
           if latest_link.nil?
