@@ -48,7 +48,7 @@ module PactBroker::Client
       before :all do
         PactBroker::Client::PublicationTask.new(:merge) do | task |
           task.consumer_version = '1.2.3'
-          task.overwrite_method = :merge
+          task.write_method = :merge
         end
       end
 
