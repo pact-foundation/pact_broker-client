@@ -33,7 +33,7 @@ module PactBroker
             block.call(self)
             require 'pact_broker/client/publish_pacts'
             basic_auth_client_options = pact_broker_basic_auth ? {basic_auth: pact_broker_basic_auth} : {}
-            pact_broker_client_options = basic_auth_client_options.merge(write_method ? {overwrite: write_method} : {})
+            pact_broker_client_options = basic_auth_client_options.merge(write_method ? {write: write_method} : {})
             success = PactBroker::Client::PublishPacts.new(pact_broker_base_url, FileList[pattern], consumer_version, pact_broker_client_options).call
             raise "One or more pacts failed to be published" unless success
           end

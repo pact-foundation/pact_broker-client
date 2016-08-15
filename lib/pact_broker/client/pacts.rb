@@ -12,7 +12,7 @@ module PactBroker
         consumer_contract = ::Pact::ConsumerContract.from_json pact_string
         url = save_consumer_contract_url consumer_contract, consumer_version
 
-        if @client_options[:overwrite] == :merge
+        if @client_options[:write] == :merge
           response = self.class.patch(url, body: pact_string, headers: default_patch_headers)
         else
           response = self.class.put(url, body: pact_string, headers: default_put_headers)
