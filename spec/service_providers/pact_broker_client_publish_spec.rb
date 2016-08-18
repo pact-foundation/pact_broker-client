@@ -64,13 +64,13 @@ module PactBroker::Client
           end
         end
 
-        context "when the overwrite method is set to merge" do
-          let(:client_config) { super().merge(client_options: {overwrite: :merge}) }
+        context "when the write method is set to merge" do
+          let(:client_config) { super().merge(client_options: {write: :merge}) }
 
           it_behaves_like "an already-existing pact", :patch
         end
 
-        context "when the overwrite method is not set" do
+        context "when the write method is not set" do
           it_behaves_like "an already-existing pact", :put
         end
       end

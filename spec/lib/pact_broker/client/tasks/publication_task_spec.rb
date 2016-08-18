@@ -52,8 +52,8 @@ module PactBroker::Client
         end
       end
 
-      it "invokes PublishPacts with the overwrite method set" do
-        PactBroker::Client::PublishPacts.should_receive(:new).with('http://pact-broker', pact_file_list, '1.2.3', {overwrite: :merge}).and_return(publish_pacts)
+      it "invokes PublishPacts with the write method set" do
+        PactBroker::Client::PublishPacts.should_receive(:new).with('http://pact-broker', pact_file_list, '1.2.3', {write: :merge}).and_return(publish_pacts)
         publish_pacts.should_receive(:call).and_return(true)
         Rake::Task['pact:publish:merge'].execute
       end
