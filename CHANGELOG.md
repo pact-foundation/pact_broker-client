@@ -2,6 +2,9 @@ Do this to generate your change history
 
     $ git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
 
+#### 1.1.0 (2016-08-19)
+* b5ea1b3 - Add support for publishing pacts via patch request (Steve Pletcher, Fri Aug 5 11:16:18 2016 -0400)
+
 #### 1.0.3 (2016-06-27)
 
 * 04bd518 - Clarify that pact_broker-client will only work with ruby >= 2.0 (Sergei Matheson, Mon Jun 27 11:17:57 2016 +1000)
