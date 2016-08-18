@@ -36,29 +36,42 @@ module PactBroker::Client
       end
 
       context "when the provider, consumer, pact and version already exist in the pact-broker" do
-        before do
-          pact_broker.
-            given("the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0").
-            upon_receiving("a request to publish a pact").
-            with(
-              method: :put,
-              path: '/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
-              headers: default_request_headers,
-              body: pact_hash ).
-            will_respond_with(
-              headers: pact_broker_response_headers,
-              status: 200,
-              body: {
-                _links: {
-                  :'pb:latest-pact-version' => {
-                    href: location
+        shared_examples "an already-existing pact" do |method|
+          before do
+            pact_broker.
+              given("the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0").
+              upon_receiving("a request to publish a pact with method #{method}").
+              with(
+                method: method,
+                path: '/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
+                headers: default_request_headers,
+                body: pact_hash ).
+              will_respond_with(
+                headers: pact_broker_response_headers,
+                status: 200,
+                body: {
+                  _links: {
+                    :'pb:latest-pact-version' => {
+                      href: location
+                    }
                   }
                 }
-              }
-            )
-        end
-        it "returns true" do
+              )
+          end
+
+          it "returns true" do
             expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to be_truthy
+          end
+        end
+
+        context "when the write method is set to merge" do
+          let(:client_config) { super().merge(client_options: {write: :merge}) }
+
+          it_behaves_like "an already-existing pact", :patch
+        end
+
+        context "when the write method is not set" do
+          it_behaves_like "an already-existing pact", :put
         end
       end
 
@@ -85,7 +98,7 @@ module PactBroker::Client
             )
         end
         it "returns true" do
-            expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to be_truthy
+          expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to be_truthy
         end
       end
 
