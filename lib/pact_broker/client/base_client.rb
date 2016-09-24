@@ -36,7 +36,7 @@ module PactBroker
       end
 
       def default_request_headers
-        {'Accept' => 'application/json'}
+        {'Accept' => 'application/json, application/hal+json'}
       end
 
       def default_get_headers
