@@ -46,6 +46,14 @@ module PactBroker
         end
       end
 
+      def list_latest_for_provider options
+        url = get_latest_provider_contracts(options)
+        response = self.class.get(url, headers: {})
+        handle_response(response) do
+          map_latest_provider_pacts_to_hash JSON.parse(response.body)["_links"]["pacts"]
+        end
+      end
+
       def latest options
         url = get_latest_consumer_contract_url(options)
         response = self.class.get(url, headers: default_get_headers)
@@ -73,6 +81,15 @@ module PactBroker
         end
       end
 
+      def map_latest_provider_pacts_to_hash pacts_list
+      pacts_list.collect do |pact_hash|
+        {
+            name: pact_hash["name"],
+            href: pact_hash["href"]
+        }
+      end
+    end
+
       def find_latest_link response
         links = response['_links']
         return nil unless links
@@ -96,6 +113,12 @@ module PactBroker
         provider_name = encode_param(options[:provider])
         tag = options[:tag] ? "/#{options[:tag]}" : ""
         "/pacts/provider/#{provider_name}/consumer/#{consumer_name}/latest#{tag}"
+      end
+
+      def get_latest_provider_contracts options
+        provider_name = encode_param(options[:provider])
+        tag = options[:tag] ? "/#{options[:tag]}" : ""
+        "/pacts/provider/#{provider_name}/latest#{tag}"
       end
 
       def get_consumer_contract_url options
