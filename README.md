@@ -2,6 +2,8 @@
 
 A client for the Pact Broker. Publishes pacts to, and retrieves pacts from, the pact broker.
 
+[![Build Status](https://travis-ci.org/bethesque/pact_broker-client.svg?branch=master)](https://travis-ci.org/bethesque/pact_broker-client)
+
 ## Usage
 
 You will need an instance of a [Pact Broker](https://github.com/bethesque/pact_broker). It's URL will be used below in the configuration for the Consumer and the Provider. eg. http://pact-broker.my.org
