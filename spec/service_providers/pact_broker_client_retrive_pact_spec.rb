@@ -89,7 +89,7 @@ module PactBroker::Client
               with(
                   method: :get,
                   path: '/pacts/provider/Pricing%20Service/consumer/Condor/latest/prod',
-                  headers: get_request_headers
+                  headers: { 'Accept' => 'application/json, application/hal+json'}
               ).
               will_respond_with(
                 status: 200,

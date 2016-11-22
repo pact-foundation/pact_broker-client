@@ -512,7 +512,7 @@
         "method": "get",
         "path": "/pacts/provider/Pricing%20Service/consumer/Condor/latest/prod",
         "headers": {
-          "Accept": "application/json"
+          "Accept": "application/json, application/hal+json"
         }
       },
       "response": {
