@@ -427,6 +427,66 @@
       }
     },
     {
+      "description": "a request for the list of the latest prod pacts from all consumers for the Pricing Service'",
+      "provider_state": "tagged as prod pact between Condor and the Pricing Service exists",
+      "request": {
+        "method": "get",
+        "path": "/pacts/provider/Pricing%20Service/latest/prod",
+        "headers": {
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "_links": {
+            "provider": {
+              "href": "http://example.org/pacticipants/Pricing%20Service",
+              "title": "Pricing%20Service"
+            },
+            "pacts": [
+              {
+                "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+                "title": "Pact between Condor (v1.3.0) and Pricing%20Service",
+                "name": "Condor"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "description": "a request for the list of the latest pacts from all consumers for the Pricing Service'",
+      "provider_state": "a latest pact between Condor and the Pricing Service exists",
+      "request": {
+        "method": "get",
+        "path": "/pacts/provider/Pricing%20Service/latest",
+        "headers": {
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "_links": {
+            "provider": {
+              "href": "http://example.org/pacticipants/Pricing%20Service",
+              "title": "Pricing%20Service"
+            },
+            "pacts": [
+              {
+                "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
+                "title": "Pact between Condor (v1.3.0) and Pricing%20Service",
+                "name": "Condor"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
       "description": "a request retrieve a pact for a specific version",
       "provider_state": "the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0",
       "request": {
@@ -627,66 +687,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    {
-      "description": "a request for the list of the latest prod pacts from all consumers for the Pricing Service'",
-      "provider_state": "tagged as prod pact between Condor and the Pricing Service exists",
-      "request": {
-        "method": "get",
-        "path": "/pacts/provider/Pricing%20Service/latest/prod",
-        "headers": {
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-        },
-        "body": {
-          "_links": {
-            "provider": {
-              "href": "http://example.org/pacticipants/Pricing%20Service",
-              "title": "Pricing%20Service"
-            },
-            "pacts": [
-              {
-                "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
-                "title": "Pact between Condor (v1.3.0) and Pricing%20Service",
-                "name": "Condor"
-              }
-            ]
-          }
-        }
-      }
-    },
-    {
-      "description": "a request for the list of the latest pacts from all consumers for the Pricing Service'",
-      "provider_state": "a latest pact between Condor and the Pricing Service exists",
-      "request": {
-        "method": "get",
-        "path": "/pacts/provider/Pricing%20Service/latest",
-        "headers": {
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-        },
-        "body": {
-          "_links": {
-            "provider": {
-              "href": "http://example.org/pacticipants/Pricing%20Service",
-              "title": "Pricing%20Service"
-            },
-            "pacts": [
-              {
-                "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
-                "title": "Pact between Condor (v1.3.0) and Pricing%20Service",
-                "name": "Condor"
-              }
-            ]
           }
         }
       }
