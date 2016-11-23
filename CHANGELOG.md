@@ -2,6 +2,13 @@ Do this to generate your change history
 
     $ git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
 
+#### 1.2.0 (2016-11-23)
+* 08e6025 - Fixed broken spec - expected hal+json (Bethany Skurrie, Wed Nov 23 09:20:39 2016 +1100)
+* ec4b7d7 - Added Travis badge. (Beth Skurrie, Wed Nov 23 09:16:10 2016 +1100)
+* ff133f2 - Adding appraisals and updating test matrix (Bethany Skurrie, Wed Nov 23 09:10:40 2016 +1100)
+* e79eec6 - Add hal+json to list of accepted content types (Steve Pletcher, Wed Sep 21 10:27:20 2016 -0400)
+* 314f059 - add the option to retrieve all the latest (tagged) pacts for a provider (Olga Vasylchenko, Mon Nov 21 15:01:09 2016 +0100)
+
 #### 1.1.0 (2016-08-19)
 * b5ea1b3 - Add support for publishing pacts via patch request (Steve Pletcher, Fri Aug 5 11:16:18 2016 -0400)
 
