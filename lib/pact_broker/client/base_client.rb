@@ -56,6 +56,10 @@ module PactBroker
           yield
         elsif response.code == 404
           nil
+        elsif response.code == 409
+          raise 'Conflict'
+        elsif response.body.nil? || response.body.length == 0
+          raise "Request failed with HTTP status #{response.code}"
         else
           raise response.body
         end
