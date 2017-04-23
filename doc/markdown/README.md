@@ -1,3 +1,3 @@
 ### Pacts for Pact Broker Client
 
-* [Pact Broker Client](Pact Broker Client - Pact Broker.md)
+* [Pact Broker Client](./Pact Broker Client - Pact Broker.md)
