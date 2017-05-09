@@ -364,11 +364,11 @@
           "Content-Type": {
             "json_class": "Pact::Term",
             "data": {
-              "generate": "application/json",
+              "generate": "application/hal+json",
               "matcher": {
                 "json_class": "Regexp",
                 "o": 0,
-                "s": "application/json"
+                "s": "application/.*json"
               }
             }
           }
@@ -527,11 +527,11 @@
           "Content-Type": {
             "json_class": "Pact::Term",
             "data": {
-              "generate": "application/json",
+              "generate": "application/hal+json",
               "matcher": {
                 "json_class": "Regexp",
                 "o": 0,
-                "s": "application/json"
+                "s": "application/.*json"
               }
             }
           },

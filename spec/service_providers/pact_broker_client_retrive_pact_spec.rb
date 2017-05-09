@@ -33,7 +33,7 @@ module PactBroker::Client
 
           let(:response_headers) do
             pact_broker_response_headers.merge(
-              'Content-Type' => Pact.term(generate: 'application/json', matcher: %r{application/json}),
+              'Content-Type' => Pact.term(generate: 'application/hal+json', matcher: %r{application/.*json}),
               'X-Pact-Consumer-Version' => consumer_version
             )
           end
