@@ -2,6 +2,9 @@ Do this to generate your change history
 
     $ git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
 
+#### 1.3.0 (2017-07-03)
+* 138a042 - feat(tag): Added tag to PublicationTask (Beth Skurrie, Mon Jul 3 11:45:24 2017 +1000)
+
 #### 1.2.0 (2016-11-23)
 * 08e6025 - Fixed broken spec - expected hal+json (Bethany Skurrie, Wed Nov 23 09:20:39 2016 +1100)
 * ec4b7d7 - Added Travis badge. (Beth Skurrie, Wed Nov 23 09:16:10 2016 +1100)
