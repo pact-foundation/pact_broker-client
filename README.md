@@ -31,6 +31,10 @@ PactBroker::Client::PublicationTask.new do | task |
 end
 ```
 
+## Using tags
+
+Tags enable you to test different versions of your consumer and provider against each other (eg. `head` and `prod`) and to use pacts on feature branches without breaking your main line of development. You can read more about using tags on the Pact broker [wiki][wiki-tags].
+
 If you want to use the git branch name as the tag name, use:
 
 ```ruby
@@ -40,7 +44,7 @@ If you want to use the git branch name as the tag name, use:
 ```bash
 # In CI script
 
-rake pact:publish
+bundle exec rake pact:publish
 ```
 
 ### Provider
@@ -58,3 +62,5 @@ Pact.service_provider "My Provider" do
 
 end
 ```
+
+[wiki-tags]: https://github.com/pact-foundation/pact_broker/wiki/Using-tags
