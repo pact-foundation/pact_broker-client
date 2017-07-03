@@ -4,7 +4,7 @@
 2. `bundle exec appraisal update`
 3. Update the `CHANGELOG.md` using:
 
-      $ git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
+      $ git log --pretty=format:'  * %h - %s (%an, %ad)'
 
 4. Add files to git
 
