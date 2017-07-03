@@ -6,22 +6,26 @@ module PactBroker
   module Client
     class PublishPacts
 
-      def initialize pact_broker_base_url, pact_files, consumer_version, pact_broker_client_options={}
+      def initialize pact_broker_base_url, pact_files, consumer_version, tag, pact_broker_client_options={}
         @pact_broker_base_url = pact_broker_base_url
         @pact_files = pact_files
         @consumer_version = consumer_version
+        @tag = tag
         @pact_broker_client_options = pact_broker_client_options
       end
 
       def call
         validate
         $stdout.puts("")
-        pact_files.collect{ | pact_file | publish_pact pact_file }.all?
+        result = pact_files.collect{ | pact_file | publish_pact pact_file }.all?
+        result = result && tag_consumer_version
+        $stdout.puts("")
+        result
       end
 
       private
 
-      attr_reader :pact_broker_base_url, :pact_files, :consumer_version, :pact_broker_client_options
+      attr_reader :pact_broker_base_url, :pact_files, :consumer_version, :tag, :pact_broker_client_options
 
       def pact_broker_client
         @pact_broker_client ||= PactBroker::Client::PactBrokerClient.new(base_url: pact_broker_base_url, client_options: pact_broker_client_options)
@@ -37,18 +41,38 @@ module PactBroker
         end
       end
 
+      def tag_consumer_version
+        return true unless tag
+        versions = pact_broker_client.pacticipants.versions
+        Retry.until_true do
+          $stdout.puts "Tagging version #{consumer_version} of #{consumer_name} as #{tag.inspect}"
+          versions.tag(pacticipant: consumer_name, version: consumer_version, tag: tag)
+        end
+      rescue => e
+        $stderr.puts "Failed to tag version #{consumer_version} of #{consumer_name} due to error: #{e.to_s}\n#{e.backtrace.join("\n")}"
+        false
+      end
+
       def publish_pact_contents(pact_file_contents)
         Retry.until_true do
-          contract = ::Pact::ConsumerContract.from_json(pact_file_contents)
+          contract = contract_from_file(pact_file_contents)
           pacts = pact_broker_client.pacticipants.versions.pacts
           if pacts.version_published?(consumer: contract.consumer.name, provider: contract.provider.name, consumer_version: consumer_version)
             $stdout.puts ::Term::ANSIColor.yellow("The given version of pact is already published. Will Overwrite...")
           end
 
           latest_pact_url = pacts.publish(pact_json: pact_file_contents, consumer_version: consumer_version)
-          $stdout.puts "The latest version of this pact can be accessed at the following URL (use this to configure the provider verification):\n#{latest_pact_url}\n\n"
+          $stdout.puts "The latest version of this pact can be accessed at the following URL (use this to configure the provider verification):\n#{latest_pact_url}"
           true
         end
+      end
+
+      def consumer_name
+        contract_from_file(File.read(pact_files.first)).consumer.name
+      end
+
+      def contract_from_file pact_file_contents
+        ::Pact::ConsumerContract.from_json(pact_file_contents)
       end
 
       def validate

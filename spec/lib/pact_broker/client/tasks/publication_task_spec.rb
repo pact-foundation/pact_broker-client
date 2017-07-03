@@ -30,7 +30,7 @@ module PactBroker::Client
 
       context "when pacts are succesfully published" do
         it "invokes PublishPacts with the default values" do
-          PactBroker::Client::PublishPacts.should_receive(:new).with('http://pact-broker', pact_file_list, '1.2.3', {}).and_return(publish_pacts)
+          PactBroker::Client::PublishPacts.should_receive(:new).with('http://pact-broker', pact_file_list, '1.2.3', nil, {}).and_return(publish_pacts)
           publish_pacts.should_receive(:call).and_return(true)
           Rake::Task['pact:publish'].execute
         end
@@ -53,7 +53,7 @@ module PactBroker::Client
       end
 
       it "invokes PublishPacts with the write method set" do
-        PactBroker::Client::PublishPacts.should_receive(:new).with('http://pact-broker', pact_file_list, '1.2.3', {write: :merge}).and_return(publish_pacts)
+        PactBroker::Client::PublishPacts.should_receive(:new).with('http://pact-broker', pact_file_list, '1.2.3', nil, {write: :merge}).and_return(publish_pacts)
         publish_pacts.should_receive(:call).and_return(true)
         Rake::Task['pact:publish:merge'].execute
       end
@@ -65,8 +65,10 @@ module PactBroker::Client
         @pact_broker_base_url = "http://some-host"
         @pattern = "pact/*.json"
         @pact_broker_basic_auth = { username: 'user', password: 'pass'}
+        @tag = "dev"
         PactBroker::Client::PublicationTask.new(:custom) do | task |
           task.consumer_version = '1.2.3'
+          task.tag = @tag
           task.pact_broker_base_url = @pact_broker_base_url
           task.pattern = @pattern
           task.pact_broker_basic_auth = @pact_broker_basic_auth
@@ -76,7 +78,7 @@ module PactBroker::Client
       let(:pattern) { @pattern }
 
       it "invokes PublishPacts with the customised values" do
-        PactBroker::Client::PublishPacts.should_receive(:new).with(@pact_broker_base_url, pact_file_list, '1.2.3', {basic_auth: @pact_broker_basic_auth})
+        PactBroker::Client::PublishPacts.should_receive(:new).with(@pact_broker_base_url, pact_file_list, '1.2.3', @tag, {basic_auth: @pact_broker_basic_auth})
         publish_pacts.should_receive(:call).and_return(true)
         Rake::Task['pact:publish:custom'].execute
       end

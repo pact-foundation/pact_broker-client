@@ -22,8 +22,10 @@ module PactBroker
       let(:pact_broker_client) { double("PactBroker::Client")}
       let(:pact_files) { ['spec/pacts/consumer-provider.json']}
       let(:consumer_version) { "1.2.3" }
+      let(:tag) { nil }
       let(:pact_hash) { {consumer: {name: 'Consumer'}, provider: {name: 'Provider'}, interactions: [] } }
       let(:pacts_client) { instance_double("PactBroker::ClientSupport::Pacts")}
+      let(:pact_versions_client) { instance_double("PactBroker::Client::Versions", tag: false) }
       let(:pact_broker_base_url) { 'http://some-host'}
       let(:pact_broker_client_options) do
         {
@@ -34,11 +36,12 @@ module PactBroker
         }
       end
 
-      subject { PublishPacts.new(pact_broker_base_url, pact_files, consumer_version, pact_broker_client_options) }
+      subject { PublishPacts.new(pact_broker_base_url, pact_files, consumer_version, tag, pact_broker_client_options) }
 
       before do
         FileUtils.mkdir_p "spec/pacts"
         File.open("spec/pacts/consumer-provider.json", "w") { |file| file << pact_hash.to_json }
+        allow(pact_broker_client).to receive_message_chain(:pacticipants, :versions).and_return(pact_versions_client)
         allow(pact_broker_client).to receive_message_chain(:pacticipants, :versions, :pacts).and_return(pacts_client)
         allow(pacts_client).to receive(:version_published?).and_return(false)
       end
@@ -102,6 +105,33 @@ module PactBroker
           let(:pact_broker_base_url) { " " }
           it "raises a validation errror" do
             expect { subject.call }.to raise_error(/Please specify the pact_broker_base_url/)
+          end
+        end
+
+        context "when a tag is provided" do
+          let(:tag) { "dev" }
+
+          it "tags the consumer version" do
+            expect(pact_versions_client).to receive(:tag).with({pacticipant: "Consumer", version: consumer_version, tag: tag})
+            subject.call
+          end
+
+          context "when an error occurs tagging the pact" do
+
+            before do
+              allow(pact_versions_client).to receive(:tag).and_raise("an error")
+              allow(Retry).to receive(:sleep)
+              allow($stderr).to receive(:puts)
+            end
+
+            it "retries multiple times" do
+              expect(pact_versions_client).to receive(:tag).exactly(3).times
+              subject.call
+            end
+
+            it "returns false" do
+              expect(subject.call).to eq false
+            end
           end
         end
 
