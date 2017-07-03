@@ -7,6 +7,7 @@ PactBroker::Client::PublicationTask.new do | task |
   require 'consumer/version'
   task.pact_broker_base_url = 'http://pact-broker'
   task.consumer_version = Consumer::VERSION
+  task.tag = "dev"
 end
 
 =end
