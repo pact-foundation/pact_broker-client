@@ -1,8 +1,7 @@
 {
     "_links": {
         "self": { "href": "http://example.org/pacticipants/Pricing%20Service" },
-        "versions": { "href": "http://example.org/pacticipants/Pricing%20Service/versions" },
-        "latest-version": { "href": "http://example.org/pacticipants/Pricing%20Service/versions/latest" }
+        "versions": { "href": "http://example.org/pacticipants/Pricing%20Service/versions" }
     },
     "name" : "Pricing Service",
     "repositoryUrl": "git@git.realestate.com.au:business-systems/pricing-service",
