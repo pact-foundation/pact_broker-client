@@ -6,7 +6,7 @@ A client for the Pact Broker. Publishes pacts to, and retrieves pacts from, the 
 
 ## Usage
 
-You will need an instance of a [Pact Broker](https://github.com/bethesque/pact_broker). It's URL will be used below in the configuration for the Consumer and the Provider. eg. http://pact-broker.my.org
+You will need an instance of a [Pact Broker](https://github.com/pact-foundation/pact_broker). It's URL will be used below in the configuration for the Consumer and the Provider. eg. http://pact-broker.my.org
 
 ### Consumer
 
