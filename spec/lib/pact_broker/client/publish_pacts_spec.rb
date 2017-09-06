@@ -22,7 +22,7 @@ module PactBroker
       let(:pact_broker_client) { double("PactBroker::Client")}
       let(:pact_files) { ['spec/pacts/consumer-provider.json']}
       let(:consumer_version) { "1.2.3" }
-      let(:tag) { nil }
+      let(:tags) { nil }
       let(:pact_hash) { {consumer: {name: 'Consumer'}, provider: {name: 'Provider'}, interactions: [] } }
       let(:pacts_client) { instance_double("PactBroker::ClientSupport::Pacts")}
       let(:pact_versions_client) { instance_double("PactBroker::Client::Versions", tag: false) }
@@ -36,7 +36,7 @@ module PactBroker
         }
       end
 
-      subject { PublishPacts.new(pact_broker_base_url, pact_files, consumer_version, tag, pact_broker_client_options) }
+      subject { PublishPacts.new(pact_broker_base_url, pact_files, consumer_version, tags, pact_broker_client_options) }
 
       before do
         FileUtils.mkdir_p "spec/pacts"
@@ -109,10 +109,16 @@ module PactBroker
         end
 
         context "when a tag is provided" do
-          let(:tag) { "dev" }
+          let(:tags) { ["dev"] }
 
           it "tags the consumer version" do
-            expect(pact_versions_client).to receive(:tag).with({pacticipant: "Consumer", version: consumer_version, tag: tag})
+            expect(pact_versions_client).to receive(:tag).with({pacticipant: "Consumer", version: consumer_version, tag: "dev"})
+            subject.call
+          end
+
+          it "tags the version before publishing the pact so that there aren't timing issues retrieving pacts by tag" do
+            expect(pact_versions_client).to receive(:tag).ordered
+            expect(pacts_client).to receive(:publish).ordered
             subject.call
           end
 

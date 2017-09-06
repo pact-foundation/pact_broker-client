@@ -17,6 +17,7 @@ module PactBroker
     class PublicationTask < ::Rake::TaskLib
 
       attr_accessor :pattern, :pact_broker_base_url, :consumer_version, :tag, :write_method, :pact_broker_basic_auth
+      alias_method :tags, :tag
 
       def initialize name = nil, &block
         @name = name
@@ -35,7 +36,7 @@ module PactBroker
             require 'pact_broker/client/publish_pacts'
             basic_auth_client_options = pact_broker_basic_auth ? {basic_auth: pact_broker_basic_auth} : {}
             pact_broker_client_options = basic_auth_client_options.merge(write_method ? {write: write_method} : {})
-            success = PactBroker::Client::PublishPacts.new(pact_broker_base_url, FileList[pattern], consumer_version, tag, pact_broker_client_options).call
+            success = PactBroker::Client::PublishPacts.new(pact_broker_base_url, FileList[pattern], consumer_version, [*tags], pact_broker_client_options).call
             raise "One or more pacts failed to be published" unless success
           end
         end

@@ -6,29 +6,32 @@ module PactBroker
   module Client
     class PublishPacts
 
-      def initialize pact_broker_base_url, pact_files, consumer_version, tag, pact_broker_client_options={}
+      def initialize pact_broker_base_url, pact_files, consumer_version, tags, pact_broker_client_options={}
         @pact_broker_base_url = pact_broker_base_url
         @pact_files = pact_files
         @consumer_version = consumer_version
-        @tag = tag
+        @tags = tags
         @pact_broker_client_options = pact_broker_client_options
       end
 
       def call
         validate
         $stdout.puts("")
-        result = pact_files.collect{ | pact_file | publish_pact pact_file }.all?
-        result = result && tag_consumer_version
+        result = apply_tags && publish_pacts
         $stdout.puts("")
         result
       end
 
       private
 
-      attr_reader :pact_broker_base_url, :pact_files, :consumer_version, :tag, :pact_broker_client_options
+      attr_reader :pact_broker_base_url, :pact_files, :consumer_version, :tags, :pact_broker_client_options
 
       def pact_broker_client
         @pact_broker_client ||= PactBroker::Client::PactBrokerClient.new(base_url: pact_broker_base_url, client_options: pact_broker_client_options)
+      end
+
+      def publish_pacts
+        pact_files.collect{ | pact_file | publish_pact pact_file }.all?
       end
 
       def publish_pact pact_file
@@ -41,12 +44,19 @@ module PactBroker
         end
       end
 
-      def tag_consumer_version
-        return true unless tag
+      def apply_tags
+        return true if tags.nil? || tags.empty?
+        tags.all? do | tag |
+          tag_consumer_version tag
+        end
+      end
+
+      def tag_consumer_version tag
         versions = pact_broker_client.pacticipants.versions
         Retry.until_true do
           $stdout.puts "Tagging version #{consumer_version} of #{consumer_name} as #{tag.inspect}"
           versions.tag(pacticipant: consumer_name, version: consumer_version, tag: tag)
+          true
         end
       rescue => e
         $stderr.puts "Failed to tag version #{consumer_version} of #{consumer_name} due to error: #{e.to_s}\n#{e.backtrace.join("\n")}"

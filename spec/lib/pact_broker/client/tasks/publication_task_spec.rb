@@ -14,8 +14,8 @@ module PactBroker::Client
     let(:pact_file_list) { ['spec/pact/consumer-provider.json'] }
 
     before do
-      PactBroker::Client::PublishPacts.stub(:new).and_return(publish_pacts)
-      FileList.stub(:[]).with(pattern).and_return(pact_file_list)
+      allow(PactBroker::Client::PublishPacts).to receive(:new).and_return(publish_pacts)
+      allow(FileList).to receive(:[]).with(pattern).and_return(pact_file_list)
     end
 
     let(:pattern) { "spec/pacts/*.json" }
@@ -30,15 +30,15 @@ module PactBroker::Client
 
       context "when pacts are succesfully published" do
         it "invokes PublishPacts with the default values" do
-          PactBroker::Client::PublishPacts.should_receive(:new).with('http://pact-broker', pact_file_list, '1.2.3', nil, {}).and_return(publish_pacts)
-          publish_pacts.should_receive(:call).and_return(true)
+          expect(PactBroker::Client::PublishPacts).to receive(:new).with('http://pact-broker', pact_file_list, '1.2.3', [], {}).and_return(publish_pacts)
+          expect(publish_pacts).to receive(:call).and_return(true)
           Rake::Task['pact:publish'].execute
         end
       end
 
       context "when a pact fails to be published" do
         it "raises an error" do
-          publish_pacts.should_receive(:call).and_return(false)
+          expect(publish_pacts).to receive(:call).and_return(false)
           expect { Rake::Task['pact:publish'].execute }.to raise_error("One or more pacts failed to be published")
         end
       end
@@ -53,8 +53,8 @@ module PactBroker::Client
       end
 
       it "invokes PublishPacts with the write method set" do
-        PactBroker::Client::PublishPacts.should_receive(:new).with('http://pact-broker', pact_file_list, '1.2.3', nil, {write: :merge}).and_return(publish_pacts)
-        publish_pacts.should_receive(:call).and_return(true)
+        expect(PactBroker::Client::PublishPacts).to receive(:new).with('http://pact-broker', pact_file_list, '1.2.3', [], {write: :merge}).and_return(publish_pacts)
+        expect(publish_pacts).to receive(:call).and_return(true)
         Rake::Task['pact:publish:merge'].execute
       end
     end
@@ -78,8 +78,8 @@ module PactBroker::Client
       let(:pattern) { @pattern }
 
       it "invokes PublishPacts with the customised values" do
-        PactBroker::Client::PublishPacts.should_receive(:new).with(@pact_broker_base_url, pact_file_list, '1.2.3', @tag, {basic_auth: @pact_broker_basic_auth})
-        publish_pacts.should_receive(:call).and_return(true)
+        expect(PactBroker::Client::PublishPacts).to receive(:new).with(@pact_broker_base_url, pact_file_list, '1.2.3', [@tag], {basic_auth: @pact_broker_basic_auth})
+        expect(publish_pacts).to receive(:call).and_return(true)
         Rake::Task['pact:publish:custom'].execute
       end
     end
