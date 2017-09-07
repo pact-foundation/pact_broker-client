@@ -1,4 +1,5 @@
 require_relative 'base_client'
+require 'pact_broker/client/pacts'
 
 module PactBroker
   module Client
@@ -38,7 +39,7 @@ module PactBroker
       private
 
       def tag_url options
-        "#{version_base_url(options)}/tags/#{options.fetch(:tag)}"
+        "#{version_base_url(options)}/tags/#{encode_param(options.fetch(:tag))}"
       end
 
       def versions_base_url options
