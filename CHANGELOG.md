@@ -1,8 +1,13 @@
-Do this to generate your change history
+<a name="v1.4.0"></a>
+### v1.4.0 (2017-09-07)
 
-    $ git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
+#### Features
 
-#### 1.3.0 (2017-07-03)
+* **tagging**
+  * url escape tag names	 ([8335978](/../../commit/8335978))
+  * allow multiple tags to be specified for a version	 ([5f862fe](/../../commit/5f862fe))
+
+#### v1.3.0 (2017-07-03)
 * 138a042 - feat(tag): Added tag to PublicationTask (Beth Skurrie, Mon Jul 3 11:45:24 2017 +1000)
 
 #### 1.2.0 (2016-11-23)

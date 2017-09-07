@@ -4,7 +4,7 @@
 2. `bundle exec appraisal update`
 3. Update the `CHANGELOG.md` using:
 
-      $ git log --pretty=format:'  * %h - %s (%an, %ad)'
+      $ bundle exec rake generate_changelog
 
 4. Add files to git
 
