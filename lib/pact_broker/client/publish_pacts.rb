@@ -2,6 +2,8 @@ require 'term/ansicolor'
 require 'pact_broker/client'
 require 'pact_broker/client/retry'
 require 'pact_broker/client/pact_file'
+require 'pact_broker/client/pact_hash'
+require 'pact_broker/client/merge_pacts'
 
 module PactBroker
   module Client
@@ -37,22 +39,25 @@ module PactBroker
 
       def publish_pacts
         pact_files.group_by(&:pact_name).collect do | pact_name, pact_files |
-          pact_files.collect do | pact_file |
-            publish_pact(pact_file)
-          end
-        end.flatten.all?
+          $stdout.puts "Merging #{pact_files.collect(&:path).join(", ")}" if pact_files.size > 1
+          publish_pact(PactHash[merge_contents(pact_files)])
+        end.all?
+      end
+
+      def merge_contents(pact_files)
+        MergePacts.call(pact_files.collect(&:pact_hash))
       end
 
       def pact_files
         @pact_files ||= pact_file_paths.collect{ |pact_file_path| PactFile.new(pact_file_path) }
       end
 
-      def publish_pact pact_file
+      def publish_pact pact
         begin
-          $stdout.puts ">> Publishing #{pact_file.pact_name} to pact broker at #{pact_broker_base_url}"
-          publish_pact_contents pact_file
+          $stdout.puts "Publishing #{pact.pact_name} to pact broker at #{pact_broker_base_url}"
+          publish_pact_contents pact
         rescue => e
-          $stderr.puts "Failed to publish #{pact_file.pact_name} due to error: #{e.class} - #{e}"
+          $stderr.puts "Failed to publish #{pact.pact_name} due to error: #{e.class} - #{e}"
           false
         end
       end
@@ -76,14 +81,14 @@ module PactBroker
         false
       end
 
-      def publish_pact_contents(pact_file)
+      def publish_pact_contents(pact)
         Retry.until_true do
           pacts = pact_broker_client.pacticipants.versions.pacts
-          if pacts.version_published?(consumer: pact_file.consumer_name, provider: pact_file.provider_name, consumer_version: consumer_version)
+          if pacts.version_published?(consumer: pact.consumer_name, provider: pact.provider_name, consumer_version: consumer_version)
             $stdout.puts ::Term::ANSIColor.yellow("The given version of pact is already published. Will Overwrite...")
           end
 
-          latest_pact_url = pacts.publish(pact_json: pact_file.read, consumer_version: consumer_version)
+          latest_pact_url = pacts.publish(pact_hash: pact, consumer_version: consumer_version)
           $stdout.puts "The latest version of this pact can be accessed at the following URL (use this to configure the provider verification):\n#{latest_pact_url}"
           true
         end

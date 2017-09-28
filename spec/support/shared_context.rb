@@ -1,6 +1,7 @@
+require 'pact_broker/client/pact_hash'
 shared_context "pact broker" do
 
-  let(:pact_hash) { {consumer: {name: 'Condor'}, provider: {name: 'Pricing Service'}, interactions: []} }
+  let(:pact_hash) { PactBroker::Client::PactHash[consumer: {name: 'Condor'}, provider: {name: 'Pricing Service'}, interactions: []] }
   let(:consumer_contract) { Pact::ConsumerContract.from_hash pact_hash }
   let(:pact_json) { pact_hash.to_json }
   let(:pact_broker_client) { PactBroker::Client::PactBrokerClient.new(client_config) }

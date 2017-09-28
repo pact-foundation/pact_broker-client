@@ -7,12 +7,24 @@ module PactBroker
   module Client
     describe PublishPacts do
 
+      # The amount of stubbing that we have to do here indicates this class is doing
+      # TOO MUCH and needs to be split up!
       before do
         FakeFS.activate!
         allow(pacts_client).to receive(:publish).and_return(latest_pact_url)
-        allow(PactBroker::Client::PactBrokerClient).to receive(:new).with(base_url: pact_broker_base_url, client_options: pact_broker_client_options).and_return(pact_broker_client)
+        allow(PactBroker::Client::PactBrokerClient).to receive(:new)
+          .with(base_url: pact_broker_base_url, client_options: pact_broker_client_options)
+          .and_return(pact_broker_client)
+        allow(pact_broker_client).to receive_message_chain(:pacticipants, :versions).and_return(pact_versions_client)
+        allow(pact_broker_client).to receive_message_chain(:pacticipants, :versions, :pacts).and_return(pacts_client)
+        allow(pacts_client).to receive(:version_published?).and_return(false)
         allow($stdout).to receive(:puts)
         allow(Retry).to receive(:sleep)
+        allow(MergePacts).to receive(:call) { | pact_hashes | pact_hashes[0] }
+        FileUtils.mkdir_p "spec/pacts"
+        File.open("spec/pacts/consumer-provider.json", "w") { |file| file << pact_hash.to_json }
+        File.open("spec/pacts/consumer-provider-2.json", "w") { |file| file << pact_hash.to_json }
+        File.open("spec/pacts/foo-bar.json", "w") { |file| file << pact_hash_2.to_json }
       end
 
       after do
@@ -25,6 +37,7 @@ module PactBroker
       let(:consumer_version) { "1.2.3" }
       let(:tags) { nil }
       let(:pact_hash) { {consumer: {name: 'Consumer'}, provider: {name: 'Provider'}, interactions: [] } }
+      let(:pact_hash_2) { {consumer: {name: 'Foo'}, provider: {name: 'Bar'}, interactions: [] } }
       let(:pacts_client) { instance_double("PactBroker::ClientSupport::Pacts")}
       let(:pact_versions_client) { instance_double("PactBroker::Client::Versions", tag: false) }
       let(:pact_broker_base_url) { 'http://some-host'}
@@ -39,18 +52,10 @@ module PactBroker
 
       subject { PublishPacts.new(pact_broker_base_url, pact_file_paths, consumer_version, tags, pact_broker_client_options) }
 
-      before do
-        FileUtils.mkdir_p "spec/pacts"
-        File.open("spec/pacts/consumer-provider.json", "w") { |file| file << pact_hash.to_json }
-        allow(pact_broker_client).to receive_message_chain(:pacticipants, :versions).and_return(pact_versions_client)
-        allow(pact_broker_client).to receive_message_chain(:pacticipants, :versions, :pacts).and_return(pacts_client)
-        allow(pacts_client).to receive(:version_published?).and_return(false)
-      end
-
       describe "call" do
 
         it "uses the pact_broker client to publish the given pact" do
-          expect(pacts_client).to receive(:publish).with(pact_json: pact_hash.to_json, consumer_version: consumer_version)
+          expect(pacts_client).to receive(:publish).with(pact_hash: pact_hash, consumer_version: consumer_version)
           subject.call
         end
 
@@ -66,16 +71,23 @@ module PactBroker
           end
         end
 
+        context "when publishing multiple files with the same consumer/provider" do
+          let(:pact_file_paths) { ['spec/pacts/consumer-provider.json','spec/pacts/consumer-provider-2.json']}
+          it "merges the files" do
+            expect(MergePacts).to receive(:call).with([pact_hash, pact_hash])
+            subject.call
+          end
+        end
+
         context "when publishing one or more pacts fails" do
-          let(:pact_file_paths) { ['spec/pacts/consumer-provider.json','spec/pacts/consumer-provider.json']}
+          let(:pact_file_paths) { ['spec/pacts/consumer-provider.json','spec/pacts/foo-bar.json']}
 
           before do
-            count = 0
-            allow(pacts_client).to receive(:publish) do | args |
-              count += 1
-              raise "test error" if count <= 3
-              latest_pact_url
-            end
+            allow(pacts_client).to receive(:publish).with(
+              pact_hash: pact_hash,
+              consumer_version: consumer_version
+            ).and_raise("an error")
+
             allow($stderr).to receive(:puts)
           end
 
@@ -85,7 +97,8 @@ module PactBroker
           end
 
           it "continues publishing the rest" do
-            expect(pacts_client).to receive(:publish).with(pact_json: pact_hash.to_json, consumer_version: consumer_version)
+            expect(pacts_client).to receive(:publish).with(
+              pact_hash: pact_hash_2, consumer_version: consumer_version)
             subject.call
           end
 
@@ -119,7 +132,8 @@ module PactBroker
           let(:tags) { ["dev"] }
 
           it "tags the consumer version" do
-            expect(pact_versions_client).to receive(:tag).with({pacticipant: "Consumer", version: consumer_version, tag: "dev"})
+            expect(pact_versions_client).to receive(:tag).with({pacticipant: "Consumer",
+              version: consumer_version, tag: "dev"})
             subject.call
           end
 

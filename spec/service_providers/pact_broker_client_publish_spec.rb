@@ -5,7 +5,7 @@ module PactBroker::Client
 
     describe "publishing a pact" do
 
-      let(:options) { { pact_json: pact_json, consumer_version: consumer_version }}
+      let(:options) { { pact_hash: pact_hash, consumer_version: consumer_version }}
       let(:location) { 'http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest' }
       context "when the provider already exists in the pact-broker" do
 

@@ -1,4 +1,5 @@
 require_relative 'base_client'
+require 'pact_broker/client/pact_hash'
 
 module PactBroker
   module Client
@@ -6,9 +7,9 @@ module PactBroker
 
       def publish options
         consumer_version = options[:consumer_version]
-        pact_string = options[:pact_json]
-        consumer_contract = ::Pact::ConsumerContract.from_json pact_string
-        url = save_consumer_contract_url consumer_contract, consumer_version
+        pact_hash = options[:pact_hash]
+        pact_string = pact_hash.to_json
+        url = save_consumer_contract_url pact_hash, consumer_version
 
         if @client_options[:write] == :merge
           response = self.class.patch(url, body: pact_string, headers: default_patch_headers)
@@ -126,9 +127,9 @@ module PactBroker
         "/pacts/provider/#{provider_name}/consumer/#{consumer_name}/version/#{consumer_version}"
       end
 
-      def save_consumer_contract_url consumer_contract, consumer_version
-        consumer_name = encode_param(consumer_contract.consumer.name)
-        provider_name = encode_param(consumer_contract.provider.name)
+      def save_consumer_contract_url pact_hash, consumer_version
+        consumer_name = encode_param(pact_hash.consumer_name)
+        provider_name = encode_param(pact_hash.provider_name)
         version = encode_param(consumer_version)
         "/pacts/provider/#{provider_name}/consumer/#{consumer_name}/version/#{version}"
       end
