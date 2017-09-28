@@ -1,6 +1,4 @@
-require 'pact/consumer_contract'
 require_relative 'base_client'
-
 
 module PactBroker
   module Client

@@ -12,6 +12,7 @@ module PactBroker
         allow(pacts_client).to receive(:publish).and_return(latest_pact_url)
         allow(PactBroker::Client::PactBrokerClient).to receive(:new).with(base_url: pact_broker_base_url, client_options: pact_broker_client_options).and_return(pact_broker_client)
         allow($stdout).to receive(:puts)
+        allow(Retry).to receive(:sleep)
       end
 
       after do
@@ -20,7 +21,7 @@ module PactBroker
 
       let(:latest_pact_url) { 'http://example.org/latest/pact' }
       let(:pact_broker_client) { double("PactBroker::Client")}
-      let(:pact_files) { ['spec/pacts/consumer-provider.json']}
+      let(:pact_file_paths) { ['spec/pacts/consumer-provider.json']}
       let(:consumer_version) { "1.2.3" }
       let(:tags) { nil }
       let(:pact_hash) { {consumer: {name: 'Consumer'}, provider: {name: 'Provider'}, interactions: [] } }
@@ -36,7 +37,7 @@ module PactBroker
         }
       end
 
-      subject { PublishPacts.new(pact_broker_base_url, pact_files, consumer_version, tags, pact_broker_client_options) }
+      subject { PublishPacts.new(pact_broker_base_url, pact_file_paths, consumer_version, tags, pact_broker_client_options) }
 
       before do
         FileUtils.mkdir_p "spec/pacts"
@@ -66,14 +67,20 @@ module PactBroker
         end
 
         context "when publishing one or more pacts fails" do
-          let(:pact_files) { ['spec/pacts/doesnotexist.json','spec/pacts/consumer-provider.json']}
+          let(:pact_file_paths) { ['spec/pacts/consumer-provider.json','spec/pacts/consumer-provider.json']}
 
           before do
+            count = 0
+            allow(pacts_client).to receive(:publish) do | args |
+              count += 1
+              raise "test error" if count <= 3
+              latest_pact_url
+            end
             allow($stderr).to receive(:puts)
           end
 
           it "logs an message to stderr" do
-            expect($stderr).to receive(:puts).with(/Failed to publish pact/)
+            expect($stderr).to receive(:puts).with(/Failed to publish Consumer\/Provider pact/)
             subject.call
           end
 
@@ -88,7 +95,7 @@ module PactBroker
         end
 
         context "when no pact files are specified" do
-          let(:pact_files) { [] }
+          let(:pact_file_paths) { [] }
           it "raises a validation error" do
             expect { subject.call }.to raise_error(/No pact files found/)
           end

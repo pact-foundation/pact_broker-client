@@ -21,7 +21,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.license       = 'MIT'
 
-  gem.add_runtime_dependency 'pact'
   gem.add_runtime_dependency 'httparty'
   gem.add_runtime_dependency 'json'
   gem.add_runtime_dependency 'term-ansicolor'
@@ -32,4 +31,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'appraisal'
   gem.add_development_dependency 'webmock', '~> 3.0'
   gem.add_development_dependency 'conventional-changelog'
+  gem.add_development_dependency 'pact', '~> 1.16'
 end
