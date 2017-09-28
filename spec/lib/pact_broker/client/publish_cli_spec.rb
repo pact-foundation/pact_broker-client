@@ -4,16 +4,17 @@ module PactBroker
   module Client
     describe PublishCLI do
 
-      before do
-        allow(PactBroker::Client::PublishPacts).to receive(:call).and_return(true)
-      end
 
-      describe "#publish" do
+      describe ".publish" do
+        before do
+          allow(PactBroker::Client::PublishPacts).to receive(:call).and_return(true)
+        end
+
         let(:minimum_valid_options) do
           {
             pact_dir: 'spec/pacts',
             consumer_version: '1.2.3',
-            base_url: 'http://pact-broker'
+            broker_base_url: 'http://pact-broker'
           }
         end
 
@@ -77,6 +78,30 @@ module PactBroker
           it "raises a PactBroker::Client::PactPublicationError" do
             expect { subject.publish }.to raise_error PactBroker::Client::PactPublicationError
           end
+        end
+      end
+
+      describe ".turn_muliple_tag_options_into_array" do
+        it "turns '--tag foo --tag bar' into '--tag foo bar'" do
+          input = %w{--ignore this --tag foo --tag bar --ignore --that}
+          output = %w{--ignore this --ignore --that --tag foo bar}
+          expect(PublishCLI.turn_muliple_tag_options_into_array(input)).to eq output
+        end
+
+        it "turns '-t foo -t bar' into '--tag foo bar'" do
+          input = %w{--ignore this -t foo -t bar --ignore --that}
+          output = %w{--ignore this --ignore --that --tag foo bar}
+          expect(PublishCLI.turn_muliple_tag_options_into_array(input)).to eq output
+        end
+
+        it "doesn't change anything when there are no --tag options" do
+          input = %w{--ignore this --taggy foo --taggy bar --ignore --that}
+          expect(PublishCLI.turn_muliple_tag_options_into_array(input)).to eq input
+        end
+
+        it "return an empty array when given an empty array" do
+          input = []
+          expect(PublishCLI.turn_muliple_tag_options_into_array(input)).to eq input
         end
       end
     end

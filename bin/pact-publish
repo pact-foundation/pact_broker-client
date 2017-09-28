@@ -1,3 +1,5 @@
 #!/usr/bin/env ruby
 require 'pact_broker/client/publish_cli'
-PactBroker::Client::PublishCLI.start
+
+argv = PactBroker::Client::PublishCLI.turn_muliple_tag_options_into_array(ARGV)
+PactBroker::Client::PublishCLI.start(argv)
