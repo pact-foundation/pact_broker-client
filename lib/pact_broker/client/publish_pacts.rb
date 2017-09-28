@@ -6,6 +6,10 @@ module PactBroker
   module Client
     class PublishPacts
 
+      def self.call(pact_broker_base_url, pact_files, consumer_version, tags, pact_broker_client_options={})
+        new(pact_broker_base_url, pact_files, consumer_version, tags, pact_broker_client_options).call
+      end
+
       def initialize pact_broker_base_url, pact_files, consumer_version, tags, pact_broker_client_options={}
         @pact_broker_base_url = pact_broker_base_url
         @pact_files = pact_files

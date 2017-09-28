@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby
+require 'pact_broker/client/publish_cli'
+PactBroker::Client::PublishCLI.start
