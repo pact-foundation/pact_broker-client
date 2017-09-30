@@ -85,7 +85,7 @@ module PactBroker
         Retry.until_true do
           pacts = pact_broker_client.pacticipants.versions.pacts
           if pacts.version_published?(consumer: pact.consumer_name, provider: pact.provider_name, consumer_version: consumer_version)
-            $stdout.puts ::Term::ANSIColor.yellow("The given version of pact is already published. Will Overwrite...")
+            $stdout.puts ::Term::ANSIColor.yellow("The given version of pact is already published. Overwriting...")
           end
 
           latest_pact_url = pacts.publish(pact_hash: pact, consumer_version: consumer_version)
@@ -99,9 +99,9 @@ module PactBroker
       end
 
       def validate
-        raise "Please specify the consumer_version" unless (consumer_version && consumer_version.to_s.strip.size > 0)
-        raise "Please specify the pact_broker_base_url" unless (pact_broker_base_url && pact_broker_base_url.to_s.strip.size > 0)
-        raise "No pact files found" unless (pact_file_paths && pact_file_paths.any?)
+        raise PactBroker::Client::Error.new("Please specify the consumer_version") unless (consumer_version && consumer_version.to_s.strip.size > 0)
+        raise PactBroker::Client::Error.new("Please specify the pact_broker_base_url") unless (pact_broker_base_url && pact_broker_base_url.to_s.strip.size > 0)
+        raise PactBroker::Client::Error.new("No pact files found") unless (pact_file_paths && pact_file_paths.any?)
       end
     end
   end
