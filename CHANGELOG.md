@@ -1,3 +1,14 @@
+<a name="v1.5.0"></a>
+### v1.5.0 (2017-09-28)
+
+#### Features
+
+* **cli**
+  * add command line tool to publish pacts   ([d031b98](/../../commit/d031b98))
+
+* **publish pacts**
+  * merge pact files with same consumer/provider before publishing   ([1c039a0](/../../commit/1c039a0))
+
 <a name="v1.4.0"></a>
 ### v1.4.0 (2017-09-07)
 
