@@ -1,3 +1,11 @@
+<a name="v1.6.0"></a>
+### v1.6.0 (2017-10-01)
+
+#### BREAKING CHANGES
+
+* **cli**
+  * change cli option names to match pact-provider-verifier	 ([0682662](/../../commit/0682662))
+
 <a name="v1.5.0"></a>
 ### v1.5.0 (2017-09-28)
 

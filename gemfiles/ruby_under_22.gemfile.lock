@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    pact_broker-client (1.5.0)
+    pact_broker-client (1.6.0)
       httparty
       json
       term-ansicolor
