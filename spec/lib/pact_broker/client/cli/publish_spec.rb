@@ -12,7 +12,7 @@ module PactBroker::Client::CLI
       let(:minimum_valid_options) do
         {
           pact_dir: 'spec/pacts',
-          consumer_version: '1.2.3',
+          consumer_app_version: '1.2.3',
           broker_base_url: 'http://pact-broker'
         }
       end
