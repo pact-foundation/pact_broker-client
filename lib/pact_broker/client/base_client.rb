@@ -1,8 +1,11 @@
 require 'erb'
 require 'httparty'
+require 'pact_broker/client/error'
 
 module PactBroker
   module Client
+
+    class Error < StandardError; end
 
     module UrlHelpers
       def encode_param param
@@ -57,7 +60,13 @@ module PactBroker
         elsif response.code == 404
           nil
         else
-          raise response.body
+          error_message = nil
+          begin
+            error_message = JSON.parse(response.body)['errors'].join("\n")
+          rescue
+            raise Error.new(response.body)
+          end
+          raise Error.new(error_message)
         end
       end
 

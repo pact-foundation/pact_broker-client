@@ -25,7 +25,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'json'
   gem.add_runtime_dependency 'term-ansicolor'
 
-  gem.add_development_dependency 'pry'
+  gem.add_development_dependency 'pry-byebug'
   gem.add_development_dependency 'fakefs', '~> 0.4'
   gem.add_development_dependency 'rspec-fire'
   gem.add_development_dependency 'appraisal'

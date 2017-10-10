@@ -1,11 +1,9 @@
 require 'pact_broker/client/pacticipants'
 require 'pact_broker/client/versions'
 require 'pact_broker/client/pacts'
-
+require 'pact_broker/client/matrix'
 
 module PactBroker
-
-
   module Client
 
     DEFAULT_PACT_BROKER_BASE_URL = 'http://pact-broker'
@@ -30,7 +28,9 @@ module PactBroker
         PactBroker::Client::Pacts.new base_url: base_url, client_options: client_options
       end
 
+      def matrix
+        PactBroker::Client::Matrix.new base_url: base_url, client_options: client_options
+      end
     end
   end
-
 end

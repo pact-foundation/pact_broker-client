@@ -199,6 +199,67 @@
       }
     },
     {
+      "description": "a request for the compatibility matrix for Foo version 1.2.3 and Bar version 4.5.6",
+      "providerState": "the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6",
+      "request": {
+        "method": "get",
+        "path": "/matrix",
+        "query": "selectors[]=Foo%2Fversion%2F1.2.3&selectors[]=Bar%2Fversion%2F4.5.6"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "matrix": [
+            {
+            }
+          ]
+        }
+      }
+    },
+    {
+      "description": "a request for the compatibility matrix where one or more versions does not exist",
+      "providerState": "the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6",
+      "request": {
+        "method": "get",
+        "path": "/matrix",
+        "query": "selectors[]=Foo%2Fversion%2F1.2.3&selectors[]=Bar%2Fversion%2F9.9.9"
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+        },
+        "body": {
+          "errors": {
+            "json_class": "Pact::ArrayLike",
+            "contents": "an error message",
+            "min": 1
+          }
+        }
+      }
+    },
+    {
+      "description": "a request for the compatibility matrix for a pacticipant that does not exist",
+      "request": {
+        "method": "get",
+        "path": "/matrix",
+        "query": "selectors[]=Foo%2Fversion%2F1.2.3&selectors[]=Bar%2Fversion%2F9.9.9"
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+        },
+        "body": {
+          "errors": {
+            "json_class": "Pact::ArrayLike",
+            "contents": "an error message",
+            "min": 1
+          }
+        }
+      }
+    },
+    {
       "description": "a request to publish a pact",
       "providerState": "the 'Pricing Service' already exists in the pact-broker",
       "request": {
