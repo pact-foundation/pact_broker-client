@@ -227,8 +227,8 @@
                     "number": "5"
                   }
                 },
-                "verification": {
-                  "executedAt": "2017-10-10T12:49:04+11:00"
+                "verificationResult": {
+                  "verifiedAt": "2017-10-10T12:49:04+11:00"
                 },
                 "pact": {
                   "createdAt": "2017-10-10T12:49:04+11:00"

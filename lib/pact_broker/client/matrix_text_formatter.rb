@@ -13,7 +13,7 @@ module PactBroker
             lookup(line, :pact, :createdAt),
             lookup(line, :consumer, :name),
             lookup(line, :provider, :version, :number),
-            lookup(line, :verification, :executedAt),
+            lookup(line, :verificationResult, :verifiedAt),
           )
         end
 
