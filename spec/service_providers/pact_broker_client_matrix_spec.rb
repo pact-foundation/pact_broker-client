@@ -7,11 +7,8 @@ module PactBroker::Client
     include_context "pact broker"
 
     describe "retriving the compatibility matrix" do
-      let(:matrix_response_body) do
-        {
-          matrix: [{}]
-        }
-      end
+      let(:matrix_response_body) { { matrix: Pact.like(matrix) } }
+      let(:matrix) { JSON.parse(File.read('spec/support/matrix.json')) }
 
       context "when results are found" do
         before do

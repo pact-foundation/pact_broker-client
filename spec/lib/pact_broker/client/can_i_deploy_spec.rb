@@ -12,6 +12,7 @@ module PactBroker
       before do
         allow_any_instance_of(PactBroker::Client::PactBrokerClient).to receive(:matrix).and_return(matrix_client)
         allow(matrix_client).to receive(:get).and_return(matrix)
+        allow(MatrixTextFormatter).to receive(:call).and_return('text matrix')
       end
 
       subject { CanIDeploy.call(pact_broker_base_url, version_selectors, pact_broker_client_options) }
@@ -21,13 +22,19 @@ module PactBroker
         subject
       end
 
+      it "creates a text table out of the matrix" do
+        expect(MatrixTextFormatter).to receive(:call).with(matrix)
+        subject
+      end
+
       context "when compatible versions are found" do
         it "returns a success response" do
           expect(subject.success).to be true
         end
 
-        it "returns a success message" do
+        it "returns a success message with the text table" do
           expect(subject.message).to include "Computer says yes"
+          expect(subject.message).to include "\n\ntext matrix"
         end
       end
 

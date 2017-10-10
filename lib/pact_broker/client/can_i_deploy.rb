@@ -1,6 +1,8 @@
 require 'pact_broker/client/error'
 require 'pact_broker/client/pact_broker_client'
 require 'pact_broker/client/retry'
+require 'pact_broker/client/matrix_text_formatter'
+
 
 module PactBroker
   module Client
@@ -27,7 +29,7 @@ module PactBroker
 
       def call
         if matrix.any?
-          Result.new(true, 'Computer says yes \o/')
+          Result.new(true, success_message(matrix))
         else
           Result.new(false, 'Computer says no ¯\_(ツ)_/¯')
         end
@@ -40,6 +42,10 @@ module PactBroker
       private
 
       attr_reader :pact_broker_base_url, :version_selectors, :pact_broker_client_options
+
+      def success_message matrix
+        'Computer says yes \o/' + "\n\n" + MatrixTextFormatter.call(matrix)
+      end
 
       def matrix
         @matrix ||= Retry.until_true { pact_broker_client.matrix.get(version_selectors) }

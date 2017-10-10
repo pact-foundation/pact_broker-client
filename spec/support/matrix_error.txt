@@ -1,0 +1,3 @@
+CONSUMER | CONSUMER_VERSION | PACT_PUBLICATION_DATE | PROVIDER | PROVIDER_VERSION | VERIFICATION_DATE
+---------|------------------|-----------------------|----------|------------------|------------------
+???      | ???              | ???                   | ???      | ???              | ???
