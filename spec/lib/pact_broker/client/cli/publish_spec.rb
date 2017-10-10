@@ -5,7 +5,7 @@ module PactBroker::Client::CLI
     describe ".broker" do
       before do
         allow(PactBroker::Client::PublishPacts).to receive(:call).and_return(true)
-        subject.options = minimum_valid_options
+        subject.options = OpenStruct.new(minimum_valid_options)
       end
 
       let(:file_list) { ["spec/support/cli_test_pacts/foo.json"] }
@@ -64,7 +64,7 @@ module PactBroker::Client::CLI
 
       context "with a tag" do
         before do
-          subject.options = minimum_valid_options.merge(tag: ['foo'])
+          subject.options = OpenStruct.new(minimum_valid_options.merge(tag: ['foo']))
         end
 
         it "passes in the tag" do
@@ -81,7 +81,9 @@ module PactBroker::Client::CLI
 
       context "with basic auth options specified" do
         before do
-          subject.options = minimum_valid_options.merge(username: 'foo', password: 'bar')
+          subject.options = OpenStruct.new(
+            minimum_valid_options.merge(broker_username: 'foo', broker_password: 'bar')
+          )
         end
 
         it "passes in the basic auth options" do

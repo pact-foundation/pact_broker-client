@@ -34,7 +34,7 @@ module PactBroker::Client
 
         it 'a matrix of compatible versions' do
           matrix = pact_broker_client.matrix.get(['Foo/version/1.2.3', 'Bar/version/4.5.6'])
-          expect(matrix[:matrix].size).to eq 1
+          expect(matrix.size).to eq 1
         end
       end
 

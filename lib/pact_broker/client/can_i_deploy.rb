@@ -1,5 +1,6 @@
 require 'pact_broker/client/error'
 require 'pact_broker/client/pact_broker_client'
+require 'pact_broker/client/retry'
 
 module PactBroker
   module Client
@@ -25,8 +26,7 @@ module PactBroker
       end
 
       def call
-        matrix = pact_broker_client.matrix.get(version_selectors)
-        if matrix[:matrix].any?
+        if matrix.any?
           Result.new(true, 'Computer says yes \o/')
         else
           Result.new(false, 'Computer says no ¯\_(ツ)_/¯')
@@ -34,12 +34,16 @@ module PactBroker
       rescue PactBroker::Client::Error => e
         Result.new(false, e.message)
       rescue StandardError => e
-        Result.new(false, "Error retrieving matrix #{e.class} - #{e.message}\n#{e.backtrace.join("\n")}")
+        Result.new(false, "Error retrieving matrix. #{e.class} - #{e.message}\n#{e.backtrace.join("\n")}")
       end
 
       private
 
       attr_reader :pact_broker_base_url, :version_selectors, :pact_broker_client_options
+
+      def matrix
+        @matrix ||= Retry.until_true { pact_broker_client.matrix.get(version_selectors) }
+      end
 
       def pact_broker_client
         @pact_broker_client ||= PactBroker::Client::PactBrokerClient.new(base_url: pact_broker_base_url, client_options: pact_broker_client_options)

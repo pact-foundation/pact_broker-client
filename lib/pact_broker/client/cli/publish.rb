@@ -44,9 +44,9 @@ module PactBroker
 
           def publish_pacts pact_files
             PactBroker::Client::PublishPacts.call(
-              options[:broker_base_url],
+              options.broker_base_url,
               file_list(pact_files),
-              options[:consumer_app_version],
+              options.consumer_app_version,
               tags,
               pact_broker_client_options
             )
@@ -63,14 +63,14 @@ module PactBroker
           end
 
           def tags
-            [*options[:tag]].compact
+            [*options.tag].compact
           end
 
           def pact_broker_client_options
-            if options[:username]
+            if options.broker_password
               {
-                username: options[:username],
-                password: options[:password]
+                username: options.broker_username,
+                password: options.broker_password
               }
             else
               {}

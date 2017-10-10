@@ -18,7 +18,7 @@ module PactBroker
           if result.success
             $stdout.puts result.message
           else
-            $stdout.puts result.message
+            $stderr.puts result.message
             exit(1)
           end
         end
@@ -30,10 +30,10 @@ module PactBroker
 
         no_commands do
           def pact_broker_client_options
-            if options[:username]
+            if options.broker_username
               {
-                username: options[:username],
-                password: options[:password]
+                username: options.broker_username,
+                password: options.broker_password
               }
             else
               {}
