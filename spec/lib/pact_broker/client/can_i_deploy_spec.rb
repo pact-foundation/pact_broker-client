@@ -8,14 +8,15 @@ module PactBroker
       let(:pact_broker_client_options) { { foo: 'bar' } }
       let(:matrix_client) { instance_double('PactBroker::Client::Matrix') }
       let(:matrix) { ['foo'] }
+      let(:options) { {output: 'text' } }
 
       before do
         allow_any_instance_of(PactBroker::Client::PactBrokerClient).to receive(:matrix).and_return(matrix_client)
         allow(matrix_client).to receive(:get).and_return(matrix)
-        allow(MatrixTextFormatter).to receive(:call).and_return('text matrix')
+        allow(Matrix::Formatter).to receive(:call).and_return('text matrix')
       end
 
-      subject { CanIDeploy.call(pact_broker_base_url, version_selectors, pact_broker_client_options) }
+      subject { CanIDeploy.call(pact_broker_base_url, version_selectors, options, pact_broker_client_options) }
 
       it "retrieves the matrix from the pact broker" do
         expect(matrix_client).to receive(:get).with(version_selectors)
@@ -23,7 +24,7 @@ module PactBroker
       end
 
       it "creates a text table out of the matrix" do
-        expect(MatrixTextFormatter).to receive(:call).with(matrix)
+        expect(Matrix::Formatter).to receive(:call).with(matrix, 'text')
         subject
       end
 

@@ -17,14 +17,15 @@ module PactBroker
         let(:version_selectors) { ['Foo/version/1', 'Bar/version/1'] }
         let(:minimum_valid_options) do
           {
-            broker_base_url: 'http://pact-broker'
+            broker_base_url: 'http://pact-broker',
+            output: 'table'
           }
         end
 
         let(:invoke_can_i_deploy) { subject.can_i_deploy(*version_selectors) }
 
         it "invokes the CanIDeploy service" do
-          expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, {})
+          expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, {output: 'table'}, {})
           invoke_can_i_deploy
         end
 
@@ -34,7 +35,7 @@ module PactBroker
           end
 
           it "invokes the CanIDeploy service with the basic auth credentials" do
-            expect(CanIDeploy).to receive(:call).with(anything, anything, {username: "foo", password: "bar"})
+            expect(CanIDeploy).to receive(:call).with(anything, anything, anything, {username: "foo", password: "bar"})
             invoke_can_i_deploy
           end
         end

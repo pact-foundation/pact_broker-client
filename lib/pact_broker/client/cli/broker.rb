@@ -11,10 +11,11 @@ module PactBroker
         method_option :broker_base_url, required: true, aliases: "-b", desc: "The base URL of the Pact Broker"
         method_option :broker_username, aliases: "-n", desc: "Pact Broker basic auth username"
         method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
+        method_option :output, aliases: "-o", desc: "json or table", default: 'table'
         method_option :verbose, aliases: "-v", desc: "Verbose output", :required => false
 
         def can_i_deploy(*selectors)
-          result = CanIDeploy.call(options.broker_base_url, selectors, pact_broker_client_options)
+          result = CanIDeploy.call(options.broker_base_url, selectors, {output: options.output}, pact_broker_client_options)
           if result.success
             $stdout.puts result.message
           else

@@ -1,7 +1,7 @@
 require 'pact_broker/client/error'
 require 'pact_broker/client/pact_broker_client'
 require 'pact_broker/client/retry'
-require 'pact_broker/client/matrix_text_formatter'
+require 'pact_broker/client/matrix/formatter'
 
 
 module PactBroker
@@ -17,13 +17,14 @@ module PactBroker
         end
       end
 
-      def self.call(pact_broker_base_url, version_selectors, pact_broker_client_options={})
-        new(pact_broker_base_url, version_selectors, pact_broker_client_options).call
+      def self.call(pact_broker_base_url, version_selectors, options, pact_broker_client_options={})
+        new(pact_broker_base_url, version_selectors, options, pact_broker_client_options).call
       end
 
-      def initialize(pact_broker_base_url, version_selectors, pact_broker_client_options)
+      def initialize(pact_broker_base_url, version_selectors, options, pact_broker_client_options)
         @pact_broker_base_url = pact_broker_base_url
         @version_selectors = version_selectors
+        @options = options
         @pact_broker_client_options = pact_broker_client_options
       end
 
@@ -41,10 +42,18 @@ module PactBroker
 
       private
 
-      attr_reader :pact_broker_base_url, :version_selectors, :pact_broker_client_options
+      attr_reader :pact_broker_base_url, :version_selectors, :options, :pact_broker_client_options
 
       def success_message matrix
-        'Computer says yes \o/' + "\n\n" + MatrixTextFormatter.call(matrix)
+        message = Matrix::Formatter.call(matrix, format)
+        if format != 'json'
+          message = 'Computer says yes \o/' + "\n\n" + message
+        end
+        message
+      end
+
+      def format
+        options[:output]
       end
 
       def matrix
