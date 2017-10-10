@@ -24,9 +24,10 @@ require 'pact_broker/client/tasks'
 PactBroker::Client::PublicationTask.new do | task |
   require 'my_consumer/version'
   task.consumer_version = MyConsumer::VERSION
+  task.pattern = 'custom/path/to/pacts/*.json' # optional, default value is 'spec/pacts/*.json'
   task.pact_broker_base_url = "http://pact-broker.my.org"
   task.tags = ["dev"] # optional
-  task.pact_broker_basic_auth =  { username: 'basic_auth_user', password: 'basic_auth_pass'} #optional
+  task.pact_broker_basic_auth =  { username: 'basic_auth_user', password: 'basic_auth_pass'} # optional
   task.write_method = :merge # optional, this will merge the published pact into an existing pact rather than overwriting it if one exists. Not recommended, as it makes a mulch of the workflow on the broker.
 end
 ```
