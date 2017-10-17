@@ -34,6 +34,7 @@ module PactBroker
       def initialize options
         @base_url = options[:base_url]
         @client_options = options[:client_options] || {}
+        @verbose = @client_options[:verbose]
         self.class.base_uri base_url
         self.class.basic_auth(client_options[:basic_auth][:username], client_options[:basic_auth][:password]) if client_options[:basic_auth]
       end
@@ -82,6 +83,9 @@ module PactBroker
         self.class.get(url, *args)
       end
 
+      def verbose?
+        @verbose
+      end
     end
   end
 end

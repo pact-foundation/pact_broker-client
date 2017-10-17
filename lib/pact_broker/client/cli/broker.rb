@@ -33,11 +33,16 @@ module PactBroker
           def pact_broker_client_options
             if options.broker_username
               {
-                username: options.broker_username,
-                password: options.broker_password
+                basic_auth: {
+                  username: options.broker_username,
+                  password: options.broker_password
+                },
+                verbose: options.verbose
               }
             else
-              {}
+              {
+                verbose: options.verbose
+              }
             end
           end
         end

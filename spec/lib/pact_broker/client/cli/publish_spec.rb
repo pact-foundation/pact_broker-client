@@ -92,7 +92,7 @@ module PactBroker::Client::CLI
             anything,
             anything,
             anything,
-            {username: 'foo', password: 'bar'}
+            hash_including({basic_auth: {username: 'foo', password: 'bar'}})
           )
           invoke_broker
         end
