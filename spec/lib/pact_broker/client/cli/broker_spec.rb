@@ -52,7 +52,7 @@ module PactBroker
           let(:success) { false }
 
           it "prints the message to stderr" do
-            expect($stderr).to receive(:puts).with(message)
+            expect($stdout).to receive(:puts).with(message)
             begin
               invoke_can_i_deploy
             rescue SystemExit

@@ -16,12 +16,8 @@ module PactBroker
 
         def can_i_deploy(*selectors)
           result = CanIDeploy.call(options.broker_base_url, selectors, {output: options.output}, pact_broker_client_options)
-          if result.success
-            $stdout.puts result.message
-          else
-            $stderr.puts result.message
-            exit(1)
-          end
+          $stdout.puts result.message
+          exit(1) unless result.success
         end
 
         desc 'version', "Show the pact_broker-client gem version"
