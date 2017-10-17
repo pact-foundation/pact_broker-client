@@ -4,17 +4,17 @@ module PactBroker
   module Client
     class Matrix
       class TextFormatter
-        Line = Struct.new(:consumer, :consumer_version, :pact_publication_date, :provider, :provider_version, :verification_date)
+
+        Line = Struct.new(:consumer, :consumer_version, :provider, :provider_version, :success)
 
         def self.call(matrix_lines)
           data = matrix_lines.collect do | line |
             Line.new(
               lookup(line, :consumer, :name),
               lookup(line, :consumer, :version, :number),
-              lookup(line, :pact, :createdAt),
               lookup(line, :consumer, :name),
               lookup(line, :provider, :version, :number),
-              lookup(line, :verificationResult, :verifiedAt),
+              lookup(line, :verificationResult, :success).to_s
             )
           end
 

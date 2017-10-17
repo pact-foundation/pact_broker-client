@@ -29,10 +29,10 @@ module PactBroker
       end
 
       def call
-        if matrix.any?
+        if matrix[:summary][:compatible]
           Result.new(true, success_message(matrix))
         else
-          Result.new(false, 'Computer says no ¯\_(ツ)_/¯')
+          Result.new(false, failure_message(matrix))
         end
       rescue PactBroker::Client::Error => e
         Result.new(false, e.message)
@@ -44,12 +44,24 @@ module PactBroker
 
       attr_reader :pact_broker_base_url, :version_selectors, :options, :pact_broker_client_options
 
-      def success_message matrix
-        message = Matrix::Formatter.call(matrix, format)
+      def success_message(matrix)
+        message = format_matrix(matrix[:matrix])
         if format != 'json'
           message = 'Computer says yes \o/' + "\n\n" + message
         end
         message
+      end
+
+      def failure_message(matrix)
+        message = format_matrix(matrix[:matrix])
+        if format != 'json'
+          message = 'Computer says no ¯\_(ツ)_/¯' + "\n\n" + message
+        end
+        message
+      end
+
+      def format_matrix(matrix)
+        Matrix::Formatter.call(matrix, format)
       end
 
       def format

@@ -228,7 +228,8 @@
                   }
                 },
                 "verificationResult": {
-                  "verifiedAt": "2017-10-10T12:49:04+11:00"
+                  "verifiedAt": "2017-10-10T12:49:04+11:00",
+                  "success": true
                 },
                 "pact": {
                   "createdAt": "2017-10-10T12:49:04+11:00"

@@ -7,7 +7,7 @@ module PactBroker
       let(:version_selectors) { ['Foo/version/1', 'Bar/version/2'] }
       let(:pact_broker_client_options) { { foo: 'bar' } }
       let(:matrix_client) { instance_double('PactBroker::Client::Matrix') }
-      let(:matrix) { ['foo'] }
+      let(:matrix) { {matrix: ['foo'], summary: {compatible: true}} }
       let(:options) { {output: 'text' } }
 
       before do
@@ -24,7 +24,7 @@ module PactBroker
       end
 
       it "creates a text table out of the matrix" do
-        expect(Matrix::Formatter).to receive(:call).with(matrix, 'text')
+        expect(Matrix::Formatter).to receive(:call).with(['foo'], 'text')
         subject
       end
 
@@ -40,7 +40,7 @@ module PactBroker
       end
 
       context "when compatible versions are not found" do
-        let(:matrix) { [] }
+        let(:matrix) { {matrix: ['foo'], summary: {compatible: false}} }
 
         it "returns a failure response" do
           expect(subject.success).to be false
