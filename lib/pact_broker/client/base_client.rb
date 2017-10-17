@@ -60,6 +60,8 @@ module PactBroker
           yield
         elsif response.code == 404
           nil
+        elsif response.code == 401
+          raise Error.new("Authentication failed")
         else
           error_message = nil
           begin
