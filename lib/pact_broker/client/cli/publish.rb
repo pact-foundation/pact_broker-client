@@ -14,7 +14,7 @@ module PactBroker
         desc 'PACT_DIRS_OR_FILES ...', "Publish pacts to a Pact Broker."
         method_option :consumer_app_version, required: true, aliases: "-a", desc: "The consumer application version"
         method_option :broker_base_url, required: true, aliases: "-b", desc: "The base URL of the Pact Broker"
-        method_option :broker_username, aliases: "-n", desc: "Pact Broker basic auth username"
+        method_option :broker_username, aliases: "-u", desc: "Pact Broker basic auth username"
         method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
         method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for consumer version. Can be specified multiple times."
         method_option :verbose, aliases: "-v", desc: "Verbose output", :required => false
