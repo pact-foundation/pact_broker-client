@@ -1,3 +1,20 @@
+<a name="v1.7.0"></a>
+### v1.7.0 (2017-10-19)
+
+
+#### Features
+
+* **can-i-deploy**
+  * change cli to use --name and --version options instead of bespoke version selector format	 ([15e8131](/../../commit/15e8131))
+  * puts output to stdout for both success and failure scenarios so that JSON output can be parsed by capturing stdout	 ([6db595a](/../../commit/6db595a))
+  * remove dates from table output and add success status	 ([5dc9484](/../../commit/5dc9484))
+  * add --output option allowing table or json to be specified	 ([57fa24e](/../../commit/57fa24e))
+
+* changed name of verification date field	 ([962b7d1](/../../commit/962b7d1))
+* output table of verification results when present	 ([9220703](/../../commit/9220703))
+* add 'pact-broker can-i-deploy' executable	 ([ca68c54](/../../commit/ca68c54))
+
+
 <a name="v1.6.0"></a>
 ### v1.6.0 (2017-10-01)
 
