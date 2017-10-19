@@ -1,3 +1,15 @@
+<a name="v1.8.0"></a>
+### v1.8.0 (2017-10-19)
+
+#### Features
+
+* renamed `pact-publish` command to `pact-broker publish`	 ([ed7d23a](/../../commit/ed7d23a))
+
+#### Bug Fixes
+
+* **pact-publish**
+  * ensure process exits with a status 1 when error is raised	 ([800f5cd](/../../commit/800f5cd))
+
 <a name="v1.7.0"></a>
 ### v1.7.0 (2017-10-19)
 

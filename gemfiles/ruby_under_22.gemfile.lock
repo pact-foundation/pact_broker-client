@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    pact_broker-client (1.7.0)
+    pact_broker-client (1.8.0)
       httparty
       json
       table_print (~> 1.5)
