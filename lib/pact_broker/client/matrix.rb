@@ -4,7 +4,7 @@ module PactBroker
   module Client
     class Matrix < BaseClient
       def get selectors
-        query = {selectors: selectors}
+        query = {selectors: convert_selector_hashes_to_params(selectors)}
         response = self.class.get("/matrix", query: query, headers: default_get_headers)
         $stdout.puts("DEBUG: Response headers #{response.headers}") if verbose?
         $stdout.puts("DEBUG: Response body #{response}") if verbose?
@@ -29,6 +29,10 @@ module PactBroker
           end
           raise Error.new(error_message)
         end
+      end
+
+      def convert_selector_hashes_to_params(selectors)
+        selectors.collect{ |selector| "#{selector[:name]}/version/#{selector[:version]}" }
       end
     end
   end

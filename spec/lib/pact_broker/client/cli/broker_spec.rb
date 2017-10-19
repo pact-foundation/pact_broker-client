@@ -6,6 +6,7 @@ module PactBroker
       describe Broker do
         before do
           subject.options = OpenStruct.new(minimum_valid_options)
+          allow(VersionSelectorOptionsParser).to receive(:call).and_return(version_selectors)
           allow(CanIDeploy).to receive(:call).and_return(result)
           allow($stdout).to receive(:puts)
           allow($stderr).to receive(:puts)
@@ -14,7 +15,7 @@ module PactBroker
         let(:result) { instance_double('PactBroker::Client::CanIDeploy::Result', success: success, message: message) }
         let(:success) { true }
         let(:message) { 'message' }
-        let(:version_selectors) { ['Foo/version/1', 'Bar/version/1'] }
+        let(:version_selectors) { ['selector1'] }
         let(:minimum_valid_options) do
           {
             broker_base_url: 'http://pact-broker',
@@ -23,7 +24,12 @@ module PactBroker
           }
         end
 
-        let(:invoke_can_i_deploy) { subject.can_i_deploy(*version_selectors) }
+        let(:invoke_can_i_deploy) { subject.can_i_deploy }
+
+        it "parses the pacticipant names and versions" do
+          expect(VersionSelectorOptionsParser).to receive(:call).with(ARGV)
+          invoke_can_i_deploy
+        end
 
         it "invokes the CanIDeploy service" do
           expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, {output: 'table'}, {verbose: 'verbose'})

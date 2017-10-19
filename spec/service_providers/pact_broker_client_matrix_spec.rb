@@ -9,6 +9,7 @@ module PactBroker::Client
     describe "retriving the compatibility matrix" do
       let(:matrix_response_body) { { matrix: Pact.like(matrix) } }
       let(:matrix) { JSON.parse(File.read('spec/support/matrix.json')) }
+      let(:selectors) { [{ name: "Foo", version: "1.2.3" }, { name: "Bar", version: "4.5.6" }] }
 
       context "when results are found" do
         before do
@@ -30,30 +31,30 @@ module PactBroker::Client
         end
 
         it 'a matrix of compatible versions' do
-          matrix = pact_broker_client.matrix.get(['Foo/version/1.2.3', 'Bar/version/4.5.6'])
+          matrix = pact_broker_client.matrix.get(selectors)
           expect(matrix.size).to eq 1
         end
       end
 
-      context "with only one version selector" do
-        before do
-          pact_broker.
-            given("the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6").
-            upon_receiving("a request for the compatibility matrix where only the version of Foo is specified").
-            with(
-              method: :get,
-              path: "/matrix",
-              query: {
-                'selectors[]' => ['Foo/version/1.2.3']
-              }
-            ).
-            will_respond_with(
-              status: 200,
-              headers: pact_broker_response_headers,
-              body: matrix_response_body
-            )
-        end
-      end
+      # context "with only one version selector" do
+      #   before do
+      #     pact_broker.
+      #       given("the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6").
+      #       upon_receiving("a request for the compatibility matrix where only the version of Foo is specified").
+      #       with(
+      #         method: :get,
+      #         path: "/matrix",
+      #         query: {
+      #           'selectors[]' => ['Foo/version/1.2.3']
+      #         }
+      #       ).
+      #       will_respond_with(
+      #         status: 200,
+      #         headers: pact_broker_response_headers,
+      #         body: matrix_response_body
+      #       )
+      #   end
+      # end
 
       context "when one or more of the versions does not exist" do
         before do
@@ -76,9 +77,11 @@ module PactBroker::Client
             )
         end
 
+        let(:selectors) { [{ name: "Foo", version: "1.2.3" }, { name: "Bar", version: "9.9.9" }] }
+
         it 'returns a list of errors' do
           expect {
-            pact_broker_client.matrix.get(['Foo/version/1.2.3', 'Bar/version/9.9.9'])
+            pact_broker_client.matrix.get(selectors)
           }.to raise_error PactBroker::Client::Error, "an error message"
         end
       end
@@ -103,9 +106,11 @@ module PactBroker::Client
             )
         end
 
+        let(:selectors) { [{ name: "Foo", version: "1.2.3" }, { name: "Bar", version: "9.9.9" }] }
+
         it 'returns a list of errors' do
           expect {
-            pact_broker_client.matrix.get(['Foo/version/1.2.3', 'Bar/version/9.9.9'])
+            pact_broker_client.matrix.get(selectors)
           }.to raise_error PactBroker::Client::Error, "an error message"
         end
       end

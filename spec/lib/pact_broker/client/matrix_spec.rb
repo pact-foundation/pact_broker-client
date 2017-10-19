@@ -8,7 +8,7 @@ module PactBroker
         let!(:request) { stub_request(:get, /matrix/).to_return(status: 404) }
 
         it "raises a helpful error" do
-          expect { matrix.get(['foo']) }.to raise_error PactBroker::Client::Error, %r{Matrix resource not found at http://example.org/matrix}
+          expect { matrix.get([{name: "Foo", version: "1"}]) }.to raise_error PactBroker::Client::Error, %r{Matrix resource not found at http://example.org/matrix}
         end
       end
     end
