@@ -1,7 +1,7 @@
-require 'pact_broker/client/cli/publish'
+require 'pact_broker/client/cli/broker'
 
 module PactBroker::Client::CLI
-  describe Publish do
+  describe Broker do
     describe ".broker" do
       before do
         allow(PactBroker::Client::PublishPacts).to receive(:call).and_return(true)
@@ -17,7 +17,7 @@ module PactBroker::Client::CLI
         }
       end
 
-      let(:invoke_broker) { subject.broker(*file_list) }
+      let(:invoke_broker) { subject.publish(*file_list) }
 
       context "with minimum valid options" do
         it "invokes the PublishPacts command" do
@@ -26,7 +26,7 @@ module PactBroker::Client::CLI
             ["spec/support/cli_test_pacts/foo.json"],
             "1.2.3",
             [],
-            {}
+            {verbose: nil}
           )
           invoke_broker
         end

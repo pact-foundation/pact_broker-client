@@ -24,40 +24,9 @@ module PactBroker::Client::CLI
   describe CustomThor do
     subject { TestThor.new }
 
-    it "invokes the default task when aguments are given without specifying a task" do
-      expect(Delegate).to receive(:call).with(argument: 'foo')
-      TestThor.start(%w{foo})
-    end
-
     it "converts options that are specified multiple times into a single array" do
       expect(Delegate).to receive(:call).with({'multi' => ['one', 'two']})
       TestThor.start(%w{test_multiple_options --multi one --multi two})
-    end
-
-    describe ".prepend_default_task_name" do
-      let(:argv_with) { [TestThor.default_command, 'foo'] }
-
-      context "when the default task name is given" do
-        it "does not prepend the default task name" do
-          expect(TestThor.prepend_default_task_name(argv_with)).to eq(argv_with)
-        end
-      end
-
-      context "when the first argument is --help" do
-        let(:argv) { ['--help', 'foo'] }
-
-        it "does not prepend the default task name" do
-          expect(TestThor.prepend_default_task_name(argv)).to eq(argv)
-        end
-      end
-
-      context "when the default task name is not given" do
-        let(:argv) { ['foo'] }
-
-        it "prepends the default task name" do
-          expect(TestThor.prepend_default_task_name(argv)).to eq(argv_with)
-        end
-      end
     end
 
     describe ".turn_muliple_tag_options_into_array" do

@@ -6,9 +6,7 @@ module PactBroker
       ##
       # Custom Thor task allows the following:
       #
-      # `script arg1 arg2` to be interpreted as `script <default_task> arg1 arg2`
       # `--option 1 --option 2` to be interpreted as `--option 1 2` (the standard Thor format for multiple value options)
-      # `script --help` to display the help for the default task instead of the command list
       #
       class CustomThor < ::Thor
 
@@ -17,24 +15,8 @@ module PactBroker
             super(massage_args(given_args))
           end
 
-          def help *args
-            if args.empty?
-              super(self.class.default_task)
-            else
-              super
-            end
-          end
-
           def self.massage_args argv
-            prepend_default_task_name(turn_muliple_tag_options_into_array(argv))
-          end
-
-          def self.prepend_default_task_name argv
-            if known_first_arguments.include?(argv[0])
-              argv
-            else
-              [default_command] + argv
-            end
+            turn_muliple_tag_options_into_array(argv)
           end
 
           # other task names, help, and the help shortcuts
