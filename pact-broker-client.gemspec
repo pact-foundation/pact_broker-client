@@ -31,5 +31,4 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'webmock', '~> 3.0'
   gem.add_development_dependency 'conventional-changelog'
   gem.add_development_dependency 'pact', '~> 1.16'
-  gem.add_development_dependency 'pry-byebug'
 end
