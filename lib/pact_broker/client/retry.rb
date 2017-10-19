@@ -23,8 +23,8 @@ module PactBroker
           rescue RescuableError => e
             tries += 1
             $stderr.puts "Error making request - #{e.message}, attempt #{tries} of #{max_tries}"
-            sleep options
             raise e if max_tries == tries
+            sleep options
           end
         end
       end
