@@ -35,6 +35,9 @@ module PactBroker
         default_task :broker
 
         no_commands do
+          def self.exit_on_failure?
+            true
+          end
 
           def validate pact_files
             unless pact_files && pact_files.any?
