@@ -19,7 +19,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: "pacticipant[]=Foo&version[]=1.2.3&pacticipant[]=Bar&version[]=4.5.6"
+              query: "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=4.5.6"
             ).
             will_respond_with(
               status: 200,
@@ -42,7 +42,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: "pacticipant[]=Foo+Thing&version[]=1.2.3&pacticipant[]=Bar&version[]=4.5.6"
+              query: "q[][pacticipant]=Foo%20Thing&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=4.5.6"
             ).
             will_respond_with(
               status: 200,
@@ -87,7 +87,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: "pacticipant[]=Foo&version[]=1.2.3&pacticipant[]=Bar&version[]=9.9.9"
+              query: "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=9.9.9"
             ).
             will_respond_with(
               status: 400,
@@ -114,7 +114,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: "pacticipant[]=Foo&version[]=1.2.3&pacticipant[]=Bar&version[]=9.9.9"
+              query: "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=9.9.9"
             ).
             will_respond_with(
               status: 400,

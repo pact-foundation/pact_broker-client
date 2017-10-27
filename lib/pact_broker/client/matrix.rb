@@ -5,7 +5,7 @@ module PactBroker
     class Matrix < BaseClient
       def get selectors
         query = convert_selector_hashes_to_params(selectors)
-        response = self.class.get("/matrix", query: query, headers: default_get_headers)
+        response = self.class.get("/matrix", query: {q: query}, headers: default_get_headers)
         $stdout.puts("DEBUG: Response headers #{response.headers}") if verbose?
         $stdout.puts("DEBUG: Response body #{response}") if verbose?
         response = handle_response(response) do
@@ -32,7 +32,7 @@ module PactBroker
       end
 
       def convert_selector_hashes_to_params(selectors)
-        selectors.collect{ |selector| ["pacticipant[]=#{encode_query_param(selector[:name])}&version[]=#{encode_query_param(selector[:version])}"] }.join("&")
+        selectors.collect{ |selector| {pacticipant: selector[:name], version: selector[:version]} }
       end
     end
   end
