@@ -204,7 +204,49 @@
       "request": {
         "method": "get",
         "path": "/matrix",
-        "query": "selectors[]=Foo%2Fversion%2F1.2.3&selectors[]=Bar%2Fversion%2F4.5.6"
+        "query": "pacticipant[]=Foo&version[]=1.2.3&pacticipant[]=Bar&version[]=4.5.6"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "matrix": {
+            "json_class": "Pact::SomethingLike",
+            "contents": [
+              {
+                "consumer": {
+                  "name": "Foo",
+                  "version": {
+                    "number": "4"
+                  }
+                },
+                "provider": {
+                  "name": "Bar",
+                  "version": {
+                    "number": "5"
+                  }
+                },
+                "verificationResult": {
+                  "verifiedAt": "2017-10-10T12:49:04+11:00",
+                  "success": true
+                },
+                "pact": {
+                  "createdAt": "2017-10-10T12:49:04+11:00"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "description": "a request for the compatibility matrix for Foo version 1.2.3 and Bar version 4.5.6",
+      "providerState": "the pact for Foo Thing version 1.2.3 has been verified by Bar version 4.5.6",
+      "request": {
+        "method": "get",
+        "path": "/matrix",
+        "query": "pacticipant[]=Foo+Thing&version[]=1.2.3&pacticipant[]=Bar&version[]=4.5.6"
       },
       "response": {
         "status": 200,
@@ -246,7 +288,7 @@
       "request": {
         "method": "get",
         "path": "/matrix",
-        "query": "selectors[]=Foo%2Fversion%2F1.2.3&selectors[]=Bar%2Fversion%2F9.9.9"
+        "query": "pacticipant[]=Foo&version[]=1.2.3&pacticipant[]=Bar&version[]=9.9.9"
       },
       "response": {
         "status": 400,
@@ -266,7 +308,7 @@
       "request": {
         "method": "get",
         "path": "/matrix",
-        "query": "selectors[]=Foo%2Fversion%2F1.2.3&selectors[]=Bar%2Fversion%2F9.9.9"
+        "query": "pacticipant[]=Foo&version[]=1.2.3&pacticipant[]=Bar&version[]=9.9.9"
       },
       "response": {
         "status": 400,

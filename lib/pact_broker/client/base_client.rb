@@ -1,6 +1,7 @@
 require 'erb'
 require 'httparty'
 require 'pact_broker/client/error'
+require 'cgi'
 
 module PactBroker
   module Client
@@ -10,6 +11,10 @@ module PactBroker
     module UrlHelpers
       def encode_param param
         ERB::Util.url_encode param
+      end
+
+      def encode_query_param param
+        CGI::escape param
       end
     end
 

@@ -19,9 +19,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: {
-                'selectors[]' => ['Foo/version/1.2.3', 'Bar/version/4.5.6']
-              }
+              query: "pacticipant[]=Foo&version[]=1.2.3&pacticipant[]=Bar&version[]=4.5.6"
             ).
             will_respond_with(
               status: 200,
@@ -29,6 +27,31 @@ module PactBroker::Client
               body: matrix_response_body
             )
         end
+
+        it 'a matrix of compatible versions' do
+          matrix = pact_broker_client.matrix.get(selectors)
+          expect(matrix.size).to eq 1
+        end
+      end
+
+      context "when the pacticipant name has a space in it" do
+        before do
+          pact_broker.
+            given("the pact for Foo Thing version 1.2.3 has been verified by Bar version 4.5.6").
+            upon_receiving("a request for the compatibility matrix for Foo version 1.2.3 and Bar version 4.5.6").
+            with(
+              method: :get,
+              path: "/matrix",
+              query: "pacticipant[]=Foo+Thing&version[]=1.2.3&pacticipant[]=Bar&version[]=4.5.6"
+            ).
+            will_respond_with(
+              status: 200,
+              headers: pact_broker_response_headers,
+              body: matrix_response_body
+            )
+        end
+
+        let(:selectors) { [{ name: "Foo Thing", version: "1.2.3" }, { name: "Bar", version: "4.5.6" }] }
 
         it 'a matrix of compatible versions' do
           matrix = pact_broker_client.matrix.get(selectors)
@@ -64,9 +87,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: {
-                'selectors[]' => ['Foo/version/1.2.3', 'Bar/version/9.9.9']
-              }
+              query: "pacticipant[]=Foo&version[]=1.2.3&pacticipant[]=Bar&version[]=9.9.9"
             ).
             will_respond_with(
               status: 400,
@@ -93,9 +114,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: {
-                'selectors[]' => ['Foo/version/1.2.3', 'Bar/version/9.9.9']
-              }
+              query: "pacticipant[]=Foo&version[]=1.2.3&pacticipant[]=Bar&version[]=9.9.9"
             ).
             will_respond_with(
               status: 400,
