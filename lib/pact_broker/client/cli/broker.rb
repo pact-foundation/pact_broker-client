@@ -22,7 +22,7 @@ module PactBroker
         method_option :output, aliases: "-o", desc: "json or table", default: 'table'
         method_option :verbose, aliases: "-v", desc: "Verbose output", :required => false
 
-        def can_i_deploy
+        def can_i_deploy(*ignored)
           selectors = VersionSelectorOptionsParser.call(ARGV)
           result = CanIDeploy.call(options.broker_base_url, selectors, {output: options.output}, pact_broker_client_options)
           $stdout.puts result.message
