@@ -45,7 +45,7 @@ module PactBroker
       attr_reader :pact_broker_base_url, :version_selectors, :options, :pact_broker_client_options
 
       def success_message(matrix)
-        message = format_matrix(matrix[:matrix])
+        message = format_matrix(matrix)
         if format != 'json'
           message = 'Computer says yes \o/' + "\n\n" + message
         end
