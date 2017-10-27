@@ -12,7 +12,7 @@ module PactBroker
             Line.new(
               lookup(line, :consumer, :name),
               lookup(line, :consumer, :version, :number),
-              lookup(line, :consumer, :name),
+              lookup(line, :provider, :name),
               lookup(line, :provider, :version, :number),
               lookup(line, :verificationResult, :success).to_s
             )
