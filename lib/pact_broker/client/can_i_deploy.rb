@@ -53,7 +53,7 @@ module PactBroker
       end
 
       def failure_message(matrix)
-        message = format_matrix(matrix[:matrix])
+        message = format_matrix(matrix)
         if format != 'json'
           message = 'Computer says no ¯\_(ツ)_/¯' + "\n\n" + message
         end

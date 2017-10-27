@@ -8,7 +8,7 @@ module PactBroker
 
       # SublimeText removes whitespace from the end of files when you save them,
       # so removing trailing whitespace before comparing
-      subject { Matrix::TextFormatter.call(matrix_lines).split("\n").collect(&:strip).join("\n") }
+      subject { Matrix::TextFormatter.call(matrix: matrix_lines).split("\n").collect(&:strip).join("\n") }
 
       context "with valid data" do
         it "it has the right text" do

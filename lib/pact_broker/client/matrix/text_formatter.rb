@@ -7,8 +7,8 @@ module PactBroker
 
         Line = Struct.new(:consumer, :consumer_version, :provider, :provider_version, :success)
 
-        def self.call(matrix_lines)
-          data = matrix_lines.collect do | line |
+        def self.call(matrix)
+          data = matrix[:matrix].collect do | line |
             Line.new(
               lookup(line, :consumer, :name),
               lookup(line, :consumer, :version, :number),

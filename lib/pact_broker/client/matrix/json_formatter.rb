@@ -4,8 +4,8 @@ module PactBroker
   module Client
     class Matrix
       class JsonFormatter
-        def self.call(matrix_lines)
-          JSON.pretty_generate(matrix: matrix_lines)
+        def self.call(matrix)
+          JSON.pretty_generate(matrix)
         end
       end
     end
