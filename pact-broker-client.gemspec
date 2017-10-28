@@ -7,9 +7,9 @@ require 'pact_broker/client/version'
 Gem::Specification.new do |gem|
   gem.name          = "pact_broker-client"
   gem.version       = PactBroker::Client::VERSION
-  gem.authors       = ["Bethany Skurrie"]
+  gem.authors       = ["Beth Skurrie"]
   gem.email         = ["bskurrie@dius.com.au"]
-  gem.description   = %q{Publishes pacts to, and retrieves pacts from, the pact broker server.}
+  gem.description   = %q{Client for the Pact Broker. Publish, retrieve and query pacts and verification results.}
   gem.summary       = %q{See description}
   gem.homepage      = "https://github.com/bethesque/pact_broker-client.git"
 
