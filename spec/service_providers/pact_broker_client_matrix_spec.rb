@@ -7,9 +7,9 @@ module PactBroker::Client
     include_context "pact broker"
 
     describe "retriving the compatibility matrix" do
-      let(:matrix_response_body) { { matrix: Pact.like(matrix) } }
+      let(:matrix_response_body) { Pact.like(matrix) }
       let(:matrix) { JSON.parse(File.read('spec/support/matrix.json')) }
-      let(:selectors) { [{ name: "Foo", version: "1.2.3" }, { name: "Bar", version: "4.5.6" }] }
+      let(:selectors) { [{ pacticipant: "Foo", version: "1.2.3" }, { pacticipant: "Bar", version: "4.5.6" }] }
 
       context "when results are found" do
         before do
@@ -30,7 +30,7 @@ module PactBroker::Client
 
         it 'a matrix of compatible versions' do
           matrix = pact_broker_client.matrix.get(selectors)
-          expect(matrix.size).to eq 1
+          expect(matrix[:matrix].size).to eq 1
         end
       end
 
@@ -51,11 +51,11 @@ module PactBroker::Client
             )
         end
 
-        let(:selectors) { [{ name: "Foo Thing", version: "1.2.3" }, { name: "Bar", version: "4.5.6" }] }
+        let(:selectors) { [{ pacticipant: "Foo Thing", version: "1.2.3" }, { pacticipant: "Bar", version: "4.5.6" }] }
 
         it 'a matrix of compatible versions' do
           matrix = pact_broker_client.matrix.get(selectors)
-          expect(matrix.size).to eq 1
+          expect(matrix[:matrix].size).to eq 1
         end
       end
 
@@ -98,7 +98,7 @@ module PactBroker::Client
             )
         end
 
-        let(:selectors) { [{ name: "Foo", version: "1.2.3" }, { name: "Bar", version: "9.9.9" }] }
+        let(:selectors) { [{ pacticipant: "Foo", version: "1.2.3" }, { pacticipant: "Bar", version: "9.9.9" }] }
 
         it 'returns a list of errors' do
           expect {
@@ -114,7 +114,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=9.9.9"
+              query: "q[][pacticipant]=Wiffle&q[][version]=1.2.3&q[][pacticipant]=Meep&q[][version]=9.9.9"
             ).
             will_respond_with(
               status: 400,
@@ -125,7 +125,7 @@ module PactBroker::Client
             )
         end
 
-        let(:selectors) { [{ name: "Foo", version: "1.2.3" }, { name: "Bar", version: "9.9.9" }] }
+        let(:selectors) { [{ pacticipant: "Wiffle", version: "1.2.3" }, { pacticipant: "Meep", version: "9.9.9" }] }
 
         it 'returns a list of errors' do
           expect {

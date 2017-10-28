@@ -32,7 +32,7 @@ module PactBroker
       end
 
       def convert_selector_hashes_to_params(selectors)
-        selectors.collect{ |selector| {pacticipant: selector[:name], version: selector[:version]} }
+        selectors.collect{ |selector| {pacticipant: selector[:pacticipant], version: selector[:version]} }
       end
     end
   end

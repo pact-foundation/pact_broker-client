@@ -7,15 +7,16 @@ module PactBroker
           last_flag = nil
           options.each do | option |
             case option
-            when "--name", "-n"
+            when "--pacticipant", "-a"
               versions << {}
             when /^\-/
               nil
             else
               case last_flag
-              when "--name", "-n"
-                versions.last[:name] = option
-              when "--version", "-a"
+              when "--pacticipant", "-a"
+                versions.last[:pacticipant] = option
+              when "--version", "-e"
+                versions << {pacticipant: nil} unless versions.last
                 versions.last[:version] = option
               end
             end

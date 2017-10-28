@@ -7,26 +7,29 @@ module PactBroker
 
         TEST_CASES = [
           [
-            ["--name", "Foo", "--version", "1.2.3"],
-            [{ name: "Foo", version: "1.2.3" } ]
+            ["--pacticipant", "Foo", "--version", "1.2.3"],
+            [{ pacticipant: "Foo", version: "1.2.3" } ]
           ],[
-            ["-n", "Foo", "-a", "1.2.3"],
-            [{ name: "Foo", version: "1.2.3" } ]
+            ["-a", "Foo", "-e", "1.2.3"],
+            [{ pacticipant: "Foo", version: "1.2.3" } ]
           ],[
-            ["--name", "Foo"],
-            [{ name: "Foo" } ]
+            ["--pacticipant", "Foo"],
+            [{ pacticipant: "Foo" } ]
           ],[
-            ["--name", "Foo", "Bar"],
-            [{ name: "Bar" } ]
+            ["--pacticipant", "Foo", "Bar"],
+            [{ pacticipant: "Bar" } ]
           ],[
-            ["--name", "Foo", "--name", "Bar", "--version", "1.2.3"],
-            [{ name: "Foo" }, { name: "Bar", version: "1.2.3" } ]
+            ["--pacticipant", "Foo", "--pacticipant", "Bar", "--version", "1.2.3"],
+            [{ pacticipant: "Foo" }, { pacticipant: "Bar", version: "1.2.3" } ]
           ],[
-            ["--name", "Foo", "--wrong", "Bar", "--version", "1.2.3"],
-            [{ name: "Foo", version: "1.2.3" } ]
+            ["--pacticipant", "Foo", "--wrong", "Bar", "--version", "1.2.3"],
+            [{ pacticipant: "Foo", version: "1.2.3" } ]
           ],[
-            ["--name", "the-thing", "--version", "1.2.3"],
-            [{ name: "the-thing", version: "1.2.3" } ]
+            ["--pacticipant", "the-thing", "--version", "1.2.3"],
+            [{ pacticipant: "the-thing", version: "1.2.3" } ]
+          ],[
+            ["--version", "1.2.3"],
+            [{ pacticipant: nil, version: "1.2.3" } ]
           ]
         ]
 

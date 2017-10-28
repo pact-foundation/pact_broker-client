@@ -3,7 +3,7 @@ require 'pact_broker/client/matrix/text_formatter'
 module PactBroker
   module Client
     describe Matrix::TextFormatter do
-      let(:matrix_lines) { JSON.parse(File.read('spec/support/matrix.json'), symbolize_names: true) }
+      let(:matrix_lines) { JSON.parse(File.read('spec/support/matrix.json'), symbolize_names: true)[:matrix] }
       let(:expected_matrix_lines) { File.read('spec/support/matrix.txt') }
 
       # SublimeText removes whitespace from the end of files when you save them,

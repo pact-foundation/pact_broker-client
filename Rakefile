@@ -12,7 +12,12 @@ RSpec::Core::RakeTask.new('spec:providers') do | task |
   task.rspec_opts = "--pattern spec/service_providers/**/*_spec.rb"
 end
 
-task :default => [:spec, 'spec:providers']
+# Must be run after spec:providers because it relies on the generated pact
+RSpec::Core::RakeTask.new('spec:integration') do | task |
+  task.rspec_opts = "--pattern spec/integration/**/*_spec.rb"
+end
+
+task :default => [:spec, 'spec:providers', 'spec:integration']
 
 task :generate_changelog do
   require 'pact_broker/client/version'

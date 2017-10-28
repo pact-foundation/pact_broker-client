@@ -4,7 +4,7 @@ module PactBroker
   module Client
     describe CanIDeploy do
       let(:pact_broker_base_url) { 'http://example.org' }
-      let(:version_selectors) { [{name: "Foo", version: "1"}] }
+      let(:version_selectors) { [{pacticipant: "Foo", version: "1"}] }
       let(:pact_broker_client_options) { { foo: 'bar' } }
       let(:matrix_client) { instance_double('PactBroker::Client::Matrix') }
       let(:matrix) { {matrix: ['foo'], summary: {compatible: true}} }
@@ -24,7 +24,7 @@ module PactBroker
       end
 
       it "creates a text table out of the matrix" do
-        expect(Matrix::Formatter).to receive(:call).with(['foo'], 'text')
+        expect(Matrix::Formatter).to receive(:call).with(matrix, 'text')
         subject
       end
 

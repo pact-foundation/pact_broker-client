@@ -14,15 +14,15 @@ module PactBroker
       class Broker < CustomThor
         desc 'can-i-deploy', "Returns exit code 0 or 1, indicating whether or not the specified application versions are compatible."
 
-        method_option :name, required: true, aliases: "-n", desc: "The application name. Use once for each pacticipant being checked."
-        method_option :version, required: true, aliases: "-a", desc: "The application version. Must be entered after a --name."
+        method_option :pacticipant, required: true, aliases: "-a", desc: "The pacticipant name. Use once for each pacticipant being checked."
+        method_option :version, required: true, aliases: "-e", desc: "The application version. Must be entered after the --pacticipant that it relates to."
         method_option :broker_base_url, required: true, aliases: "-b", desc: "The base URL of the Pact Broker"
         method_option :broker_username, aliases: "-u", desc: "Pact Broker basic auth username"
         method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
         method_option :output, aliases: "-o", desc: "json or table", default: 'table'
         method_option :verbose, aliases: "-v", desc: "Verbose output", :required => false
 
-        def can_i_deploy(*ignored)
+        def can_i_deploy(*ignored_but_necessary)
           selectors = VersionSelectorOptionsParser.call(ARGV)
           result = CanIDeploy.call(options.broker_base_url, selectors, {output: options.output}, pact_broker_client_options)
           $stdout.puts result.message

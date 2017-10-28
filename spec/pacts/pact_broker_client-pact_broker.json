@@ -18,17 +18,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "application/hal+json",
-              "matcher": {
-                "json_class": "Regexp",
-                "o": 0,
-                "s": "application/hal\\+json"
-              }
-            }
-          }
+          "Content-Type": "application/hal+json"
         },
         "body": {
           "_links": {
@@ -73,6 +63,12 @@
               }
             }
           ]
+        },
+        "matchingRules": {
+          "$.headers.Content-Type": {
+            "match": "regex",
+            "regex": "application\\/hal\\+json"
+          }
         }
       }
     },
@@ -88,17 +84,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "application/hal+json",
-              "matcher": {
-                "json_class": "Regexp",
-                "o": 0,
-                "s": "application/hal\\+json"
-              }
-            }
-          }
+          "Content-Type": "application/hal+json"
         },
         "body": {
           "_links": {
@@ -132,6 +118,12 @@
               }
             }
           ]
+        },
+        "matchingRules": {
+          "$.headers.Content-Type": {
+            "match": "regex",
+            "regex": "application\\/hal\\+json"
+          }
         }
       }
     },
@@ -147,17 +139,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "application/hal+json",
-              "matcher": {
-                "json_class": "Regexp",
-                "o": 0,
-                "s": "application/hal\\+json"
-              }
-            }
-          }
+          "Content-Type": "application/hal+json"
         },
         "body": {
           "_links": {
@@ -179,6 +161,12 @@
               },
               "number": "1.3.0"
             }
+          }
+        },
+        "matchingRules": {
+          "$.headers.Content-Type": {
+            "match": "regex",
+            "regex": "application\\/hal\\+json"
           }
         }
       }
@@ -211,31 +199,36 @@
         "headers": {
         },
         "body": {
-          "matrix": {
-            "json_class": "Pact::SomethingLike",
-            "contents": [
-              {
-                "consumer": {
-                  "name": "Foo",
-                  "version": {
-                    "number": "4"
-                  }
-                },
-                "provider": {
-                  "name": "Bar",
-                  "version": {
-                    "number": "5"
-                  }
-                },
-                "verificationResult": {
-                  "verifiedAt": "2017-10-10T12:49:04+11:00",
-                  "success": true
-                },
-                "pact": {
-                  "createdAt": "2017-10-10T12:49:04+11:00"
+          "summary": {
+            "compatible": true
+          },
+          "matrix": [
+            {
+              "consumer": {
+                "name": "Foo",
+                "version": {
+                  "number": "4"
                 }
+              },
+              "provider": {
+                "name": "Bar",
+                "version": {
+                  "number": "5"
+                }
+              },
+              "verificationResult": {
+                "verifiedAt": "2017-10-10T12:49:04+11:00",
+                "success": true
+              },
+              "pact": {
+                "createdAt": "2017-10-10T12:49:04+11:00"
               }
-            ]
+            }
+          ]
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
           }
         }
       }
@@ -253,31 +246,36 @@
         "headers": {
         },
         "body": {
-          "matrix": {
-            "json_class": "Pact::SomethingLike",
-            "contents": [
-              {
-                "consumer": {
-                  "name": "Foo",
-                  "version": {
-                    "number": "4"
-                  }
-                },
-                "provider": {
-                  "name": "Bar",
-                  "version": {
-                    "number": "5"
-                  }
-                },
-                "verificationResult": {
-                  "verifiedAt": "2017-10-10T12:49:04+11:00",
-                  "success": true
-                },
-                "pact": {
-                  "createdAt": "2017-10-10T12:49:04+11:00"
+          "summary": {
+            "compatible": true
+          },
+          "matrix": [
+            {
+              "consumer": {
+                "name": "Foo",
+                "version": {
+                  "number": "4"
                 }
+              },
+              "provider": {
+                "name": "Bar",
+                "version": {
+                  "number": "5"
+                }
+              },
+              "verificationResult": {
+                "verifiedAt": "2017-10-10T12:49:04+11:00",
+                "success": true
+              },
+              "pact": {
+                "createdAt": "2017-10-10T12:49:04+11:00"
               }
-            ]
+            }
+          ]
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
           }
         }
       }
@@ -295,10 +293,16 @@
         "headers": {
         },
         "body": {
-          "errors": {
-            "json_class": "Pact::ArrayLike",
-            "contents": "an error message",
+          "errors": [
+            "an error message"
+          ]
+        },
+        "matchingRules": {
+          "$.body.errors": {
             "min": 1
+          },
+          "$.body.errors[*].*": {
+            "match": "type"
           }
         }
       }
@@ -308,17 +312,23 @@
       "request": {
         "method": "get",
         "path": "/matrix",
-        "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=9.9.9"
+        "query": "q[][pacticipant]=Wiffle&q[][version]=1.2.3&q[][pacticipant]=Meep&q[][version]=9.9.9"
       },
       "response": {
         "status": 400,
         "headers": {
         },
         "body": {
-          "errors": {
-            "json_class": "Pact::ArrayLike",
-            "contents": "an error message",
+          "errors": [
+            "an error message"
+          ]
+        },
+        "matchingRules": {
+          "$.body.errors": {
             "min": 1
+          },
+          "$.body.errors[*].*": {
+            "match": "type"
           }
         }
       }
@@ -483,29 +493,19 @@
       "response": {
         "status": 500,
         "headers": {
-          "Content-Type": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "application/hal+json",
-              "matcher": {
-                "json_class": "Regexp",
-                "o": 0,
-                "s": "application/.*json"
-              }
-            }
-          }
+          "Content-Type": "application/hal+json"
         },
         "body": {
-          "message": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "An error occurred",
-              "matcher": {
-                "json_class": "Regexp",
-                "o": 0,
-                "s": ".*"
-              }
-            }
+          "message": "An error occurred"
+        },
+        "matchingRules": {
+          "$.headers.Content-Type": {
+            "match": "regex",
+            "regex": "application\\/.*json"
+          },
+          "$.body.message": {
+            "match": "regex",
+            "regex": ".*"
           }
         }
       }
@@ -646,17 +646,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": {
-            "json_class": "Pact::Term",
-            "data": {
-              "generate": "application/hal+json",
-              "matcher": {
-                "json_class": "Regexp",
-                "o": 0,
-                "s": "application/.*json"
-              }
-            }
-          },
+          "Content-Type": "application/hal+json",
           "X-Pact-Consumer-Version": "1.3.0"
         },
         "body": {
@@ -669,6 +659,12 @@
           "interactions": [
 
           ]
+        },
+        "matchingRules": {
+          "$.headers.Content-Type": {
+            "match": "regex",
+            "regex": "application\\/.*json"
+          }
         }
       }
     },
@@ -731,18 +727,14 @@
         "body": {
           "_links": {
             "self": {
-              "href": {
-                "json_class": "Pact::Term",
-                "data": {
-                  "generate": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/tags/prod",
-                  "matcher": {
-                    "json_class": "Regexp",
-                    "o": 0,
-                    "s": "http://.*/pacticipants/Condor/versions/1.3.0/tags/prod"
-                  }
-                }
-              }
+              "href": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/tags/prod"
             }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*\\/pacticipants\\/Condor\\/versions\\/1.3.0\\/tags\\/prod"
           }
         }
       }
@@ -764,18 +756,14 @@
         "body": {
           "_links": {
             "self": {
-              "href": {
-                "json_class": "Pact::Term",
-                "data": {
-                  "generate": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/tags/prod",
-                  "matcher": {
-                    "json_class": "Regexp",
-                    "o": 0,
-                    "s": "http://.*/pacticipants/Condor/versions/1.3.0/tags/prod"
-                  }
-                }
-              }
+              "href": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/tags/prod"
             }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*\\/pacticipants\\/Condor\\/versions\\/1.3.0\\/tags\\/prod"
           }
         }
       }
@@ -797,18 +785,14 @@
         "body": {
           "_links": {
             "self": {
-              "href": {
-                "json_class": "Pact::Term",
-                "data": {
-                  "generate": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/tags/prod",
-                  "matcher": {
-                    "json_class": "Regexp",
-                    "o": 0,
-                    "s": "http://.*/pacticipants/Condor/versions/1.3.0/tags/prod"
-                  }
-                }
-              }
+              "href": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/tags/prod"
             }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*\\/pacticipants\\/Condor\\/versions\\/1.3.0\\/tags\\/prod"
           }
         }
       }
@@ -816,7 +800,7 @@
   ],
   "metadata": {
     "pactSpecification": {
-      "version": "1.0.0"
+      "version": "2.0.0"
     }
   }
 }
