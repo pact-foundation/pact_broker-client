@@ -28,7 +28,7 @@ module PactBroker::Client
             )
         end
 
-        it 'a matrix of compatible versions' do
+        it 'returns the pact matrix' do
           matrix = pact_broker_client.matrix.get(selectors)
           expect(matrix[:matrix].size).to eq 1
         end
@@ -53,7 +53,7 @@ module PactBroker::Client
 
         let(:selectors) { [{ pacticipant: "Foo Thing", version: "1.2.3" }, { pacticipant: "Bar", version: "4.5.6" }] }
 
-        it 'a matrix of compatible versions' do
+        it 'incorrectly escapes the spaces but it still seems to work' do
           matrix = pact_broker_client.matrix.get(selectors)
           expect(matrix[:matrix].size).to eq 1
         end
@@ -100,7 +100,7 @@ module PactBroker::Client
 
         let(:selectors) { [{ pacticipant: "Foo", version: "1.2.3" }, { pacticipant: "Bar", version: "9.9.9" }] }
 
-        it 'returns a list of errors' do
+        it 'raises an error' do
           expect {
             pact_broker_client.matrix.get(selectors)
           }.to raise_error PactBroker::Client::Error, "an error message"
@@ -127,10 +127,63 @@ module PactBroker::Client
 
         let(:selectors) { [{ pacticipant: "Wiffle", version: "1.2.3" }, { pacticipant: "Meep", version: "9.9.9" }] }
 
-        it 'returns a list of errors' do
+        it 'raises an error' do
           expect {
             pact_broker_client.matrix.get(selectors)
           }.to raise_error PactBroker::Client::Error, "an error message"
+        end
+      end
+
+      context "when no versions are specified" do
+        before do
+          pact_broker.
+            given("the pact for Foo version 1.2.3 and 1.2.4 has been verified by Bar version 4.5.6").
+            upon_receiving("a request for the compatibility matrix for all versions of Foo and Bar").
+            with(
+              method: :get,
+              path: "/matrix",
+              query: "q[][pacticipant]=Foo&q[][pacticipant]=Bar"
+            ).
+            will_respond_with(
+              status: 200,
+              headers: pact_broker_response_headers,
+              body: {
+                matrix: Pact.each_like(matrix_row, min: 2)
+              }
+            )
+        end
+        let(:matrix_row) { JSON.parse(File.read('spec/support/matrix.json'))['matrix'].first }
+        let(:selectors) { [{ pacticipant: "Foo" }, { pacticipant: "Bar" }] }
+
+        it "returns multiple rows" do
+          matrix = pact_broker_client.matrix.get(selectors)
+          expect(matrix[:matrix].size).to eq 2
+        end
+      end
+
+      context "when the success option is true" do
+        before do
+          pact_broker.
+            given("the pact for Foo version 1.2.3 has been successfully verified by Bar version 4.5.6, and 1.2.4 unsuccessfully by 9.9.9").
+            upon_receiving("a request for the successful rows of the compatibility matrix for all versions of Foo and Bar").
+            with(
+              method: :get,
+              path: "/matrix",
+              query: "q[][pacticipant]=Foo&q[][pacticipant]=Bar&success[]=true"
+            ).
+            will_respond_with(
+              status: 200,
+              headers: pact_broker_response_headers,
+              body: matrix_response_body
+            )
+        end
+        let(:matrix_row) { JSON.parse(File.read('spec/support/matrix.json'))['matrix'].first }
+        let(:selectors) { [{ pacticipant: "Foo" }, { pacticipant: "Bar" }] }
+        let(:options) { {success: true} }
+
+        it "returns only the successful row" do
+          matrix = pact_broker_client.matrix.get(selectors, options)
+          expect(matrix[:matrix].size).to eq 1
         end
       end
     end

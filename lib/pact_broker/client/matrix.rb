@@ -3,9 +3,11 @@ require_relative 'base_client'
 module PactBroker
   module Client
     class Matrix < BaseClient
-      def get selectors
-        query = convert_selector_hashes_to_params(selectors)
-        response = self.class.get("/matrix", query: {q: query}, headers: default_get_headers)
+      def get selectors, options = {}
+        query = {
+          q: convert_selector_hashes_to_params(selectors)
+        }.merge(query_options(options))
+        response = self.class.get("/matrix", query: query, headers: default_get_headers)
         $stdout.puts("DEBUG: Response headers #{response.headers}") if verbose?
         $stdout.puts("DEBUG: Response body #{response}") if verbose?
         response = handle_response(response) do
@@ -31,8 +33,20 @@ module PactBroker
         end
       end
 
+      def query_options(options)
+        opts = {}
+        if options.key?(:success)
+          opts[:success] = [*options[:success]]
+        end
+        opts
+      end
+
       def convert_selector_hashes_to_params(selectors)
-        selectors.collect{ |selector| {pacticipant: selector[:pacticipant], version: selector[:version]} }
+        selectors.collect do |selector|
+          { pacticipant: selector[:pacticipant] }.tap do | hash |
+            hash[:version] = selector[:version] if selector[:version]
+          end
+        end
       end
     end
   end

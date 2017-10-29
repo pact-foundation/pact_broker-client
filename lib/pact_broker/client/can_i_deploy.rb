@@ -3,7 +3,6 @@ require 'pact_broker/client/pact_broker_client'
 require 'pact_broker/client/retry'
 require 'pact_broker/client/matrix/formatter'
 
-
 module PactBroker
   module Client
     class CanIDeploy
