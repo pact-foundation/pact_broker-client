@@ -15,7 +15,7 @@ module PactBroker
         let(:result) { instance_double('PactBroker::Client::CanIDeploy::Result', success: success, message: message) }
         let(:success) { true }
         let(:message) { 'message' }
-        let(:version_selectors) { ['selector1'] }
+        let(:version_selectors) { [{pacticipant: "Foo", version: "1"}] }
         let(:minimum_valid_options) do
           {
             broker_base_url: 'http://pact-broker',
@@ -34,6 +34,14 @@ module PactBroker
         it "invokes the CanIDeploy service" do
           expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, {output: 'table'}, {verbose: 'verbose'})
           invoke_can_i_deploy
+        end
+
+        context "with a missing --version" do
+          let(:version_selectors) { [{pacticipant: "Foo", version: nil}] }
+
+          it "raises an error" do
+            expect { invoke_can_i_deploy }.to raise_error Thor::RequiredArgumentMissingError, "No --version provided for pacticipant Foo"
+          end
         end
 
         context "with basic auth" do

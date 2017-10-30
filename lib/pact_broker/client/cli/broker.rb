@@ -4,6 +4,7 @@ require 'pact_broker/client/cli/version_selector_options_parser'
 require 'pact_broker/client/cli/custom_thor'
 require 'pact_broker/client/publish_pacts'
 require 'rake/file_list'
+require 'thor/error'
 
 module PactBroker
   module Client
@@ -24,6 +25,7 @@ module PactBroker
 
         def can_i_deploy(*ignored_but_necessary)
           selectors = VersionSelectorOptionsParser.call(ARGV)
+          validate_can_i_deploy_selectors(selectors)
           result = CanIDeploy.call(options.broker_base_url, selectors, {output: options.output}, pact_broker_client_options)
           $stdout.puts result.message
           exit(1) unless result.success
@@ -58,8 +60,13 @@ module PactBroker
 
           def validate_pact_files pact_files
             unless pact_files && pact_files.any?
-              raise RequiredArgumentMissingError, "No value provided for required pact_files"
+              raise ::Thor::RequiredArgumentMissingError, "No value provided for required pact_files"
             end
+          end
+
+          def validate_can_i_deploy_selectors selectors
+            pacticipants_without_versions = selectors.select{ |s| s[:version].nil? }.collect{ |s| s[:pacticipant] }
+            raise ::Thor::RequiredArgumentMissingError, "No --version provided for pacticipant #{pacticipants_without_versions.join(", ")}" if pacticipants_without_versions.any?
           end
 
           def publish_pacts pact_files
