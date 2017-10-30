@@ -4,11 +4,11 @@ module PactBroker
   module Client
     describe CanIDeploy do
       let(:pact_broker_base_url) { 'http://example.org' }
-      let(:version_selectors) { [{pacticipant: "Foo", version: "1"}] }
+      let(:version_selectors) { [{ pacticipant: "Foo", version: "1" }] }
       let(:pact_broker_client_options) { { foo: 'bar' } }
       let(:matrix_client) { instance_double('PactBroker::Client::Matrix') }
-      let(:matrix) { {matrix: ['foo'], summary: {deployable: true}} }
-      let(:options) { {output: 'text' } }
+      let(:matrix) { { matrix: ['foo'], summary: { deployable: true, reason: 'some reason' } } }
+      let(:options) { { output: 'text' } }
 
       before do
         allow_any_instance_of(PactBroker::Client::PactBrokerClient).to receive(:matrix).and_return(matrix_client)
@@ -37,10 +37,14 @@ module PactBroker
           expect(subject.message).to include "Computer says yes"
           expect(subject.message).to include "\n\ntext matrix"
         end
+
+        it "returns a success reason" do
+          expect(subject.message).to include "some reason"
+        end
       end
 
       context "when compatible versions are not found" do
-        let(:matrix) { {matrix: ['foo'], summary: {deployable: false}} }
+        let(:matrix) { {matrix: ['foo'], summary: { deployable: false, reason: 'some reason' }} }
 
         it "returns a failure response" do
           expect(subject.success).to be false
@@ -48,6 +52,10 @@ module PactBroker
 
         it "returns a failure message" do
           expect(subject.message).to include "Computer says no"
+        end
+
+        it "returns a failure reason" do
+          expect(subject.message).to include "some reason"
         end
       end
 

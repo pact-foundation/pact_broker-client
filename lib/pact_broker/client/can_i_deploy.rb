@@ -2,6 +2,7 @@ require 'pact_broker/client/error'
 require 'pact_broker/client/pact_broker_client'
 require 'pact_broker/client/retry'
 require 'pact_broker/client/matrix/formatter'
+require 'term/ansicolor'
 
 module PactBroker
   module Client
@@ -46,7 +47,7 @@ module PactBroker
       def success_message(matrix)
         message = format_matrix(matrix)
         if format != 'json'
-          message = 'Computer says yes \o/' + "\n\n" + message
+          message = 'Computer says yes \o/ ' + "\n\n" + message + "\n\n#{Term::ANSIColor.green(reason(matrix))}"
         end
         message
       end
@@ -54,7 +55,7 @@ module PactBroker
       def failure_message(matrix)
         message = format_matrix(matrix)
         if format != 'json'
-          message = 'Computer says no ¯\_(ツ)_/¯' + "\n\n" + message
+          message = 'Computer says no ¯\_(ツ)_/¯ ' + "\n\n" + message + "\n\n#{Term::ANSIColor.red(reason(matrix))}"
         end
         message
       end
@@ -65,6 +66,10 @@ module PactBroker
 
       def format
         options[:output]
+      end
+
+      def reason(matrix)
+        matrix[:summary][:reason]
       end
 
       def matrix
