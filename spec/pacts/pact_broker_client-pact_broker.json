@@ -334,6 +334,121 @@
       }
     },
     {
+      "description": "a request for the compatibility matrix for all versions of Foo and Bar",
+      "providerState": "the pact for Foo version 1.2.3 and 1.2.4 has been verified by Bar version 4.5.6",
+      "request": {
+        "method": "get",
+        "path": "/matrix",
+        "query": "q[][pacticipant]=Foo&q[][pacticipant]=Bar"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "matrix": [
+            {
+              "consumer": {
+                "name": "Foo",
+                "version": {
+                  "number": "4"
+                }
+              },
+              "provider": {
+                "name": "Bar",
+                "version": {
+                  "number": "5"
+                }
+              },
+              "verificationResult": {
+                "verifiedAt": "2017-10-10T12:49:04+11:00",
+                "success": true
+              },
+              "pact": {
+                "createdAt": "2017-10-10T12:49:04+11:00"
+              }
+            },
+            {
+              "consumer": {
+                "name": "Foo",
+                "version": {
+                  "number": "4"
+                }
+              },
+              "provider": {
+                "name": "Bar",
+                "version": {
+                  "number": "5"
+                }
+              },
+              "verificationResult": {
+                "verifiedAt": "2017-10-10T12:49:04+11:00",
+                "success": true
+              },
+              "pact": {
+                "createdAt": "2017-10-10T12:49:04+11:00"
+              }
+            }
+          ]
+        },
+        "matchingRules": {
+          "$.body.matrix": {
+            "min": 2
+          },
+          "$.body.matrix[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request for the successful rows of the compatibility matrix for all versions of Foo and Bar",
+      "providerState": "the pact for Foo version 1.2.3 has been successfully verified by Bar version 4.5.6, and 1.2.4 unsuccessfully by 9.9.9",
+      "request": {
+        "method": "get",
+        "path": "/matrix",
+        "query": "q[][pacticipant]=Foo&q[][pacticipant]=Bar&success[]=true"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "summary": {
+            "compatible": true
+          },
+          "matrix": [
+            {
+              "consumer": {
+                "name": "Foo",
+                "version": {
+                  "number": "4"
+                }
+              },
+              "provider": {
+                "name": "Bar",
+                "version": {
+                  "number": "5"
+                }
+              },
+              "verificationResult": {
+                "verifiedAt": "2017-10-10T12:49:04+11:00",
+                "success": true
+              },
+              "pact": {
+                "createdAt": "2017-10-10T12:49:04+11:00"
+              }
+            }
+          ]
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
       "description": "a request to publish a pact",
       "providerState": "the 'Pricing Service' already exists in the pact-broker",
       "request": {
