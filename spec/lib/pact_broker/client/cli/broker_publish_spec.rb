@@ -5,6 +5,7 @@ module PactBroker::Client::CLI
     describe ".broker" do
       before do
         allow(PactBroker::Client::PublishPacts).to receive(:call).and_return(true)
+        allow(PactBroker::Client::Git).to receive(:branch).and_return("bar")
         subject.options = OpenStruct.new(minimum_valid_options)
       end
 
@@ -73,6 +74,30 @@ module PactBroker::Client::CLI
             anything,
             anything,
             ['foo'],
+            anything
+          )
+          invoke_broker
+        end
+      end
+
+      context "with tag-with-git-branch" do
+        before do
+          subject.options = OpenStruct.new(
+            minimum_valid_options.merge(tag_with_git_branch: true)
+          )
+        end
+
+        it "determines the git branch name" do
+          expect(PactBroker::Client::Git).to receive(:branch)
+          invoke_broker
+        end
+
+        it "adds it to the list of tags when publishing" do
+          expect(PactBroker::Client::PublishPacts).to receive(:call).with(
+            anything,
+            anything,
+            anything,
+            ['bar'],
             anything
           )
           invoke_broker

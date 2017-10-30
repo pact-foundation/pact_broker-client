@@ -1,5 +1,6 @@
-require 'pact_broker/client/can_i_deploy'
 require 'pact_broker/client/version'
+require 'pact_broker/client/can_i_deploy'
+require 'pact_broker/client/git'
 require 'pact_broker/client/cli/version_selector_options_parser'
 require 'pact_broker/client/cli/custom_thor'
 require 'pact_broker/client/publish_pacts'
@@ -38,6 +39,7 @@ module PactBroker
         method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
         method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for consumer version. Can be specified multiple times."
         method_option :verbose, aliases: "-v", desc: "Verbose output", :required => false
+        method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Default: false"
 
         def publish(*pact_files)
           validate_pact_files(pact_files)
@@ -90,7 +92,9 @@ module PactBroker
           end
 
           def tags
-            [*options.tag].compact
+            t = [*options.tag]
+            t << PactBroker::Client::Git.branch if options.tag_with_git_branch
+            t.compact.uniq
           end
 
           def pact_broker_client_options
