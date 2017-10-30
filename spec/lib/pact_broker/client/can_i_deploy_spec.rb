@@ -7,7 +7,7 @@ module PactBroker
       let(:version_selectors) { [{pacticipant: "Foo", version: "1"}] }
       let(:pact_broker_client_options) { { foo: 'bar' } }
       let(:matrix_client) { instance_double('PactBroker::Client::Matrix') }
-      let(:matrix) { {matrix: ['foo'], summary: {compatible: true}} }
+      let(:matrix) { {matrix: ['foo'], summary: {deployable: true}} }
       let(:options) { {output: 'text' } }
 
       before do
@@ -40,7 +40,7 @@ module PactBroker
       end
 
       context "when compatible versions are not found" do
-        let(:matrix) { {matrix: ['foo'], summary: {compatible: false}} }
+        let(:matrix) { {matrix: ['foo'], summary: {deployable: false}} }
 
         it "returns a failure response" do
           expect(subject.success).to be false

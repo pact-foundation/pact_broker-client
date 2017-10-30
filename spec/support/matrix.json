@@ -1,6 +1,6 @@
 {
   "summary": {
-    "compatible": true
+    "deployable": true
   },
   "matrix": [
     {

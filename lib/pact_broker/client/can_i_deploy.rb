@@ -28,7 +28,7 @@ module PactBroker
       end
 
       def call
-        if matrix[:summary][:compatible]
+        if matrix[:summary][:deployable]
           Result.new(true, success_message(matrix))
         else
           Result.new(false, failure_message(matrix))

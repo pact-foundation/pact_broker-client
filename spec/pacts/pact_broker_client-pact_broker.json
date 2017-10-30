@@ -200,7 +200,7 @@
         },
         "body": {
           "summary": {
-            "compatible": true
+            "deployable": true
           },
           "matrix": [
             {
@@ -247,7 +247,7 @@
         },
         "body": {
           "summary": {
-            "compatible": true
+            "deployable": true
           },
           "matrix": [
             {
@@ -415,7 +415,7 @@
         },
         "body": {
           "summary": {
-            "compatible": true
+            "deployable": true
           },
           "matrix": [
             {
