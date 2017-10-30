@@ -1,3 +1,31 @@
+<a name="v1.9.0"></a>
+### v1.9.0 (2017-10-30)
+
+
+#### Features
+
+* **cli**
+  * add option to --tag-with-git-branch when publishing pacts	 ([484d5b8](/../../commit/484d5b8))
+
+* **can-i-deploy**
+  * raise error when no --version is supplied for a --pacticipant	 ([0f3bfea](/../../commit/0f3bfea))
+  * change --name to --pacticipant	 ([d5d23bc](/../../commit/d5d23bc))
+  * include full response body in json output	 ([216bfdc](/../../commit/216bfdc))
+  * use array of query params for matrix	 ([314e2e2](/../../commit/314e2e2))
+
+* **what-can-i-deploy**
+  * add success param to matrix query	 ([40adb2e](/../../commit/40adb2e))
+
+* handle hash of errors in response	 ([fff32c2](/../../commit/fff32c2))
+* change query params for matrix to use pacticipant[]=? and version[]=?	 ([003e305](/../../commit/003e305))
+
+
+#### Bug Fixes
+
+* **can-i-deploy**
+  * correct provider name in text output	 ([bfd0882](/../../commit/bfd0882))
+
+
 <a name="v1.8.0"></a>
 ### v1.8.0 (2017-10-19)
 
