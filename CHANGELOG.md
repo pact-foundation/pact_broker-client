@@ -1,3 +1,13 @@
+<a name="v1.10.0"></a>
+### v1.10.0 (2017-10-31)
+
+
+#### Features
+
+* **can-i-deploy**
+  * print out matrix summary 'reason'	 ([aa25e16](/../../commit/aa25e16))
+
+
 <a name="v1.9.0"></a>
 ### v1.9.0 (2017-10-30)
 
