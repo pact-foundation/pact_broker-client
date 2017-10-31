@@ -16,7 +16,24 @@ module PactBroker
           end
 
           def self.massage_args argv
-            turn_muliple_tag_options_into_array(argv)
+            add_broker_config_from_environment_variables(turn_muliple_tag_options_into_array(argv))
+          end
+
+          def self.add_broker_config_from_environment_variables argv
+            return argv if argv[0] == 'version' || argv[0] == 'help'
+
+            new_argv = add_option_from_environment_variable(argv, 'broker-base-url', 'b', 'PACT_BROKER_BASE_URL')
+            new_argv = add_option_from_environment_variable(new_argv, 'broker-username', 'u', 'PACT_BROKER_USERNAME')
+            add_option_from_environment_variable(new_argv, 'broker-password', 'p', 'PACT_BROKER_PASSWORD')
+          end
+
+          def self.add_option_from_environment_variable argv, long_name, short_name, environment_variable_name
+            option_options = ["--#{long_name}", "--#{long_name.gsub('-','_')}", "-#{short_name}"]
+            if (argv & option_options).empty? && ENV[environment_variable_name]
+              argv + ["--#{long_name}", ENV[environment_variable_name]]
+            else
+              argv
+            end
           end
 
           # other task names, help, and the help shortcuts

@@ -18,6 +18,14 @@ module PactBroker::Client::CLI
       Delegate.call(options)
     end
 
+    desc '', ''
+    method_option :broker_base_url, required: true, aliases: "-b"
+    method_option :broker_username, aliases: "-u"
+    method_option :broker_password, aliases: "-p"
+    def test_using_env_vars
+      Delegate.call(options)
+    end
+
     default_command :test_default
   end
 
@@ -27,6 +35,32 @@ module PactBroker::Client::CLI
     it "converts options that are specified multiple times into a single array" do
       expect(Delegate).to receive(:call).with({'multi' => ['one', 'two']})
       TestThor.start(%w{test_multiple_options --multi one --multi two})
+    end
+
+    context "with broker configuration in the environment variables" do
+      before do
+        ENV['PACT_BROKER_BASE_URL'] = 'http://foo'
+        ENV['PACT_BROKER_USERNAME'] = 'username'
+        ENV['PACT_BROKER_PASSWORD'] = 'password'
+      end
+
+      it "populates the options from the environment variables" do
+        expect(Delegate).to receive(:call) do | options |
+          expect(options.broker_base_url).to eq 'http://foo'
+          expect(options.broker_username).to eq 'username'
+          expect(options.broker_password).to eq 'password'
+        end
+        TestThor.start(%w{test_using_env_vars})
+      end
+
+      it "does not override a value specifed on the command line" do
+        expect(Delegate).to receive(:call) do | options |
+          expect(options.broker_base_url).to eq 'http://bar'
+          expect(options.broker_username).to eq 'username'
+          expect(options.broker_password).to eq 'password'
+        end
+        TestThor.start(%w{test_using_env_vars --broker-base-url http://bar})
+      end
     end
 
     describe ".turn_muliple_tag_options_into_array" do
