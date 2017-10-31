@@ -6,6 +6,7 @@ require 'pact_broker/client/cli/custom_thor'
 require 'pact_broker/client/publish_pacts'
 require 'rake/file_list'
 require 'thor/error'
+require 'pact_broker/client/create_tag'
 
 module PactBroker
   module Client
@@ -47,6 +48,25 @@ module PactBroker
           raise PactPublicationError, "One or more pacts failed to be published" unless success
         rescue PactBroker::Client::Error => e
           raise PactPublicationError, "#{e.class} - #{e.message}"
+        end
+
+        desc 'create-version-tag', 'Add a tag to a pacticipant version'
+        method_option :pacticipant, required: true, aliases: "-a", desc: "The pacticipant name"
+        method_option :version, required: true, aliases: "-e", desc: "The pacticipant version"
+        method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for pacticipant version. Can be specified multiple times."
+        method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag pacticipant version with the name of the current git branch. Default: false"
+        method_option :broker_base_url, required: true, aliases: "-b", desc: "The base URL of the Pact Broker"
+        method_option :broker_username, aliases: "-u", desc: "Pact Broker basic auth username"
+        method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
+        method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
+
+        def create_version_tag
+          PactBroker::Client::CreateTag.call(
+            options.broker_base_url,
+            options.pacticipant,
+            options.version,
+            tags,
+            pact_broker_client_options)
         end
 
         desc 'version', "Show the pact_broker-client gem version"
