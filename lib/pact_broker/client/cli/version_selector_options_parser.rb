@@ -9,6 +9,9 @@ module PactBroker
             case option
             when "--pacticipant", "-a"
               versions << {}
+            when "--latest", "-l"
+              versions << {pacticipant: nil} unless versions.last
+              versions.last[:latest] = true
             when /^\-/
               nil
             else
@@ -18,6 +21,9 @@ module PactBroker
               when "--version", "-e"
                 versions << {pacticipant: nil} unless versions.last
                 versions.last[:version] = option
+              when "--latest", "-l"
+                versions << {pacticipant: nil} unless versions.last
+                versions.last[:tag] = option
               end
             end
             last_flag = option if option.start_with?("-")

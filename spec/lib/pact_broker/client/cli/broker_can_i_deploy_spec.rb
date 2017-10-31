@@ -36,11 +36,11 @@ module PactBroker
           invoke_can_i_deploy
         end
 
-        context "with a missing --version" do
+        context "with a missing --version and --latest" do
           let(:version_selectors) { [{pacticipant: "Foo", version: nil}] }
 
           it "raises an error" do
-            expect { invoke_can_i_deploy }.to raise_error Thor::RequiredArgumentMissingError, "No --version provided for pacticipant Foo"
+            expect { invoke_can_i_deploy }.to raise_error Thor::RequiredArgumentMissingError, /The version must be specified/
           end
         end
 

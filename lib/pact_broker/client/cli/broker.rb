@@ -18,7 +18,8 @@ module PactBroker
         desc 'can-i-deploy', "Returns exit code 0 or 1, indicating whether or not the specified application versions are compatible."
 
         method_option :pacticipant, required: true, aliases: "-a", desc: "The pacticipant name. Use once for each pacticipant being checked."
-        method_option :version, required: true, aliases: "-e", desc: "The application version. Must be entered after the --pacticipant that it relates to."
+        method_option :version, required: false, aliases: "-e", desc: "The pacticipant version. Must be entered after the --pacticipant that it relates to."
+        method_option :latest, required: false, aliases: "-l", banner: '[TAG]', desc: "Use the latest pacticipant version. Optionally specify a TAG to use the latest version with the specified tag."
         method_option :broker_base_url, required: true, aliases: "-b", desc: "The base URL of the Pact Broker"
         method_option :broker_username, aliases: "-u", desc: "Pact Broker basic auth username"
         method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
@@ -87,8 +88,8 @@ module PactBroker
           end
 
           def validate_can_i_deploy_selectors selectors
-            pacticipants_without_versions = selectors.select{ |s| s[:version].nil? }.collect{ |s| s[:pacticipant] }
-            raise ::Thor::RequiredArgumentMissingError, "No --version provided for pacticipant #{pacticipants_without_versions.join(", ")}" if pacticipants_without_versions.any?
+            pacticipants_without_versions = selectors.select{ |s| s[:version].nil? && s[:latest].nil? }.collect{ |s| s[:pacticipant] }
+            raise ::Thor::RequiredArgumentMissingError, "The version must be specified using --version or --latest [TAG] for pacticipant #{pacticipants_without_versions.join(", ")}" if pacticipants_without_versions.any?
           end
 
           def publish_pacts pact_files

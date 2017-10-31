@@ -30,6 +30,12 @@ module PactBroker
           ],[
             ["--version", "1.2.3"],
             [{ pacticipant: nil, version: "1.2.3" } ]
+          ],[
+            ["--pacticipant", "Foo", "--latest", "--pacticipant", "Bar"],
+            [{ pacticipant: "Foo", latest: true }, { pacticipant: "Bar" } ]
+          ],[
+            ["--pacticipant", "Foo", "--latest", "prod", "--pacticipant", "Bar"],
+            [{ pacticipant: "Foo", latest: true, tag: "prod"}, { pacticipant: "Bar" } ]
           ]
         ]
 
