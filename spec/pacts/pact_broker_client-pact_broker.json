@@ -452,6 +452,102 @@
       }
     },
     {
+      "description": "a request for the compatibility matrix for Foo version 1.2.3 and the latest prod version of Bar",
+      "providerState": "the pact for Foo version 1.2.3 has been successfully verified by Bar version 4.5.6 with tag prod, and 1.2.4 unsuccessfully by 9.9.9",
+      "request": {
+        "method": "get",
+        "path": "/matrix",
+        "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][latest]=true&q[][tag]=prod"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "summary": {
+            "deployable": true,
+            "reason": "some text"
+          },
+          "matrix": [
+            {
+              "consumer": {
+                "name": "Foo",
+                "version": {
+                  "number": "4"
+                }
+              },
+              "provider": {
+                "name": "Bar",
+                "version": {
+                  "number": "5"
+                }
+              },
+              "verificationResult": {
+                "verifiedAt": "2017-10-10T12:49:04+11:00",
+                "success": true
+              },
+              "pact": {
+                "createdAt": "2017-10-10T12:49:04+11:00"
+              }
+            }
+          ]
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request for the compatibility matrix for Foo version 1.2.3 and the latest version of Bar",
+      "providerState": "the pact for Foo version 1.2.3 has been successfully verified by Bar version 4.5.6, and 1.2.4 unsuccessfully by 9.9.9",
+      "request": {
+        "method": "get",
+        "path": "/matrix",
+        "query": "q[][pacticipant]=Foo&q[][version]=1.2.4&q[][pacticipant]=Bar&q[][latest]=true"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "summary": {
+            "deployable": true,
+            "reason": "some text"
+          },
+          "matrix": [
+            {
+              "consumer": {
+                "name": "Foo",
+                "version": {
+                  "number": "4"
+                }
+              },
+              "provider": {
+                "name": "Bar",
+                "version": {
+                  "number": "5"
+                }
+              },
+              "verificationResult": {
+                "verifiedAt": "2017-10-10T12:49:04+11:00",
+                "success": true
+              },
+              "pact": {
+                "createdAt": "2017-10-10T12:49:04+11:00"
+              }
+            }
+          ]
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
       "description": "a request to publish a pact",
       "providerState": "the 'Pricing Service' already exists in the pact-broker",
       "request": {

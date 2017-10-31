@@ -186,6 +186,58 @@ module PactBroker::Client
           expect(matrix[:matrix].size).to eq 1
         end
       end
+
+      context "when the latest version for a given tag is specified" do
+        before do
+          pact_broker.
+            given("the pact for Foo version 1.2.3 has been successfully verified by Bar version 4.5.6 with tag prod, and 1.2.4 unsuccessfully by 9.9.9").
+            upon_receiving("a request for the compatibility matrix for Foo version 1.2.3 and the latest prod version of Bar").
+            with(
+              method: :get,
+              path: "/matrix",
+              query: "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][latest]=true&q[][tag]=prod"
+            ).
+            will_respond_with(
+              status: 200,
+              headers: pact_broker_response_headers,
+              body: matrix_response_body
+            )
+        end
+        let(:matrix_row) { JSON.parse(File.read('spec/support/matrix.json'))['matrix'].first }
+        let(:selectors) { [{ pacticipant: "Foo", version: "1.2.3"}, { pacticipant: "Bar", latest: true, tag: 'prod' }] }
+        let(:options) { {} }
+
+        it "returns the matrix with the latest prod version of Bar" do
+          matrix = pact_broker_client.matrix.get(selectors, options)
+          expect(matrix[:matrix].size).to eq 1
+        end
+      end
+
+      context "when the latest version is specified" do
+        before do
+          pact_broker.
+            given("the pact for Foo version 1.2.3 has been successfully verified by Bar version 4.5.6, and 1.2.4 unsuccessfully by 9.9.9").
+            upon_receiving("a request for the compatibility matrix for Foo version 1.2.3 and the latest version of Bar").
+            with(
+              method: :get,
+              path: "/matrix",
+              query: "q[][pacticipant]=Foo&q[][version]=1.2.4&q[][pacticipant]=Bar&q[][latest]=true"
+            ).
+            will_respond_with(
+              status: 200,
+              headers: pact_broker_response_headers,
+              body: matrix_response_body
+            )
+        end
+        let(:matrix_row) { JSON.parse(File.read('spec/support/matrix.json'))['matrix'].first }
+        let(:selectors) { [{ pacticipant: "Foo", version: "1.2.4"}, { pacticipant: "Bar", latest: true }] }
+        let(:options) { {} }
+
+        it "returns the matrix with the latest prod version of Bar" do
+          matrix = pact_broker_client.matrix.get(selectors, options)
+          expect(matrix[:matrix].size).to eq 1
+        end
+      end
     end
   end
 end

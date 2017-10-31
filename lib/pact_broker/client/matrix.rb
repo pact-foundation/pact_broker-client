@@ -25,7 +25,14 @@ module PactBroker
         else
           error_message = nil
           begin
-            error_message = JSON.parse(response.body)['errors'].join("\n")
+            errors = JSON.parse(response.body)['errors']
+            error_message = if errors.is_a?(Array)
+              errors.join("\n")
+            elsif errors.is_a?(Hash)
+              errors.collect{ |key, value| "#{key}: #{value}" }.join("\n")
+            else
+              response.body
+            end
           rescue
             raise Error.new(response.body)
           end
@@ -45,6 +52,8 @@ module PactBroker
         selectors.collect do |selector|
           { pacticipant: selector[:pacticipant] }.tap do | hash |
             hash[:version] = selector[:version] if selector[:version]
+            hash[:latest] = 'true' if selector[:latest]
+            hash[:tag] = selector[:tag] if selector[:tag]
           end
         end
       end
