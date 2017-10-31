@@ -22,7 +22,7 @@ module PactBroker
             return yield
           rescue RescuableError => e
             tries += 1
-            $stderr.puts "Error making request - #{e.message}, attempt #{tries} of #{max_tries}"
+            $stderr.puts "Error making request - #{e.class} #{e.message} #{e.backtrace.find{|l| l.include?('pact_broker-client')}}, attempt #{tries} of #{max_tries}"
             raise e if max_tries == tries
             sleep options
           end
