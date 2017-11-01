@@ -1,3 +1,21 @@
+<a name="v1.11.0"></a>
+### v1.11.0 (2017-11-01)
+
+
+#### Features
+
+* **can-i-deploy**
+  * add --latest option to command line	 ([c7f012d](/../../commit/c7f012d))
+
+* allow broker base url, username and password to be set by environment variables	 ([3516103](/../../commit/3516103))
+
+* **cli**
+  * add one line of backtrace to error output	 ([c2ede03](/../../commit/c2ede03))
+
+* **create-version-tag**
+  * add CLI to tag a pacticipant version	 ([c62d9b8](/../../commit/c62d9b8))
+
+
 <a name="v1.10.0"></a>
 ### v1.10.0 (2017-10-31)
 
