@@ -1,0 +1,31 @@
+Returns exit code 0 or 1, indicating whether or not the specified pacticipant versions are compatible. Prints out the relevant pact/verification details.
+
+WARNING! This feature is in beta release, and backwards compatibility is NOT guaranteed. You will need the latest version of the Pact Broker for this feature to work.
+
+The environment variables PACT_BROKER_BASE_URL_BASE_URL, PACT_BROKER_BASE_URL_USERNAME and PACT_BROKER_BASE_URL_PASSWORD may be used instead of their respective command line options.
+
+SCENARIOS
+
+Check the status of the pacts for a pacticipant version:
+
+  $ pact-broker can-i-deploy --pacticipant PACTICIPANT --version VERSION --broker-base-url BROKER_BASE_URL
+
+Check the status of the pacts for the latest pacticipant version:
+
+  $ pact-broker can-i-deploy --pacticipant PACTICIPANT --latest --broker-base-url BROKER_BASE_URL
+
+Check the status of the pacts for the latest pacticipant version for a given tag:
+
+  $ pact-broker can-i-deploy --pacticipant PACTICIPANT --latest TAG --broker-base-url BROKER_BASE_URL
+
+Check the status of the pacts between two (or more) specific pacticipant versions:
+
+  $ pact-broker can-i-deploy --pacticipant PACTICIPANT1 --version VERSION1 --pacticipant PACTICIPANT2 --version VERSION2 --broker-base-url BROKER_BASE_URL
+
+Check the status of the pacts between the latest versions of two (or more) pacticipants:
+
+  $ pact-broker can-i-deploy --pacticipant PACTICIPANT1 --latest --pacticipant PACTICIPANT2 --latest --broker-base-url BROKER_BASE_URL
+
+Check the status of the pacts between the latest versions of two (or more) pacticipants with a given tag:
+
+$ pact-broker can-i-deploy --pacticipant PACTICIPANT1 --latest TAG1 --pacticipant PACTICIPANT2 --latest TAG2 --broker-base-url BROKER_BASE_URL

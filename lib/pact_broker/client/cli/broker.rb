@@ -15,7 +15,8 @@ module PactBroker
       class PactPublicationError < ::Thor::Error; end
 
       class Broker < CustomThor
-        desc 'can-i-deploy', "Returns exit code 0 or 1, indicating whether or not the specified application versions are compatible."
+        desc 'can-i-deploy', ''
+        long_desc File.read(File.join(File.dirname(__FILE__), 'can_i_deploy_long_desc.txt'))
 
         method_option :pacticipant, required: true, aliases: "-a", desc: "The pacticipant name. Use once for each pacticipant being checked."
         method_option :version, required: false, aliases: "-e", desc: "The pacticipant version. Must be entered after the --pacticipant that it relates to."
