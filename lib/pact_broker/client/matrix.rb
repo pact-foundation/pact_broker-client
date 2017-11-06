@@ -4,8 +4,10 @@ module PactBroker
   module Client
     class Matrix < BaseClient
       def get selectors, options = {}
+        latestby = selectors.size == 1 ? 'cvp' : 'cvpv'
         query = {
-          q: convert_selector_hashes_to_params(selectors)
+          q: convert_selector_hashes_to_params(selectors),
+          latestby: latestby
         }.merge(query_options(options))
         response = self.class.get("/matrix", query: query, headers: default_get_headers)
         $stdout.puts("DEBUG: Response headers #{response.headers}") if verbose?

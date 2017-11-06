@@ -192,7 +192,7 @@
       "request": {
         "method": "get",
         "path": "/matrix",
-        "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=4.5.6"
+        "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=4.5.6&latestby=cvpv"
       },
       "response": {
         "status": 200,
@@ -240,7 +240,55 @@
       "request": {
         "method": "get",
         "path": "/matrix",
-        "query": "q[][pacticipant]=Foo%20Thing&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=4.5.6"
+        "query": "q[][pacticipant]=Foo%20Thing&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=4.5.6&latestby=cvpv"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "summary": {
+            "deployable": true,
+            "reason": "some text"
+          },
+          "matrix": [
+            {
+              "consumer": {
+                "name": "Foo",
+                "version": {
+                  "number": "4"
+                }
+              },
+              "provider": {
+                "name": "Bar",
+                "version": {
+                  "number": "5"
+                }
+              },
+              "verificationResult": {
+                "verifiedAt": "2017-10-10T12:49:04+11:00",
+                "success": true
+              },
+              "pact": {
+                "createdAt": "2017-10-10T12:49:04+11:00"
+              }
+            }
+          ]
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request for the compatibility matrix where only the version of Foo is specified",
+      "providerState": "the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6 and version 5.6.7",
+      "request": {
+        "method": "get",
+        "path": "/matrix",
+        "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&latestby=cvp"
       },
       "response": {
         "status": 200,
@@ -288,7 +336,7 @@
       "request": {
         "method": "get",
         "path": "/matrix",
-        "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=9.9.9"
+        "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=9.9.9&latestby=cvpv"
       },
       "response": {
         "status": 400,
@@ -314,7 +362,7 @@
       "request": {
         "method": "get",
         "path": "/matrix",
-        "query": "q[][pacticipant]=Wiffle&q[][version]=1.2.3&q[][pacticipant]=Meep&q[][version]=9.9.9"
+        "query": "q[][pacticipant]=Wiffle&q[][version]=1.2.3&q[][pacticipant]=Meep&q[][version]=9.9.9&latestby=cvpv"
       },
       "response": {
         "status": 400,
@@ -341,7 +389,7 @@
       "request": {
         "method": "get",
         "path": "/matrix",
-        "query": "q[][pacticipant]=Foo&q[][pacticipant]=Bar"
+        "query": "q[][pacticipant]=Foo&q[][pacticipant]=Bar&latestby=cvpv"
       },
       "response": {
         "status": 200,
@@ -409,7 +457,7 @@
       "request": {
         "method": "get",
         "path": "/matrix",
-        "query": "q[][pacticipant]=Foo&q[][pacticipant]=Bar&success[]=true"
+        "query": "q[][pacticipant]=Foo&q[][pacticipant]=Bar&latestby=cvpv&success[]=true"
       },
       "response": {
         "status": 200,
@@ -457,7 +505,7 @@
       "request": {
         "method": "get",
         "path": "/matrix",
-        "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][latest]=true&q[][tag]=prod"
+        "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][latest]=true&q[][tag]=prod&latestby=cvpv"
       },
       "response": {
         "status": 200,
@@ -505,7 +553,7 @@
       "request": {
         "method": "get",
         "path": "/matrix",
-        "query": "q[][pacticipant]=Foo&q[][version]=1.2.4&q[][pacticipant]=Bar&q[][latest]=true"
+        "query": "q[][pacticipant]=Foo&q[][version]=1.2.4&q[][pacticipant]=Bar&q[][latest]=true&latestby=cvpv"
       },
       "response": {
         "status": 200,

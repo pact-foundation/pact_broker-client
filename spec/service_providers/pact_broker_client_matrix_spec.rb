@@ -19,7 +19,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=4.5.6"
+              query: "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=4.5.6&latestby=cvpv"
             ).
             will_respond_with(
               status: 200,
@@ -42,7 +42,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: "q[][pacticipant]=Foo%20Thing&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=4.5.6"
+              query: "q[][pacticipant]=Foo%20Thing&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=4.5.6&latestby=cvpv"
             ).
             will_respond_with(
               status: 200,
@@ -59,25 +59,30 @@ module PactBroker::Client
         end
       end
 
-      # context "with only one version selector" do
-      #   before do
-      #     pact_broker.
-      #       given("the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6").
-      #       upon_receiving("a request for the compatibility matrix where only the version of Foo is specified").
-      #       with(
-      #         method: :get,
-      #         path: "/matrix",
-      #         query: {
-      #           'selectors[]' => ['Foo/version/1.2.3']
-      #         }
-      #       ).
-      #       will_respond_with(
-      #         status: 200,
-      #         headers: pact_broker_response_headers,
-      #         body: matrix_response_body
-      #       )
-      #   end
-      # end
+      context "with only one version selector" do
+        before do
+          pact_broker.
+            given("the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6 and version 5.6.7").
+            upon_receiving("a request for the compatibility matrix where only the version of Foo is specified").
+            with(
+              method: :get,
+              path: "/matrix",
+              query: "q[][pacticipant]=Foo&q[][version]=1.2.3&latestby=cvp"
+            ).
+            will_respond_with(
+              status: 200,
+              headers: pact_broker_response_headers,
+              body: matrix_response_body
+            )
+        end
+
+        let(:selectors) { [{ pacticipant: "Foo", version: "1.2.3" }] }
+
+        it 'returns the row with the lastest verification for version 1.2.3' do
+          matrix = pact_broker_client.matrix.get(selectors)
+          expect(matrix[:matrix].size).to eq 1
+        end
+      end
 
       context "when one or more of the versions does not exist" do
         before do
@@ -87,7 +92,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=9.9.9"
+              query: "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=9.9.9&latestby=cvpv"
             ).
             will_respond_with(
               status: 400,
@@ -114,7 +119,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: "q[][pacticipant]=Wiffle&q[][version]=1.2.3&q[][pacticipant]=Meep&q[][version]=9.9.9"
+              query: "q[][pacticipant]=Wiffle&q[][version]=1.2.3&q[][pacticipant]=Meep&q[][version]=9.9.9&latestby=cvpv"
             ).
             will_respond_with(
               status: 400,
@@ -142,7 +147,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: "q[][pacticipant]=Foo&q[][pacticipant]=Bar"
+              query: "q[][pacticipant]=Foo&q[][pacticipant]=Bar&latestby=cvpv"
             ).
             will_respond_with(
               status: 200,
@@ -169,7 +174,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: "q[][pacticipant]=Foo&q[][pacticipant]=Bar&success[]=true"
+              query: "q[][pacticipant]=Foo&q[][pacticipant]=Bar&latestby=cvpv&success[]=true"
             ).
             will_respond_with(
               status: 200,
@@ -195,7 +200,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][latest]=true&q[][tag]=prod"
+              query: "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][latest]=true&q[][tag]=prod&latestby=cvpv"
             ).
             will_respond_with(
               status: 200,
@@ -221,7 +226,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: "q[][pacticipant]=Foo&q[][version]=1.2.4&q[][pacticipant]=Bar&q[][latest]=true"
+              query: "q[][pacticipant]=Foo&q[][version]=1.2.4&q[][pacticipant]=Bar&q[][latest]=true&latestby=cvpv"
             ).
             will_respond_with(
               status: 200,
