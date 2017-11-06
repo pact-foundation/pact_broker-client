@@ -10,12 +10,13 @@ module PactBroker::Client
       @consumer_version = "1.2.3"
     end
 
-    let(:publish_pacts) { instance_double("PactBroker::ClientSupport::PublishPacts")}
+    let(:publish_pacts) { instance_double("PactBroker::ClientSupport::PublishPacts", call: true)}
     let(:pact_file_list) { ['spec/pact/consumer-provider.json'] }
 
     before do
       allow(PactBroker::Client::PublishPacts).to receive(:new).and_return(publish_pacts)
       allow(FileList).to receive(:[]).with(pattern).and_return(pact_file_list)
+      allow(PactBroker::Client::Git).to receive(:branch).and_return('foo')
     end
 
     let(:pattern) { "spec/pacts/*.json" }
@@ -59,6 +60,22 @@ module PactBroker::Client
       end
     end
 
+    context "when tag_with_git_branch is true" do
+      before :all do
+        PactBroker::Client::PublicationTask.new(:git_branch) do | task |
+          task.consumer_version = '1.2.3'
+          task.tag_with_git_branch = true
+          task.tags = ['bar']
+        end
+      end
+
+      it "invokes PublishPacts with the git branch name as a tag" do
+        expect(PactBroker::Client::PublishPacts).to receive(:new).with(anything, anything, anything, ['bar', 'foo'], anything).and_return(publish_pacts)
+
+        Rake::Task['pact:publish:git_branch'].execute
+      end
+    end
+
     describe "custom task" do
 
       before :all do
@@ -85,7 +102,6 @@ module PactBroker::Client
     end
 
     describe "timing of block execution" do
-
       before :all do
         PactBroker::Client::PublicationTask.new(:exception) do | task |
           raise 'A contrived exception'
@@ -96,8 +112,5 @@ module PactBroker::Client
         expect{ Rake::Task['pact:publish:exception'].execute }.to raise_error 'A contrived exception'
       end
     end
-
-
   end
-
 end

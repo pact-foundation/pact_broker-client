@@ -119,21 +119,12 @@ PactBroker::Client::PublicationTask.new do | task |
   require 'my_consumer/version'
   task.consumer_version = MyConsumer::VERSION
   task.pattern = 'custom/path/to/pacts/*.json' # optional, default value is 'spec/pacts/*.json'
-  task.pact_broker_base_url = "http://pact-broker.my.org"
+  task.pact_broker_base_url = "http://pact-broker"
+  task.tag_with_git_branch = true|false # STRONGLY RECOMMENDED as it will greatly assist with your pact workflow. Optional, will merge result with other specified task.tags
   task.tags = ["dev"] # optional
   task.pact_broker_basic_auth =  { username: 'basic_auth_user', password: 'basic_auth_pass'} # optional
   task.write_method = :merge # optional, this will merge the published pact into an existing pact rather than overwriting it if one exists. Not recommended, as it makes a mulch of the workflow on the broker.
 end
-```
-
-## Using tags
-
-Tags enable you to test different versions of your consumer and provider against each other (eg. `head` and `prod`) and to use pacts on feature branches without breaking your main line of development. You can read more about using tags on the Pact broker [wiki][wiki-tags].
-
-If you want to use the git branch name as the tag name, use:
-
-```ruby
-  task.tag = `git rev-parse --abbrev-ref HEAD`.strip
 ```
 
 ```bash
