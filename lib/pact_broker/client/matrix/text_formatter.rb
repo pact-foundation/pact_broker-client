@@ -7,6 +7,14 @@ module PactBroker
 
         Line = Struct.new(:consumer, :consumer_version, :provider, :provider_version, :success)
 
+        OPTIONS = [
+          { consumer: {} },
+          { consumer_version: {display_name: 'C.VERSION'} },
+          { provider: {} },
+          { provider_version: {display_name: 'P.VERSION'} },
+          { success: {display_name: 'SUCCESS?'} }
+        ]
+
         def self.call(matrix)
           data = matrix[:matrix].collect do | line |
             Line.new(
@@ -18,7 +26,7 @@ module PactBroker
             )
           end
 
-          printer = TablePrint::Printer.new(data)
+          printer = TablePrint::Printer.new(data, OPTIONS)
           printer.table_print
         end
 
