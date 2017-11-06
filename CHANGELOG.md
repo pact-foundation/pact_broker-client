@@ -1,3 +1,17 @@
+<a name="v1.12.0"></a>
+### v1.12.0 (2017-11-06)
+
+
+#### Features
+
+* **publish**
+  * expose tag_with_git_branch in rake publication task	 ([f28d9ad](/../../commit/f28d9ad))
+
+* **can-i-deploy**
+  * shorten header names in text output	 ([89d5a04](/../../commit/89d5a04))
+  * support invocation with only one pacticipant/version provided	 ([3d799cc](/../../commit/3d799cc))
+
+
 <a name="v1.11.0"></a>
 ### v1.11.0 (2017-11-01)
 
