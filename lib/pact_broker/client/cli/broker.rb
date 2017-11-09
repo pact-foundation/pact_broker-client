@@ -104,7 +104,8 @@ module PactBroker
           end
 
           def file_list pact_files
-            Rake::FileList[pact_files].collect do | path |
+            correctly_separated_pact_files = pact_files.collect{ |path| path.gsub(/\\+/, '/') }
+            Rake::FileList[correctly_separated_pact_files].collect do | path |
               if File.directory?(path)
                 Rake::FileList[File.join(path, "*.json")]
               else

@@ -63,6 +63,21 @@ module PactBroker::Client::CLI
         end
       end
 
+      context "with a windows directory specified" do
+        let(:file_list) { ['spec\\support\cli_test_pacts'] }
+
+        it "invokes the PublishPacts command with the list of files in the directory" do
+          expect(PactBroker::Client::PublishPacts).to receive(:call).with(
+            anything,
+            ["spec/support/cli_test_pacts/bar.json", "spec/support/cli_test_pacts/foo.json"],
+            anything,
+            anything,
+            anything
+          )
+          invoke_broker
+        end
+      end
+
       context "with a tag" do
         before do
           subject.options = OpenStruct.new(minimum_valid_options.merge(tag: ['foo']))
