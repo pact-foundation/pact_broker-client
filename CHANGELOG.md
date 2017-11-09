@@ -1,3 +1,19 @@
+<a name="v1.13.0"></a>
+### v1.13.0 (2017-11-09)
+
+
+#### Features
+
+* **can-i-deploy**
+  * allow pacticipant version to be checked against latest tagged versions of all the other pacticipants	 ([7f10e13](/../../commit/7f10e13))
+
+
+#### Bug Fixes
+
+* **publish**
+  * accept pact file paths using windows separator	 ([5ee9dd7](/../../commit/5ee9dd7))
+
+
 <a name="v1.12.0"></a>
 ### v1.12.0 (2017-11-06)
 
