@@ -6,9 +6,13 @@ The environment variables PACT_BROKER_BASE_URL_BASE_URL, PACT_BROKER_BASE_URL_US
 
 SCENARIOS
 
-Check the status of the pacts for a pacticipant version (note that this only checks that each pact has been verified succesfully by *a* version of the provider. It doesn't provide any assurance that it has been verified by the *production* version of the provider):
+Check the status of the pacts for a pacticipant version. Note that this only checks that the most recent verification for each pact is successful. It doesn't provide any assurance that the pact has been verified by the *production* version of the provider, however, it is sufficient if you are doing true continuous deployment.
 
   $ pact-broker can-i-deploy --pacticipant PACTICIPANT --version VERSION --broker-base-url BROKER_BASE_URL
+
+If all applications within the pact network are not being deployed continuously (ie. if there is a gap between pact verification and actual deployment) then the following strategy is recommended. Each application version should be tagged in the broker with the name of the stage (eg. test, staging, production) as it is deployed (see the pact-broker create-version-tag CLI). This enables you to use the following very simple command to check if the application version you are about to deploy is compatible with every other application version already deployed in that environment.
+
+  $ pact-broker can-i-deploy --pacticipant PACTICIPANT --version VERSION --to TAG --broker-base-url BROKER_BASE_URL
 
 Check the status of the pacts for the latest pacticipant version:
 

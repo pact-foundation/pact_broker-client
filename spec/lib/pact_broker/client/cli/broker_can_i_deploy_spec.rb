@@ -32,7 +32,7 @@ module PactBroker
         end
 
         it "invokes the CanIDeploy service" do
-          expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, {output: 'table'}, {verbose: 'verbose'})
+          expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, {to_tag: nil}, {output: 'table'}, {verbose: 'verbose'})
           invoke_can_i_deploy
         end
 
@@ -44,13 +44,25 @@ module PactBroker
           end
         end
 
+        context "with --to" do
+          before do
+            subject.options.to = 'prod'
+          end
+
+          it "passes the value as the matrix options" do
+            expect(CanIDeploy).to receive(:call).with(anything, anything, {to_tag: 'prod'}, anything, anything)
+            invoke_can_i_deploy
+          end
+        end
+
         context "with basic auth" do
           before do
-            subject.options = OpenStruct.new(minimum_valid_options.merge(broker_username: 'foo', broker_password: 'bar'))
+            subject.options.broker_username = 'foo'
+            subject.options.broker_password = 'bar'
           end
 
           it "invokes the CanIDeploy service with the basic auth credentials" do
-            expect(CanIDeploy).to receive(:call).with(anything, anything, anything, {basic_auth: {username: "foo", password: "bar"}, verbose: 'verbose'})
+            expect(CanIDeploy).to receive(:call).with(anything, anything, anything, anything, {basic_auth: {username: "foo", password: "bar"}, verbose: 'verbose'})
             invoke_can_i_deploy
           end
         end

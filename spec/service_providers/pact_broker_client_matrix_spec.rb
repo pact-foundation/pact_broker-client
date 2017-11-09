@@ -243,6 +243,42 @@ module PactBroker::Client
           expect(matrix[:matrix].size).to eq 1
         end
       end
+
+      context "when checking if we can deploy with the latest tagged versions of the other services" do
+        before do
+          pact_broker.
+            given("the pact for Foo version 1.2.3 has been successfully verified by Bar version 4.5.6 (tagged prod) and version 5.6.7").
+            upon_receiving("a request for the compatibility matrix for Foo version 1.2.3 and the latest prod versions of all other pacticipants").
+            with(
+              method: :get,
+              path: "/matrix",
+              query: "q[][pacticipant]=Foo&q[][version]=1.2.3&latestby=cvp&latest=true&tag=prod"
+            ).
+            will_respond_with(
+              status: 200,
+              headers: pact_broker_response_headers,
+              body: matrix_response_body
+            )
+        end
+
+        let(:selectors) { [{ pacticipant: "Foo", version: "1.2.3" }] }
+
+        let(:matrix_response_body) {
+          {
+            matrix: [{
+              consumer: { name: 'Foo', version: { number: '1.2.3' } },
+              provider: { name: 'Bar', version: { number: '4.5.6'} },
+            }]
+          }
+        }
+
+        let(:options) { { to_tag: 'prod' } }
+
+        it "returns the matrix with the latest prod version of Bar" do
+          matrix = pact_broker_client.matrix.get(selectors, options)
+          expect(matrix[:matrix].size).to eq 1
+        end
+      end
     end
   end
 end

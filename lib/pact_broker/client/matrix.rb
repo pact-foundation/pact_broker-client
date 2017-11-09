@@ -47,6 +47,10 @@ module PactBroker
         if options.key?(:success)
           opts[:success] = [*options[:success]]
         end
+        if options[:to_tag]
+          opts[:latest] = 'true'
+          opts[:tag] = options[:to_tag]
+        end
         opts
       end
 

@@ -17,13 +17,14 @@ module PactBroker
         end
       end
 
-      def self.call(pact_broker_base_url, version_selectors, options, pact_broker_client_options={})
-        new(pact_broker_base_url, version_selectors, options, pact_broker_client_options).call
+      def self.call(pact_broker_base_url, version_selectors, matrix_options, options, pact_broker_client_options={})
+        new(pact_broker_base_url, version_selectors, matrix_options, options, pact_broker_client_options).call
       end
 
-      def initialize(pact_broker_base_url, version_selectors, options, pact_broker_client_options)
+      def initialize(pact_broker_base_url, version_selectors, matrix_options, options, pact_broker_client_options)
         @pact_broker_base_url = pact_broker_base_url
         @version_selectors = version_selectors
+        @matrix_options = matrix_options
         @options = options
         @pact_broker_client_options = pact_broker_client_options
       end
@@ -42,7 +43,7 @@ module PactBroker
 
       private
 
-      attr_reader :pact_broker_base_url, :version_selectors, :options, :pact_broker_client_options
+      attr_reader :pact_broker_base_url, :version_selectors, :matrix_options, :options, :pact_broker_client_options
 
       def success_message(matrix)
         message = format_matrix(matrix)
@@ -73,7 +74,7 @@ module PactBroker
       end
 
       def matrix
-        @matrix ||= Retry.until_true { pact_broker_client.matrix.get(version_selectors) }
+        @matrix ||= Retry.until_true { pact_broker_client.matrix.get(version_selectors, matrix_options) }
       end
 
       def pact_broker_client

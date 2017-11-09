@@ -21,6 +21,7 @@ module PactBroker
         method_option :pacticipant, required: true, aliases: "-a", desc: "The pacticipant name. Use once for each pacticipant being checked."
         method_option :version, required: false, aliases: "-e", desc: "The pacticipant version. Must be entered after the --pacticipant that it relates to."
         method_option :latest, required: false, aliases: "-l", banner: '[TAG]', desc: "Use the latest pacticipant version. Optionally specify a TAG to use the latest version with the specified tag."
+        method_option :to, required: false, banner: 'TAG', desc: "This is too hard to explain in a short sentence. Look at the examples.", default: nil
         method_option :broker_base_url, required: true, aliases: "-b", desc: "The base URL of the Pact Broker"
         method_option :broker_username, aliases: "-u", desc: "Pact Broker basic auth username"
         method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
@@ -30,7 +31,7 @@ module PactBroker
         def can_i_deploy(*ignored_but_necessary)
           selectors = VersionSelectorOptionsParser.call(ARGV)
           validate_can_i_deploy_selectors(selectors)
-          result = CanIDeploy.call(options.broker_base_url, selectors, {output: options.output}, pact_broker_client_options)
+          result = CanIDeploy.call(options.broker_base_url, selectors, {to_tag: options.to}, {output: options.output}, pact_broker_client_options)
           $stdout.puts result.message
           exit(1) unless result.success
         end
