@@ -1,8 +1,18 @@
 # Pact Broker Client
 
-A client for the Pact Broker. Publishes pacts to, and retrieves pacts from, the pact broker. The functionality is available via a CLI, or via Ruby configuration code.
+A client for the Pact Broker. Publishes pacts to, and retrieves pacts from, the pact broker. The functionality is available via a CLI, or via Ruby Rake tasks.
 
 [![Build Status](https://travis-ci.org/pact-foundation/pact_broker-client.svg?branch=master)](https://travis-ci.org/pact-foundation/pact_broker-client)
+
+## Installation
+
+### CLI
+
+Download the latest [pact-ruby-standalone][pact-ruby-standalone] package. You do not need Ruby to run the CLI, as the Ruby runtime is packaged with the executable using Travelling Ruby.
+
+### Ruby
+
+Add `gem 'pact_broker-client'` to your Gemfile and run `bundle install`, or install the gem directly by running `gem install pact_broker-client`.
 
 ## Usage - CLI
 
@@ -152,3 +162,4 @@ end
 
 
 [wiki-tags]: https://github.com/pact-foundation/pact_broker/wiki/Using-tags
+[pact-ruby-standalone]: https://github.com/pact-foundation/pact-ruby-standalone/releases
