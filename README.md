@@ -130,7 +130,7 @@ PactBroker::Client::PublicationTask.new do | task |
   task.consumer_version = MyConsumer::VERSION
   task.pattern = 'custom/path/to/pacts/*.json' # optional, default value is 'spec/pacts/*.json'
   task.pact_broker_base_url = "http://pact-broker"
-  task.tag_with_git_branch = true|false # STRONGLY RECOMMENDED as it will greatly assist with your pact workflow. Optional, will merge result with other specified task.tags
+  task.tag_with_git_branch = true|false # Optional but STRONGLY RECOMMENDED as it will greatly assist with your pact workflow. Result will be merged with other specified task.tags
   task.tags = ["dev"] # optional
   task.pact_broker_basic_auth =  { username: 'basic_auth_user', password: 'basic_auth_pass'} # optional
   task.write_method = :merge # optional, this will merge the published pact into an existing pact rather than overwriting it if one exists. Not recommended, as it makes a mulch of the workflow on the broker.
@@ -142,24 +142,6 @@ end
 
 bundle exec rake pact:publish
 ```
-
-### Provider
-
-```ruby
-# In spec/service_consumers/pact_helper.rb
-
-require 'pact/provider/rspec'
-
-Pact.service_provider "My Provider" do
-
-  honours_pact_with "My Consumer" do
-    pact_uri URI.encode("http://pact-broker.my.org/pact/provider/My Provider/consumer/My Consumer/latest")
-  end
-
-end
-```
-
-
 
 [wiki-tags]: https://github.com/pact-foundation/pact_broker/wiki/Using-tags
 [pact-ruby-standalone]: https://github.com/pact-foundation/pact-ruby-standalone/releases
