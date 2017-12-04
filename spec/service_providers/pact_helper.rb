@@ -4,6 +4,7 @@ require 'pact/consumer/rspec'
 
 Pact.configure do | config |
   config.logger.level = Logger::DEBUG
+  config.doc_generator = :markdown
 end
 
 Pact.service_consumer 'Pact Broker Client' do
