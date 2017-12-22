@@ -10,8 +10,6 @@ module PactBroker
           latestby: latestby
         }.merge(query_options(options))
         response = self.class.get("/matrix", query: query, headers: default_get_headers)
-        $stdout.puts("DEBUG: Response headers #{response.headers}") if verbose?
-        $stdout.puts("DEBUG: Response body #{response}") if verbose?
         response = handle_response(response) do
           JSON.parse(response.body, symbolize_names: true)
         end

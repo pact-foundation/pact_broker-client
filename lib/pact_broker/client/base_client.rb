@@ -41,6 +41,7 @@ module PactBroker
         @client_options = options[:client_options] || {}
         @verbose = @client_options[:verbose]
         self.class.base_uri base_url
+        self.class.debug_output($stderr) if verbose?
         self.class.basic_auth(client_options[:basic_auth][:username], client_options[:basic_auth][:password]) if client_options[:basic_auth]
       end
 

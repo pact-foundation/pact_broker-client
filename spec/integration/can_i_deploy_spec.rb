@@ -5,7 +5,7 @@ describe "pact-broker can-i-deploy" do
   end
 
   context "when the pacticipants can be deployed" do
-    subject { `bundle exec bin/pact-broker can-i-deploy -v --pacticipant Foo --version 1.2.3 --pacticipant Bar --version 4.5.6 --broker-base-url http://localhost:5000` }
+    subject { `bundle exec bin/pact-broker can-i-deploy --pacticipant Foo --version 1.2.3 --pacticipant Bar --version 4.5.6 --broker-base-url http://localhost:5000` }
 
     it "returns a success exit code" do
       subject
@@ -18,7 +18,7 @@ describe "pact-broker can-i-deploy" do
   end
 
   context "when the pacticipants can't be deployed" do
-    subject { `bundle exec bin/pact-broker can-i-deploy -v --pacticipant Wiffle --version 1.2.3 --pacticipant Meep --version 4.5.6 --broker-base-url http://localhost:5000` }
+    subject { `bundle exec bin/pact-broker can-i-deploy --pacticipant Wiffle --version 1.2.3 --pacticipant Meep --version 4.5.6 --broker-base-url http://localhost:5000` }
 
     it "returns an error exit code" do
       subject
