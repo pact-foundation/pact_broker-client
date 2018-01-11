@@ -5,7 +5,15 @@ module PactBroker
   module Client
     class Versions < BaseClient
 
+      def find options
+        response = get("#{version_base_url(options)}", headers: default_get_headers)
 
+        handle_response(response) do
+          JSON.parse(response.body, symbolize_names: true)
+        end
+      end
+
+      # TODO this is not a valid URL!
       def latest options
         query = options[:tag] ? {tag: options[:tag]} : {}
         response = self.class.get("#{versions_base_url(options)}/latest", query: query, headers: default_get_headers)

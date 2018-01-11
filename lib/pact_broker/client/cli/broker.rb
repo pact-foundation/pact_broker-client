@@ -7,6 +7,7 @@ require 'pact_broker/client/publish_pacts'
 require 'rake/file_list'
 require 'thor/error'
 require 'pact_broker/client/create_tag'
+require 'pact_broker/client/versions/describe'
 
 module PactBroker
   module Client
@@ -70,6 +71,32 @@ module PactBroker
             options.version,
             tags,
             pact_broker_client_options)
+        end
+
+        method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that the version belongs to."
+        method_option :version, required: false, aliases: "-e", desc: "The pacticipant version number."
+        method_option :latest, required: false, aliases: "-l", banner: '[TAG]', desc: "Describe the latest pacticipant version. Optionally specify a TAG to describe the latest version with the specified tag."
+        method_option :broker_base_url, required: true, aliases: "-b", desc: "The base URL of the Pact Broker"
+        method_option :broker_username, aliases: "-u", desc: "Pact Broker basic auth username"
+        method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
+        method_option :output, aliases: "-o", desc: "json or table or id", default: 'table'
+        method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
+
+        desc 'describe-version', 'Describes a pacticipant version. If no version or tag is specified, the latest version is described.'
+        def describe_version
+          latest = !options.latest.nil? || (options.latest.nil? && options.version.nil?)
+          params = {
+            pacticipant: options.pacticipant,
+            version: options.version,
+            latest: latest,
+            tag: options.latest.is_a?(String) ? options.latest : nil
+          }
+          opts = {
+            output: options.output
+          }
+          result = PactBroker::Client::Versions::Describe.call(params, opts, options.broker_base_url, pact_broker_client_options)
+          $stdout.puts result.message
+          exit(1) unless result.success
         end
 
         desc 'version', "Show the pact_broker-client gem version"
