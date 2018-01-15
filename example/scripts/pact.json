@@ -1,0 +1,67 @@
+{
+  "provider": {
+    "name": "Animal Service"
+  },
+  "consumer": {
+    "name": "Zoo App"
+  },
+  "interactions": [
+    {
+      "description": "a request for an alligator",
+      "provider_state": "there is an alligator named Mary",
+      "request": {
+        "method": "get",
+        "path": "/alligators/Mary",
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json;charset=utf-8"
+        },
+        "body": {
+          "name": "Mary"
+        }
+      }
+    },
+    {
+      "description": "a request for an alligator",
+      "provider_state": "there is not an alligator named Mary",
+      "request": {
+        "method": "get",
+        "path": "/alligators/Mary",
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "response": {
+        "status": 404
+      }
+    },
+    {
+      "description": "a request for an alligator",
+      "provider_state": "an error occurs retrieving an alligator",
+      "request": {
+        "method": "get",
+        "path": "/alligators/Mary",
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "response": {
+        "status": 500,
+        "headers": {
+          "Content-Type": "application/json;charset=utf-8"
+        },
+        "body": {
+          "error": "Argh!!!"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecificationVersion": "1.0.0"
+  }
+}
