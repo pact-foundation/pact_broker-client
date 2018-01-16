@@ -55,8 +55,7 @@ Add a tag to a pacticipant version
 
 ### can-i-deploy
 
-*This feature is in beta release, and backwards compatibility is NOT guaranteed.*
-You will need the latest version of the Pact Broker for this feature to work.
+You will need >= v2.13.0 of the Pact Broker for this feature to work.
 
 ```
 Usage:
