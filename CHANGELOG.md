@@ -1,3 +1,20 @@
+<a name="v1.14.0"></a>
+### v1.14.0 (2018-01-25)
+
+
+#### Features
+
+* **describe-version**
+  * allow retrieving latest pacticipant version	 ([7679f61](/../../commit/7679f61))
+
+* update help text for can-i-deploy	 ([7d3f3e1](/../../commit/7d3f3e1))
+* add example showing how to use can-i-deploy and describe-version as a verification webhook endpoint	 ([ec83387](/../../commit/ec83387))
+
+* **cli**
+  * add describe-version	 ([6e12478](/../../commit/6e12478))
+  * output HTTP request and response debugging when verbose mode enabled	 ([f487714](/../../commit/f487714))
+
+
 <a name="v1.13.0"></a>
 ### v1.13.0 (2017-11-09)
 
