@@ -63,7 +63,7 @@ module PactBroker
 
       def handle_response response
         if response.success?
-          yield
+          yield response
         elsif response.code == 404
           nil
         elsif response.code == 401
@@ -96,6 +96,21 @@ module PactBroker
 
       def get url, *args
         self.class.get(url, *args)
+      end
+
+      def url_for_relation relation_name, params
+        handle_response(get("/", headers: default_get_headers)) do | response |
+          relation = (JSON.parse(response.body)['_links'] || {})[relation_name]
+          if relation
+            url = relation['href']
+            params.each do | (key, value) |
+              url = url.gsub("{#{key}}", value)
+            end
+            url
+          else
+            raise PactBroker::Client::RelationNotFound.new("Could not find relation #{relation_name} in index resource. Try upgrading your Pact Broker as the feature you require may not exist in your version.")
+          end
+        end
       end
 
       def verbose?

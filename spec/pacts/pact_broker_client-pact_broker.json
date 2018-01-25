@@ -1090,6 +1090,124 @@
           }
         }
       }
+    },
+    {
+      "description": "a request for the index resource",
+      "providerState": "the pb:latest-version relation exists in the index resource",
+      "request": {
+        "method": "get",
+        "path": "/",
+        "headers": {
+          "Accept": "application/json, application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "_links": {
+            "pb:latest-version": {
+              "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-VERSION-{pacticipant}"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:latest-version.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*{pacticipant}"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to retrieve the latest version of Condor",
+      "providerState": "'Condor' exists in the pact-broker with the latest version 1.2.3",
+      "request": {
+        "method": "get",
+        "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-VERSION-Condor",
+        "headers": {
+          "Accept": "application/json, application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "number": "1.2.3",
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/some-url"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request for the index resource",
+      "providerState": "the pb:latest-tagged-version relation exists in the index resource",
+      "request": {
+        "method": "get",
+        "path": "/",
+        "headers": {
+          "Accept": "application/json, application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "_links": {
+            "pb:latest-tagged-version": {
+              "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-TAGGED-VERSION-{pacticipant}-{tag}"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:latest-tagged-version.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*{pacticipant}.*{tag}"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to retrieve the latest 'production' version of Condor",
+      "providerState": "'Condor' exists in the pact-broker with the latest tagged 'production' version 1.2.3",
+      "request": {
+        "method": "get",
+        "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-TAGGED-VERSION-Condor-production",
+        "headers": {
+          "Accept": "application/json, application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "number": "1.2.3",
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/some-url"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          }
+        }
+      }
     }
   ],
   "metadata": {

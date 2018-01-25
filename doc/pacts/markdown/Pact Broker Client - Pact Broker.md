@@ -20,6 +20,10 @@
 
 * [A request for the compatibility matrix where only the version of Foo is specified](#a_request_for_the_compatibility_matrix_where_only_the_version_of_Foo_is_specified_given_the_pact_for_Foo_version_1.2.3_has_been_verified_by_Bar_version_4.5.6_and_version_5.6.7) given the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6 and version 5.6.7
 
+* [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:latest-tagged-version_relation_exists_in_the_index_resource) given the pb:latest-tagged-version relation exists in the index resource
+
+* [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:latest-version_relation_exists_in_the_index_resource) given the pb:latest-version relation exists in the index resource
+
 * [A request for the list of the latest pacts from all consumers for the Pricing Service'](#a_request_for_the_list_of_the_latest_pacts_from_all_consumers_for_the_Pricing_Service&#39;_given_a_latest_pact_between_Condor_and_the_Pricing_Service_exists) given a latest pact between Condor and the Pricing Service exists
 
 * [A request for the list of the latest prod pacts from all consumers for the Pricing Service'](#a_request_for_the_list_of_the_latest_prod_pacts_from_all_consumers_for_the_Pricing_Service&#39;_given_tagged_as_prod_pact_between_Condor_and_the_Pricing_Service_exists) given tagged as prod pact between Condor and the Pricing Service exists
@@ -50,9 +54,13 @@
 
 * [A request to register the repository URL of a pacticipant](#a_request_to_register_the_repository_URL_of_a_pacticipant_given_the_&#39;Pricing_Service&#39;_does_not_exist_in_the_pact-broker) given the 'Pricing Service' does not exist in the pact-broker
 
+* [A request to retrieve the latest 'production' version of Condor](#a_request_to_retrieve_the_latest_&#39;production&#39;_version_of_Condor_given_&#39;Condor&#39;_exists_in_the_pact-broker_with_the_latest_tagged_&#39;production&#39;_version_1.2.3) given 'Condor' exists in the pact-broker with the latest tagged 'production' version 1.2.3
+
 * [A request to retrieve the latest pact between Condor and the Pricing Service](#a_request_to_retrieve_the_latest_pact_between_Condor_and_the_Pricing_Service_given_a_pact_between_Condor_and_the_Pricing_Service_exists) given a pact between Condor and the Pricing Service exists
 
 * [A request to retrieve the latest pact between Condor and the Pricing Service](#a_request_to_retrieve_the_latest_pact_between_Condor_and_the_Pricing_Service_given_no_pact_between_Condor_and_the_Pricing_Service_exists) given no pact between Condor and the Pricing Service exists
+
+* [A request to retrieve the latest version of Condor](#a_request_to_retrieve_the_latest_version_of_Condor_given_&#39;Condor&#39;_exists_in_the_pact-broker_with_the_latest_version_1.2.3) given 'Condor' exists in the pact-broker with the latest version 1.2.3
 
 * [A request to retrieve the pact between the production verison of Condor and the Pricing Service](#a_request_to_retrieve_the_pact_between_the_production_verison_of_Condor_and_the_Pricing_Service_given_a_pact_between_Condor_and_the_Pricing_Service_exists_for_the_production_version_of_Condor) given a pact between Condor and the Pricing Service exists for the production version of Condor
 
@@ -415,6 +423,54 @@ Pact Broker will respond with:
         }
       }
     ]
+  }
+}
+```
+<a name="a_request_for_the_index_resource_given_the_pb:latest-tagged-version_relation_exists_in_the_index_resource"></a>
+Given **the pb:latest-tagged-version relation exists in the index resource**, upon receiving **a request for the index resource** from Pact Broker Client, with
+```json
+{
+  "method": "get",
+  "path": "/",
+  "headers": {
+    "Accept": "application/json, application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "body": {
+    "_links": {
+      "pb:latest-tagged-version": {
+        "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-TAGGED-VERSION-{pacticipant}-{tag}"
+      }
+    }
+  }
+}
+```
+<a name="a_request_for_the_index_resource_given_the_pb:latest-version_relation_exists_in_the_index_resource"></a>
+Given **the pb:latest-version relation exists in the index resource**, upon receiving **a request for the index resource** from Pact Broker Client, with
+```json
+{
+  "method": "get",
+  "path": "/",
+  "headers": {
+    "Accept": "application/json, application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "body": {
+    "_links": {
+      "pb:latest-version": {
+        "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-VERSION-{pacticipant}"
+      }
+    }
   }
 }
 ```
@@ -923,6 +979,31 @@ Pact Broker will respond with:
   "status": 201
 }
 ```
+<a name="a_request_to_retrieve_the_latest_&#39;production&#39;_version_of_Condor_given_&#39;Condor&#39;_exists_in_the_pact-broker_with_the_latest_tagged_&#39;production&#39;_version_1.2.3"></a>
+Given **'Condor' exists in the pact-broker with the latest tagged 'production' version 1.2.3**, upon receiving **a request to retrieve the latest 'production' version of Condor** from Pact Broker Client, with
+```json
+{
+  "method": "get",
+  "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-TAGGED-VERSION-Condor-production",
+  "headers": {
+    "Accept": "application/json, application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "body": {
+    "number": "1.2.3",
+    "_links": {
+      "self": {
+        "href": "http://localhost:1234/some-url"
+      }
+    }
+  }
+}
+```
 <a name="a_request_to_retrieve_the_latest_pact_between_Condor_and_the_Pricing_Service_given_a_pact_between_Condor_and_the_Pricing_Service_exists"></a>
 Given **a pact between Condor and the Pricing Service exists**, upon receiving **a request to retrieve the latest pact between Condor and the Pricing Service** from Pact Broker Client, with
 ```json
@@ -964,6 +1045,31 @@ Pact Broker will respond with:
 ```json
 {
   "status": 404
+}
+```
+<a name="a_request_to_retrieve_the_latest_version_of_Condor_given_&#39;Condor&#39;_exists_in_the_pact-broker_with_the_latest_version_1.2.3"></a>
+Given **'Condor' exists in the pact-broker with the latest version 1.2.3**, upon receiving **a request to retrieve the latest version of Condor** from Pact Broker Client, with
+```json
+{
+  "method": "get",
+  "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-VERSION-Condor",
+  "headers": {
+    "Accept": "application/json, application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "body": {
+    "number": "1.2.3",
+    "_links": {
+      "self": {
+        "href": "http://localhost:1234/some-url"
+      }
+    }
+  }
 }
 ```
 <a name="a_request_to_retrieve_the_pact_between_the_production_verison_of_Condor_and_the_Pricing_Service_given_a_pact_between_Condor_and_the_Pricing_Service_exists_for_the_production_version_of_Condor"></a>

@@ -89,7 +89,7 @@ module PactBroker
             pacticipant: options.pacticipant,
             version: options.version,
             latest: latest,
-            tag: options.latest.is_a?(String) ? options.latest : nil
+            tag: options.latest != "latest" ? options.latest : nil
           }
           opts = {
             output: options.output

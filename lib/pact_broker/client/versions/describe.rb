@@ -32,7 +32,11 @@ module PactBroker
           else
             pact_broker_client.pacticipants.versions.latest(params)
           end
-          Result.new(true, format_version(version_hash))
+          if version_hash
+            Result.new(true, format_version(version_hash))
+          else
+            Result.new(false, "Pacticipant version not found")
+          end
         end
 
         private

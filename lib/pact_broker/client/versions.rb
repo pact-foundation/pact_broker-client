@@ -13,13 +13,15 @@ module PactBroker
         end
       end
 
-      # TODO this is not a valid URL!
       def latest options
-        query = options[:tag] ? {tag: options[:tag]} : {}
-        response = self.class.get("#{versions_base_url(options)}/latest", query: query, headers: default_get_headers)
-
-        handle_response(response) do
-          string_keys_to_symbols(response.to_hash)
+        puts options
+        url = if options[:tag]
+          url_for_relation('pb:latest-tagged-version', pacticipant: options.fetch(:pacticipant), tag: options.fetch(:tag))
+        else
+          url_for_relation('pb:latest-version', pacticipant: options.fetch(:pacticipant))
+        end
+        handle_response(get(url, headers: default_get_headers)) do | response |
+          JSON.parse(response.body, symbolize_names: true)
         end
       end
 
