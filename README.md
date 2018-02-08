@@ -16,6 +16,8 @@ Add `gem 'pact_broker-client'` to your Gemfile and run `bundle install`, or inst
 
 ## Usage - CLI
 
+To connect to a Pact Broker that uses custom SSL cerificates, set the environment variable `$SSL_CERT_FILE` or `$SSL_CERT_DIR` to a path that contains the appropriate certificate.
+
 ### publish
 
 ```
