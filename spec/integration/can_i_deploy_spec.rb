@@ -9,6 +9,7 @@ describe "pact-broker can-i-deploy" do
 
     it "returns a success exit code" do
       subject
+      puts subject unless $?.exitstatus == 0
       expect($?.exitstatus).to eq 0
       expect(subject).to match /CONSUMER/
       expect(subject).to match /Foo/
