@@ -1,3 +1,12 @@
+<a name="v1.14.1"></a>
+### v1.14.1 (2018-04-11)
+
+
+#### Bug Fixes
+
+* use SSL_CERT_FILE and SSL_CERT_DIR environment variables for https connections	 ([e4e7a15](/../../commit/e4e7a15))
+
+
 <a name="v1.14.0"></a>
 ### v1.14.0 (2018-01-25)
 
