@@ -48,6 +48,34 @@ module PactBroker
           end
         end
 
+        context 'when SSL_CERT_FILE environment variable is set' do
+          before do
+            allow(ENV).to receive(:[]).and_call_original
+            allow(ENV).to receive(:[]).with('SSL_CERT_FILE').and_return('ssl_cert_file')
+          end
+
+          subject { BaseClient.new(base_url: base_url) }
+
+          it 'sets the ssl_ca_file' do
+            expect(BaseClient).to receive(:ssl_ca_file).with('ssl_cert_file')
+            subject
+          end
+        end
+
+        context 'when SSL_CERT_DIR environment variable is set' do
+          before do
+            allow(ENV).to receive(:[]).and_call_original
+            allow(ENV).to receive(:[]).with('SSL_CERT_DIR').and_return('ssl_cert_dir')
+          end
+
+          subject { BaseClient.new(base_url: base_url) }
+
+          it 'sets the ssl_ca_file' do
+            expect(BaseClient).to receive(:ssl_ca_path).with('ssl_cert_dir')
+            subject
+          end
+        end
+
         describe "url_for_relation" do
           let(:index_body) do
             {
