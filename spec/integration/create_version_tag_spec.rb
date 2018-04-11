@@ -1,4 +1,6 @@
-describe "pact-broker create-version-tag" do
+is_windows = !!RbConfig::CONFIG['host_os'] =~ /bccwin|cygwin|djgpp|mingw|mswin|wince/
+
+describe "pact-broker create-version-tag", pending: is_windows do
   before(:all) do
     @pipe = IO.popen("bundle exec pact-stub-service spec/pacts/pact_broker_client-pact_broker.json -p 5001")
     sleep 2
