@@ -17,7 +17,7 @@ module PactBroker
           }
         end
         context 'with basic url' do
-          it 'should set base url' do
+          it 'sets the base url' do
             base_client = BaseClient.new(base_url: base_url)
             expect(base_client.base_url).to eq(base_url)
             expect(BaseClient.base_uri).to eq(base_url)
@@ -26,11 +26,11 @@ module PactBroker
 
         context 'with client options' do
           subject { BaseClient.new(base_url: base_url, client_options: client_options) }
-          it 'should set client options ' do
+          it 'sets the client options ' do
             expect(subject.client_options).to eq(client_options)
           end
 
-          it 'should set httpparty basic auth when client options contains basic auth' do
+          it 'sets the httpparty basic auth when client options contains basic auth' do
             expect(BaseClient).to receive(:basic_auth).with(username, password)
             subject
           end
@@ -38,17 +38,17 @@ module PactBroker
 
         context 'without client options' do
           subject { BaseClient.new(base_url: base_url) }
-          it 'should set client options to empty hash ' do
+          it 'set the client options to empty hash ' do
             expect(subject.client_options).to eq({})
           end
 
-          it 'should not set httpparty basic auth' do
+          it 'does not set the httpparty basic auth' do
             expect(BaseClient).to_not receive(:basic_auth).with(username, password)
             subject
           end
         end
 
-        context 'when SSL_CERT_FILE environment variable is set' do
+        context 'when the SSL_CERT_FILE environment variable is set' do
           before do
             allow(ENV).to receive(:[]).and_call_original
             allow(ENV).to receive(:[]).with('SSL_CERT_FILE').and_return('ssl_cert_file')
@@ -62,7 +62,7 @@ module PactBroker
           end
         end
 
-        context 'when SSL_CERT_DIR environment variable is set' do
+        context 'when the SSL_CERT_DIR environment variable is set' do
           before do
             allow(ENV).to receive(:[]).and_call_original
             allow(ENV).to receive(:[]).with('SSL_CERT_DIR').and_return('ssl_cert_dir')
