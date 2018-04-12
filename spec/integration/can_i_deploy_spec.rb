@@ -1,6 +1,4 @@
-is_windows = (RbConfig::CONFIG['host_os'] =~ /bccwin|cygwin|djgpp|mingw|mswin|wince/i) != nil
-
-describe "pact-broker can-i-deploy", pending: is_windows do
+describe "pact-broker can-i-deploy", skip_windows: true do
   before(:all) do
     @pipe = IO.popen("bundle exec pact-stub-service spec/pacts/pact_broker_client-pact_broker.json -p 5000")
     sleep 2
