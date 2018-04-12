@@ -1,4 +1,4 @@
-is_windows = !!RbConfig::CONFIG['host_os'] =~ /bccwin|cygwin|djgpp|mingw|mswin|wince/
+is_windows = (RbConfig::CONFIG['host_os'] =~ /bccwin|cygwin|djgpp|mingw|mswin|wince/i) != nil
 
 describe "pact-broker create-version-tag", pending: is_windows do
   before(:all) do
