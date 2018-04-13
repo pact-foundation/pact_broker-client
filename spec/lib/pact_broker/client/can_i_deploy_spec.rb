@@ -76,7 +76,7 @@ module PactBroker
 
       context "when a StandardError is raised" do
         before do
-          allow(Retry).to receive(:sleep).and_return(0)
+          allow(Retry).to receive(:until_true) { |&block| block.call }
           allow($stderr).to receive(:puts)
           allow(matrix_client).to receive(:get).and_raise(StandardError.new('error text'))
         end
