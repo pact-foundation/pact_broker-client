@@ -492,7 +492,7 @@ Pact Broker will respond with:
         "href": "http://example.org/pacticipants/Pricing%20Service",
         "title": "Pricing Service"
       },
-      "pacts": [
+      "pb:pacts": [
         {
           "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
           "title": "Pact between Condor (v1.3.0) and Pricing Service",
@@ -521,7 +521,7 @@ Pact Broker will respond with:
         "href": "http://example.org/pacticipants/Pricing%20Service",
         "title": "Pricing Service"
       },
-      "pacts": [
+      "pb:pacts": [
         {
           "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
           "title": "Pact between Condor (v1.3.0) and Pricing Service",

@@ -49,7 +49,7 @@ module PactBroker
         url = get_latest_provider_contracts(options)
         response = self.class.get(url, headers: {})
         handle_response(response) do
-          map_latest_provider_pacts_to_hash JSON.parse(response.body)["_links"]["pacts"]
+          map_latest_provider_pacts_to_hash(pact_links(response))
         end
       end
 
@@ -62,6 +62,12 @@ module PactBroker
       end
 
       private
+
+      def pact_links response
+        body = JSON.parse(response.body)
+        # pacts relation is deprecated
+        body["_links"]["pb:pacts"] || body["_links"]["pacts"]
+      end
 
       #TODO Move into mapper class
       def map_pact_list_to_hash pacts_list
