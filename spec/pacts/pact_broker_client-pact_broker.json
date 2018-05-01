@@ -869,6 +869,11 @@
               }
             ]
           }
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
         }
       }
     },
@@ -898,6 +903,11 @@
                 "name": "Condor"
               }
             ]
+          }
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
           }
         }
       }

@@ -7,7 +7,7 @@ module PactBroker::Client
     include_context "pact broker"
 
     describe "retriving all pacts for provider" do
-      let(:response_body) { JSON.parse(File.read("./spec/support/latest_pacts_for_provider.json")) }
+      let(:response_body) { Pact.like(JSON.parse(File.read("./spec/support/latest_pacts_for_provider.json"))) }
       let(:expectedPactsArray) { [{:name => "Condor", :href => "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0"}] }
 
       context "when retrieving all the latest pacts for provider with prod tag specified" do
