@@ -197,6 +197,7 @@
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "summary": {
@@ -245,6 +246,7 @@
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "summary": {
@@ -293,6 +295,7 @@
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "summary": {
@@ -341,6 +344,7 @@
       "response": {
         "status": 400,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "errors": [
@@ -367,6 +371,7 @@
       "response": {
         "status": 400,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "errors": [
@@ -394,6 +399,7 @@
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "matrix": [
@@ -462,6 +468,7 @@
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "summary": {
@@ -510,6 +517,7 @@
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "summary": {
@@ -558,6 +566,7 @@
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "summary": {
@@ -606,6 +615,7 @@
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "matrix": [
@@ -651,6 +661,7 @@
       "response": {
         "status": 201,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "_links": {
@@ -685,6 +696,7 @@
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "_links": {
@@ -719,6 +731,7 @@
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "_links": {
@@ -753,6 +766,7 @@
       "response": {
         "status": 201,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "_links": {
@@ -820,6 +834,7 @@
       "response": {
         "status": 201,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         }
       }
     },
@@ -839,6 +854,7 @@
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         }
       }
     },
@@ -924,6 +940,7 @@
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "consumer": {
@@ -994,12 +1011,13 @@
         "method": "get",
         "path": "/pacts/provider/Pricing%20Service/consumer/Condor/latest/prod",
         "headers": {
-          "Accept": "application/json, application/hal+json"
+          "Accept": "application/hal+json, application/json"
         }
       },
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "consumer": {
@@ -1027,6 +1045,7 @@
       "response": {
         "status": 201,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "_links": {
@@ -1056,6 +1075,7 @@
       "response": {
         "status": 201,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "_links": {
@@ -1085,6 +1105,7 @@
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "_links": {
@@ -1108,12 +1129,13 @@
         "method": "get",
         "path": "/",
         "headers": {
-          "Accept": "application/json, application/hal+json"
+          "Accept": "application/hal+json, application/json"
         }
       },
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "_links": {
@@ -1137,12 +1159,13 @@
         "method": "get",
         "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-VERSION-Condor",
         "headers": {
-          "Accept": "application/json, application/hal+json"
+          "Accept": "application/hal+json, application/json"
         }
       },
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "number": "1.2.3",
@@ -1167,12 +1190,13 @@
         "method": "get",
         "path": "/",
         "headers": {
-          "Accept": "application/json, application/hal+json"
+          "Accept": "application/hal+json, application/json"
         }
       },
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "_links": {
@@ -1196,12 +1220,13 @@
         "method": "get",
         "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-TAGGED-VERSION-Condor-production",
         "headers": {
-          "Accept": "application/json, application/hal+json"
+          "Accept": "application/hal+json, application/json"
         }
       },
       "response": {
         "status": 200,
         "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
           "number": "1.2.3",

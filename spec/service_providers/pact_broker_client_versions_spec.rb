@@ -6,7 +6,7 @@ describe PactBroker::Client::Versions, pact: true do
 
   include_context "pact broker"
 
-  let(:get_headers) { { "Accept" => "application/json, application/hal+json" } }
+  let(:get_headers) { { "Accept" => "application/hal+json, application/json" } }
 
   describe "retrieving the latest pacticipant version" do
     let(:latest_version_path) { "/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-VERSION-{pacticipant}" }

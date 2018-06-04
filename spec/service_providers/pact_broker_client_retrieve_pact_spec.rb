@@ -70,8 +70,7 @@ module PactBroker::Client
                 headers: {}
               ).
               will_respond_with(
-                status: 404,
-                headers: pact_broker_response_headers
+                status: 404
               )
           end
           it "returns nil" do
@@ -89,7 +88,7 @@ module PactBroker::Client
               with(
                   method: :get,
                   path: '/pacts/provider/Pricing%20Service/consumer/Condor/latest/prod',
-                  headers: { 'Accept' => 'application/json, application/hal+json'}
+                  headers: { 'Accept' => 'application/hal+json, application/json'}
               ).
               will_respond_with(
                 status: 200,

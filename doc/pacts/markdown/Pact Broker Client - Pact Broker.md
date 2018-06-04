@@ -85,6 +85,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 400,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "errors": [
       "an error message"
@@ -105,6 +108,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "matrix": [
       {
@@ -166,6 +172,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "summary": {
       "deployable": true,
@@ -210,6 +219,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "summary": {
       "deployable": true,
@@ -254,6 +266,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "summary": {
       "deployable": true,
@@ -298,6 +313,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "matrix": [
       {
@@ -331,6 +349,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "summary": {
       "deployable": true,
@@ -375,6 +396,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 400,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "errors": [
       "an error message"
@@ -395,6 +419,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "summary": {
       "deployable": true,
@@ -433,7 +460,7 @@ Given **the pb:latest-tagged-version relation exists in the index resource**, up
   "method": "get",
   "path": "/",
   "headers": {
-    "Accept": "application/json, application/hal+json"
+    "Accept": "application/hal+json, application/json"
   }
 }
 ```
@@ -441,6 +468,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "_links": {
       "pb:latest-tagged-version": {
@@ -457,7 +487,7 @@ Given **the pb:latest-version relation exists in the index resource**, upon rece
   "method": "get",
   "path": "/",
   "headers": {
-    "Accept": "application/json, application/hal+json"
+    "Accept": "application/hal+json, application/json"
   }
 }
 ```
@@ -465,6 +495,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "_links": {
       "pb:latest-version": {
@@ -545,6 +578,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "summary": {
       "deployable": true,
@@ -588,6 +624,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "consumer": {
       "name": "Condor"
@@ -791,6 +830,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 201,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "_links": {
       "pb:latest-pact-version": {
@@ -826,6 +868,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 201,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "_links": {
       "pb:latest-pact-version": {
@@ -895,6 +940,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "_links": {
       "pb:latest-pact-version": {
@@ -930,6 +978,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "_links": {
       "pb:latest-pact-version": {
@@ -956,7 +1007,10 @@ Given **the 'Pricing Service' already exists in the pact-broker**, upon receivin
 Pact Broker will respond with:
 ```json
 {
-  "status": 200
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  }
 }
 ```
 <a name="a_request_to_register_the_repository_URL_of_a_pacticipant_given_the_&#39;Pricing_Service&#39;_does_not_exist_in_the_pact-broker"></a>
@@ -976,7 +1030,10 @@ Given **the 'Pricing Service' does not exist in the pact-broker**, upon receivin
 Pact Broker will respond with:
 ```json
 {
-  "status": 201
+  "status": 201,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  }
 }
 ```
 <a name="a_request_to_retrieve_the_latest_&#39;production&#39;_version_of_Condor_given_&#39;Condor&#39;_exists_in_the_pact-broker_with_the_latest_tagged_&#39;production&#39;_version_1.2.3"></a>
@@ -986,7 +1043,7 @@ Given **'Condor' exists in the pact-broker with the latest tagged 'production' v
   "method": "get",
   "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-TAGGED-VERSION-Condor-production",
   "headers": {
-    "Accept": "application/json, application/hal+json"
+    "Accept": "application/hal+json, application/json"
   }
 }
 ```
@@ -994,6 +1051,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "number": "1.2.3",
     "_links": {
@@ -1054,7 +1114,7 @@ Given **'Condor' exists in the pact-broker with the latest version 1.2.3**, upon
   "method": "get",
   "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-VERSION-Condor",
   "headers": {
-    "Accept": "application/json, application/hal+json"
+    "Accept": "application/hal+json, application/json"
   }
 }
 ```
@@ -1062,6 +1122,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "number": "1.2.3",
     "_links": {
@@ -1079,7 +1142,7 @@ Given **a pact between Condor and the Pricing Service exists for the production 
   "method": "get",
   "path": "/pacts/provider/Pricing%20Service/consumer/Condor/latest/prod",
   "headers": {
-    "Accept": "application/json, application/hal+json"
+    "Accept": "application/hal+json, application/json"
   }
 }
 ```
@@ -1087,6 +1150,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "consumer": {
       "name": "Condor"
@@ -1115,6 +1181,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "_links": {
       "self": {
@@ -1139,6 +1208,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 201,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "_links": {
       "self": {
@@ -1163,6 +1235,9 @@ Pact Broker will respond with:
 ```json
 {
   "status": 201,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
   "body": {
     "_links": {
       "self": {
