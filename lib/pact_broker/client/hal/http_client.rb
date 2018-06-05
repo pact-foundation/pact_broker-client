@@ -4,11 +4,12 @@ module PactBroker
   module Client
     module Hal
       class HttpClient
-        attr_accessor :username, :password
+        attr_reader :username, :password, :verbose
 
         def initialize options
           @username = options[:username]
           @password = options[:password]
+          @verbose = options[:verbose]
         end
 
         def get href, params = {}, headers = {}
@@ -44,7 +45,9 @@ module PactBroker
         def perform_request request, uri
           options = {:use_ssl => uri.scheme == 'https'}
           response = Retry.until_true do
-            Net::HTTP.start(uri.host, uri.port, :ENV, options) do |http|
+            http = Net::HTTP.new(uri.host, uri.port, :ENV, options)
+            http.set_debug_output($stderr) if verbose
+            http.start do |http|
               http.request request
             end
           end
