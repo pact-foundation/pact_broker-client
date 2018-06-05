@@ -1,5 +1,7 @@
 require_relative 'base_client'
 require 'pact_broker/client/pacts'
+require 'pact_broker/client/hal/http_client'
+require 'pact_broker/client/hal/link'
 
 module PactBroker
   module Client
@@ -29,6 +31,23 @@ module PactBroker
         response = put(tag_url(options), headers: default_put_headers.merge("Content-Length" => "0"))
         handle_response(response) do
           true
+        end
+      end
+
+      def add_environment options
+        link_params = { pacticipant: options.fetch(:pacticipant), version: options.fetch(:version), environment: options.fetch(:environment) }
+        http_client = PactBroker::Client::Hal::HttpClient.new(basic_auth_options || {})
+        index_entity = PactBroker::Client::Hal::Link.new({'href' => base_url}, http_client).get
+        if index_entity.success?
+          environment_relation = index_entity._link("pb:pacticipant-version-environment")
+          if environment_relation
+            environment_entity = environment_relation.expand(link_params).put
+            environment_entity.success?
+          else
+            raise PactBroker::Client::Error, "Support for environments does not exist in this version of the Pact Broker. Please upgrade to version 2.20.0 or later."
+          end
+        else
+          raise PactBroker::Client::Error, "Error retrieving resource at #{base_url}: #{index_entity.info_message}"
         end
       end
 

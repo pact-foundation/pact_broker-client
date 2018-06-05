@@ -115,6 +115,10 @@ module PactBroker
         end
       end
 
+      def basic_auth_options
+        client_options[:basic_auth]
+      end
+
       def verbose?
         @verbose
       end

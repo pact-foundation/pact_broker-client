@@ -6,7 +6,7 @@ module PactBroker
       class HttpClient
         attr_accessor :username, :password
 
-        def initialize options
+        def initialize options = {}
           @username = options[:username]
           @password = options[:password]
         end
@@ -14,7 +14,7 @@ module PactBroker
         def get href, params = {}, headers = {}
           query = params.collect{ |(key, value)| "#{CGI::escape(key)}=#{CGI::escape(value)}" }.join("&")
           uri = URI(href)
-          uri.query = query
+          uri.query = query if query && query.size > 0
           perform_request(create_request(uri, 'Get', nil, headers), uri)
         end
 
@@ -53,6 +53,10 @@ module PactBroker
 
         class Response < SimpleDelegator
           def body
+            __getobj__().body
+          end
+
+          def body_hash
             bod = __getobj__().body
             if bod && bod != ''
               JSON.parse(bod)
@@ -63,6 +67,10 @@ module PactBroker
 
           def success?
             __getobj__().code.start_with?("2")
+          end
+
+          def code
+            __getobj__().code.to_i
           end
         end
       end

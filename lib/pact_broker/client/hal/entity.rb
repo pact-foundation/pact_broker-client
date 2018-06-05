@@ -54,9 +54,9 @@ module PactBroker
         end
 
         def method_missing(method_name, *args, &block)
-          if @data.key?(method_name.to_s)
+          if @data && @data.key?(method_name.to_s)
             @data[method_name.to_s]
-          elsif @links.key?(method_name)
+          elsif @links && @links.key?(method_name)
             Link.new(@links[method_name], @client).run(*args)
           else
             super
@@ -71,6 +71,14 @@ module PactBroker
       class ErrorEntity < Entity
         def success?
           false
+        end
+
+        def info_message
+          "response status=#{@response.code}"
+        end
+
+        def debug_message
+          "response status=#{@response.code} headers=#{@response.to_hash} body=#{@response.body}"
         end
       end
     end

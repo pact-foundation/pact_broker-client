@@ -24,6 +24,8 @@
 
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:latest-version_relation_exists_in_the_index_resource) given the pb:latest-version relation exists in the index resource
 
+* [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:pacticipant-version-environment_relation_exists_in_the_index_resource) given the pb:pacticipant-version-environment relation exists in the index resource
+
 * [A request for the list of the latest pacts from all consumers for the Pricing Service'](#a_request_for_the_list_of_the_latest_pacts_from_all_consumers_for_the_Pricing_Service&#39;_given_a_latest_pact_between_Condor_and_the_Pricing_Service_exists) given a latest pact between Condor and the Pricing Service exists
 
 * [A request for the list of the latest prod pacts from all consumers for the Pricing Service'](#a_request_for_the_list_of_the_latest_prod_pacts_from_all_consumers_for_the_Pricing_Service&#39;_given_tagged_as_prod_pact_between_Condor_and_the_Pricing_Service_exists) given tagged as prod pact between Condor and the Pricing Service exists
@@ -31,6 +33,10 @@
 * [A request for the successful rows of the compatibility matrix for all versions of Foo and Bar](#a_request_for_the_successful_rows_of_the_compatibility_matrix_for_all_versions_of_Foo_and_Bar_given_the_pact_for_Foo_version_1.2.3_has_been_successfully_verified_by_Bar_version_4.5.6,_and_1.2.4_unsuccessfully_by_9.9.9) given the pact for Foo version 1.2.3 has been successfully verified by Bar version 4.5.6, and 1.2.4 unsuccessfully by 9.9.9
 
 * [A request retrieve a pact for a specific version](#a_request_retrieve_a_pact_for_a_specific_version_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker,_and_Condor_already_has_a_pact_published_for_version_1.3.0) given the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0
+
+* [A request to add an environment a version of Condor](#a_request_to_add_an_environment_a_version_of_Condor_given_&#39;Condor&#39;_exists_in_the_pact-broker_with_version_1.3.0) given 'Condor' exists in the pact-broker with version 1.3.0
+
+* [A request to add an environment a version of Condor](#a_request_to_add_an_environment_a_version_of_Condor_given_&#39;Condor&#39;_exists_in_the_pact-broker) given 'Condor' exists in the pact-broker
 
 * [A request to get the Pricing Service](#a_request_to_get_the_Pricing_Service_given_the_&#39;Pricing_Service&#39;_already_exists_in_the_pact-broker) given the 'Pricing Service' already exists in the pact-broker
 
@@ -507,6 +513,33 @@ Pact Broker will respond with:
   }
 }
 ```
+<a name="a_request_for_the_index_resource_given_the_pb:pacticipant-version-environment_relation_exists_in_the_index_resource"></a>
+Given **the pb:pacticipant-version-environment relation exists in the index resource**, upon receiving **a request for the index resource** from Pact Broker Client, with
+```json
+{
+  "method": "get",
+  "path": "/",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "pb:pacticipant-version-environment": {
+        "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-ENVIRONMENT-{pacticipant}-{version}-{environment}"
+      }
+    }
+  }
+}
+```
 <a name="a_request_for_the_list_of_the_latest_pacts_from_all_consumers_for_the_Pricing_Service&#39;_given_a_latest_pact_between_Condor_and_the_Pricing_Service_exists"></a>
 Given **a latest pact between Condor and the Pricing Service exists**, upon receiving **a request for the list of the latest pacts from all consumers for the Pricing Service'** from Pact Broker Client, with
 ```json
@@ -638,6 +671,52 @@ Pact Broker will respond with:
 
     ]
   }
+}
+```
+<a name="a_request_to_add_an_environment_a_version_of_Condor_given_&#39;Condor&#39;_exists_in_the_pact-broker_with_version_1.3.0"></a>
+Given **'Condor' exists in the pact-broker with version 1.3.0**, upon receiving **a request to add an environment a version of Condor** from Pact Broker Client, with
+```json
+{
+  "method": "put",
+  "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-ENVIRONMENT-Condor-1.3.0-production",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 201,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "name": "production",
+    "_links": {
+      "self": {
+        "href": "http://environment-url"
+      }
+    }
+  }
+}
+```
+<a name="a_request_to_add_an_environment_a_version_of_Condor_given_&#39;Condor&#39;_exists_in_the_pact-broker"></a>
+Given **'Condor' exists in the pact-broker**, upon receiving **a request to add an environment a version of Condor** from Pact Broker Client, with
+```json
+{
+  "method": "put",
+  "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-ENVIRONMENT-Condor-1.3.0-production",
+  "headers": {
+    "Content-Type": "application/json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 404
 }
 ```
 <a name="a_request_to_get_the_Pricing_Service_given_the_&#39;Pricing_Service&#39;_already_exists_in_the_pact-broker"></a>

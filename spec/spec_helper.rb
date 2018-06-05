@@ -13,4 +13,5 @@ RSpec.configure do | config |
   end
 
   config.filter_run_excluding :skip_windows => is_windows
+  config.example_status_persistence_file_path = "./spec/examples.txt"
 end

@@ -10,7 +10,7 @@ module PactBroker::Client
       end
 
       let(:response) do
-        instance_double('PactBroker::Client::Hal::HttpClient::Response', success?: success, body: response_body)
+        instance_double('PactBroker::Client::Hal::HttpClient::Response', success?: success, body_hash: response_body)
       end
 
       let(:success) { true }

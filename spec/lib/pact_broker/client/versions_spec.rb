@@ -29,6 +29,38 @@ module PactBroker
           end
         end
       end
+
+      describe "add_environment" do
+        let(:environment_params) do
+          {
+            pacticipant: "Foo",
+            version: "1.2.3",
+            environment: "production"
+          }
+        end
+
+        context "when the pb:pacticipant-version-environment relation does not exist" do
+          let(:response_body) { {"_links" => {}}.to_json }
+          let!(:request) { stub_request(:get, "http://blah").to_return(status: 200, headers: {"Content-Type" => "application/hal+json"}, body: response_body) }
+
+          let(:add_environment) { subject.add_environment(environment_params) }
+
+          it "raises a PactBroker::Client::Error with a message" do
+            expect { add_environment }.to raise_error PactBroker::Client::Error, /Support for environments does not exist/
+          end
+        end
+
+        context "when index resource does not exist" do
+          let(:response_body) { {"_links" => {}}.to_json }
+          let!(:request) { stub_request(:get, "http://blah").to_return(status: 404, headers: {"Content-Type" => "application/hal+json"}) }
+
+          let(:add_environment) { subject.add_environment(environment_params) }
+
+          it "raises a PactBroker::Client::Error with a message" do
+            expect { add_environment }.to raise_error PactBroker::Client::Error, /Error retrieving resource/
+          end
+        end
+      end
     end
   end
 end

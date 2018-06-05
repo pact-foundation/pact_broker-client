@@ -49,7 +49,7 @@ module PactBroker::Client
         end
 
         it "returns a response" do
-          expect(do_get.body).to eq({"some" => "json"})
+          expect(do_get.body_hash).to eq({"some" => "json"})
         end
       end
 
@@ -81,7 +81,7 @@ module PactBroker::Client
         end
 
         it "returns a response" do
-          expect(do_post.body).to eq({"some" => "json"})
+          expect(do_post.body_hash).to eq({"some" => "json"})
         end
 
         context "with custom headers" do

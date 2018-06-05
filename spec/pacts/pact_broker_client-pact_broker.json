@@ -187,6 +187,84 @@
       }
     },
     {
+      "description": "a request for the index resource",
+      "providerState": "the pb:pacticipant-version-environment relation exists in the index resource",
+      "request": {
+        "method": "get",
+        "path": "/",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pb:pacticipant-version-environment": {
+              "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-ENVIRONMENT-{pacticipant}-{version}-{environment}"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:pacticipant-version-environment.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*{pacticipant}.*{version}.*{environment}"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to add an environment a version of Condor",
+      "providerState": "'Condor' exists in the pact-broker with version 1.3.0",
+      "request": {
+        "method": "put",
+        "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-ENVIRONMENT-Condor-1.3.0-production",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "name": "production",
+          "_links": {
+            "self": {
+              "href": "http://environment-url"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to add an environment a version of Condor",
+      "providerState": "'Condor' exists in the pact-broker",
+      "request": {
+        "method": "put",
+        "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-ENVIRONMENT-Condor-1.3.0-production",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "status": 404,
+        "headers": {
+        }
+      }
+    },
+    {
       "description": "a request for the compatibility matrix for Foo version 1.2.3 and Bar version 4.5.6",
       "providerState": "the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6",
       "request": {
