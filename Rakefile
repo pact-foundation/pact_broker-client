@@ -23,3 +23,11 @@ task :generate_changelog do
   require 'pact_broker/client/version'
   ConventionalChangelog::Generator.new.generate! version: "v#{PactBroker::Client::VERSION}"
 end
+
+task :list_provider_states do
+  require 'json'
+  puts Dir.glob("spec/pacts/**.json").collect { | pact_file |
+    puts pact_file
+    JSON.parse(File.read(pact_file))['interactions'].collect{ | interaction| interaction['providerState'] }
+  }.flatten.compact.sort.uniq
+end
