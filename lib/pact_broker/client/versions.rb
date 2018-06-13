@@ -14,7 +14,6 @@ module PactBroker
       end
 
       def latest options
-        puts options
         url = if options[:tag]
           url_for_relation('pb:latest-tagged-version', pacticipant: options.fetch(:pacticipant), tag: options.fetch(:tag))
         else
