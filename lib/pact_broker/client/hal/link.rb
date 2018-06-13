@@ -57,7 +57,7 @@ module PactBroker
         def expand_url(params, url)
           new_url = url
           params.each do | key, value |
-            new_url = new_url.gsub('{' + key.to_s + '}', value)
+            new_url = new_url.gsub('{' + key.to_s + '}', URI.escape(value))
           end
           new_url
         end
