@@ -12,5 +12,31 @@ RSpec.configure do | config |
     ENV.delete('PACT_BROKER_BASE_URL')
   end
 
+  config.after(:all) do
+    Pact::Fixture.check_fixtures
+  end
+
   config.filter_run_excluding :skip_windows => is_windows
+end
+
+module Pact
+  module Fixture
+
+    def self.add_fixture key, value
+      fixtures[key] ||= []
+      fixtures[key] << value
+    end
+
+    def self.fixtures
+      @fixtures ||= {}
+    end
+
+    def self.check_fixtures
+      fixtures.each do | fixture_group |
+        if fixture_group.size > 1
+          #TODO compare fixtures to ensure they match
+        end
+      end
+    end
+  end
 end

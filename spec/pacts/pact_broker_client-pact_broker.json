@@ -1243,6 +1243,205 @@
           }
         }
       }
+    },
+    {
+      "description": "a request to create a webhook with a JSON body for a consumer and provider",
+      "providerState": "the 'Pricing Service' and 'Condor' already exist in the pact-broker",
+      "request": {
+        "method": "post",
+        "path": "/webhooks/provider/Pricing%20Service/consumer/Condor",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
+          "request": {
+            "url": "https://webhook",
+            "method": "POST",
+            "headers": {
+              "Foo": "bar",
+              "Bar": "foo"
+            },
+            "body": {
+              "some": "body"
+            },
+            "username": "username",
+            "password": "password"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/some-url",
+              "title": "A title"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          },
+          "$.body._links.self.title": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to create a webhook with a non-JSON body for a consumer and provider",
+      "providerState": "the 'Pricing Service' and 'Condor' already exist in the pact-broker",
+      "request": {
+        "method": "post",
+        "path": "/webhooks/provider/Pricing%20Service/consumer/Condor",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
+          "request": {
+            "url": "https://webhook",
+            "method": "POST",
+            "headers": {
+              "Foo": "bar",
+              "Bar": "foo"
+            },
+            "body": "<xml></xml>",
+            "username": "username",
+            "password": "password"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/some-url",
+              "title": "A title"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          },
+          "$.body._links.self.title": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an invalid request to create a webhook for a consumer and provider",
+      "providerState": "the 'Pricing Service' and 'Condor' already exist in the pact-broker",
+      "request": {
+        "method": "post",
+        "path": "/webhooks/provider/Pricing%20Service/consumer/Condor",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
+          "request": {
+            "url": null,
+            "method": "POST",
+            "headers": {
+              "Foo": "bar",
+              "Bar": "foo"
+            },
+            "body": {
+              "some": "body"
+            },
+            "username": "username",
+            "password": "password"
+          }
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "errors": {
+            "request.url": [
+              "Some error"
+            ]
+          }
+        },
+        "matchingRules": {
+          "$.body.errors['request.url']": {
+            "min": 1
+          },
+          "$.body.errors['request.url'][*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to create a webhook for a consumer and provider",
+      "providerState": "'Condor' does not exist in the pact-broker",
+      "request": {
+        "method": "post",
+        "path": "/webhooks/provider/Pricing%20Service/consumer/Condor",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
+          "request": {
+            "url": "https://webhook",
+            "method": "POST",
+            "headers": {
+              "Foo": "bar",
+              "Bar": "foo"
+            },
+            "body": {
+              "some": "body"
+            },
+            "username": "username",
+            "password": "password"
+          }
+        }
+      },
+      "response": {
+        "status": 404,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        }
+      }
     }
   ],
   "metadata": {

@@ -1,0 +1,1 @@
+Create a curl command that executes the request that you want your webhook to execute, then replace "curl" with "pact-broker create-webhook" and add the consumer, provider, event types and broker details. Note that the URL must be the first parameter when executing create-webhook.
