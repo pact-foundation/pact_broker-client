@@ -804,14 +804,16 @@
           "Content-Type": "application/hal+json"
         },
         "body": {
-          "message": "An error occurred"
+          "error": {
+            "message": "An error occurred"
+          }
         },
         "matchingRules": {
           "$.headers.Content-Type": {
             "match": "regex",
             "regex": "application\\/.*json"
           },
-          "$.body.message": {
+          "$.body.error.message": {
             "match": "regex",
             "regex": ".*"
           }

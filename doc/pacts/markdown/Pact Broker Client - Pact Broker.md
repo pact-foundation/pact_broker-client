@@ -1055,7 +1055,9 @@ Pact Broker will respond with:
     "Content-Type": "application/hal+json"
   },
   "body": {
-    "message": "An error occurred"
+    "error": {
+      "message": "An error occurred"
+    }
   }
 }
 ```
