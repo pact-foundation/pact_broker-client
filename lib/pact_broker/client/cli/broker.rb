@@ -124,10 +124,10 @@ module PactBroker
           username = options.user ? options.user.split(":", 2).first : nil
           password = options.user ? options.user.split(":", 2).last : nil
 
-          headers = options.header.each_with_object({}) { | header, headers | headers[header.split(":", 2).first.strip] = header.split(":", 2).last.strip }
+          headers = (options.header || []).each_with_object({}) { | header, headers | headers[header.split(":", 2).first.strip] = header.split(":", 2).last.strip }
 
           body = options.data
-          if body.start_with?("@")
+          if body && body.start_with?("@")
             filepath = body[1..-1]
             begin
               body = File.read(filepath)

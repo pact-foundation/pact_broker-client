@@ -17,11 +17,12 @@ module PactBroker
           let(:user) { "username:password" }
           let(:command_result) { double('command result', success: success, message: 'message') }
           let(:success) { true }
+          let(:header) { ["Foo: bar", "Bar: foo"] }
 
           let(:options_hash) do
             {
               request: "POST",
-              header: ["Foo: bar", "Bar: foo"],
+              header: header,
               data: data,
               user: user,
               consumer: "consumer",
@@ -88,6 +89,30 @@ module PactBroker
             it "calls Webhooks::Create without basic auth" do
               expect(PactBroker::Client::Webhooks::Create).to receive(:call) do | _, _, pact_broker_client_options |
                 expect(pact_broker_client_options).to eq(verbose: true)
+                command_result
+              end
+              subject
+            end
+          end
+
+          context "when there are no headers specified" do
+            let(:header) { nil }
+
+            it "calls Webhooks::Create with an empty hash of headers" do
+              expect(PactBroker::Client::Webhooks::Create).to receive(:call) do | params, _, _ |
+                expect(params[:headers]).to eq({})
+                command_result
+              end
+              subject
+            end
+          end
+
+          context "when data is nil" do
+            let(:data) { nil }
+
+            it "alls Webhooks::Create with a nil body" do
+              expect(PactBroker::Client::Webhooks::Create).to receive(:call) do | params, _, _ |
+                expect(params[:body]).to be nil
                 command_result
               end
               subject
