@@ -1444,6 +1444,260 @@
           "Content-Type": "application/hal+json;charset=utf-8"
         }
       }
+    },
+    {
+      "description": "a request for the index resource",
+      "request": {
+        "method": "get",
+        "path": "/",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pb:webhooks": {
+              "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-WEBHOOKS"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:webhooks.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to create a webhook with a JSON body for a consumer",
+      "providerState": "the 'Pricing Service' and 'Condor' already exist in the pact-broker",
+      "request": {
+        "method": "post",
+        "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
+          "request": {
+            "url": "https://webhook",
+            "method": "POST",
+            "headers": {
+              "Foo": "bar",
+              "Bar": "foo"
+            },
+            "body": {
+              "some": "body"
+            },
+            "username": "username",
+            "password": "password"
+          },
+          "consumer": {
+            "name": "Condor"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/some-url",
+              "title": "A title"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          },
+          "$.body._links.self.title": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to create a webhook with a JSON body for a consumer that does not exist",
+      "request": {
+        "method": "post",
+        "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
+          "request": {
+            "url": "https://webhook",
+            "method": "POST",
+            "headers": {
+              "Foo": "bar",
+              "Bar": "foo"
+            },
+            "body": {
+              "some": "body"
+            },
+            "username": "username",
+            "password": "password"
+          },
+          "consumer": {
+            "name": "Condor"
+          }
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "errors": {
+            "consumer.name": [
+              "Some error"
+            ]
+          }
+        },
+        "matchingRules": {
+          "$.body.errors['consumer.name']": {
+            "min": 1
+          },
+          "$.body.errors['consumer.name'][*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to create a webhook with a JSON body for a provider",
+      "providerState": "the 'Pricing Service' and 'Condor' already exist in the pact-broker",
+      "request": {
+        "method": "post",
+        "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
+          "request": {
+            "url": "https://webhook",
+            "method": "POST",
+            "headers": {
+              "Foo": "bar",
+              "Bar": "foo"
+            },
+            "body": {
+              "some": "body"
+            },
+            "username": "username",
+            "password": "password"
+          },
+          "provider": {
+            "name": "Pricing Service"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/some-url",
+              "title": "A title"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          },
+          "$.body._links.self.title": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to create a global webhook with a JSON body",
+      "request": {
+        "method": "post",
+        "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
+          "request": {
+            "url": "https://webhook",
+            "method": "POST",
+            "headers": {
+              "Foo": "bar",
+              "Bar": "foo"
+            },
+            "body": {
+              "some": "body"
+            },
+            "username": "username",
+            "password": "password"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/some-url",
+              "title": "A title"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          },
+          "$.body._links.self.title": {
+            "match": "type"
+          }
+        }
+      }
     }
   ],
   "metadata": {

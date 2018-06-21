@@ -10,6 +10,8 @@ RSpec.configure do | config |
 
   config.before(:each) do
     ENV.delete('PACT_BROKER_BASE_URL')
+    ENV.delete('PACT_BROKER_USERNAME')
+    ENV.delete('PACT_BROKER_PASSWORD')
   end
 
   config.after(:all) do
@@ -17,6 +19,7 @@ RSpec.configure do | config |
   end
 
   config.filter_run_excluding :skip_windows => is_windows
+  config.example_status_persistence_file_path = "./spec/examples.txt"
 end
 
 module Pact

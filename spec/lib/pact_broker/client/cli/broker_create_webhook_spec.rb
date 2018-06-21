@@ -172,6 +172,16 @@ module PactBroker
                 expect(exited_with_error).to be true
               end
             end
+
+            context "when a PactBroker::Client::Error is raised" do
+              before do
+                allow(PactBroker::Client::Webhooks::Create).to receive(:call).and_raise(PactBroker::Client::Error, "foo")
+              end
+
+              it "raises a WebhookCreationError which does not show an ugly stack trace" do
+                expect { subject }.to raise_error(WebhookCreationError, /foo/)
+              end
+            end
           end
         end
       end
