@@ -24,7 +24,8 @@ task :generate_changelog do
   ConventionalChangelog::Generator.new.generate! version: "v#{PactBroker::Client::VERSION}"
 end
 
-task :list_provider_states do
+desc 'List provider states'
+task 'pact:list_provider_states' do
   require 'json'
   puts Dir.glob("spec/pacts/**.json").collect { | pact_file |
     puts pact_file
