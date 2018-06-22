@@ -1,3 +1,24 @@
+<a name="v1.15.0"></a>
+### v1.15.0 (2018-06-22)
+
+
+#### Features
+
+* allow webhooks with optional consumer and provider to be created using the create-webhooks CLI	 ([c6763b0](/../../commit/c6763b0))
+* update expectation of error response	 ([d45244f](/../../commit/d45244f))
+* add create-webhook to CLI	 ([e1ec885](/../../commit/e1ec885))
+* add title, name and title_or_name methods to Link	 ([dc24caa](/../../commit/dc24caa))
+* add http debug logging for create environment call	 ([5f31fcb](/../../commit/5f31fcb))
+* add hal client	 ([4d93bf9](/../../commit/4d93bf9))
+* update pacts relation name in retrieve pacts query	 ([7d965bf](/../../commit/7d965bf))
+
+
+#### Bug Fixes
+
+* correctly escape expanded URL links	 ([d6dbce8](/../../commit/d6dbce8))
+* correct accept headers for requests to the pact broker	 ([415d9d5](/../../commit/415d9d5))
+
+
 <a name="v1.14.1"></a>
 ### v1.14.1 (2018-04-11)
 
