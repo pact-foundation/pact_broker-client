@@ -1,3 +1,12 @@
+<a name="v1.15.1"></a>
+### v1.15.1 (2018-06-28)
+
+
+#### Bug Fixes
+
+* declare dependency on rake in gemspec	 ([b24bbcd](/../../commit/b24bbcd))
+
+
 <a name="v1.15.0"></a>
 ### v1.15.0 (2018-06-22)
 
