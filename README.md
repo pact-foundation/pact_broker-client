@@ -67,12 +67,17 @@ Options:
   -a, --pacticipant=PACTICIPANT            # The pacticipant name. Use once for each pacticipant being checked.
   -e, [--version=VERSION]                  # The pacticipant version. Must be entered after the --pacticipant that it relates to.
   -l, [--latest=[TAG]]                     # Use the latest pacticipant version. Optionally specify a TAG to use the latest version with the specified tag.
+      [--to=TAG]                           # This is too hard to explain in a short sentence. Look at the examples.
   -b, --broker-base-url=BROKER_BASE_URL    # The base URL of the Pact Broker
   -u, [--broker-username=BROKER_USERNAME]  # Pact Broker basic auth username
   -p, [--broker-password=BROKER_PASSWORD]  # Pact Broker basic auth password
   -o, [--output=OUTPUT]                    # json or table
                                            # Default: table
   -v, [--verbose], [--no-verbose]          # Verbose output. Default: false
+      [--retry-while-unknown=TIMES]        # The number of times to retry while there is an unknown verification result (ie. the provider verification is likely still running)
+                                           # Default: 0
+      [--retry-interval=SECONDS]           # The time between retries in seconds. Use in conjuction with --retry-while-unknown
+                                           # Default: 10
 
 Description:
   Returns exit code 0 or 1, indicating whether or not the specified pacticipant versions are compatible. Prints out the relevant pact/verification details.

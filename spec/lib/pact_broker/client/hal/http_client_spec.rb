@@ -4,7 +4,7 @@ module PactBroker::Client
   module Hal
     describe HttpClient do
       before do
-        allow(Retry).to receive(:until_true) { |&block| block.call }
+        allow(Retry).to receive(:while_error) { |&block| block.call }
       end
 
       subject { HttpClient.new(username: 'foo', password: 'bar') }
@@ -43,7 +43,7 @@ module PactBroker::Client
 
 
         it "retries on failure" do
-          expect(Retry).to receive(:until_true)
+          expect(Retry).to receive(:while_error)
           do_get
         end
 
@@ -74,8 +74,8 @@ module PactBroker::Client
           expect(request).to have_been_made
         end
 
-        it "calls Retry.until_true" do
-          expect(Retry).to receive(:until_true)
+        it "calls Retry.while_error" do
+          expect(Retry).to receive(:while_error)
           do_post
         end
 

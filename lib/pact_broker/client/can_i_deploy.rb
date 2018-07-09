@@ -30,11 +30,7 @@ module PactBroker
       end
 
       def call
-        if matrix[:summary][:deployable]
-          Result.new(true, success_message(matrix))
-        else
-          Result.new(false, failure_message(matrix))
-        end
+        create_result(fetch_matrix_with_retries)
       rescue PactBroker::Client::Error => e
         Result.new(false, e.message)
       rescue StandardError => e
@@ -45,10 +41,18 @@ module PactBroker
 
       attr_reader :pact_broker_base_url, :version_selectors, :matrix_options, :options, :pact_broker_client_options
 
+      def create_result(matrix)
+        if matrix.deployable?
+          Result.new(true, success_message(matrix))
+        else
+          Result.new(false, failure_message(matrix))
+        end
+      end
+
       def success_message(matrix)
         message = format_matrix(matrix)
         if format != 'json'
-          message = 'Computer says yes \o/ ' + "\n\n" + message + "\n\n#{Term::ANSIColor.green(reason(matrix))}"
+          message = 'Computer says yes \o/ ' + "\n\n" + message + "\n\n#{Term::ANSIColor.green(matrix.reason)}"
         end
         message
       end
@@ -56,7 +60,7 @@ module PactBroker
       def failure_message(matrix)
         message = format_matrix(matrix)
         if format != 'json'
-          message = 'Computer says no ¯\_(ツ)_/¯ ' + "\n\n" + message + "\n\n#{Term::ANSIColor.red(reason(matrix))}"
+          message = 'Computer says no ¯\_(ツ)_/¯ ' + "\n\n" + message + "\n\n#{Term::ANSIColor.red(matrix.reason)}"
         end
         message
       end
@@ -69,16 +73,52 @@ module PactBroker
         options[:output]
       end
 
-      def reason(matrix)
-        matrix[:summary][:reason]
+      def fetch_matrix
+        Retry.while_error { pact_broker_client.matrix.get(version_selectors, matrix_options) }
       end
 
-      def matrix
-        @matrix ||= Retry.until_true { pact_broker_client.matrix.get(version_selectors, matrix_options) }
+      def fetch_matrix_with_retries
+        matrix = fetch_matrix
+        if retry_while_unknown?
+          check_if_retry_while_unknown_supported(matrix)
+          if matrix.any_unknown?
+            matrix = Retry.until_truthy_or_max_times(retry_options) do
+              fetch_matrix
+            end
+          end
+        end
+        matrix
       end
 
       def pact_broker_client
         @pact_broker_client ||= PactBroker::Client::PactBrokerClient.new(base_url: pact_broker_base_url, client_options: pact_broker_client_options)
+      end
+
+      def retry_while_unknown?
+        options[:retry_while_unknown] > 0
+      end
+
+      def retry_options
+        {
+          condition: lambda { |matrix| !matrix.any_unknown?  },
+          tries: retry_tries,
+          sleep: retry_interval,
+          sleep_first: true
+        }
+      end
+
+      def retry_interval
+        options[:retry_interval]
+      end
+
+      def retry_tries
+        options[:retry_while_unknown]
+      end
+
+      def check_if_retry_while_unknown_supported(matrix)
+        if !matrix.supports_unknown_count?
+          raise PactBroker::Client::Error.new("This version of the Pact Broker does not provide a count of the unknown verification results. Please upgrade your Broker to >= v2.23.4")
+        end
       end
     end
   end

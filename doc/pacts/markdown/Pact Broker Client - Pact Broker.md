@@ -196,7 +196,8 @@ Pact Broker will respond with:
   "body": {
     "summary": {
       "deployable": true,
-      "reason": "some text"
+      "reason": "some text",
+      "unknown": 1
     },
     "matrix": [
       {
@@ -243,7 +244,8 @@ Pact Broker will respond with:
   "body": {
     "summary": {
       "deployable": true,
-      "reason": "some text"
+      "reason": "some text",
+      "unknown": 1
     },
     "matrix": [
       {
@@ -290,7 +292,8 @@ Pact Broker will respond with:
   "body": {
     "summary": {
       "deployable": true,
-      "reason": "some text"
+      "reason": "some text",
+      "unknown": 1
     },
     "matrix": [
       {
@@ -373,7 +376,8 @@ Pact Broker will respond with:
   "body": {
     "summary": {
       "deployable": true,
-      "reason": "some text"
+      "reason": "some text",
+      "unknown": 1
     },
     "matrix": [
       {
@@ -443,7 +447,8 @@ Pact Broker will respond with:
   "body": {
     "summary": {
       "deployable": true,
-      "reason": "some text"
+      "reason": "some text",
+      "unknown": 1
     },
     "matrix": [
       {
@@ -629,7 +634,8 @@ Pact Broker will respond with:
   "body": {
     "summary": {
       "deployable": true,
-      "reason": "some text"
+      "reason": "some text",
+      "unknown": 1
     },
     "matrix": [
       {

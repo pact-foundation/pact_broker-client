@@ -9,7 +9,7 @@ module PactBroker
     module Webhooks
       class Create
 
-        WEBHOOKS_WITH_OPTIONAL_PACTICICPANTS_NOT_SUPPORTED = "Your version of the Pact Broker requires that both consumer and provider are specified for a webhook. Please upgrade your broker to >= 2.22.0 to create a webhook with optional consumer and provider."
+        WEBHOOKS_WITH_OPTIONAL_PACTICICPANTS_NOT_SUPPORTED = "This version of the Pact Broker requires that both consumer and provider are specified for a webhook. Please upgrade your broker to >= 2.22.0 to create a webhook with optional consumer and provider."
 
         attr_reader  :params, :pact_broker_base_url, :basic_auth_options, :verbose
 

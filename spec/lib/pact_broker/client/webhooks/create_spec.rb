@@ -39,7 +39,7 @@ module PactBroker
           context "when a 405 is returned from the webhook creation request" do
 
             it "raises an error with a message to upgrade the Pact Broker" do
-              expect { subject }.to raise_error PactBroker::Client::Error, /Your version of the Pact Broker/
+              expect { subject }.to raise_error PactBroker::Client::Error, /This version of the Pact Broker/
             end
           end
 

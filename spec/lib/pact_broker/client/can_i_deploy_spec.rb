@@ -1,4 +1,5 @@
 require 'pact_broker/client/can_i_deploy'
+require 'pact_broker/client/matrix/resource'
 
 module PactBroker
   module Client
@@ -8,8 +9,12 @@ module PactBroker
       let(:matrix_options) { {} }
       let(:pact_broker_client_options) { { foo: 'bar' } }
       let(:matrix_client) { instance_double('PactBroker::Client::Matrix') }
-      let(:matrix) { { matrix: ['foo'], summary: { deployable: true, reason: 'some reason' } } }
-      let(:options) { { output: 'text' } }
+      let(:matrix) { instance_double('Matrix::Resource', deployable?: true, reason: 'some reason', any_unknown?: any_unknown, supports_unknown_count?: supports_unknown_count) }
+      let(:any_unknown) { false }
+      let(:supports_unknown_count) { true }
+      let(:retry_while_unknown) { 0 }
+      let(:options) { { output: 'text', retry_while_unknown: retry_while_unknown, retry_interval: 5} }
+
 
       before do
         allow_any_instance_of(PactBroker::Client::PactBrokerClient).to receive(:matrix).and_return(matrix_client)
@@ -29,7 +34,7 @@ module PactBroker
         subject
       end
 
-      context "when compatible versions are found" do
+      context "when the versions are deployable" do
         it "returns a success response" do
           expect(subject.success).to be true
         end
@@ -44,8 +49,8 @@ module PactBroker
         end
       end
 
-      context "when compatible versions are not found" do
-        let(:matrix) { {matrix: ['foo'], summary: { deployable: false, reason: 'some reason' }} }
+      context "when the versions are not deployable" do
+        let(:matrix) { instance_double('Matrix::Resource', deployable?: false, reason: 'some reason', any_unknown?: false) }
 
         it "returns a failure response" do
           expect(subject.success).to be false
@@ -57,6 +62,38 @@ module PactBroker
 
         it "returns a failure reason" do
           expect(subject.message).to include "some reason"
+        end
+      end
+
+      context "when retry_while_unknown is greater than 0" do
+        let(:retry_while_unknown) { 1 }
+
+        context "when any_unknown? is false" do
+          it "does not retry the request" do
+            expect(Retry).to_not receive(:until_truthy_or_max_times)
+            subject
+          end
+        end
+
+        context "when any_unknown? is true" do
+          let(:any_unknown) { true }
+
+          it "retries the request" do
+            expect(Retry).to receive(:until_truthy_or_max_times).with(hash_including(tries: 1, sleep: 5, sleep_first: true))
+            subject
+          end
+        end
+
+        context "when the matrix does not support the unknown count" do
+          let(:supports_unknown_count) { false }
+
+          it "returns a failure response" do
+            expect(subject.success).to be false
+          end
+
+          it "returns a failure message" do
+            expect(subject.message).to match /does not provide a count/
+          end
         end
       end
 
@@ -76,7 +113,7 @@ module PactBroker
 
       context "when a StandardError is raised" do
         before do
-          allow(Retry).to receive(:until_true) { |&block| block.call }
+          allow(Retry).to receive(:while_error) { |&block| block.call }
           allow($stderr).to receive(:puts)
           allow(matrix_client).to receive(:get).and_raise(StandardError.new('error text'))
         end

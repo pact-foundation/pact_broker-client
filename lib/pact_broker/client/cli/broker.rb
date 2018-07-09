@@ -29,11 +29,14 @@ module PactBroker
         method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
         method_option :output, aliases: "-o", desc: "json or table", default: 'table'
         method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
+        method_option :retry_while_unknown, banner: 'TIMES', type: :numeric, default: 0, required: false, desc: "The number of times to retry while there is an unknown verification result (ie. the provider verification is likely still running)"
+        method_option :retry_interval, banner: 'SECONDS', type: :numeric, default: 10, required: false, desc: "The time between retries in seconds. Use in conjuction with --retry-while-unknown"
 
         def can_i_deploy(*ignored_but_necessary)
           selectors = VersionSelectorOptionsParser.call(ARGV)
           validate_can_i_deploy_selectors(selectors)
-          result = CanIDeploy.call(options.broker_base_url, selectors, {to_tag: options.to}, {output: options.output}, pact_broker_client_options)
+          can_i_deploy_options = { output: options.output, retry_while_unknown: options.retry_while_unknown, retry_interval: options.retry_interval }
+          result = CanIDeploy.call(options.broker_base_url, selectors, {to_tag: options.to}, can_i_deploy_options, pact_broker_client_options)
           $stdout.puts result.message
           exit(1) unless result.success
         end

@@ -1,4 +1,5 @@
 require_relative 'base_client'
+require 'pact_broker/client/matrix/resource'
 
 module PactBroker
   module Client
@@ -11,7 +12,7 @@ module PactBroker
         }.merge(query_options(options))
         response = self.class.get("/matrix", query: query, headers: default_get_headers)
         response = handle_response(response) do
-          JSON.parse(response.body, symbolize_names: true)
+          Matrix::Resource.new(JSON.parse(response.body, symbolize_names: true))
         end
       end
 
@@ -21,7 +22,7 @@ module PactBroker
         elsif response.code == 401
           raise Error.new("Authentication failed")
         elsif response.code == 404
-          raise Error.new("Matrix resource not found at #{base_url}/matrix. Please upgrade your broker to the latest version.")
+          raise Error.new("Matrix resource not found at #{base_url}/matrix. Please upgrade your Broker to the latest version.")
         else
           error_message = nil
           begin

@@ -31,7 +31,7 @@ module PactBroker
         tags.each do | tag |
           # todo check that pacticipant exists first
           $stdout.puts "Tagging #{pacticipant_name} version #{version} as #{tag}"
-          Retry.until_true do
+          Retry.while_error do
             pact_broker_client.pacticipants.versions.tag pacticipant: pacticipant_name, version: version, tag: tag
           end
         end

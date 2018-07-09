@@ -1,7 +1,8 @@
 {
   "summary": {
     "deployable": true,
-    "reason": "some text"
+    "reason": "some text",
+    "unknown": 1
   },
   "matrix": [
     {

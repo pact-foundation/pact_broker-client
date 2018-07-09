@@ -20,7 +20,9 @@ module PactBroker
           {
             broker_base_url: 'http://pact-broker',
             output: 'table',
-            verbose: 'verbose'
+            verbose: 'verbose',
+            retry_while_unknown: 1,
+            retry_interval: 2
           }
         end
 
@@ -32,7 +34,7 @@ module PactBroker
         end
 
         it "invokes the CanIDeploy service" do
-          expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, {to_tag: nil}, {output: 'table'}, {verbose: 'verbose'})
+          expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, {to_tag: nil}, {output: 'table', retry_while_unknown: 1, retry_interval: 2}, {verbose: 'verbose'})
           invoke_can_i_deploy
         end
 

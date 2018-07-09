@@ -43,7 +43,7 @@ module PactBroker
         end
 
         def perform_request request, uri
-          response = Retry.until_true do
+          response = Retry.while_error do
             http = Net::HTTP.new(uri.host, uri.port, :ENV)
             http.set_debug_output($stderr) if verbose
             http.use_ssl = (uri.scheme == 'https')

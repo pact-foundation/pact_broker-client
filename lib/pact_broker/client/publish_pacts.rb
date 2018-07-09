@@ -71,7 +71,7 @@ module PactBroker
 
       def tag_consumer_version tag
         versions = pact_broker_client.pacticipants.versions
-        Retry.until_true do
+        Retry.while_error do
           $stdout.puts "Tagging version #{consumer_version} of #{consumer_name} as #{tag.inspect}"
           versions.tag(pacticipant: consumer_name, version: consumer_version, tag: tag)
           true
@@ -82,7 +82,7 @@ module PactBroker
       end
 
       def publish_pact_contents(pact)
-        Retry.until_true do
+        Retry.while_error do
           pacts = pact_broker_client.pacticipants.versions.pacts
           if pacts.version_published?(consumer: pact.consumer_name, provider: pact.provider_name, consumer_version: consumer_version)
             $stdout.puts ::Term::ANSIColor.yellow("The given version of pact is already published. Overwriting...")
