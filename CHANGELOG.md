@@ -1,3 +1,12 @@
+<a name="v1.16.0"></a>
+### v1.16.0 (2018-07-09)
+
+
+#### Features
+
+* add retries to can-i-deploy to allow the command to wait for missing results to arrive	 ([e44f88d](/../../commit/e44f88d))
+
+
 <a name="v1.15.1"></a>
 ### v1.15.1 (2018-06-28)
 
