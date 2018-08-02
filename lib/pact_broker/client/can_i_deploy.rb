@@ -101,7 +101,7 @@ module PactBroker
       def retry_options
         {
           condition: lambda { |matrix| !matrix.any_unknown?  },
-          tries: retry_tries,
+          times: retry_tries,
           sleep: retry_interval,
           sleep_first: true
         }
