@@ -79,7 +79,7 @@ module PactBroker
           let(:any_unknown) { true }
 
           it "retries the request" do
-            expect(Retry).to receive(:until_truthy_or_max_times).with(hash_including(tries: 1, sleep: 5, sleep_first: true))
+            expect(Retry).to receive(:until_truthy_or_max_times).with(hash_including(times: 1, sleep: 5, sleep_first: true))
             subject
           end
         end
