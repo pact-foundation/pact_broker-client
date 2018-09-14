@@ -154,6 +154,27 @@ Description:
   when executing create-webhook.
 ```
 
+### describe-version
+
+```
+Usage:
+  pact-broker describe-version -a, --pacticipant=PACTICIPANT -b, --broker-base-url=BROKER_BASE_URL
+
+Options:
+  -a, --pacticipant=PACTICIPANT            # The name of the pacticipant that the version belongs to.
+  -e, [--version=VERSION]                  # The pacticipant version number.
+  -l, [--latest=[TAG]]                     # Describe the latest pacticipant version. Optionally specify a TAG to describe the latest version with the specified tag.
+  -b, --broker-base-url=BROKER_BASE_URL    # The base URL of the Pact Broker
+  -u, [--broker-username=BROKER_USERNAME]  # Pact Broker basic auth username
+  -p, [--broker-password=BROKER_PASSWORD]  # Pact Broker basic auth password
+  -o, [--output=OUTPUT]                    # json or table or id
+                                           # Default: table
+  -v, [--verbose], [--no-verbose]          # Verbose output. Default: false
+
+Description:
+  Describes a pacticipant version. If no version or tag is specified, the latest version is described.
+```
+
 ## Usage - Ruby
 
 ### Consumer
