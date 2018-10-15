@@ -8,7 +8,7 @@ module PactBroker
         Line = Struct.new(:number, :tags)
 
         OPTIONS = [
-          { number: {} },
+          { number: {:width => 40} },
           { tags: {} }
         ]
 
