@@ -4,7 +4,7 @@ module PactBroker
   module Client
     module Hal
       class HttpClient
-        attr_reader :username, :password, :verbose
+        attr_accessor :username, :password, :verbose
 
         def initialize options
           @username = options[:username]
@@ -56,7 +56,7 @@ module PactBroker
 
         class Response < SimpleDelegator
           def body
-            bod = __getobj__().body
+            bod = raw_body
             if bod && bod != ''
               JSON.parse(bod)
             else
@@ -77,6 +77,7 @@ module PactBroker
           end
         end
       end
+
     end
   end
 end

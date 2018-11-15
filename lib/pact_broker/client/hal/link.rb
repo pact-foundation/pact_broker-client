@@ -38,15 +38,15 @@ module PactBroker
         end
 
         def get(payload = {}, headers = {})
-          wrap_response(@http_client.get(href, payload, headers))
+          wrap_response(href, @http_client.get(href, payload, headers))
         end
 
         def put(payload = nil, headers = {})
-          wrap_response(@http_client.put(href, payload ? JSON.dump(payload) : nil, headers))
+          wrap_response(href, @http_client.put(href, payload ? JSON.dump(payload) : nil, headers))
         end
 
         def post(payload = nil, headers = {})
-          wrap_response(@http_client.post(href, payload ? JSON.dump(payload) : nil, headers))
+          wrap_response(href, @http_client.post(href, payload ? JSON.dump(payload) : nil, headers))
         end
 
         def expand(params)
@@ -57,21 +57,19 @@ module PactBroker
 
         private
 
-        def wrap_response(http_response)
-          require 'pact_broker/client/hal/entity' # avoid circular reference
+        def wrap_response(href, http_response)
+          require 'pact/hal/entity' # avoid circular reference
           if http_response.success?
-            Entity.new(http_response.body, @http_client, http_response)
+            Entity.new(href, http_response.body, @http_client, http_response)
           else
-            ErrorEntity.new(http_response.body, @http_client, http_response)
+            ErrorEntity.new(href, http_response.raw_body, @http_client, http_response)
           end
         end
 
         def expand_url(params, url)
-          new_url = url
-          params.each do | key, value |
-            new_url = new_url.gsub('{' + key.to_s + '}', URI.escape(value))
+          params.inject(url) do | url, (key, value) |
+            url.gsub('{' + key.to_s + '}', ERB::Util.url_encode(value))
           end
-          new_url
         end
       end
     end

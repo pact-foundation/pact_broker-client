@@ -10,7 +10,7 @@ module PactBroker::Client
       end
 
       let(:response) do
-        instance_double('PactBroker::Client::Hal::HttpClient::Response', success?: success, body: response_body)
+        instance_double('PactBroker::Client::Hal::HttpClient::Response', success?: success, body: response_body, raw_body: response_body.to_json)
       end
 
       let(:success) { true }
@@ -48,7 +48,7 @@ module PactBroker::Client
         end
 
         it "creates an Entity" do
-          expect(PactBroker::Client::Hal::Entity).to receive(:new).with(response_body, http_client, response)
+          expect(PactBroker::Client::Hal::Entity).to receive(:new).with("http://foo/{bar}", response_body, http_client, response)
           do_run
         end
 
@@ -64,7 +64,7 @@ module PactBroker::Client
           let(:success) { false }
 
           it "creates an ErrorEntity" do
-            expect(PactBroker::Client::Hal::ErrorEntity).to receive(:new).with(response_body, http_client, response)
+            expect(PactBroker::Client::Hal::ErrorEntity).to receive(:new).with("http://foo/{bar}", response_body.to_json, http_client, response)
             do_run
           end
         end
@@ -101,6 +101,10 @@ module PactBroker::Client
 
         it "returns a duplicate Link with the expanded href with URL escaping" do
           expect(subject.expand(bar: 'wiffle meep').href).to eq "http://foo/wiffle%20meep"
+        end
+
+        it "returns a duplicate Link with the expanded href with URL escaping for forward slashes" do
+          expect(subject.expand(bar: 'wiffle/meep').href).to eq "http://foo/wiffle%2Fmeep"
         end
       end
     end

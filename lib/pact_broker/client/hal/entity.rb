@@ -1,12 +1,18 @@
-require 'uri'
+require 'erb'
 require 'delegate'
 require 'pact_broker/client/hal/link'
 
 module PactBroker
   module Client
     module Hal
+      class RelationNotFoundError < ::PactBroker::Client::Error; end
+
+      class ErrorResponseReturned < ::PactBroker::Client::Error; end
+
       class Entity
-        def initialize(data, http_client, response = nil)
+
+        def initialize(href, data, http_client, response = nil)
+          @href = href
           @data = data
           @links = (@data || {}).fetch("_links", {})
           @client = http_client
@@ -33,12 +39,18 @@ module PactBroker
           Link.new(@links[key].merge(method: http_method), @client).run(*args)
         end
 
-        def _link(key)
+        def _link(key, fallback_key = nil)
           if @links[key]
             Link.new(@links[key], @client)
+          elsif fallback_key && @links[fallback_key]
+            Link.new(@links[fallback_key], @client)
           else
             nil
           end
+        end
+
+        def _link!(key)
+          _link(key) or raise RelationNotFoundError.new("Could not find relation '#{key}' in resource at #{@href}")
         end
 
         def success?
@@ -49,8 +61,8 @@ module PactBroker
           @response
         end
 
-        def fetch(key)
-          @links[key]
+        def fetch(key, fallback_key = nil)
+          @links[key] || (fallback_key && @links[fallback_key])
         end
 
         def method_missing(method_name, *args, &block)
@@ -66,11 +78,28 @@ module PactBroker
         def respond_to_missing?(method_name, include_private = false)
           @data.key?(method_name) || @links.key?(method_name)
         end
+
+        def assert_success!
+          self
+        end
       end
 
       class ErrorEntity < Entity
+
+        def initialize(href, data, http_client, response = nil)
+          @href = href
+          @data = data
+          @links = {}
+          @client = http_client
+          @response = response
+        end
+
         def success?
           false
+        end
+
+        def assert_success!
+          raise ErrorResponseReturned.new("Error retrieving #{@href} status=#{response ? response.code: nil} #{response ? response.raw_body : ''}")
         end
       end
     end

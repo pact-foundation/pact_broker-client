@@ -32,7 +32,7 @@ module PactBroker::Client
         }
       end
 
-      subject(:entity) { Entity.new(pact_hash, http_client) }
+      subject(:entity) { Entity.new("http://pact", pact_hash, http_client) }
 
       it "delegates to the properties in the data" do
         expect(subject.name).to eq "a name"
@@ -60,6 +60,32 @@ module PactBroker::Client
         end
       end
 
+      describe "assert_success!" do
+        context "when the response is successful" do
+          it "returns the entity" do
+            expect(entity.assert_success!).to be entity
+          end
+        end
+
+        context "when the response is not successful and there is no response" do
+          subject(:entity) { ErrorEntity.new("http://pact", pact_hash, http_client) }
+
+          it "raises an error" do
+            expect { entity.assert_success! }.to raise_error ErrorResponseReturned, "Error retrieving http://pact status= "
+          end
+        end
+
+        context "when the response is not successful and there is a response" do
+          let(:response) { double('response', code: 200, raw_body: "body") }
+
+          subject(:entity) { ErrorEntity.new("http://pact", pact_hash, http_client, response) }
+
+          it "raises an error" do
+            expect { entity.assert_success! }.to raise_error ErrorResponseReturned, "Error retrieving http://pact status=200 body"
+          end
+        end
+      end
+
       describe "can?" do
         context "when the relation exists" do
           it "returns true" do
@@ -74,17 +100,45 @@ module PactBroker::Client
         end
       end
 
-      describe 'fetch' do
-        context 'when the key exist' do
-          it 'returns fetched value' do
-            expect(subject.fetch('pb:provider')).to be do
-              {href: 'http://provider'}
-            end
+      describe "_link!" do
+        context 'when the key exists' do
+          it 'returns a Link' do
+            expect(subject._link!('pb:provider')).to be_a(Link)
+            expect(subject._link!('pb:provider').href).to eq 'http://provider'
           end
         end
+
+        context 'when the key does not exist' do
+          it 'raises an error' do
+            expect { subject._link!('foo') }.to raise_error RelationNotFoundError, "Could not find relation 'foo' in resource at http://pact"
+          end
+        end
+      end
+
+      describe 'fetch' do
+        context 'when the key exists' do
+          it 'returns fetched value' do
+            expect(subject.fetch('pb:provider')).to eq("href" => 'http://provider')
+          end
+        end
+
         context "when the key doesn't not exist" do
           it 'returns nil' do
             expect(subject.fetch('i-dont-exist')).to be nil
+          end
+        end
+
+        context "when a fallback key is provided" do
+          context "when the fallback value exists" do
+            it "returns the fallback value" do
+              expect(subject.fetch('i-dont-exist', 'pb:provider')).to eq("href" => 'http://provider')
+            end
+          end
+
+          context "when the fallback value does not exist" do
+            it "returns nil" do
+              expect(subject.fetch('i-dont-exist', 'i-also-dont-exist')).to be nil
+            end
           end
         end
       end
