@@ -1,3 +1,12 @@
+<a name="v1.17.0"></a>
+### v1.17.0 (2018-11-15)
+
+
+#### Features
+
+* update HAL client from pact codebase	 ([ed77fe0](/../../commit/ed77fe0))
+
+
 <a name="v1.16.0"></a>
 ### v1.16.0 (2018-07-09)
 
