@@ -8,14 +8,17 @@ module PactBroker
         let(:base_url) { 'http://pact_broker_base_url'}
         let(:username) { 'pact_repo_username'}
         let(:password) { 'pact_repo_password'}
+        let(:token) { '123456789' }
         let(:client_options) do
-          {
+          { 
             basic_auth: {
               username: username,
               password: password
-            }
+            },
+            broker_token: token
           }
         end
+        
         context 'with basic url' do
           it 'sets the base url' do
             base_client = BaseClient.new(base_url: base_url)
@@ -26,13 +29,22 @@ module PactBroker
 
         context 'with client options' do
           subject { BaseClient.new(base_url: base_url, client_options: client_options) }
-          it 'sets the client options ' do
+          it 'sets the client options' do
             expect(subject.client_options).to eq(client_options)
           end
 
-          it 'sets the httpparty basic auth when client options contains basic auth' do
-            expect(BaseClient).to receive(:basic_auth).with(username, password)
-            subject
+          context 'when client options contains basic auth' do
+            it 'sets the httpparty basic auth' do
+              expect(BaseClient).to receive(:basic_auth).with(username, password)
+              subject
+            end
+          end
+
+          context  'when client options contains broker token' do
+            it 'sets the httparty broker token' do
+              expect(BaseClient).to receive(:headers).with('Authorization' => "Bearer #{token}")
+              subject
+            end
           end
         end
 
@@ -44,6 +56,11 @@ module PactBroker
 
           it 'does not set the httpparty basic auth' do
             expect(BaseClient).to_not receive(:basic_auth).with(username, password)
+            subject
+          end
+
+          it 'does not set the httparty broker token' do
+            expect(BaseClient).to_not receive(:headers).with('Authorization' => "Bearer #{token}")
             subject
           end
         end
