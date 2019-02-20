@@ -81,7 +81,8 @@ module PactBroker::Client
       before :all do
         @pact_broker_base_url = "http://some-host"
         @pattern = "pact/*.json"
-        @pact_broker_basic_auth = { username: 'user', password: 'pass'}
+        @pact_broker_basic_auth = { username: 'user', password: 'pass' }
+        @pact_broker_token = 'token'
         @tag = "dev"
         PactBroker::Client::PublicationTask.new(:custom) do | task |
           task.consumer_version = '1.2.3'
@@ -89,13 +90,20 @@ module PactBroker::Client
           task.pact_broker_base_url = @pact_broker_base_url
           task.pattern = @pattern
           task.pact_broker_basic_auth = @pact_broker_basic_auth
+          task.pact_broker_token = @pact_broker_token
         end
       end
 
       let(:pattern) { @pattern }
 
       it "invokes PublishPacts with the customised values" do
-        expect(PactBroker::Client::PublishPacts).to receive(:new).with(@pact_broker_base_url, pact_file_list, '1.2.3', [@tag], {basic_auth: @pact_broker_basic_auth})
+        expect(PactBroker::Client::PublishPacts).to receive(:new).with(
+          @pact_broker_base_url, 
+          pact_file_list, 
+          '1.2.3', 
+          [@tag], 
+          { basic_auth: @pact_broker_basic_auth, token: @pact_broker_token }
+        )
         expect(publish_pacts).to receive(:call).and_return(true)
         Rake::Task['pact:publish:custom'].execute
       end

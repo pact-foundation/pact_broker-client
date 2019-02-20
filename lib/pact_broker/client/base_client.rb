@@ -43,7 +43,7 @@ module PactBroker
         self.class.base_uri base_url
         self.class.debug_output($stderr) if verbose?
         self.class.basic_auth(client_options[:basic_auth][:username], client_options[:basic_auth][:password]) if client_options[:basic_auth]
-        self.class.headers('Authorization' => "Bearer #{client_options[:broker_token]}") if client_options[:broker_token]
+        self.class.headers('Authorization' => "Bearer #{client_options[:token]}") if client_options[:token]
         self.class.ssl_ca_file(ENV['SSL_CERT_FILE']) if ENV['SSL_CERT_FILE'] && ENV['SSL_CERT_FILE'] != ''
         self.class.ssl_ca_path(ENV['SSL_CERT_DIR']) if ENV['SSL_CERT_DIR'] && ENV['SSL_CERT_DIR'] != ''
       end

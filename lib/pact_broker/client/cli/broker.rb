@@ -220,7 +220,7 @@ module PactBroker
           end
 
           def pact_broker_client_options
-            client_options = { verbose: options.verbose, broker_token: options.broker_token }
+            client_options = { verbose: options.verbose, token: options.broker_token }
             if options.broker_username
               client_options[:basic_auth] = {
                   username: options.broker_username,

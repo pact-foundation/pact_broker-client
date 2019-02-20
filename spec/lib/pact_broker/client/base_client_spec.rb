@@ -15,7 +15,7 @@ module PactBroker
               username: username,
               password: password
             },
-            broker_token: token
+            token: token
           }
         end
         
