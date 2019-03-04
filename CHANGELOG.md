@@ -1,3 +1,14 @@
+<a name="v1.18.0"></a>
+### v1.18.0 (2019-03-05)
+
+
+#### Features
+
+* remove 'no data' message when there are no rows.	 ([b0246a2](/../../commit/b0246a2))
+* allow for broker token to be used	 ([3266bc1](/../../commit/3266bc1))
+* add broker token to cli	 ([e342c29](/../../commit/e342c29))
+
+
 <a name="v1.17.0"></a>
 ### v1.17.0 (2018-11-15)
 
