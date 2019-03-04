@@ -16,7 +16,9 @@ module PactBroker
         ]
 
         def self.call(matrix)
-          data = matrix[:matrix].collect do | line |
+          matrix_rows = matrix[:matrix]
+          return "" if matrix_rows.size == 0
+          data = matrix_rows.collect do | line |
             Line.new(
               lookup(line, :consumer, :name),
               lookup(line, :consumer, :version, :number),

@@ -52,7 +52,7 @@ module PactBroker
       def success_message(matrix)
         message = format_matrix(matrix)
         if format != 'json'
-          message = 'Computer says yes \o/ ' + "\n\n" + message + "\n\n#{Term::ANSIColor.green(matrix.reason)}"
+          message = 'Computer says yes \o/ ' + message + "\n\n" + Term::ANSIColor.green(matrix.reason)
         end
         message
       end
@@ -60,13 +60,18 @@ module PactBroker
       def failure_message(matrix)
         message = format_matrix(matrix)
         if format != 'json'
-          message = 'Computer says no ¯\_(ツ)_/¯ ' + "\n\n" + message + "\n\n#{Term::ANSIColor.red(matrix.reason)}"
+          message = 'Computer says no ¯\_(ツ)_/¯ ' + message + "\n\n" + Term::ANSIColor.red(matrix.reason)
         end
         message
       end
 
       def format_matrix(matrix)
-        Matrix::Formatter.call(matrix, format)
+        formatted_matrix = Matrix::Formatter.call(matrix, format)
+        if format != 'json' && formatted_matrix.size > 0
+          "\n\n" + formatted_matrix
+        else
+          formatted_matrix
+        end
       end
 
       def format
