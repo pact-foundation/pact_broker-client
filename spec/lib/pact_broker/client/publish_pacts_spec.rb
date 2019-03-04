@@ -12,9 +12,7 @@ module PactBroker
       before do
         FakeFS.activate!
         allow(pacts_client).to receive(:publish).and_return(latest_pact_url)
-        allow(PactBroker::Client::PactBrokerClient).to receive(:new)
-          .with(base_url: pact_broker_base_url, client_options: pact_broker_client_options)
-          .and_return(pact_broker_client)
+        allow(PactBroker::Client::PactBrokerClient).to receive(:new).and_return(pact_broker_client)
         allow(pact_broker_client).to receive_message_chain(:pacticipants, :versions).and_return(pact_versions_client)
         allow(pact_broker_client).to receive_message_chain(:pacticipants, :versions, :pacts).and_return(pacts_client)
         allow(pacts_client).to receive(:version_published?).and_return(false)
@@ -53,6 +51,10 @@ module PactBroker
       subject { PublishPacts.new(pact_broker_base_url, pact_file_paths, consumer_version, tags, pact_broker_client_options) }
 
       describe "call" do
+        it "creates a PactBroker Client" do
+          expect(PactBroker::Client::PactBrokerClient).to receive(:new).with(base_url: pact_broker_base_url, client_options: pact_broker_client_options)
+          subject.call
+        end
 
         it "uses the pact_broker client to publish the given pact" do
           expect(pacts_client).to receive(:publish).with(pact_hash: pact_hash, consumer_version: consumer_version)
