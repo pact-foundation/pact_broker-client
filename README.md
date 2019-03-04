@@ -29,6 +29,7 @@ Options:
   -b, --broker-base-url=BROKER_BASE_URL                    # The base URL of the Pact Broker
   -u, [--broker-username=BROKER_USERNAME]                  # Pact Broker basic auth username
   -p, [--broker-password=BROKER_PASSWORD]                  # Pact Broker basic auth password
+  -k, [--broker-token=BROKER_TOKEN]                        # Pact Broker bearer token
   -t, [--tag=TAG]                                          # Tag name for consumer version. Can be specified multiple times.
   -g, [--tag-with-git-branch], [--no-tag-with-git-branch]  # Tag consumer version with the name of the current git branch. Default: false
   -v, [--verbose], [--no-verbose]                          # Verbose output. Default: false
@@ -50,6 +51,7 @@ Options:
   -b, --broker-base-url=BROKER_BASE_URL                    # The base URL of the Pact Broker
   -u, [--broker-username=BROKER_USERNAME]                  # Pact Broker basic auth username
   -p, [--broker-password=BROKER_PASSWORD]                  # Pact Broker basic auth password
+  -k, [--broker-token=BROKER_TOKEN]                        # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]                          # Verbose output. Default: false
 
 Add a tag to a pacticipant version
@@ -71,6 +73,7 @@ Options:
   -b, --broker-base-url=BROKER_BASE_URL    # The base URL of the Pact Broker
   -u, [--broker-username=BROKER_USERNAME]  # Pact Broker basic auth username
   -p, [--broker-password=BROKER_PASSWORD]  # Pact Broker basic auth password
+  -k, [--broker-token=BROKER_TOKEN]        # Pact Broker bearer token
   -o, [--output=OUTPUT]                    # json or table
                                            # Default: table
   -v, [--verbose], [--no-verbose]          # Verbose output. Default: false
@@ -80,51 +83,68 @@ Options:
                                            # Default: 10
 
 Description:
-  Returns exit code 0 or 1, indicating whether or not the specified pacticipant versions are compatible. Prints out the relevant pact/verification details.
+  Returns exit code 0 or 1, indicating whether or not the specified pacticipant versions are compatible. Prints out the relevant
+  pact/verification details.
 
-  The environment variables PACT_BROKER_BASE_URL, PACT_BROKER_USERNAME and PACT_BROKER_PASSWORD may be used instead of their respective command line options.
+  The environment variables PACT_BROKER_BASE_URL, PACT_BROKER_BASE_URL_USERNAME and PACT_BROKER_BASE_URL_PASSWORD may be used
+  instead of their respective command line options.
 
   SCENARIOS
 
   # If every build goes straight to production
 
-  Check the status of the pacts for a pacticipant version. Note that this only checks that the most recent verification for each pact is successful. It doesn't provide any assurance that the pact has been verified by the *production* version of the provider, however, it is sufficient if you are doing true continuous deployment.
+  Check the status of the pacts for a pacticipant version. Note that this only checks that the most recent verification for each
+  pact is successful. It doesn't provide any assurance that the pact has been verified by the *production* version of the
+  provider, however, it is sufficient if you are doing true continuous deployment.
 
-    $ pact-broker can-i-deploy --pacticipant PACTICIPANT --version VERSION --broker-base-url BROKER_BASE_URL
+  $ pact-broker can-i-deploy --pacticipant PACTICIPANT --version VERSION --broker-base-url BROKER_BASE_URL
 
   # If every build does NOT go straight to production
 
   ## Recommended approach
 
-  If all applications within the pact network are not being deployed continuously (ie. if there is a gap between pact verification and actual deployment) then the following strategy is recommended. Each application version should be tagged in the broker with the name of the stage (eg. test, staging, production) as it is deployed (see the pact-broker create-version-tag CLI). This enables you to use the following very simple command to check if the application version you are about to deploy is compatible with every other application version already deployed in that environment.
+  If all applications within the pact network are not being deployed continuously (ie. if there is a gap between pact
+  verification and actual deployment) then the following strategy is recommended. Each application version should be tagged in
+  the broker with the name of the stage (eg. test, staging, production) as it is deployed (see the pact-broker create-version-tag
+  CLI). This enables you to use the following very simple command to check if the application version you are about to deploy is
+  compatible with every other application version already deployed in that environment.
 
-    $ pact-broker can-i-deploy --pacticipant PACTICIPANT --version VERSION --to TAG --broker-base-url BROKER_BASE_URL
+  $ pact-broker can-i-deploy --pacticipant PACTICIPANT --version VERSION --to TAG --broker-base-url BROKER_BASE_URL
 
   ## Other approaches
 
-  If you do not/cannot tag every application at deployment, you have two options. You can either use the very first form of this command which just checks that the *latest* verification is successful (not recommended as it's the production version that you really care about) or you will need to determine the production versions of each collaborating application from some other source (eg. git) and explictly reference each one using one using the format `--pacticipant PACTICIPANT1 --version VERSION1 --pacticipant PACTICIPANT2 --version VERSION2 ...`
+  If you do not/cannot tag every application at deployment, you have two options. You can either use the very first form of this
+  command which just checks that the *latest* verification is successful (not recommended as it's the production version that you
+  really care about) or you will need to determine the production versions of each collaborating application from some other
+  source (eg. git) and explictly reference each one using one using the format `--pacticipant PACTICIPANT1 --version VERSION1
+  --pacticipant PACTICIPANT2 --version VERSION2 ...`
 
   # Other commands
 
-  Check the status of the pacts for the latest pacticipant version. This form is not recommended for use in your CI as it is possible that the version you are about to deploy is not the the version that the Broker considers the latest. It's best to specify the version explictly.
+  Check the status of the pacts for the latest pacticipant version. This form is not recommended for use in your CI as it is
+  possible that the version you are about to deploy is not the the version that the Broker considers the latest. It's best to
+  specify the version explictly.
 
-    $ pact-broker can-i-deploy --pacticipant PACTICIPANT --latest --broker-base-url BROKER_BASE_URL
+  $ pact-broker can-i-deploy --pacticipant PACTICIPANT --latest --broker-base-url BROKER_BASE_URL
 
   Check the status of the pacts for the latest pacticipant version for a given tag:
 
-    $ pact-broker can-i-deploy --pacticipant PACTICIPANT --latest TAG --broker-base-url BROKER_BASE_URL
+  $ pact-broker can-i-deploy --pacticipant PACTICIPANT --latest TAG --broker-base-url BROKER_BASE_URL
 
   Check the status of the pacts between two (or more) specific pacticipant versions:
 
-    $ pact-broker can-i-deploy --pacticipant PACTICIPANT1 --version VERSION1 --pacticipant PACTICIPANT2 --version VERSION2 --broker-base-url BROKER_BASE_URL
+  $ pact-broker can-i-deploy --pacticipant PACTICIPANT1 --version VERSION1 --pacticipant PACTICIPANT2 --version VERSION2
+  --broker-base-url BROKER_BASE_URL
 
   Check the status of the pacts between the latest versions of two (or more) pacticipants:
 
-    $ pact-broker can-i-deploy --pacticipant PACTICIPANT1 --latest --pacticipant PACTICIPANT2 --latest --broker-base-url BROKER_BASE_URL
+  $ pact-broker can-i-deploy --pacticipant PACTICIPANT1 --latest --pacticipant PACTICIPANT2 --latest --broker-base-url
+  BROKER_BASE_URL
 
   Check the status of the pacts between the latest versions of two (or more) pacticipants with a given tag:
 
-  $ pact-broker can-i-deploy --pacticipant PACTICIPANT1 --latest TAG1 --pacticipant PACTICIPANT2 --latest TAG2 --broker-base-url BROKER_BASE_URL
+  $ pact-broker can-i-deploy --pacticipant PACTICIPANT1 --latest TAG1 --pacticipant PACTICIPANT2 --latest TAG2 --broker-base-url
+  BROKER_BASE_URL
 
 ```
 
@@ -167,12 +187,12 @@ Options:
   -b, --broker-base-url=BROKER_BASE_URL    # The base URL of the Pact Broker
   -u, [--broker-username=BROKER_USERNAME]  # Pact Broker basic auth username
   -p, [--broker-password=BROKER_PASSWORD]  # Pact Broker basic auth password
+  -k, [--broker-token=BROKER_TOKEN]        # Pact Broker bearer token
   -o, [--output=OUTPUT]                    # json or table or id
                                            # Default: table
   -v, [--verbose], [--no-verbose]          # Verbose output. Default: false
 
-Description:
-  Describes a pacticipant version. If no version or tag is specified, the latest version is described.
+Describes a pacticipant version. If no version or tag is specified, the latest version is described.
 ```
 
 ## Usage - Ruby
@@ -198,6 +218,7 @@ PactBroker::Client::PublicationTask.new do | task |
   task.tag_with_git_branch = true|false # Optional but STRONGLY RECOMMENDED as it will greatly assist with your pact workflow. Result will be merged with other specified task.tags
   task.tags = ["dev"] # optional
   task.pact_broker_basic_auth =  { username: 'basic_auth_user', password: 'basic_auth_pass'} # optional
+  task.pact_broker_token = "1234abcd" # Bearer token
   task.write_method = :merge # optional, this will merge the published pact into an existing pact rather than overwriting it if one exists. Not recommended, as it makes a mulch of the workflow on the broker.
 end
 ```
