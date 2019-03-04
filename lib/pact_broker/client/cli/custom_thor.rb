@@ -24,6 +24,7 @@ module PactBroker
 
             new_argv = add_option_from_environment_variable(argv, 'broker-base-url', 'b', 'PACT_BROKER_BASE_URL')
             new_argv = add_option_from_environment_variable(new_argv, 'broker-username', 'u', 'PACT_BROKER_USERNAME')
+            new_argv = add_option_from_environment_variable(new_argv, 'broker-token', 'k', 'PACT_BROKER_TOKEN')
             add_option_from_environment_variable(new_argv, 'broker-password', 'p', 'PACT_BROKER_PASSWORD')
           end
 

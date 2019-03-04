@@ -22,6 +22,7 @@ module PactBroker::Client::CLI
     method_option :broker_base_url, required: true, aliases: "-b"
     method_option :broker_username, aliases: "-u"
     method_option :broker_password, aliases: "-p"
+    method_option :broker_token, aliases: "-k"
     def test_using_env_vars
       Delegate.call(options)
     end
@@ -42,6 +43,7 @@ module PactBroker::Client::CLI
         ENV['PACT_BROKER_BASE_URL'] = 'http://foo'
         ENV['PACT_BROKER_USERNAME'] = 'username'
         ENV['PACT_BROKER_PASSWORD'] = 'password'
+        ENV['PACT_BROKER_TOKEN'] = 'token'
       end
 
       it "populates the options from the environment variables" do
@@ -49,6 +51,7 @@ module PactBroker::Client::CLI
           expect(options.broker_base_url).to eq 'http://foo'
           expect(options.broker_username).to eq 'username'
           expect(options.broker_password).to eq 'password'
+          expect(options.broker_token).to eq 'token'
         end
         TestThor.start(%w{test_using_env_vars})
       end
@@ -58,6 +61,7 @@ module PactBroker::Client::CLI
           expect(options.broker_base_url).to eq 'http://bar'
           expect(options.broker_username).to eq 'username'
           expect(options.broker_password).to eq 'password'
+          expect(options.broker_token).to eq 'token'
         end
         TestThor.start(%w{test_using_env_vars --broker-base-url http://bar})
       end
