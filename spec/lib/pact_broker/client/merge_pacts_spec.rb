@@ -60,7 +60,7 @@ module PactBroker
           end
 
           it "raises an error" do
-            expect { subject }.to raise_error PactMergeError
+            expect { subject }.to raise_error PactMergeError, /foo.*different/
           end
         end
       end
