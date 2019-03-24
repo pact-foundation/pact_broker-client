@@ -345,20 +345,17 @@
         "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=9.9.9&latestby=cvpv"
       },
       "response": {
-        "status": 400,
+        "status": 200,
         "headers": {
           "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
-          "errors": [
-            "an error message"
-          ]
+          "summary": {
+            "reason": "an error message"
+          }
         },
         "matchingRules": {
-          "$.body.errors": {
-            "min": 1
-          },
-          "$.body.errors[*].*": {
+          "$.body.summary.reason": {
             "match": "type"
           }
         }

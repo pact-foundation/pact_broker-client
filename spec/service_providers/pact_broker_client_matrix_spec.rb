@@ -95,20 +95,20 @@ module PactBroker::Client
               query: "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=9.9.9&latestby=cvpv"
             ).
             will_respond_with(
-              status: 400,
+              status: 200,
               headers: pact_broker_response_headers,
               body: {
-                errors: Pact.each_like("an error message")
+                summary: {
+                  reason: Pact.like("an error message")
+                }
               }
             )
         end
 
         let(:selectors) { [{ pacticipant: "Foo", version: "1.2.3" }, { pacticipant: "Bar", version: "9.9.9" }] }
 
-        it 'raises an error' do
-          expect {
-            pact_broker_client.matrix.get(selectors)
-          }.to raise_error PactBroker::Client::Error, "an error message"
+        it 'does not raise an error' do
+          pact_broker_client.matrix.get(selectors)
         end
       end
 

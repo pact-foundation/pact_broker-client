@@ -417,14 +417,14 @@ Given **the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6**,
 Pact Broker will respond with:
 ```json
 {
-  "status": 400,
+  "status": 200,
   "headers": {
     "Content-Type": "application/hal+json;charset=utf-8"
   },
   "body": {
-    "errors": [
-      "an error message"
-    ]
+    "summary": {
+      "reason": "an error message"
+    }
   }
 }
 ```
