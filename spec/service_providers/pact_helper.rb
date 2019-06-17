@@ -44,6 +44,14 @@ module PactBrokerPactHelperMethods
     Pact.term(placeholder_url(relation, params), /#{regexp}/)
   end
 
+  def default_get_headers
+    { 'Accept' => 'application/hal+json' }
+  end
+
+  def default_post_headers
+    { 'Accept' => 'application/hal+json', 'Content-Type' => 'application/json' }
+  end
+
   def mock_pact_broker_index(context)
     pact_broker
       .upon_receiving("a request for the index resource")

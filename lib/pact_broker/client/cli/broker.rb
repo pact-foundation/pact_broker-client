@@ -170,6 +170,12 @@ module PactBroker
           end
         end
 
+        desc 'add-certificate FILE', "Add a certificate to the Pact Broker to be used by webhook requests to servers with self signed certificates"
+        long_desc "The certificate must be in PEM file format"
+        def add_certificate(file)
+          puts "TODO"
+        end
+
         desc 'version', "Show the pact_broker-client gem version"
         def version
           $stdout.puts PactBroker::Client::VERSION
