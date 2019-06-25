@@ -20,9 +20,7 @@ module PactBroker
         def initialize(params, pact_broker_base_url, pact_broker_client_options)
           @params = OpenStruct.new(params)
           @pact_broker_base_url = pact_broker_base_url
-          @basic_auth_options = pact_broker_client_options[:basic_auth] || {}
-          @verbose = pact_broker_client_options[:verbose]
-          @http_client = PactBroker::Client::Hal::HttpClient.new(basic_auth_options.merge(verbose: verbose))
+          @http_client = PactBroker::Client::Hal::HttpClient.new(pact_broker_client_options.merge(pact_broker_client_options[:basic_auth] || {}))
         end
 
         def call

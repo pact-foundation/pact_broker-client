@@ -15,7 +15,7 @@ module PactBroker
             }.to_json
           end
           let!(:index_request) do
-            stub_request(:get, "http://broker").to_return(status: 200, body: index_body, headers: { "Content-Type" => "application/hal+json" }  )
+            stub_request(:get, "http://broker").with(headers: { "Authorization" => /.*/}).to_return(status: 200, body: index_body, headers: { "Content-Type" => "application/hal+json" }  )
           end
 
           let!(:webhook_request) do
@@ -34,10 +34,16 @@ module PactBroker
             }.tap { |it| Pact::Fixture.add_fixture(:create_webhook_params, it) }
           end
 
-          subject { Create.call(params, "http://broker", {}) }
+          let(:pact_broker_client_options) do
+            {
+              token: 'token',
+              verbose: 'verbose'
+            }
+          end
+
+          subject { Create.call(params, "http://broker", pact_broker_client_options) }
 
           context "when a 405 is returned from the webhook creation request" do
-
             it "raises an error with a message to upgrade the Pact Broker" do
               expect { subject }.to raise_error PactBroker::Client::Error, /This version of the Pact Broker/
             end
