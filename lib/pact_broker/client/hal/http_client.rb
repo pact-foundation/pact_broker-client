@@ -1,15 +1,18 @@
 require 'pact_broker/client/retry'
+require 'pact_broker/client/hal/authorization_header_redactor'
+require 'net/http'
 
 module PactBroker
   module Client
     module Hal
       class HttpClient
-        attr_accessor :username, :password, :verbose
+        attr_accessor :username, :password, :verbose, :token
 
         def initialize options
           @username = options[:username]
           @password = options[:password]
           @verbose = options[:verbose]
+          @token = options[:token]
         end
 
         def get href, params = {}, headers = {}
@@ -39,19 +42,24 @@ module PactBroker
 
           request.body = body if body
           request.basic_auth username, password if username
+          request['Authorization'] = "Bearer #{token}" if token
           request
         end
 
         def perform_request request, uri
-          response = Retry.while_error do
+          response = Retry.until_truthy_or_max_times do
             http = Net::HTTP.new(uri.host, uri.port, :ENV)
-            http.set_debug_output($stderr) if verbose
+            http.set_debug_output(output_stream) if verbose
             http.use_ssl = (uri.scheme == 'https')
             http.start do |http|
               http.request request
             end
           end
           Response.new(response)
+        end
+
+        def output_stream
+          AuthorizationHeaderRedactor.new($stdout)
         end
 
         class Response < SimpleDelegator
@@ -77,7 +85,6 @@ module PactBroker
           end
         end
       end
-
     end
   end
 end
