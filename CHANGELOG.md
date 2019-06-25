@@ -1,3 +1,23 @@
+<a name="v1.19.0"></a>
+### v1.19.0 (2019-06-25)
+
+
+#### Features
+
+* **hal client**
+  * update from pact-ruby	 ([f8b3432](/../../commit/f8b3432))
+
+* update pact with broker for scenario where version does not exist	 ([27b744f](/../../commit/27b744f))
+
+
+#### Bug Fixes
+
+* **create webhook**
+  * pass in token from command line	 ([9d3170e](/../../commit/9d3170e))
+
+* correct pact merge error message	 ([5ebe808](/../../commit/5ebe808))
+
+
 <a name="v1.18.0"></a>
 ### v1.18.0 (2019-03-05)
 
