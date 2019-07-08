@@ -116,14 +116,14 @@ Description:
   If you do not/cannot tag every application at deployment, you have two options. You can either use the very first form of this
   command which just checks that the *latest* verification is successful (not recommended as it's the production version that you
   really care about) or you will need to determine the production versions of each collaborating application from some other
-  source (eg. git) and explictly reference each one using one using the format `--pacticipant PACTICIPANT1 --version VERSION1
+  source (eg. git) and explicitly reference each one using one using the format `--pacticipant PACTICIPANT1 --version VERSION1
   --pacticipant PACTICIPANT2 --version VERSION2 ...`
 
   # Other commands
 
   Check the status of the pacts for the latest pacticipant version. This form is not recommended for use in your CI as it is
   possible that the version you are about to deploy is not the the version that the Broker considers the latest. It's best to
-  specify the version explictly.
+  specify the version explicitly.
 
   $ pact-broker can-i-deploy --pacticipant PACTICIPANT --latest --broker-base-url BROKER_BASE_URL
 
