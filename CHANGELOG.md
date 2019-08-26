@@ -1,3 +1,12 @@
+<a name="v1.20.0"></a>
+### v1.20.0 (2019-08-27)
+
+
+#### Features
+
+* allow limit to be set for can-i-deploy until https://github.com/pact-foundation/pact_broker-client/issues/53 is fixed	 ([f692774](/../../commit/f692774))
+
+
 <a name="v1.19.0"></a>
 ### v1.19.0 (2019-06-25)
 
