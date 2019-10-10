@@ -5,6 +5,7 @@ module PactBroker
         def self.call options
           versions = []
           last_flag = nil
+          options = options.flat_map { |option| option.split('=') }
           options.each do | option |
             case option
             when "--pacticipant", "-a"

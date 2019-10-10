@@ -27,6 +27,15 @@ describe "pact-broker can-i-deploy", skip_windows: true do
     end
   end
 
+  context "when flags are passed with equals sign" do
+    subject { `bundle exec bin/pact-broker can-i-deploy --pacticipant=Foo --version=1.2.3 --pacticipant=Bar --version=4.5.6 --broker-base-url=http://localhost:5000` }
+
+    it "returns a success exit code" do
+      subject
+      expect($?.exitstatus).to eq 0
+    end
+  end
+
   after(:all) do
     Process.kill 'KILL', @pipe.pid
   end
