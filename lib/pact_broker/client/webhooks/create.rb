@@ -41,7 +41,7 @@ module PactBroker
         end
 
         def create_webhook_with_optional_consumer_and_provider
-          webhook_entity = index_link.get._link("pb:webhooks").post(request_body_with_optional_consumer_and_provider)
+          webhook_entity = index_link.get!._link("pb:webhooks").post(request_body_with_optional_consumer_and_provider)
 
           if webhook_entity.response.status == 405
             raise PactBroker::Client::Error.new(WEBHOOKS_WITH_OPTIONAL_PACTICICPANTS_NOT_SUPPORTED)

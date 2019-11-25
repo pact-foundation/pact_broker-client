@@ -41,6 +41,10 @@ module PactBroker
           wrap_response(href, @http_client.get(href, payload, headers))
         end
 
+        def get!(*args)
+          get(*args).assert_success!
+        end
+
         def put(payload = nil, headers = {})
           wrap_response(href, @http_client.put(href, payload ? JSON.dump(payload) : nil, headers))
         end

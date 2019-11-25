@@ -109,14 +109,14 @@ module PactBroker
           exit(1) unless result.success
         end
 
-        method_option :request, aliases: "-X", desc: "HTTP method", required: true
+        method_option :request, banner: "METHOD", aliases: "-X", desc: "HTTP method", required: true
         method_option :header, aliases: "-H", type: :array, desc: "Header"
         method_option :data, aliases: "-d", desc: "Data"
         method_option :user, aliases: "-u", desc: "Basic auth username and password eg. username:password"
         method_option :consumer, desc: "Consumer name"
         method_option :provider, desc: "Provider name"
         method_option :broker_base_url, required: true, aliases: "-b", desc: "The base URL of the Pact Broker"
-        method_option :broker_username, aliases: "-u", desc: "Pact Broker basic auth username"
+        method_option :broker_username, desc: "Pact Broker basic auth username"
         method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
         method_option :broker_token, aliases: "-k", desc: "Pact Broker bearer token"
         method_option :contract_content_changed, type: :boolean, desc: "Trigger this webhook when the pact content changes"
