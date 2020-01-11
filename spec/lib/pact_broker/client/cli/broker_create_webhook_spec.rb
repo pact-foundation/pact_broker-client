@@ -50,7 +50,7 @@ module PactBroker
             }.tap { |it| Pact::Fixture.add_fixture(:create_webhook_params, it) }
           end
 
-          subject {  broker.create_webhook "http://webhook" }
+          subject { broker.create_webhook "http://webhook" }
 
           it "calls PactBroker::Client::Webhooks::Create with the webhook params" do
             expect(PactBroker::Client::Webhooks::Create).to receive(:call) do | params, _, _ |
@@ -114,6 +114,24 @@ module PactBroker
             it "alls Webhooks::Create with a nil body" do
               expect(PactBroker::Client::Webhooks::Create).to receive(:call) do | params, _, _ |
                 expect(params[:body]).to be nil
+                command_result
+              end
+              subject
+            end
+          end
+
+          context "when a uuid is provided" do
+            before do
+              options_hash.merge!(uuid: 1234)
+              expected_params.merge!(uuid: '1234')
+
+              broker.options = OpenStruct.new(options_hash)
+            end
+
+            it "calls PactBroker::Client::Webhooks::Create with uuid in params" do
+              expect(PactBroker::Client::Webhooks::Create).to receive(:call) do | params, _, _ |
+                expect(params).to eq expected_params
+                #What does this line do?
                 command_result
               end
               subject
