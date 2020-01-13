@@ -9,7 +9,7 @@ module PactBroker
         query = {
           q: convert_selector_hashes_to_params(selectors),
           latestby: latestby
-        }.merge(query_options(options))
+        }.merge(query_options(options, selectors))
         response = self.class.get("/matrix", query: query, headers: default_get_headers)
         response = handle_response(response) do
           Matrix::Resource.new(JSON.parse(response.body, symbolize_names: true))
@@ -41,7 +41,7 @@ module PactBroker
         end
       end
 
-      def query_options(options)
+      def query_options(options, selectors)
         opts = {}
         if options.key?(:success)
           opts[:success] = [*options[:success]]
@@ -50,6 +50,8 @@ module PactBroker
         if options[:to_tag]
           opts[:latest] = 'true'
           opts[:tag] = options[:to_tag]
+        elsif selectors.size == 1
+          opts[:latest] = 'true'
         end
         opts
       end

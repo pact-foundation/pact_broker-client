@@ -434,7 +434,7 @@ Given **the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6 an
 {
   "method": "get",
   "path": "/matrix",
-  "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&latestby=cvp"
+  "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&latestby=cvp&latest=true"
 }
 ```
 Pact Broker will respond with:
