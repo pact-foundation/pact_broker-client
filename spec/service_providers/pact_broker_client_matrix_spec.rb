@@ -67,7 +67,7 @@ module PactBroker::Client
             with(
               method: :get,
               path: "/matrix",
-              query: "q[][pacticipant]=Foo&q[][version]=1.2.3&latestby=cvp"
+              query: "q[][pacticipant]=Foo&q[][version]=1.2.3&latestby=cvp&latest=true"
             ).
             will_respond_with(
               status: 200,
