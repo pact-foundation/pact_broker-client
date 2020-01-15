@@ -3,3 +3,6 @@ rvm:
   - 2.2.4
   - 2.3.1
   - 2.4.1
+
+before:
+  - ruby -e "puts \`git rev-parse --abbrev-ref HEAD\`.strip"
