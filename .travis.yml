@@ -5,6 +5,4 @@ rvm:
   - 2.4.1
 
 before_script:
-  - git rev-parse --abbrev-ref HEAD
-  - echo "foo"
-  - ruby -e "puts \`git name-rev --name-only HEAD\`.strip"
+  - git branch --contains HEAD

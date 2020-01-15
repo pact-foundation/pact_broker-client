@@ -9,6 +9,7 @@ install:
   - bundle install
 
 before_test:
+  - git branch --contains HEAD
   - ruby -v
   - gem -v
   - bundle -v
