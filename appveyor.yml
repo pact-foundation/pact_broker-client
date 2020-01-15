@@ -10,6 +10,7 @@ install:
 
 before_test:
   - git branch --contains HEAD
+  - git show -s --pretty=%D HEAD
   - ruby -v
   - gem -v
   - bundle -v
