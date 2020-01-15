@@ -14,8 +14,7 @@ before_test:
   - bundle -v
 
 test_script:
-  - ruby -e "puts \`git rev-parse --abbrev-ref HEAD\`.strip"
-  - bundle exec rake
+  - ruby -e 'puts `git rev-parse --abbrev-ref HEAD`.strip'
 
 notifications:
   - provider: Slack
