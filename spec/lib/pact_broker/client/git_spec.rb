@@ -6,6 +6,9 @@ module PactBroker
       describe ".branch" do
         before do
           allow(ENV).to receive(:[]).and_call_original
+          Git::BRANCH_ENV_VAR_NAMES.each do | env_var_name |
+            allow(ENV).to receive(:[]).with(env_var_name).and_return(nil)
+          end
         end
 
         subject { Git.branch }
