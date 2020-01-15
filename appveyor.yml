@@ -5,13 +5,12 @@ init:
 build: off
 
 install:
+  - git branch --contains HEAD
+  - git branch --remote --verbose --no-abbrev --contains
   - set PATH=C:\Ruby22\bin;%PATH%
   - bundle install
 
 before_test:
-  - git branch --contains HEAD
-  - git show -s --pretty=%D HEAD
-  - git branch --remote --verbose --no-abbrev --contains
   - ruby -v
   - gem -v
   - bundle -v
