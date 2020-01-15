@@ -11,6 +11,7 @@ install:
 before_test:
   - git branch --contains HEAD
   - git show -s --pretty=%D HEAD
+  - git branch --remote --verbose --no-abbrev --contains
   - ruby -v
   - gem -v
   - bundle -v
