@@ -1,3 +1,21 @@
+<a name="v1.21.0"></a>
+### v1.21.0 (2020-01-16)
+
+
+#### Features
+
+* attempt to get git branch name from environment variable first before running git	 ([122973b](/../../commit/122973b))
+
+
+#### Bug Fixes
+
+* **can-i-deploy**
+  * if only one selector is specified and no --to TAG is specified, set latest=true for automatically calculated dependencies	 ([ec10b72](/../../commit/ec10b72))
+
+* remove -u alias for --broker-username for create-webhook as it clashes with the -u from the curl command	 ([9463eff](/../../commit/9463eff))
+* Fix invalid environment variable names in can-i-deploy docs	 ([2b26081](/../../commit/2b26081))
+
+
 <a name="v1.20.0"></a>
 ### v1.20.0 (2019-08-27)
 
