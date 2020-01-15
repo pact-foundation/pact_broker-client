@@ -4,5 +4,7 @@ rvm:
   - 2.3.1
   - 2.4.1
 
-before:
+before_script:
+  - git rev-parse --abbrev-ref HEAD
+  - echo "foo"
   - ruby -e "puts \`git rev-parse --abbrev-ref HEAD\`.strip"
