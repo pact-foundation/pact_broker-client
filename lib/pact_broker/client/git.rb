@@ -8,6 +8,8 @@ require 'pact_broker/client/error'
  # APPVEYOR_REPO_COMMIT APPVEYOR_REPO_BRANCH       https://www.appveyor.com/docs/environment-variables/
  # bamboo.repository.git.branch https://confluence.atlassian.com/bamboo/bamboo-variables-289277087.html
 
+ # Keep in sync with pact-provider-verifier/lib/pact/provider_verifier/git.rb
+
 module PactBroker
   module Client
     module Git
