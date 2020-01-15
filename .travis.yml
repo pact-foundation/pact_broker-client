@@ -7,4 +7,4 @@ rvm:
 before_script:
   - git rev-parse --abbrev-ref HEAD
   - echo "foo"
-  - ruby -e "puts \`git rev-parse --abbrev-ref HEAD\`.strip"
+  - ruby -e "puts \`git name-rev --name-only HEAD\`.strip"
