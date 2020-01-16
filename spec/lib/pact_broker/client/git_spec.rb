@@ -6,9 +6,6 @@ module PactBroker
       describe ".branch" do
         before do
           allow(ENV).to receive(:[]).and_call_original
-          Git::BRANCH_ENV_VAR_NAMES.each do | env_var_name |
-            allow(ENV).to receive(:[]).with(env_var_name).and_return(nil)
-          end
         end
 
         subject { Git.branch }
@@ -30,23 +27,34 @@ module PactBroker
           end
         end
 
-        context "when the git branch name comes back as HEAD" do
+        context "when one git branch name is returned (apart from HEAD)" do
           before do
-            allow(Git).to receive(:execute_git_command).and_return("HEAD")
+            allow(Git).to receive(:execute_git_command).and_return(" origin/HEAD \n origin/foo")
           end
 
           it "raises an error" do
-            expect { subject }.to raise_error PactBroker::Client::Error, /returned 'HEAD'/
+            expect(subject).to eq "foo"
           end
         end
 
-        context "when the git branch name comes back as an empty string" do
+        context "when two git branch names are returned (apart from HEAD)" do
           before do
-            allow(Git).to receive(:execute_git_command).and_return("")
+            allow(Git).to receive(:execute_git_command).and_return(" origin/HEAD \n origin/foo \n origin/bar")
           end
 
           it "raises an error" do
-            expect { subject }.to raise_error PactBroker::Client::Error, /an empty string/
+            expect { subject }.to raise_error PactBroker::Client::Error, /returned multiple branches: foo, bar/
+          end
+        end
+
+
+        context "when the git branch name comes back as an empty string" do
+          before do
+            allow(Git).to receive(:execute_git_command).and_return(" origin/HEAD")
+          end
+
+          it "raises an error" do
+            expect { subject }.to raise_error PactBroker::Client::Error, /didn't return anything/
           end
         end
 
