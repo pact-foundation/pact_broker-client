@@ -19,7 +19,7 @@ module PactBroker
   module Client
     module Git
       COMMAND = 'git branch --remote --verbose --no-abbrev --contains'.freeze
-      BRANCH_ENV_VAR_names = %w{BUILDKITE_BRANCH CIRCLE_BRANCH TRAVIS_BRANCH GIT_BRANCH GIT_LOCAL_BRANCH APPVEYOR_REPO_BRANCH CI_COMMIT_REF_NAME}.freeze
+      BRANCH_ENV_VAR_NAMES = %w{BUILDKITE_BRANCH CIRCLE_BRANCH TRAVIS_BRANCH GIT_BRANCH GIT_LOCAL_BRANCH APPVEYOR_REPO_BRANCH CI_COMMIT_REF_NAME}.freeze
 
       def self.branch
         find_branch_from_env_vars || branch_from_git_command
@@ -28,7 +28,7 @@ module PactBroker
       # private
 
       def self.find_branch_from_env_vars
-        BRANCH_ENV_VAR_names.collect { |env_var_name| branch_from_env_var(env_var_name) }.compact.first
+        BRANCH_ENV_VAR_NAMES.collect { |env_var_name| branch_from_env_var(env_var_name) }.compact.first
       end
 
       def self.branch_from_env_var(env_var_name)
