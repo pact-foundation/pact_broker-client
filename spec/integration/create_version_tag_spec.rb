@@ -1,7 +1,3 @@
-require 'timeout'
-require 'net/http'
-require 'openssl'
-
 # Currently failing on Travis, skip for now
 describe "pact-broker create-version-tag", skip_windows: true, skip_ci: true do
   before(:all) do
