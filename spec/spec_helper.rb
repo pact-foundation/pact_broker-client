@@ -19,7 +19,7 @@ RSpec.configure do | config |
     Pact::Fixture.check_fixtures
   end
 
-  config.filter_run_excluding skip_windows: => is_windows, skip_ci: is_ci
+  config.filter_run_excluding skip_windows: is_windows, skip_ci: is_ci
   config.example_status_persistence_file_path = "./spec/examples.txt"
 end
 
