@@ -5,6 +5,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 require "./spec/support/shared_context.rb"
 
 is_windows = (RbConfig::CONFIG['host_os'] =~ /bccwin|cygwin|djgpp|mingw|mswin|wince/i) != nil
+is_ci = ENV['CI'] == 'true'
 
 RSpec.configure do | config |
 
@@ -18,7 +19,7 @@ RSpec.configure do | config |
     Pact::Fixture.check_fixtures
   end
 
-  config.filter_run_excluding :skip_windows => is_windows
+  config.filter_run_excluding skip_windows: => is_windows, skip_ci: is_ci
   config.example_status_persistence_file_path = "./spec/examples.txt"
 end
 
