@@ -18,7 +18,7 @@ bamboo.repository.git.branch https://confluence.atlassian.com/bamboo/bamboo-vari
 module PactBroker
   module Client
     module Git
-      COMMAND = 'git branch --remote --verbose --no-abbrev --contains'.freeze
+      COMMAND = 'git name-rev --name-only HEAD'.freeze
       BRANCH_ENV_VAR_NAMES = %w{BUILDKITE_BRANCH CIRCLE_BRANCH TRAVIS_BRANCH GIT_BRANCH GIT_LOCAL_BRANCH APPVEYOR_REPO_BRANCH CI_COMMIT_REF_NAME}.freeze
 
       def self.branch
