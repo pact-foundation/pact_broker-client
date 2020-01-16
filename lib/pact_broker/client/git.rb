@@ -18,8 +18,8 @@ bamboo.repository.git.branch https://confluence.atlassian.com/bamboo/bamboo-vari
 module PactBroker
   module Client
     module Git
-      COMMAND = 'git name-rev --name-only HEAD'.freeze
-      BRANCH_ENV_VAR_NAMES = %w{BUILDKITE_BRANCH CIRCLE_BRANCH TRAVIS_BRANCH GIT_BRANCH GIT_LOCAL_BRANCH APPVEYOR_REPO_BRANCH CI_COMMIT_REF_NAME}.freeze
+      COMMAND = 'git branch --remote --verbose --no-abbrev --contains'.freeze
+      BRANCH_ENV_VAR_names = %w{BUILDKITE_BRANCH CIRCLE_BRANCH TRAVIS_BRANCH GIT_BRANCH GIT_LOCAL_BRANCH APPVEYOR_REPO_BRANCH CI_COMMIT_REF_NAME}.freeze
 
       def self.branch
         find_branch_from_env_vars || branch_from_git_command
@@ -28,7 +28,7 @@ module PactBroker
       # private
 
       def self.find_branch_from_env_vars
-        BRANCH_ENV_VAR_NAMES.collect { |env_var_name| branch_from_env_var(env_var_name) }.compact.first
+        BRANCH_ENV_VAR_names.collect { |env_var_name| branch_from_env_var(env_var_name) }.compact.first
       end
 
       def self.branch_from_env_var(env_var_name)
@@ -41,24 +41,32 @@ module PactBroker
       end
 
       def self.branch_from_git_command
-        branch_name = nil
+        branch_names = nil
         begin
-          branch_name = execute_git_command.strip
+          branch_names = execute_git_command
+            .split("\n")
+            .collect(&:strip)
+            .reject(&:empty?)
+            .collect(&:split)
+            .collect(&:first)
+            .collect{ |line| line.gsub(/^origin\//, '') }
+            .reject{ |line| line == "HEAD" }
+
         rescue StandardError => e
           raise PactBroker::Client::Error, "Could not determine current git branch using command `#{COMMAND}`. #{e.class} #{e.message}"
         end
 
-        validate_branch_name(branch_name)
-        branch_name
+        validate_branch_names(branch_names)
+        branch_names[0]
       end
 
-      def self.validate_branch_name(branch_name)
-        if !branch_name || branch_name.size == 0
-          raise PactBroker::Client::Error, "Command `#{COMMAND}` returned an empty string when trying to determine the git branch name. This is most likely not the value you want. You will need to get the branch name another way."
+      def self.validate_branch_names(branch_names)
+        if branch_names.size == 0
+          raise PactBroker::Client::Error, "Command `#{COMMAND}` didn't return anything that could be identified as the current branch."
         end
 
-        if branch_name == "HEAD"
-          raise PactBroker::Client::Error, "Command `#{COMMAND}` returned 'HEAD' when trying to determine the git branch name. This is probably because the repository is in detatched HEAD state. HEAD is most likely not the value you want. You will need to get the branch name another way."
+        if branch_names.size > 1
+          raise PactBroker::Client::Error, "Command `#{COMMAND}` returned multiple branches: #{branch_names.join(", ")}. You will need to get the branch name another way."
         end
       end
 
