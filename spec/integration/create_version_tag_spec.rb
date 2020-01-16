@@ -1,7 +1,7 @@
 describe "pact-broker create-version-tag", skip_windows: true do
   before(:all) do
     @pipe = IO.popen("bundle exec pact-stub-service spec/pacts/pact_broker_client-pact_broker.json -p 5001")
-    sleep 2
+    sleep 3
   end
 
   context "when the version is successfully tagged" do
