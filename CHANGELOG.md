@@ -1,3 +1,12 @@
+<a name="v1.22.0"></a>
+### v1.22.0 (2020-01-16)
+
+
+#### Features
+
+* use different git command to get git branch name	 ([70b1328](/../../commit/70b1328))
+
+
 <a name="v1.21.0"></a>
 ### v1.21.0 (2020-01-16)
 
