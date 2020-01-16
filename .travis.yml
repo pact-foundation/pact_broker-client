@@ -4,7 +4,7 @@ rvm:
   - 2.3.1
   - 2.4.1
 
-before:
+before_install:
   - git show-ref | grep $(git log --pretty=%h -1) | sed 's|.*/\(.*\)|\1|' | sort -u | grep -v HEAD
   - git show -s --pretty=%d HEAD
   - git for-each-ref --format='%(objectname) %(refname:short)' refs/heads | awk "/^$(git rev-parse HEAD)/ {print \$2}"
