@@ -24,7 +24,7 @@ module PactBroker
           end
         end
 
-        context "when there is no known environment variable for the branch" do
+        context "when there is no known environment variable for the branch", skip_ci: true do
           it "attempts to execute a git command to determine the value" do
             expect { subject }.to_not raise_error
           end
