@@ -36,6 +36,9 @@ module PactBroker
           ],[
             ["--pacticipant", "Foo", "--latest", "prod", "--pacticipant", "Bar"],
             [{ pacticipant: "Foo", latest: true, tag: "prod"}, { pacticipant: "Bar" } ]
+          ],[
+            ["--pacticipant", "Foo", "--all", "prod", "--pacticipant", "Bar"],
+            [{ pacticipant: "Foo", tag: "prod"}, { pacticipant: "Bar" } ]
           ]
         ]
 

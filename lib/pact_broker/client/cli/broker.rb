@@ -144,8 +144,8 @@ module PactBroker
           end
 
           def validate_can_i_deploy_selectors selectors
-            pacticipants_without_versions = selectors.select{ |s| s[:version].nil? && s[:latest].nil? }.collect{ |s| s[:pacticipant] }
-            raise ::Thor::RequiredArgumentMissingError, "The version must be specified using --version or --latest [TAG] for pacticipant #{pacticipants_without_versions.join(", ")}" if pacticipants_without_versions.any?
+            pacticipants_without_versions = selectors.select{ |s| s[:version].nil? && s[:latest].nil? && s[:tag].nil? }.collect{ |s| s[:pacticipant] }
+            raise ::Thor::RequiredArgumentMissingError, "The version must be specified using `--version VERSION`, `--latest`, `--latest TAG`, or `--all TAG` for pacticipant #{pacticipants_without_versions.join(", ")}" if pacticipants_without_versions.any?
           end
 
           def publish_pacts pact_files
