@@ -2,33 +2,36 @@ module PactBroker
   module Client
     module CLI
       class VersionSelectorOptionsParser
-        def self.call options
-          versions = []
-          last_flag = nil
-          options.each do | option |
-            case option
+        def self.call words
+          selectors = []
+          previous_option = nil
+          words.each do | word |
+            case word
             when "--pacticipant", "-a"
-              versions << {}
+              selectors << {}
             when "--latest", "-l"
-              versions << {pacticipant: nil} unless versions.last
-              versions.last[:latest] = true
+              selectors << { pacticipant: nil } if selectors.empty?
+              selectors.last[:latest] = true
             when /^\-/
               nil
             else
-              case last_flag
+              case previous_option
               when "--pacticipant", "-a"
-                versions.last[:pacticipant] = option
+                selectors.last[:pacticipant] = word
               when "--version", "-e"
-                versions << {pacticipant: nil} unless versions.last
-                versions.last[:version] = option
+                selectors << { pacticipant: nil } if selectors.empty?
+                selectors.last[:version] = word
               when "--latest", "-l"
-                versions << {pacticipant: nil} unless versions.last
-                versions.last[:tag] = option
+                selectors << { pacticipant: nil } if selectors.empty?
+                selectors.last[:tag] = word
+              when "--all"
+                selectors << { pacticipant: nil } if selectors.empty?
+                selectors.last[:tag] = word
               end
             end
-            last_flag = option if option.start_with?("-")
+            previous_option = word if word.start_with?("-")
           end
-          versions
+          selectors
         end
       end
     end
