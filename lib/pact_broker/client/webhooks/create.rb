@@ -24,7 +24,9 @@ module PactBroker
         end
 
         def call
-          if params.consumer && params.provider
+          if params.consumer && params.provider && params.uuid
+            create_webhook_with_consumer_and_provider_and_uuid
+          elsif params.consumer && params.provider
             create_webhook_with_consumer_and_provider
           else
             create_webhook_with_optional_consumer_and_provider
@@ -47,6 +49,11 @@ module PactBroker
             raise PactBroker::Client::Error.new(WEBHOOKS_WITH_OPTIONAL_PACTICICPANTS_NOT_SUPPORTED)
           end
 
+          handle_response(webhook_entity)
+        end
+
+        def create_webhook_with_consumer_and_provider_and_uuid
+          webhook_entity = webhook_link_with_uuid.expand(consumer: params.consumer, provider: params.provider, uuid: params.uuid).put(request_body)
           handle_response(webhook_entity)
         end
 
@@ -83,6 +90,10 @@ module PactBroker
           "#{pact_broker_base_url.chomp("/")}/webhooks/provider/{provider}/consumer/{consumer}"
         end
 
+        def webhook_with_uuid_for_consumer_and_provider_url
+          "#{pact_broker_base_url.chomp("/")}/webhooks/{uuid}/provider/{provider}/consumer/{consumer}"
+        end
+
         def handle_response(webhook_entity)
           if webhook_entity.success?
             success_result(webhook_entity)
@@ -105,6 +116,10 @@ module PactBroker
 
         def webhook_link
           PactBroker::Client::Hal::EntryPoint.new(webhook_for_consumer_and_provider_url, http_client)
+        end
+
+        def webhook_link_with_uuid
+          PactBroker::Client::Hal::EntryPoint.new(webhook_with_uuid_for_consumer_and_provider_url, http_client)
         end
       end
     end

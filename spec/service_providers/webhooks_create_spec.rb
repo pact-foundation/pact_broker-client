@@ -84,39 +84,39 @@ RSpec.describe "creating a webhook", pact: true do
     end
   end
 
-  # context "when a valid webhook with a JSON body is submitted with a uuid" do
-  #   let(:params) do
-  #     {
-  #       uuid: 1234,
-  #       http_method: "POST",
-  #       url: "https://webhook",
-  #       headers: { "Foo" => "bar", "Bar" => "foo"},
-  #       username: "username",
-  #       password: "password",
-  #       body: body,
-  #       consumer: "Condor",
-  #       provider: "Pricing Service",
-  #       events: ["contract_content_changed"]
-  #     }.tap { |it| Pact::Fixture.add_fixture(:create_webhook_params, it) }
-  #   end
-  #   before do
-  #     pact_broker
-  #       .given("the 'Pricing Service' and 'Condor' already exist in the pact-broker")
-  #       .upon_receiving("a request to create a webhook with a JSON body for a consumer and provider and a uuid")
-  #       .with(
-  #           method: :put,
-  #           path: '/webhooks/1234/provider/Pricing%20Service/consumer/Condor',
-  #           headers: post_request_headers,
-  #           body: request_body)
-  #       .will_respond_with(success_response)
-  #   end
+  context "when a valid webhook with a JSON body is submitted with a uuid" do
+    let(:params) do
+      {
+        uuid: '1234',
+        http_method: "POST",
+        url: "https://webhook",
+        headers: { "Foo" => "bar", "Bar" => "foo"},
+        username: "username",
+        password: "password",
+        body: body,
+        consumer: "Condor",
+        provider: "Pricing Service",
+        events: ["contract_content_changed"]
+      }.tap { |it| Pact::Fixture.add_fixture(:create_webhook_params, it) }
+    end
+    before do
+      pact_broker
+        .given("the 'Pricing Service' and 'Condor' already exist in the pact-broker")
+        .upon_receiving("a request to create a webhook with a JSON body for a consumer and provider and a uuid")
+        .with(
+            method: :put,
+            path: '/webhooks/1234/provider/Pricing%20Service/consumer/Condor',
+            headers: put_request_headers,
+            body: request_body)
+        .will_respond_with(success_response)
+    end
 
-  #   it "returns a CommandResult with success = true" do
-  #     expect(subject).to be_a PactBroker::Client::CommandResult
-  #     expect(subject.success).to be true
-  #     expect(subject.message).to eq "Webhook \"A title\" created"
-  #   end
-  # end
+    it "returns a CommandResult with success = true" do
+      expect(subject).to be_a PactBroker::Client::CommandResult
+      expect(subject.success).to be true
+      expect(subject.message).to eq "Webhook \"A title\" created"
+    end
+  end
 
   context "when a valid webhook with an XML body is submitted" do
     before do
