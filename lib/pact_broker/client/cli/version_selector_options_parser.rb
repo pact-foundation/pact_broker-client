@@ -1,11 +1,14 @@
+# frozen_string_literal: true
+
 module PactBroker
   module Client
     module CLI
       class VersionSelectorOptionsParser
+
         def self.call words
           selectors = []
           previous_option = nil
-          words.each do | word |
+          split_equals(words).each do | word |
             case word
             when "--pacticipant", "-a"
               selectors << {}
@@ -32,6 +35,16 @@ module PactBroker
             previous_option = word if word.start_with?("-")
           end
           selectors
+        end
+
+        def self.split_equals(words)
+          words.flat_map do |word|
+            if word.start_with?("-") && word.include?("=")
+              word.split('=', 2)
+            else
+              word
+            end
+          end
         end
       end
     end
