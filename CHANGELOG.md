@@ -1,3 +1,15 @@
+<a name="v1.23.0"></a>
+### v1.23.0 (2020-01-21)
+
+
+#### Features
+
+* suppport equals sign in can-i-deploy pacticipant selector parameters	 ([90f6457](/../../commit/90f6457))
+
+* **cli**
+  * allow all versions for a particular tag to be specified when determining if it safe to deploy (mobile provider use case)	 ([3690944](/../../commit/3690944))
+
+
 <a name="v1.22.1"></a>
 ### v1.22.1 (2020-01-16)
 
