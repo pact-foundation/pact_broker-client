@@ -122,8 +122,8 @@ module PactBroker
 
           context "when a uuid is provided" do
             before do
-              options_hash.merge!(uuid: 1234)
-              expected_params.merge!(uuid: '1234')
+              options_hash.merge!(uuid: '9999')
+              expected_params.merge!(uuid: '9999')
 
               broker.options = OpenStruct.new(options_hash)
             end
@@ -131,7 +131,6 @@ module PactBroker
             it "calls PactBroker::Client::Webhooks::Create with uuid in params" do
               expect(PactBroker::Client::Webhooks::Create).to receive(:call) do | params, _, _ |
                 expect(params).to eq expected_params
-                #What does this line do?
                 command_result
               end
               subject
