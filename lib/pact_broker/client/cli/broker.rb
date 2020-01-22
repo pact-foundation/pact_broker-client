@@ -161,10 +161,9 @@ module PactBroker
             body: body,
             consumer: options.consumer,
             provider: options.provider,
-            events: events
+            events: events,
+            uuid: options.uuid
           }
-
-          params.merge!(uuid: options.uuid.to_s) if options.uuid
 
           begin
             result = PactBroker::Client::Webhooks::Create.call(params, options.broker_base_url, pact_broker_client_options)
