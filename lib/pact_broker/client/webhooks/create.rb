@@ -36,16 +36,18 @@ module PactBroker
         attr_reader :http_client
 
         def create_webhook_with_consumer_and_provider
-          if params.uuid
-            webhook_entity = webhook_link_with_uuid.expand(consumer: params.consumer, provider: params.provider, uuid: params.uuid).put(request_body)
-          else
-            webhook_entity = webhook_link.expand(consumer: params.consumer, provider: params.provider).post(request_body)
-          end
+          webhook_entity = webhook_link.expand(consumer: params.consumer, provider: params.provider).post(request_body)
           handle_response(webhook_entity)
         end
 
         def create_webhook_with_optional_consumer_and_provider
-          webhook_entity = index_link.get!._link("pb:webhooks").post(request_body_with_optional_consumer_and_provider)
+          if params.uuid
+            webhook_entity = index_link.get!._link("pb:webhook").expand(uuid: params.uuid).put(request_body_with_optional_consumer_and_provider)
+          else
+            # require 'pry'
+            # binding.pry
+            webhook_entity = index_link.get!._link("pb:webhooks").post(request_body_with_optional_consumer_and_provider)
+          end
 
           if webhook_entity.response.status == 405
             raise PactBroker::Client::Error.new(WEBHOOKS_WITH_OPTIONAL_PACTICICPANTS_NOT_SUPPORTED)
@@ -87,10 +89,6 @@ module PactBroker
           "#{pact_broker_base_url.chomp("/")}/webhooks/provider/{provider}/consumer/{consumer}"
         end
 
-        def webhook_with_uuid_for_consumer_and_provider_url
-          "#{pact_broker_base_url.chomp("/")}/webhooks/{uuid}/provider/{provider}/consumer/{consumer}"
-        end
-
         def handle_response(webhook_entity)
           if webhook_entity.success?
             success_result(webhook_entity)
@@ -113,10 +111,6 @@ module PactBroker
 
         def webhook_link
           PactBroker::Client::Hal::EntryPoint.new(webhook_for_consumer_and_provider_url, http_client)
-        end
-
-        def webhook_link_with_uuid
-          PactBroker::Client::Hal::EntryPoint.new(webhook_with_uuid_for_consumer_and_provider_url, http_client)
         end
       end
     end

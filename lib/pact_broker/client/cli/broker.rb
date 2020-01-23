@@ -161,8 +161,78 @@ module PactBroker
             body: body,
             consumer: options.consumer,
             provider: options.provider,
-            events: events,
-            uuid: options.uuid
+            events: events
+          }
+
+          params.merge!(uuid: options.uuid.to_s) if options.uuid
+
+          begin
+            result = PactBroker::Client::Webhooks::Create.call(params, options.broker_base_url, pact_broker_client_options)
+            $stdout.puts result.message
+            exit(1) unless result.success
+          rescue PactBroker::Client::Error => e
+            raise WebhookCreationError, "#{e.class} - #{e.message}"
+          end
+        end
+
+        #HERE!
+        method_option :request, banner: "METHOD", aliases: "-X", desc: "HTTP method", required: true
+        method_option :header, aliases: "-H", type: :array, desc: "Header"
+        method_option :data, aliases: "-d", desc: "Data"
+        method_option :user, aliases: "-u", desc: "Basic auth username and password eg. username:password"
+        method_option :consumer, desc: "Consumer name"
+        method_option :provider, desc: "Provider name"
+        method_option :broker_base_url, required: true, aliases: "-b", desc: "The base URL of the Pact Broker"
+        method_option :broker_username, desc: "Pact Broker basic auth username"
+        method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
+        method_option :broker_token, aliases: "-k", desc: "Pact Broker bearer token"
+        method_option :contract_content_changed, type: :boolean, desc: "Trigger this webhook when the pact content changes"
+        method_option :provider_verification_published, type: :boolean, desc: "Trigger this webhook when a provider verification result is published"
+        method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
+        method_option :uuid, type: :string, required: true, desc: "Specify the uuid for the webhook"
+
+        desc 'create-or-update-webhook URL', 'Creates or updates a webhook with a provided uuid and using the same switches as a curl request.'
+        long_desc File.read(File.join(File.dirname(__FILE__), 'create_or_update_webhook_long_desc.txt'))
+        def create_or_update_webhook webhook_url
+          require 'pact_broker/client/webhooks/create'
+
+          if !(options.contract_content_changed || options.provider_verification_published)
+            raise PactBroker::Client::Error.new("You must select at least one of --contract-content-changed or --provider-verification-published")
+          end
+
+          raise ::Thor::RequiredArgumentMissingError, "The uuid must be specified" if !(options.uuid)
+          
+
+          username = options.user ? options.user.split(":", 2).first : nil
+          password = options.user ? options.user.split(":", 2).last : nil
+
+          headers = (options.header || []).each_with_object({}) { | header, headers | headers[header.split(":", 2).first.strip] = header.split(":", 2).last.strip }
+
+          body = options.data
+          if body && body.start_with?("@")
+            filepath = body[1..-1]
+            begin
+              body = File.read(filepath)
+            rescue StandardError => e
+              raise PactBroker::Client::Error.new("Couldn't read data from file \"#{filepath}\" due to #{e.class} #{e.message}")
+            end
+          end
+
+          events = []
+          events << 'contract_content_changed' if options.contract_content_changed
+          events << 'provider_verification_published' if options.provider_verification_published
+
+          params = {
+            uuid: options.uuid,
+            http_method: options.request,
+            url: webhook_url,
+            headers: headers,
+            username: username,
+            password: password,
+            body: body,
+            consumer: options.consumer,
+            provider: options.provider,
+            events: events
           }
 
           begin

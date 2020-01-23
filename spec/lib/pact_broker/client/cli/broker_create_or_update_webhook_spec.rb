@@ -5,7 +5,7 @@ module PactBroker
   module Client
     module CLI
       describe Broker do
-        describe "create_webhook" do
+        describe "create_or_update_webhook" do
           before do
             allow($stdout).to receive(:puts)
             allow(PactBroker::Client::Webhooks::Create).to receive(:call).and_return(command_result)
@@ -21,6 +21,7 @@ module PactBroker
 
           let(:options_hash) do
             {
+              uuid: '9999',
               request: "POST",
               header: header,
               data: data,
@@ -38,6 +39,7 @@ module PactBroker
 
           let(:expected_params) do
             {
+              uuid: '9999',
               http_method: "POST",
               url: "http://webhook",
               headers: { "Foo" => "bar", "Bar" => "foo"},
@@ -50,7 +52,7 @@ module PactBroker
             }.tap { |it| Pact::Fixture.add_fixture(:create_webhook_params, it) }
           end
 
-          subject { broker.create_webhook "http://webhook" }
+          subject { broker.create_or_update_webhook "http://webhook" }
 
           it "calls PactBroker::Client::Webhooks::Create with the webhook params" do
             expect(PactBroker::Client::Webhooks::Create).to receive(:call) do | params, _, _ |
@@ -67,6 +69,17 @@ module PactBroker
               command_result
             end
             subject
+          end
+
+          context "when uuid is not provided" do
+            before do
+              options_hash.delete(:uuid)
+              broker.options = OpenStruct.new(options_hash)
+            end
+
+            it "raises an error" do
+              expect { subject }.to raise_error Thor::RequiredArgumentMissingError, /The uuid must be specified/
+            end
           end
 
           context "when neither event type is selected" do
@@ -114,6 +127,23 @@ module PactBroker
             it "alls Webhooks::Create with a nil body" do
               expect(PactBroker::Client::Webhooks::Create).to receive(:call) do | params, _, _ |
                 expect(params[:body]).to be nil
+                command_result
+              end
+              subject
+            end
+          end
+
+          context "when a uuid is provided" do
+            before do
+              options_hash.merge!(uuid: '9999')
+              expected_params.merge!(uuid: '9999')
+
+              broker.options = OpenStruct.new(options_hash)
+            end
+
+            it "calls PactBroker::Client::Webhooks::Create with uuid in params" do
+              expect(PactBroker::Client::Webhooks::Create).to receive(:call) do | params, _, _ |
+                expect(params).to eq expected_params
                 command_result
               end
               subject
