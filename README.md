@@ -111,7 +111,7 @@ Using a specific version is the easiest way to ensure you get an accurate respon
 
 #### Recommended usage - allowing the Pact Broker to automatically determine the dependencies
 
-If you would like the Pact Broker to calculate the dependencies for you when you want to deploy an application into a given environment, you will need to let the Broker know what application versions are in that environment. To do this, the relevant application version resource in the Broker will need to be "tagged" with the name of the environment during the deployment process:
+If you would like the Pact Broker to calculate the dependencies for you when you want to deploy an application into a given environment, you will need to let the Broker know which version of each application is in that environment. To do this, the relevant application version resource in the Broker will need to be "tagged" with the name of the environment during the deployment process:
 
     $ pact-broker create-version-tag --pacticipant Foo --version 173153ae0 --tag test
 
