@@ -2,7 +2,7 @@ Returns exit code 0 or 1, indicating whether or not the specified application (p
 
 The environment variables PACT_BROKER_BASE_URL, PACT_BROKER_USERNAME and PACT_BROKER_PASSWORD may be used instead of their respective command line options.
 
-There are two ways to use `can-i-deploy`. The first (recommended and most common) approach is to specify just the application version you want to deploy and let the Pact Broker work out the dependencies for you. The second approach is to specify each application version explicitly. This would generally only be used if there were limitations that stopped you being able to use the first approach.
+There are two ways to use `can-i-deploy`. The first (recommended and most commonly used) approach is to specify just the application version you want to deploy and let the Pact Broker work out the dependencies for you. The second approach is to specify each application version explicitly. This would generally only be used if there were limitations that stopped you being able to use the first approach.
 
 #### Specifying an application version
 
@@ -13,12 +13,13 @@ To specify an application (pacticipant) version you need to provide:
     * `--version VERSION` to specify a known application version (recommended)
     * `--latest` to specify the latest version
     * `--latest TAG` to specify the latest version that has a particular tag
+    * `--all TAG` to specify all the versions that have a particular tag (eg. "all prod" versions). This would be used when ensuring you have backwards compatiblity with all production mobile clients for a provider. Note, when using this option, you need to specify dependency explicitly (see the second usage option).
 
 Using a specific version is the easiest way to ensure you get an accurate response that won't be affected by race conditions.
 
 #### Recommended usage - allowing the Pact Broker to automatically determine the dependencies
 
-If you would like the Pact Broker to calculate the dependencies for you when you want to deploy an application into a given environment, you will need to let the Broker know what application versions are in that environment. To do this, the relevant application version resource in the Broker will need to be "tagged" with the name of the environment during the deployment process:
+Prerequisite: if you would like the Pact Broker to calculate the dependencies for you when you want to deploy an application into a given environment, you will need to let the Broker know which version of each application is in that environment. To do this, the relevant application version resource in the Broker will need to be "tagged" with the name of the environment during the deployment process:
 
     $ pact-broker create-version-tag --pacticipant Foo --version 173153ae0 --tag test
 
@@ -56,13 +57,20 @@ Can I deploy the latest version of the application Foo that has the tag "test" t
 
 
 
-#### Alternate usage - specifying all dependencies explicitly
+#### Alternate usage - specifying dependencies explicitly
 
-If you are unable to use tags, or there is some other limitation that stops you from using the recommended approach, you can specify each of the application versions explictly. You can specify as many application versions as you like.
+If you are unable to use tags, or there is some other limitation that stops you from using the recommended approach, you can specify one or more of the dependencies explictly. You must also do this if you want to use the `--all TAG` option for any of the pacticipants.
 
-    $ pact-broker can-i-deploy --pacticipant PACTICIPANT_1 [--version VERSION_1 | --latest [TAG]] \
-                               --pacticipant PACTICIPANT_2 [--version VERSION_2 | --latest [TAG_2]] \
-                               --to ENVIRONMENT \
+You can specify as many application versions as you like, and you can even specify multiple versions of the same application (repeat the `--pacticipant` name and supply a different version.)
+
+You can use explictly declared dependencies with or without the `--to ENVIRONMENT`. For example, if you declare two (or more) application versions with no `--to ENVIRONMENT`, then only the applications you specify will be taken into account when determining if it is safe to deploy. If you declare two (or more) application versions _as well as_ a `--to ENVIRONMENT`, then the Pact Broker will work out what integrations your declared applications will have in that environment when determining if it safe to deploy. When using this script for a production release, and you are using tags, it is always the most future-proof option to use the `--to` if possible, as it will catch any newly added consumers or providers.
+
+If you are finding that your dependencies are not being automatically included when you supply multiple pacticipant versions, please upgrade to the latest version of the Pact Broker, as this is a more recently added feature.
+
+
+    $ pact-broker can-i-deploy --pacticipant PACTICIPANT_1 [--version VERSION_1 | --latest [TAG_1] | --all TAG_1] \
+                               --pacticipant PACTICIPANT_2 [--version VERSION_2 | --latest [TAG_2] | --all TAG_2] \
+                               [--to ENVIRONMENT] \
                                --broker-base-url BROKER_BASE_URL
 
 Examples:
@@ -82,3 +90,11 @@ Can I deploy the latest version of Foo with tag "master" and the latest version 
                                --pacticipant Bar --latest master \
                                --broker-base-url BROKER_BASE_URL
 
+
+Mobile provider use case - can I deploy version b80e7b1b of Bar, all versions of Foo with tag "prod", and the latest version tagged "prod" of any other automatically calculated dependencies together? (Eg. where Bar is a provider and Foo is a mobile consumer with multiple versions in production, and Bar also has its own providers it needs to be compatible with.)
+
+
+    $ pact-broker can-i-deploy --pacticipant Bar --version b80e7b1b \
+                               --pacticipant Foo --all prod \
+                               --to prod \
+                               --broker-base-url BROKER_BASE_URL
