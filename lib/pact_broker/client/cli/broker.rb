@@ -122,7 +122,6 @@ module PactBroker
         method_option :contract_content_changed, type: :boolean, desc: "Trigger this webhook when the pact content changes"
         method_option :provider_verification_published, type: :boolean, desc: "Trigger this webhook when a provider verification result is published"
         method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
-        method_option :uuid, type: :string, required: false, desc: "Optionally specify a uuid for the webhook"
 
         desc 'create-webhook URL', 'Creates a webhook using the same switches as a curl request.'
         long_desc File.read(File.join(File.dirname(__FILE__), 'create_webhook_long_desc.txt'))
@@ -163,8 +162,6 @@ module PactBroker
             provider: options.provider,
             events: events
           }
-
-          params.merge!(uuid: options.uuid.to_s) if options.uuid
 
           begin
             result = PactBroker::Client::Webhooks::Create.call(params, options.broker_base_url, pact_broker_client_options)

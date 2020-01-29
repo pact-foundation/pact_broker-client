@@ -44,8 +44,6 @@ module PactBroker
           if params.uuid
             webhook_entity = index_link.get!._link("pb:webhook").expand(uuid: params.uuid).put(request_body_with_optional_consumer_and_provider)
           else
-            # require 'pry'
-            # binding.pry
             webhook_entity = index_link.get!._link("pb:webhooks").post(request_body_with_optional_consumer_and_provider)
           end
 
