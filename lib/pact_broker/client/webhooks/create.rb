@@ -24,7 +24,7 @@ module PactBroker
         end
 
         def call
-          if params.consumer && params.provider
+          if params.consumer && params.provider && !params.uuid
             create_webhook_with_consumer_and_provider
           else
             create_webhook_with_optional_consumer_and_provider

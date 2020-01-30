@@ -253,11 +253,11 @@ RSpec.describe "creating a webhook", pact: true do
     end
   end
 
-  context "when only a uuid is specified" do
+  context "when a uuid is specified" do
     before do
-      params.delete(:consumer)
-      params.delete(:provider)
       params.merge!(uuid: '9999')
+      request_body["provider"] = { "name" => "Pricing Service" }
+      request_body["consumer"] = { "name" => "Condor" }
       mock_pact_broker_index_with_uuid(self)
 
       pact_broker
