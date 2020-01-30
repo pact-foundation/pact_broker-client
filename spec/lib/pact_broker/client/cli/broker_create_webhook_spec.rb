@@ -46,7 +46,8 @@ module PactBroker
               body: "data",
               consumer: "consumer",
               provider: "provider",
-              events: ["contract_content_changed"]
+              events: ["contract_content_changed"],
+              uuid: nil
             }.tap { |it| Pact::Fixture.add_fixture(:create_webhook_params, it) }
           end
 
