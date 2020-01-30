@@ -218,9 +218,6 @@ module PactBroker
               raise PactBroker::Client::Error.new("You must select at least one of --contract-content-changed or --provider-verification-published")
             end
 
-            # raise ::Thor::RequiredArgumentMissingError, "The uuid must be specified" if !(options.uuid)
-            
-
             username = options.user ? options.user.split(":", 2).first : nil
             password = options.user ? options.user.split(":", 2).last : nil
 
