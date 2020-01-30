@@ -71,17 +71,6 @@ module PactBroker
             subject
           end
 
-          context "when uuid is not provided" do
-            before do
-              options_hash.delete(:uuid)
-              broker.options = OpenStruct.new(options_hash)
-            end
-
-            it "raises an error" do
-              expect { subject }.to raise_error Thor::RequiredArgumentMissingError, /The uuid must be specified/
-            end
-          end
-
           context "when neither event type is selected" do
             before do
               options_hash.delete(:contract_content_changed)
