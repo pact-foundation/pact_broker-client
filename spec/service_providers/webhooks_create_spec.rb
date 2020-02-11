@@ -145,7 +145,7 @@ RSpec.describe "creating a webhook", pact: true do
         .with(
             method: :post,
             path: '/webhooks/provider/Pricing%20Service/consumer/Condor',
-            headers: put_request_headers,
+            headers: post_request_headers,
             body: request_body).
           will_respond_with(
             status: 404,
