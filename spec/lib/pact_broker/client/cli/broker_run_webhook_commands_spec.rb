@@ -78,7 +78,7 @@ module PactBroker
             end
 
             it "raises an error" do
-              expect { subject }.to raise_error PactBroker::Client::Error, /You must select at least one/
+              expect { subject }.to raise_error WebhookCreationError, /You must specify at least one/
             end
           end
 
@@ -159,8 +159,8 @@ module PactBroker
 
               let(:data) { "@doesnotexist.json" }
 
-              it "raises a PactBroker::Client::Error" do
-                expect { subject }.to raise_error PactBroker::Client::Error, /Couldn't read data from file/
+              it "raises a WebhookCreationError" do
+                expect { subject }.to raise_error WebhookCreationError, /Couldn't read data from file/
               end
             end
 

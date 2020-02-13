@@ -71,7 +71,7 @@ module PactBroker
               username: params.username,
               password: params.password
             }
-          }
+          }.tap { |req| req[:description] = params.description if params.description }
         end
 
         def request_body_with_optional_consumer_and_provider

@@ -1260,9 +1260,78 @@
           "Accept": "application/hal+json"
         },
         "body": {
+          "description": "a webhook",
           "events": [
             {
               "name": "contract_content_changed"
+            }
+          ],
+          "request": {
+            "url": "https://webhook",
+            "method": "POST",
+            "headers": {
+              "Foo": "bar",
+              "Bar": "foo"
+            },
+            "body": {
+              "some": "body"
+            },
+            "username": "username",
+            "password": "password"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/some-url",
+              "title": "A title"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          },
+          "$.body._links.self.title": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to create a webhook with every possible event type",
+      "providerState": "the 'Pricing Service' and 'Condor' already exist in the pact-broker",
+      "request": {
+        "method": "post",
+        "path": "/webhooks/provider/Pricing%20Service/consumer/Condor",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "description": "a webhook",
+          "events": [
+            {
+              "name": "contract_content_changed"
+            },
+            {
+              "name": "contract_published"
+            },
+            {
+              "name": "provider_verification_published"
+            },
+            {
+              "name": "provider_verification_succeeded"
+            },
+            {
+              "name": "provider_verification_failed"
             }
           ],
           "request": {
@@ -1315,6 +1384,7 @@
           "Accept": "application/hal+json"
         },
         "body": {
+          "description": "a webhook",
           "events": [
             {
               "name": "contract_content_changed"
@@ -1368,6 +1438,7 @@
           "Accept": "application/hal+json"
         },
         "body": {
+          "description": "a webhook",
           "events": [
             {
               "name": "contract_content_changed"
@@ -1421,6 +1492,7 @@
           "Accept": "application/hal+json"
         },
         "body": {
+          "description": "a webhook",
           "events": [
             {
               "name": "contract_content_changed"
@@ -1488,6 +1560,7 @@
           "Accept": "application/hal+json"
         },
         "body": {
+          "description": "a webhook",
           "events": [
             {
               "name": "contract_content_changed"
@@ -1545,6 +1618,7 @@
           "Accept": "application/hal+json"
         },
         "body": {
+          "description": "a webhook",
           "events": [
             {
               "name": "contract_content_changed"
@@ -1601,6 +1675,7 @@
           "Accept": "application/hal+json"
         },
         "body": {
+          "description": "a webhook",
           "events": [
             {
               "name": "contract_content_changed"
@@ -1658,6 +1733,7 @@
           "Accept": "application/hal+json"
         },
         "body": {
+          "description": "a webhook",
           "events": [
             {
               "name": "contract_content_changed"
@@ -1737,12 +1813,13 @@
       "providerState": "the 'Pricing Service' and 'Condor' already exist in the pact-broker",
       "request": {
         "method": "put",
-        "path": "/webhooks/9999",
+        "path": "/webhooks/696c5f93-1b7f-44bc-8d03-59440fcaa9a0",
         "headers": {
           "Content-Type": "application/json",
           "Accept": "application/hal+json"
         },
         "body": {
+          "description": "a webhook",
           "events": [
             {
               "name": "contract_content_changed"

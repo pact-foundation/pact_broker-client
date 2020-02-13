@@ -86,8 +86,12 @@ module PactBroker
             method_option :broker_username, desc: "Pact Broker basic auth username"
             method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
             method_option :broker_token, aliases: "-k", desc: "Pact Broker bearer token"
+            method_option :description, desc: "The description of the webhook"
             method_option :contract_content_changed, type: :boolean, desc: "Trigger this webhook when the pact content changes"
+            method_option :contract_published, type: :boolean, desc: "Trigger this webhook when a pact is published"
             method_option :provider_verification_published, type: :boolean, desc: "Trigger this webhook when a provider verification result is published"
+            method_option :provider_verification_failed, type: :boolean, desc: "Trigger this webhook when a failed provider verification result is published"
+            method_option :provider_verification_succeeded, type: :boolean, desc: "Trigger this webhook when a successful provider verification result is published"
             method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
           end
         end

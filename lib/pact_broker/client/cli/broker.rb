@@ -194,11 +194,21 @@ module PactBroker
             client_options
           end
 
-          def run_webhook_commands webhook_url
-            require 'pact_broker/client/webhooks/create'
+          def parse_webhook_events
+            events = []
+            events << 'contract_content_changed' if options.contract_content_changed
+            events << 'contract_published' if options.contract_published
+            events << 'provider_verification_published' if options.provider_verification_published
+            events << 'provider_verification_succeeded' if options.provider_verification_succeeded
+            events << 'provider_verification_failed' if options.provider_verification_failed
+            events
+          end
 
-            if !(options.contract_content_changed || options.provider_verification_published)
-              raise PactBroker::Client::Error.new("You must select at least one of --contract-content-changed or --provider-verification-published")
+          def parse_webhook_options(webhook_url)
+            events = parse_webhook_events
+
+            if events.size == 0
+              raise WebhookCreationError.new("You must specify at least one of --contract-content-changed, --contract-published, --provider-verification-published, --provider-verification-succeeded or --provider-verification-failed")
             end
 
             username = options.user ? options.user.split(":", 2).first : nil
@@ -212,15 +222,11 @@ module PactBroker
               begin
                 body = File.read(filepath)
               rescue StandardError => e
-                raise PactBroker::Client::Error.new("Couldn't read data from file \"#{filepath}\" due to #{e.class} #{e.message}")
+                raise WebhookCreationError.new("Couldn't read data from file \"#{filepath}\" due to #{e.class} #{e.message}")
               end
             end
 
-            events = []
-            events << 'contract_content_changed' if options.contract_content_changed
-            events << 'provider_verification_published' if options.provider_verification_published
-
-            params = {
+            {
               uuid: options.uuid,
               http_method: options.request,
               url: webhook_url,
@@ -233,13 +239,15 @@ module PactBroker
               events: events
             }
 
-            begin
-              result = PactBroker::Client::Webhooks::Create.call(params, options.broker_base_url, pact_broker_client_options)
-              $stdout.puts result.message
-              exit(1) unless result.success
-            rescue PactBroker::Client::Error => e
-              raise WebhookCreationError, "#{e.class} - #{e.message}"
-            end
+          end
+
+          def run_webhook_commands webhook_url
+            require 'pact_broker/client/webhooks/create'
+            result = PactBroker::Client::Webhooks::Create.call(parse_webhook_options(webhook_url), options.broker_base_url, pact_broker_client_options)
+            $stdout.puts result.message
+            exit(1) unless result.success
+          rescue PactBroker::Client::Error => e
+            raise WebhookCreationError, "#{e.class} - #{e.message}"
           end
         end
       end

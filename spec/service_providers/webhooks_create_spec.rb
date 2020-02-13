@@ -6,8 +6,12 @@ RSpec.describe "creating a webhook", pact: true do
   include_context "pact broker"
   include PactBrokerPactHelperMethods
 
+  let(:event_names) { %w{contract_content_changed contract_published provider_verification_published provider_verification_succeeded provider_verification_failed}  }
+
   let(:params) do
     {
+      description: "a webhook",
+      events: %w{contract_content_changed},
       http_method: "POST",
       url: "https://webhook",
       headers: { "Foo" => "bar", "Bar" => "foo"},
@@ -15,8 +19,7 @@ RSpec.describe "creating a webhook", pact: true do
       password: "password",
       body: body,
       consumer: "Condor",
-      provider: "Pricing Service",
-      events: ["contract_content_changed"]
+      provider: "Pricing Service"
     }.tap { |it| Pact::Fixture.add_fixture(:create_webhook_params, it) }
   end
 
@@ -24,10 +27,9 @@ RSpec.describe "creating a webhook", pact: true do
 
   let(:request_body) do
     {
+      "description" => "a webhook",
       "events" => [
-        {
-          "name" => "contract_content_changed"
-        }
+        "name" => "contract_content_changed"
       ],
       "request" => {
         "url" => "https://webhook",
@@ -81,6 +83,27 @@ RSpec.describe "creating a webhook", pact: true do
       expect(subject).to be_a PactBroker::Client::CommandResult
       expect(subject.success).to be true
       expect(subject.message).to eq "Webhook \"A title\" created"
+    end
+  end
+
+  context "when a valid webhook with every possible event type is sumbitted" do
+    before do
+      params.merge!(events: event_names)
+      request_body.merge!("events" => event_names.map{ |event_name| { "name" => event_name } })
+
+      pact_broker
+        .given("the 'Pricing Service' and 'Condor' already exist in the pact-broker")
+        .upon_receiving("a request to create a webhook with every possible event type")
+        .with(
+            method: :post,
+            path: '/webhooks/provider/Pricing%20Service/consumer/Condor',
+            headers: post_request_headers,
+            body: request_body)
+        .will_respond_with(success_response)
+    end
+
+    it "returns a CommandResult with success = true" do
+      expect(subject.success).to be true
     end
   end
 
@@ -255,7 +278,7 @@ RSpec.describe "creating a webhook", pact: true do
 
   context "when a uuid is specified" do
     before do
-      params.merge!(uuid: '9999')
+      params.merge!(uuid: uuid)
       request_body["provider"] = { "name" => "Pricing Service" }
       request_body["consumer"] = { "name" => "Condor" }
       mock_pact_broker_index_with_webhook_relation(self)
@@ -265,11 +288,12 @@ RSpec.describe "creating a webhook", pact: true do
         .given("the 'Pricing Service' and 'Condor' already exist in the pact-broker")
         .with(
             method: :put,
-            path: '/webhooks/9999',
+            path: "/webhooks/#{uuid}",
             headers: put_request_headers,
             body: request_body)
         .will_respond_with(success_response)
     end
+    let(:uuid) { '696c5f93-1b7f-44bc-8d03-59440fcaa9a0' }
 
     it "returns a CommandResult with success = true" do
       expect(subject).to be_a PactBroker::Client::CommandResult
