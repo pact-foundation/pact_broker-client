@@ -1,3 +1,30 @@
+<a name="v1.24.0"></a>
+### v1.24.0 (2020-02-13)
+
+
+#### Features
+
+* **create-webhook**
+  * support creating webhooks for contract_published, provider_verification_succeeded and provider_verification_failed events, and allow description to be set	 ([b76f9c4](/../../commit/b76f9c4))
+
+* **create-or-update-webhook**
+  * show helpful error message when attempting to create a webhook with a UUID on a version of the Pact Broker that doesn't support it	 ([6e3d30f](/../../commit/6e3d30f))
+
+* **cli**
+  * add generate-uuid command for use when using create-or-update-webhook	 ([52824fb](/../../commit/52824fb))
+  * allow all versions for a particular tag to be specified when determining if it safe to deploy (mobile provider use case)	 ([da54dc1](/../../commit/da54dc1))
+
+* suppport equals sign in can-i-deploy pacticipant selector parameters	 ([b5d89bc](/../../commit/b5d89bc))
+* use different git command to get git branch name	 ([9373827](/../../commit/9373827))
+* attempt to get git branch name from environment variable first before running git	 ([d512ef0](/../../commit/d512ef0))
+
+
+#### Bug Fixes
+
+* **can-i-deploy**
+  * if only one selector is specified and no --to TAG is specified, set latest=true for automatically calculated dependencies	 ([045fa91](/../../commit/045fa91))
+
+
 <a name="v1.23.0"></a>
 ### v1.23.0 (2020-01-21)
 
