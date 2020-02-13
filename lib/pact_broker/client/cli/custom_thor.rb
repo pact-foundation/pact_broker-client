@@ -68,7 +68,7 @@ module PactBroker
           # If you try and generate a uuid, and the PACT_BROKER_... env vars are set, it will cause
           # generate_uuid to be called with parameters that it doesn't declare, and hence, throw an error.
           # This is a dirty hack that stops that happening!
-          def self.ignored_potential_options_from_environment_variables
+          def self.ignored_and_hidden_potential_options_from_environment_variables
             method_option :broker_base_url, hide: true
             method_option :broker_username, hide: true
             method_option :broker_password, hide: true

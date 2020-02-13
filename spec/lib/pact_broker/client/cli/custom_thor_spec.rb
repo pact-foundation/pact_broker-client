@@ -27,6 +27,12 @@ module PactBroker::Client::CLI
       Delegate.call(options)
     end
 
+    desc '', ''
+    ignored_and_hidden_potential_options_from_environment_variables
+    def test_without_parameters
+      Delegate.call(options)
+    end
+
     default_command :test_default
   end
 
@@ -64,6 +70,11 @@ module PactBroker::Client::CLI
           expect(options.broker_token).to eq 'token'
         end
         TestThor.start(%w{test_using_env_vars --broker-base-url http://bar})
+      end
+
+      it "allows commands to be called that don't use the environment variables" do
+        expect(Delegate).to receive(:call)
+        TestThor.start(%w{test_without_parameters})
       end
     end
 

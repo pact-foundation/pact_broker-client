@@ -126,7 +126,7 @@ module PactBroker
           run_webhook_commands webhook_url
         end
 
-        ignored_potential_options_from_environment_variables
+        ignored_and_hidden_potential_options_from_environment_variables
         desc 'generate-uuid', 'Generate a UUID for use when calling create-or-update-webhook'
         def generate_uuid
           require 'securerandom'
