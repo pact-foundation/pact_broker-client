@@ -63,4 +63,25 @@ module PactBrokerPactHelperMethods
           }
         )
   end
+
+  def mock_pact_broker_index_with_webhook_relation(context)
+    pact_broker
+      .upon_receiving("a request for the index resource with the webhook relation")
+      .with(
+          method: :get,
+          path: '/',
+          headers: context.get_request_headers).
+        will_respond_with(
+          status: 200,
+          headers: context.pact_broker_response_headers,
+          body: {
+            _links: {
+              :'pb:webhook' => {
+                href: Pact.term(pact_broker.mock_service_base_url + "/webhooks/{uuid}", %r{http://.*/webhooks/{uuid}}),
+                templated: true
+              }
+            }
+          }
+        )
+  end
 end

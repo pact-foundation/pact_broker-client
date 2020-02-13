@@ -252,4 +252,29 @@ RSpec.describe "creating a webhook", pact: true do
       expect(subject.success).to be true
     end
   end
+
+  context "when a uuid is specified" do
+    before do
+      params.merge!(uuid: '9999')
+      request_body["provider"] = { "name" => "Pricing Service" }
+      request_body["consumer"] = { "name" => "Condor" }
+      mock_pact_broker_index_with_webhook_relation(self)
+
+      pact_broker
+        .upon_receiving("a request to create a webhook with a JSON body and a uuid")
+        .given("the 'Pricing Service' and 'Condor' already exist in the pact-broker")
+        .with(
+            method: :put,
+            path: '/webhooks/9999',
+            headers: put_request_headers,
+            body: request_body)
+        .will_respond_with(success_response)
+    end
+
+    it "returns a CommandResult with success = true" do
+      expect(subject).to be_a PactBroker::Client::CommandResult
+      expect(subject.success).to be true
+      expect(subject.message).to eq "Webhook \"A title\" created"
+    end
+  end
 end

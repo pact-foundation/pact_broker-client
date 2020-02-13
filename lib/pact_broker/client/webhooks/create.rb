@@ -24,7 +24,7 @@ module PactBroker
         end
 
         def call
-          if params.consumer && params.provider
+          if params.consumer && params.provider && !params.uuid
             create_webhook_with_consumer_and_provider
           else
             create_webhook_with_optional_consumer_and_provider
@@ -41,7 +41,11 @@ module PactBroker
         end
 
         def create_webhook_with_optional_consumer_and_provider
-          webhook_entity = index_link.get!._link("pb:webhooks").post(request_body_with_optional_consumer_and_provider)
+          if params.uuid
+            webhook_entity = index_link.get!._link("pb:webhook").expand(uuid: params.uuid).put(request_body_with_optional_consumer_and_provider)
+          else
+            webhook_entity = index_link.get!._link("pb:webhooks").post(request_body_with_optional_consumer_and_provider)
+          end
 
           if webhook_entity.response.status == 405
             raise PactBroker::Client::Error.new(WEBHOOKS_WITH_OPTIONAL_PACTICICPANTS_NOT_SUPPORTED)

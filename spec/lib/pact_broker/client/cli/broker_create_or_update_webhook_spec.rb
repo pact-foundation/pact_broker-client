@@ -5,11 +5,11 @@ module PactBroker
   module Client
     module CLI
       describe Broker do
-        describe "create_webhook" do
+        describe "create_or_update_webhook" do
 
           let(:broker) { Broker.new }
 
-          subject { broker.create_webhook "http://webhook" }
+          subject { broker.create_or_update_webhook "http://webhook" }
 
           it "calls PactBroker::Client::Webhooks::Create with the webhook params" do
             expect(broker).to receive(:run_webhook_commands).with("http://webhook")

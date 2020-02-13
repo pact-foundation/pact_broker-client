@@ -1701,6 +1701,97 @@
           }
         }
       }
+    },
+    {
+      "description": "a request for the index resource with the webhook relation",
+      "request": {
+        "method": "get",
+        "path": "/",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pb:webhook": {
+              "href": "http://localhost:1234/webhooks/{uuid}",
+              "templated": true
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:webhook.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*\\/webhooks\\/{uuid}"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to create a webhook with a JSON body and a uuid",
+      "providerState": "the 'Pricing Service' and 'Condor' already exist in the pact-broker",
+      "request": {
+        "method": "put",
+        "path": "/webhooks/9999",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
+          "request": {
+            "url": "https://webhook",
+            "method": "POST",
+            "headers": {
+              "Foo": "bar",
+              "Bar": "foo"
+            },
+            "body": {
+              "some": "body"
+            },
+            "username": "username",
+            "password": "password"
+          },
+          "provider": {
+            "name": "Pricing Service"
+          },
+          "consumer": {
+            "name": "Condor"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/some-url",
+              "title": "A title"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          },
+          "$.body._links.self.title": {
+            "match": "type"
+          }
+        }
+      }
     }
   ],
   "metadata": {
