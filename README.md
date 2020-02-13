@@ -217,6 +217,49 @@ Description:
   when executing create-webhook.
 ```
 
+### create-or-update-webhook
+
+```
+Usage:
+  pact-broker create-or-update-webhook URL --uuid=UUID -X, --request=METHOD -b, --broker-base-url=BROKER_BASE_URL
+
+Options:
+  -X, --request=METHOD
+            # HTTP method
+  -H, [--header=one two three]
+            # Header
+  -d, [--data=DATA]
+            # Data
+  -u, [--user=USER]
+            # Basic auth username and password eg. username:password
+      [--consumer=CONSUMER]
+            # Consumer name
+      [--provider=PROVIDER]
+            # Provider name
+  -b, --broker-base-url=BROKER_BASE_URL
+            # The base URL of the Pact Broker
+      [--broker-username=BROKER_USERNAME]
+            # Pact Broker basic auth username
+  -p, [--broker-password=BROKER_PASSWORD]
+            # Pact Broker basic auth password
+  -k, [--broker-token=BROKER_TOKEN]
+            # Pact Broker bearer token
+      [--contract-content-changed], [--no-contract-content-changed]
+            # Trigger this webhook when the pact content changes
+      [--provider-verification-published], [--no-provider-verification-published]
+            # Trigger this webhook when a provider verification result is published
+  -v, [--verbose], [--no-verbose]
+            # Verbose output. Default: false
+      --uuid=UUID
+            # Specify the uuid for the webhook
+
+Description:
+  Create a curl command that executes the request that you want your webhook to execute, then replace "curl" with "pact-broker
+  create-or-update-webhook" and add the consumer, provider, event types and broker details. Note that the URL must be the first
+  parameter when executing create-or-update-webhook and a uuid must also be provided. You can generate a valid UUID by using
+  the `generate-uuid` command.
+```
+
 ### describe-version
 
 ```
