@@ -195,21 +195,43 @@ Mobile provider use case - can I deploy version b80e7b1b of Bar, all versions of
 
 ```
 Usage:
-  pact-broker create-webhook URL --consumer=CONSUMER --provider=PROVIDER -X, --request=REQUEST -b, --broker-base-url=BROKER_BASE_URL
+  pact-broker create-webhook URL -X, --request=METHOD -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-  -X, --request=REQUEST                                                            # HTTP method
-  -H, [--header=one two three]                                                     # Header
-  -d, [--data=DATA]                                                                # Data
-  -u, [--user=USER]                                                                # Basic auth username and password eg. username:password
-      --consumer=CONSUMER                                                          # Consumer name
-      --provider=PROVIDER                                                          # Provider name
-  -b, --broker-base-url=BROKER_BASE_URL                                            # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]                                          # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]                                          # Pact Broker basic auth password
-      [--contract-content-changed], [--no-contract-content-changed]                # Trigger this webhook when the pact content changes
-      [--provider-verification-published], [--no-provider-verification-published]  # Trigger this webhook when a provider verification result is published
-  -v, [--verbose], [--no-verbose]                                                  # Verbose output. Default: false
+  -X, --request=METHOD
+            # HTTP method
+  -H, [--header=one two three]
+            # Header
+  -d, [--data=DATA]
+            # Data
+  -u, [--user=USER]
+            # Basic auth username and password eg. username:password
+      [--consumer=CONSUMER]
+            # Consumer name
+      [--provider=PROVIDER]
+            # Provider name
+  -b, --broker-base-url=BROKER_BASE_URL
+            # The base URL of the Pact Broker
+      [--broker-username=BROKER_USERNAME]
+            # Pact Broker basic auth username
+  -p, [--broker-password=BROKER_PASSWORD]
+            # Pact Broker basic auth password
+  -k, [--broker-token=BROKER_TOKEN]
+            # Pact Broker bearer token
+      [--description=DESCRIPTION]
+            # The description of the webhook
+      [--contract-content-changed], [--no-contract-content-changed]
+            # Trigger this webhook when the pact content changes
+      [--contract-published], [--no-contract-published]
+            # Trigger this webhook when a pact is published
+      [--provider-verification-published], [--no-provider-verification-published]
+            # Trigger this webhook when a provider verification result is published
+      [--provider-verification-failed], [--no-provider-verification-failed]
+            # Trigger this webhook when a failed provider verification result is published
+      [--provider-verification-succeeded], [--no-provider-verification-succeeded]
+            # Trigger this webhook when a successful provider verification result is published
+  -v, [--verbose], [--no-verbose]
+            # Verbose output. Default: false
 
 Description:
   Create a curl command that executes the request that you want your webhook to execute, then replace "curl" with "pact-broker
@@ -244,10 +266,18 @@ Options:
             # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
             # Pact Broker bearer token
+      [--description=DESCRIPTION]
+            # The description of the webhook
       [--contract-content-changed], [--no-contract-content-changed]
             # Trigger this webhook when the pact content changes
+      [--contract-published], [--no-contract-published]
+            # Trigger this webhook when a pact is published
       [--provider-verification-published], [--no-provider-verification-published]
             # Trigger this webhook when a provider verification result is published
+      [--provider-verification-failed], [--no-provider-verification-failed]
+            # Trigger this webhook when a failed provider verification result is published
+      [--provider-verification-succeeded], [--no-provider-verification-succeeded]
+            # Trigger this webhook when a successful provider verification result is published
   -v, [--verbose], [--no-verbose]
             # Verbose output. Default: false
       --uuid=UUID
