@@ -18,10 +18,6 @@ module PactBroker
             stub_request(:get, "http://broker").with(headers: { "Authorization" => /.*/}).to_return(status: 200, body: index_body, headers: { "Content-Type" => "application/hal+json" }  )
           end
 
-          let!(:webhook_request) do
-            stub_request(:post, "http://broker/webhooks").to_return(status: 405)
-          end
-
           let(:params) do
             {
               http_method: "POST",
@@ -44,8 +40,22 @@ module PactBroker
           subject { Create.call(params, "http://broker", pact_broker_client_options) }
 
           context "when a 405 is returned from the webhook creation request" do
-            it "raises an error with a message to upgrade the Pact Broker" do
-              expect { subject }.to raise_error PactBroker::Client::Error, /This version of the Pact Broker/
+            let!(:webhook_request) do
+              stub_request(:post, "http://broker/webhooks").to_return(status: 405)
+            end
+
+            it "returns a result with success=false and a message" do
+              expect(subject.success).to be false
+              expect(subject.message).to eq Create::WEBHOOKS_WITH_OPTIONAL_PACTICICPANTS_NOT_SUPPORTED
+            end
+          end
+
+          context "when a UUID is specified and index does not contain a pb:webhook relation" do
+            subject { Create.call(params.merge(uuid: 'some-uuid'), "http://broker", pact_broker_client_options) }
+
+            it "returns a result with success=false and a message" do
+              expect(subject.success).to be false
+              expect(subject.message).to eq Create::CREATING_WEBHOOK_WITH_UUID_NOT_SUPPORTED
             end
           end
 

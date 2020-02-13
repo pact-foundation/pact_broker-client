@@ -8,8 +8,8 @@ module PactBroker
   module Client
     module Webhooks
       class Create
-
         WEBHOOKS_WITH_OPTIONAL_PACTICICPANTS_NOT_SUPPORTED = "This version of the Pact Broker requires that both consumer and provider are specified for a webhook. Please upgrade your broker to >= 2.22.0 to create a webhook with optional consumer and provider."
+        CREATING_WEBHOOK_WITH_UUID_NOT_SUPPORTED = "This version of the Pact Broker does not support creating webhooks with a specified UUID. Please upgrade your broker to >= 2.49.0 or use the create-webhook command."
 
         attr_reader  :params, :pact_broker_base_url, :basic_auth_options, :verbose
 
@@ -41,14 +41,19 @@ module PactBroker
         end
 
         def create_webhook_with_optional_consumer_and_provider
+          index_entity = index_link.get!
           if params.uuid
-            webhook_entity = index_link.get!._link("pb:webhook").expand(uuid: params.uuid).put(request_body_with_optional_consumer_and_provider)
+            if index_entity.can?("pb:webhook")
+              webhook_entity = index_entity._link("pb:webhook").expand(uuid: params.uuid).put(request_body_with_optional_consumer_and_provider)
+            else
+              return error_result(CREATING_WEBHOOK_WITH_UUID_NOT_SUPPORTED)
+            end
           else
-            webhook_entity = index_link.get!._link("pb:webhooks").post(request_body_with_optional_consumer_and_provider)
+            webhook_entity = index_entity._link("pb:webhooks").post(request_body_with_optional_consumer_and_provider)
           end
 
           if webhook_entity.response.status == 405
-            raise PactBroker::Client::Error.new(WEBHOOKS_WITH_OPTIONAL_PACTICICPANTS_NOT_SUPPORTED)
+            return error_result(WEBHOOKS_WITH_OPTIONAL_PACTICICPANTS_NOT_SUPPORTED)
           end
 
           handle_response(webhook_entity)
@@ -91,7 +96,7 @@ module PactBroker
           if webhook_entity.success?
             success_result(webhook_entity)
           else
-            error_result(webhook_entity)
+            http_error_result(webhook_entity)
           end
         end
 
@@ -99,7 +104,11 @@ module PactBroker
           CommandResult.new(true, "Webhook #{webhook_entity._link('self').title_or_name.inspect} created")
         end
 
-        def error_result(webhook_entity)
+        def error_result(message)
+          CommandResult.new(false, message)
+        end
+
+        def http_error_result(webhook_entity)
           CommandResult.new(false, "Error creating webhook. response status=#{webhook_entity.response.status} body=#{webhook_entity.response.raw_body}")
         end
 
