@@ -26,6 +26,8 @@
 
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:latest-version_relation_exists_in_the_index_resource) given the pb:latest-version relation exists in the index resource
 
+* [A request for the index resource with the webhook relation](#a_request_for_the_index_resource_with_the_webhook_relation)
+
 * [A request for the list of the latest pacts from all consumers for the Pricing Service'](#a_request_for_the_list_of_the_latest_pacts_from_all_consumers_for_the_Pricing_Service&#39;_given_a_latest_pact_between_Condor_and_the_Pricing_Service_exists) given a latest pact between Condor and the Pricing Service exists
 
 * [A request for the list of the latest prod pacts from all consumers for the Pricing Service'](#a_request_for_the_list_of_the_latest_prod_pacts_from_all_consumers_for_the_Pricing_Service&#39;_given_tagged_as_prod_pact_between_Condor_and_the_Pricing_Service_exists) given tagged as prod pact between Condor and the Pricing Service exists
@@ -37,6 +39,8 @@
 * [A request to create a global webhook with a JSON body](#a_request_to_create_a_global_webhook_with_a_JSON_body)
 
 * [A request to create a webhook for a consumer and provider](#a_request_to_create_a_webhook_for_a_consumer_and_provider_given_&#39;Condor&#39;_does_not_exist_in_the_pact-broker) given 'Condor' does not exist in the pact-broker
+
+* [A request to create a webhook with a JSON body and a uuid](#a_request_to_create_a_webhook_with_a_JSON_body_and_a_uuid_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker) given the 'Pricing Service' and 'Condor' already exist in the pact-broker
 
 * [A request to create a webhook with a JSON body for a consumer](#a_request_to_create_a_webhook_with_a_JSON_body_for_a_consumer_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker) given the 'Pricing Service' and 'Condor' already exist in the pact-broker
 
@@ -557,6 +561,34 @@ Pact Broker will respond with:
   }
 }
 ```
+<a name="a_request_for_the_index_resource_with_the_webhook_relation"></a>
+Upon receiving **a request for the index resource with the webhook relation** from Pact Broker Client, with
+```json
+{
+  "method": "get",
+  "path": "/",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "pb:webhook": {
+        "href": "http://localhost:1234/webhooks/{uuid}",
+        "templated": true
+      }
+    }
+  }
+}
+```
 <a name="a_request_for_the_list_of_the_latest_pacts_from_all_consumers_for_the_Pricing_Service&#39;_given_a_latest_pact_between_Condor_and_the_Pricing_Service_exists"></a>
 Given **a latest pact between Condor and the Pricing Service exists**, upon receiving **a request for the list of the latest pacts from all consumers for the Pricing Service'** from Pact Broker Client, with
 ```json
@@ -778,6 +810,61 @@ Pact Broker will respond with:
   "status": 404,
   "headers": {
     "Content-Type": "application/hal+json;charset=utf-8"
+  }
+}
+```
+<a name="a_request_to_create_a_webhook_with_a_JSON_body_and_a_uuid_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker"></a>
+Given **the 'Pricing Service' and 'Condor' already exist in the pact-broker**, upon receiving **a request to create a webhook with a JSON body and a uuid** from Pact Broker Client, with
+```json
+{
+  "method": "put",
+  "path": "/webhooks/9999",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/hal+json"
+  },
+  "body": {
+    "events": [
+      {
+        "name": "contract_content_changed"
+      }
+    ],
+    "request": {
+      "url": "https://webhook",
+      "method": "POST",
+      "headers": {
+        "Foo": "bar",
+        "Bar": "foo"
+      },
+      "body": {
+        "some": "body"
+      },
+      "username": "username",
+      "password": "password"
+    },
+    "provider": {
+      "name": "Pricing Service"
+    },
+    "consumer": {
+      "name": "Condor"
+    }
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 201,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "self": {
+        "href": "http://localhost:1234/some-url",
+        "title": "A title"
+      }
+    }
   }
 }
 ```

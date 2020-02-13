@@ -258,10 +258,11 @@ RSpec.describe "creating a webhook", pact: true do
       params.merge!(uuid: '9999')
       request_body["provider"] = { "name" => "Pricing Service" }
       request_body["consumer"] = { "name" => "Condor" }
-      mock_pact_broker_index_with_uuid(self)
+      mock_pact_broker_index_with_webhook_relation(self)
 
       pact_broker
         .upon_receiving("a request to create a webhook with a JSON body and a uuid")
+        .given("the 'Pricing Service' and 'Condor' already exist in the pact-broker")
         .with(
             method: :put,
             path: '/webhooks/9999',
