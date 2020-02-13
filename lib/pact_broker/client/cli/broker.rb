@@ -126,6 +126,13 @@ module PactBroker
           run_webhook_commands webhook_url
         end
 
+        ignored_potential_options_from_environment_variables
+        desc 'generate-uuid', 'Generate a UUID for use when calling create-or-update-webhook'
+        def generate_uuid
+          require 'securerandom'
+          puts SecureRandom.uuid
+        end
+
         desc 'version', "Show the pact_broker-client gem version"
         def version
           $stdout.puts PactBroker::Client::VERSION
