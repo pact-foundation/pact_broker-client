@@ -1,3 +1,14 @@
+<a name="v1.25.0"></a>
+### v1.25.0 (2020-02-18)
+
+
+#### Features
+
+* **cli**
+  * print any response body from the Pact Broker when authentication fails	 ([116f0d9](/../../commit/116f0d9))
+  * raise error if both basic auth credentials and bearer token are set	 ([163f56b](/../../commit/163f56b))
+
+
 <a name="v1.24.0"></a>
 ### v1.24.0 (2020-02-13)
 
