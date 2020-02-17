@@ -1,4 +1,6 @@
 require 'pact_broker/client/cli/broker'
+require 'pact_broker/client/publish_pacts'
+require 'pact_broker/client/git'
 
 module PactBroker::Client::CLI
   describe Broker do
@@ -135,6 +137,18 @@ module PactBroker::Client::CLI
             hash_including({basic_auth: {username: 'foo', password: 'bar'}})
           )
           invoke_broker
+        end
+      end
+
+      context "with basic auth and a token specified" do
+        before do
+          subject.options = OpenStruct.new(
+            minimum_valid_options.merge(broker_username: 'foo', broker_password: 'bar', broker_token: 'foo')
+          )
+        end
+
+        it "raises an error" do
+          expect { invoke_broker }.to raise_error AuthError, /both/
         end
       end
 

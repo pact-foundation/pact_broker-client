@@ -154,7 +154,7 @@ module PactBroker
 
           def validate_credentials
             if options.broker_username && options.broker_token
-              raise AuthError, "You cannot provide both a username/password and a bearer token. If your Pact Broker uses a bearer token, please delete the username and password."
+              raise AuthError, "You cannot provide both a username/password and a bearer token. If your Pact Broker uses a bearer token, please remove the username and password configuration."
             end
           end
 
