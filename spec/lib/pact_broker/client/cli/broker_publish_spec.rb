@@ -27,7 +27,7 @@ module PactBroker::Client::CLI
             ["spec/support/cli_test_pacts/foo.json"],
             "1.2.3",
             [],
-            {token: nil, verbose: nil}
+            {verbose: nil}
           )
           invoke_broker
         end

@@ -15,6 +15,7 @@ module PactBroker
       # Thor::Error will have its backtrace hidden
       class PactPublicationError < ::Thor::Error; end
       class WebhookCreationError < ::Thor::Error; end
+      class AuthError < ::Thor::Error; end
 
       class Broker < CustomThor
         desc 'can-i-deploy', ''
@@ -36,6 +37,7 @@ module PactBroker
         method_option :limit, hide: true
 
         def can_i_deploy(*ignored_but_necessary)
+          validate_credentials
           selectors = VersionSelectorOptionsParser.call(ARGV)
           validate_can_i_deploy_selectors(selectors)
           can_i_deploy_options = { output: options.output, retry_while_unknown: options.retry_while_unknown, retry_interval: options.retry_interval }
@@ -55,6 +57,7 @@ module PactBroker
         method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
 
         def publish(*pact_files)
+          validate_credentials
           validate_pact_files(pact_files)
           success = publish_pacts(pact_files)
           raise PactPublicationError, "One or more pacts failed to be published" unless success
@@ -74,6 +77,7 @@ module PactBroker
         method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
 
         def create_version_tag
+          validate_credentials
           PactBroker::Client::CreateTag.call(
             options.broker_base_url,
             options.pacticipant,
@@ -94,6 +98,7 @@ module PactBroker
 
         desc 'describe-version', 'Describes a pacticipant version. If no version or tag is specified, the latest version is described.'
         def describe_version
+          validate_credentials
           latest = !options.latest.nil? || (options.latest.nil? && options.version.nil?)
           params = {
             pacticipant: options.pacticipant,
@@ -144,6 +149,12 @@ module PactBroker
             true
           end
 
+          def validate_credentials
+            if options.broker_username && options.broker_token
+              raise AuthError, "You cannot provide both a username/password and a bearer token. If your Pact Broker uses a bearer token, please delete the username and password."
+            end
+          end
+
           def validate_pact_files pact_files
             unless pact_files && pact_files.any?
               raise ::Thor::RequiredArgumentMissingError, "No value provided for required pact_files"
@@ -183,7 +194,8 @@ module PactBroker
           end
 
           def pact_broker_client_options
-            client_options = { verbose: options.verbose, token: options.broker_token }
+            client_options = { verbose: options.verbose }
+            client_options[:token] =  options.broker_token if options.broker_token
             if options.broker_username
               client_options[:basic_auth] = {
                   username: options.broker_username,
@@ -243,6 +255,7 @@ module PactBroker
 
           def run_webhook_commands webhook_url
             require 'pact_broker/client/webhooks/create'
+            validate_credentials
             result = PactBroker::Client::Webhooks::Create.call(parse_webhook_options(webhook_url), options.broker_base_url, pact_broker_client_options)
             $stdout.puts result.message
             exit(1) unless result.success

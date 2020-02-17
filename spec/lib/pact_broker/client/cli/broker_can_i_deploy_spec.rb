@@ -20,7 +20,6 @@ module PactBroker
           {
             broker_base_url: 'http://pact-broker',
             output: 'table',
-            broker_token: 'token',
             verbose: 'verbose',
             retry_while_unknown: 1,
             retry_interval: 2,
@@ -36,7 +35,7 @@ module PactBroker
         end
 
         it "invokes the CanIDeploy service" do
-          expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, {to_tag: nil, limit: 1000}, {output: 'table', retry_while_unknown: 1, retry_interval: 2}, {token: 'token', verbose: 'verbose'})
+          expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, {to_tag: nil, limit: 1000}, {output: 'table', retry_while_unknown: 1, retry_interval: 2}, {verbose: 'verbose'})
           invoke_can_i_deploy
         end
 
@@ -66,7 +65,18 @@ module PactBroker
           end
 
           it "invokes the CanIDeploy service with the basic auth credentials" do
-            expect(CanIDeploy).to receive(:call).with(anything, anything, anything, anything, {basic_auth: {username: "foo", password: "bar"}, token: 'token', verbose: 'verbose'})
+            expect(CanIDeploy).to receive(:call).with(anything, anything, anything, anything, {basic_auth: {username: "foo", password: "bar"}, verbose: 'verbose'})
+            invoke_can_i_deploy
+          end
+        end
+
+        context "with a bearer token" do
+          before do
+            subject.options.broker_token = "some token"
+          end
+
+          it "invokes the CanIDeploy service with the basic auth credentials" do
+            expect(CanIDeploy).to receive(:call).with(anything, anything, anything, anything, {token: "some token", verbose: 'verbose'})
             invoke_can_i_deploy
           end
         end
