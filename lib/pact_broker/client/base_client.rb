@@ -70,7 +70,11 @@ module PactBroker
         elsif response.code == 404
           nil
         elsif response.code == 401
-          raise Error.new("Authentication failed")
+          message = "Authentication failed"
+          if response.body && response.body.size > 0
+            message = message + ": #{response.body}"
+          end
+          raise Error.new(message)
         else
           error_message = nil
           begin

@@ -20,7 +20,11 @@ module PactBroker
         if response.success?
           yield
         elsif response.code == 401
-          raise Error.new("Authentication failed")
+          message = "Authentication failed"
+          if response.body && response.body.size > 0
+            message = message + ": #{response.body}"
+          end
+          raise Error.new(message)
         elsif response.code == 404
           raise Error.new("Matrix resource not found at #{base_url}/matrix. Please upgrade your Broker to the latest version.")
         else

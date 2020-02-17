@@ -10,7 +10,7 @@ module PactBroker
         let(:password) { 'pact_repo_password'}
         let(:token) { '123456789' }
         let(:client_options) do
-          { 
+          {
             basic_auth: {
               username: username,
               password: password
@@ -18,7 +18,7 @@ module PactBroker
             token: token
           }
         end
-        
+
         context 'with basic url' do
           it 'sets the base url' do
             base_client = BaseClient.new(base_url: base_url)
