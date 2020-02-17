@@ -1,13 +1,5 @@
-require 'pact_broker/client/version'
-require 'pact_broker/client/can_i_deploy'
-require 'pact_broker/client/git'
-require 'pact_broker/client/cli/version_selector_options_parser'
 require 'pact_broker/client/cli/custom_thor'
-require 'pact_broker/client/publish_pacts'
-require 'rake/file_list'
 require 'thor/error'
-require 'pact_broker/client/create_tag'
-require 'pact_broker/client/versions/describe'
 
 module PactBroker
   module Client
@@ -37,6 +29,9 @@ module PactBroker
         method_option :limit, hide: true
 
         def can_i_deploy(*ignored_but_necessary)
+          require 'pact_broker/client/cli/version_selector_options_parser'
+          require 'pact_broker/client/can_i_deploy'
+
           validate_credentials
           selectors = VersionSelectorOptionsParser.call(ARGV)
           validate_can_i_deploy_selectors(selectors)
@@ -77,6 +72,8 @@ module PactBroker
         method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
 
         def create_version_tag
+          require 'pact_broker/client/create_tag'
+
           validate_credentials
           PactBroker::Client::CreateTag.call(
             options.broker_base_url,
@@ -98,6 +95,8 @@ module PactBroker
 
         desc 'describe-version', 'Describes a pacticipant version. If no version or tag is specified, the latest version is described.'
         def describe_version
+          require 'pact_broker/client/versions/describe'
+
           validate_credentials
           latest = !options.latest.nil? || (options.latest.nil? && options.version.nil?)
           params = {
@@ -135,11 +134,15 @@ module PactBroker
         desc 'generate-uuid', 'Generate a UUID for use when calling create-or-update-webhook'
         def generate_uuid
           require 'securerandom'
+
           puts SecureRandom.uuid
         end
 
+        ignored_and_hidden_potential_options_from_environment_variables
         desc 'version', "Show the pact_broker-client gem version"
         def version
+          require 'pact_broker/client/version'
+
           $stdout.puts PactBroker::Client::VERSION
         end
 
@@ -167,6 +170,8 @@ module PactBroker
           end
 
           def publish_pacts pact_files
+            require 'pact_broker/client/publish_pacts'
+
             PactBroker::Client::PublishPacts.call(
               options.broker_base_url,
               file_list(pact_files),
@@ -177,6 +182,8 @@ module PactBroker
           end
 
           def file_list pact_files
+            require 'rake/file_list'
+
             correctly_separated_pact_files = pact_files.collect{ |path| path.gsub(/\\+/, '/') }
             Rake::FileList[correctly_separated_pact_files].collect do | path |
               if File.directory?(path)
@@ -188,6 +195,8 @@ module PactBroker
           end
 
           def tags
+            require 'pact_broker/client/git'
+
             t = [*options.tag]
             t << PactBroker::Client::Git.branch if options.tag_with_git_branch
             t.compact.uniq
@@ -255,6 +264,7 @@ module PactBroker
 
           def run_webhook_commands webhook_url
             require 'pact_broker/client/webhooks/create'
+
             validate_credentials
             result = PactBroker::Client::Webhooks::Create.call(parse_webhook_options(webhook_url), options.broker_base_url, pact_broker_client_options)
             $stdout.puts result.message
