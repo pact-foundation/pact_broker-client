@@ -1287,6 +1287,7 @@
           "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
+          "description": "a webhook",
           "_links": {
             "self": {
               "href": "http://localhost:1234/some-url",
@@ -1295,6 +1296,9 @@
           }
         },
         "matchingRules": {
+          "$.body.description": {
+            "match": "type"
+          },
           "$.body._links.self.href": {
             "match": "regex",
             "regex": "http:\\/\\/.*"
@@ -1355,6 +1359,7 @@
           "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
+          "description": "a webhook",
           "_links": {
             "self": {
               "href": "http://localhost:1234/some-url",
@@ -1363,6 +1368,9 @@
           }
         },
         "matchingRules": {
+          "$.body.description": {
+            "match": "type"
+          },
           "$.body._links.self.href": {
             "match": "regex",
             "regex": "http:\\/\\/.*"
@@ -1409,6 +1417,7 @@
           "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
+          "description": "a webhook",
           "_links": {
             "self": {
               "href": "http://localhost:1234/some-url",
@@ -1417,6 +1426,9 @@
           }
         },
         "matchingRules": {
+          "$.body.description": {
+            "match": "type"
+          },
           "$.body._links.self.href": {
             "match": "regex",
             "regex": "http:\\/\\/.*"
@@ -1590,6 +1602,7 @@
           "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
+          "description": "a webhook",
           "_links": {
             "self": {
               "href": "http://localhost:1234/some-url",
@@ -1598,6 +1611,9 @@
           }
         },
         "matchingRules": {
+          "$.body.description": {
+            "match": "type"
+          },
           "$.body._links.self.href": {
             "match": "regex",
             "regex": "http:\\/\\/.*"
@@ -1705,6 +1721,7 @@
           "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
+          "description": "a webhook",
           "_links": {
             "self": {
               "href": "http://localhost:1234/some-url",
@@ -1713,6 +1730,9 @@
           }
         },
         "matchingRules": {
+          "$.body.description": {
+            "match": "type"
+          },
           "$.body._links.self.href": {
             "match": "regex",
             "regex": "http:\\/\\/.*"
@@ -1760,6 +1780,7 @@
           "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
+          "description": "a webhook",
           "_links": {
             "self": {
               "href": "http://localhost:1234/some-url",
@@ -1768,6 +1789,9 @@
           }
         },
         "matchingRules": {
+          "$.body.description": {
+            "match": "type"
+          },
           "$.body._links.self.href": {
             "match": "regex",
             "regex": "http:\\/\\/.*"
@@ -1852,6 +1876,7 @@
           "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
+          "description": "a webhook",
           "_links": {
             "self": {
               "href": "http://localhost:1234/some-url",
@@ -1860,6 +1885,75 @@
           }
         },
         "matchingRules": {
+          "$.body.description": {
+            "match": "type"
+          },
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          },
+          "$.body._links.self.title": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to update a webhook",
+      "providerState": "a webhook with the uuid 696c5f93-1b7f-44bc-8d03-59440fcaa9a0 exists",
+      "request": {
+        "method": "put",
+        "path": "/webhooks/696c5f93-1b7f-44bc-8d03-59440fcaa9a0",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "description": "a webhook",
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
+          "request": {
+            "url": "https://webhook",
+            "method": "POST",
+            "headers": {
+              "Foo": "bar",
+              "Bar": "foo"
+            },
+            "body": {
+              "some": "body"
+            },
+            "username": "username",
+            "password": "password"
+          },
+          "provider": {
+            "name": "Pricing Service"
+          },
+          "consumer": {
+            "name": "Condor"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "description": "a webhook",
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/some-url",
+              "title": "A title"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body.description": {
+            "match": "type"
+          },
           "$.body._links.self.href": {
             "match": "regex",
             "regex": "http:\\/\\/.*"

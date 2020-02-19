@@ -92,6 +92,8 @@
 
 * [A request to tag the production version of Condor](#a_request_to_tag_the_production_version_of_Condor_given_&#39;Condor&#39;_exists_in_the_pact-broker) given 'Condor' exists in the pact-broker
 
+* [A request to update a webhook](#a_request_to_update_a_webhook_given_a_webhook_with_the_uuid_696c5f93-1b7f-44bc-8d03-59440fcaa9a0_exists) given a webhook with the uuid 696c5f93-1b7f-44bc-8d03-59440fcaa9a0 exists
+
 * [An invalid request to create a webhook for a consumer and provider](#an_invalid_request_to_create_a_webhook_for_a_consumer_and_provider_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker) given the 'Pricing Service' and 'Condor' already exist in the pact-broker
 
 #### Interactions
@@ -766,6 +768,7 @@ Pact Broker will respond with:
     "Content-Type": "application/hal+json;charset=utf-8"
   },
   "body": {
+    "description": "a webhook",
     "_links": {
       "self": {
         "href": "http://localhost:1234/some-url",
@@ -864,6 +867,7 @@ Pact Broker will respond with:
     "Content-Type": "application/hal+json;charset=utf-8"
   },
   "body": {
+    "description": "a webhook",
     "_links": {
       "self": {
         "href": "http://localhost:1234/some-url",
@@ -917,6 +921,7 @@ Pact Broker will respond with:
     "Content-Type": "application/hal+json;charset=utf-8"
   },
   "body": {
+    "description": "a webhook",
     "_links": {
       "self": {
         "href": "http://localhost:1234/some-url",
@@ -967,6 +972,7 @@ Pact Broker will respond with:
     "Content-Type": "application/hal+json;charset=utf-8"
   },
   "body": {
+    "description": "a webhook",
     "_links": {
       "self": {
         "href": "http://localhost:1234/some-url",
@@ -1072,6 +1078,7 @@ Pact Broker will respond with:
     "Content-Type": "application/hal+json;charset=utf-8"
   },
   "body": {
+    "description": "a webhook",
     "_links": {
       "self": {
         "href": "http://localhost:1234/some-url",
@@ -1120,6 +1127,7 @@ Pact Broker will respond with:
     "Content-Type": "application/hal+json;charset=utf-8"
   },
   "body": {
+    "description": "a webhook",
     "_links": {
       "self": {
         "href": "http://localhost:1234/some-url",
@@ -1182,6 +1190,7 @@ Pact Broker will respond with:
     "Content-Type": "application/hal+json;charset=utf-8"
   },
   "body": {
+    "description": "a webhook",
     "_links": {
       "self": {
         "href": "http://localhost:1234/some-url",
@@ -1795,6 +1804,63 @@ Pact Broker will respond with:
     "_links": {
       "self": {
         "href": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/tags/prod"
+      }
+    }
+  }
+}
+```
+<a name="a_request_to_update_a_webhook_given_a_webhook_with_the_uuid_696c5f93-1b7f-44bc-8d03-59440fcaa9a0_exists"></a>
+Given **a webhook with the uuid 696c5f93-1b7f-44bc-8d03-59440fcaa9a0 exists**, upon receiving **a request to update a webhook** from Pact Broker Client, with
+```json
+{
+  "method": "put",
+  "path": "/webhooks/696c5f93-1b7f-44bc-8d03-59440fcaa9a0",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/hal+json"
+  },
+  "body": {
+    "description": "a webhook",
+    "events": [
+      {
+        "name": "contract_content_changed"
+      }
+    ],
+    "request": {
+      "url": "https://webhook",
+      "method": "POST",
+      "headers": {
+        "Foo": "bar",
+        "Bar": "foo"
+      },
+      "body": {
+        "some": "body"
+      },
+      "username": "username",
+      "password": "password"
+    },
+    "provider": {
+      "name": "Pricing Service"
+    },
+    "consumer": {
+      "name": "Condor"
+    }
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "description": "a webhook",
+    "_links": {
+      "self": {
+        "href": "http://localhost:1234/some-url",
+        "title": "A title"
       }
     }
   }

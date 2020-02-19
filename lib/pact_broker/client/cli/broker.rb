@@ -249,6 +249,7 @@ module PactBroker
 
             {
               uuid: options.uuid,
+              description: options.description,
               http_method: options.request,
               url: webhook_url,
               headers: headers,

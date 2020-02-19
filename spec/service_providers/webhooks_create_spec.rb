@@ -47,11 +47,13 @@ RSpec.describe "creating a webhook", pact: true do
     }
   end
 
+  let(:response_status) { 201 }
   let(:success_response) do
     {
-      status: 201,
+      status: response_status,
       headers: pact_broker_response_headers,
       body: {
+        description: Pact.like("a webhook"),
         _links: {
           self: {
             href: Pact.term('http://localhost:1234/some-url', %r{http://.*}),
@@ -82,7 +84,7 @@ RSpec.describe "creating a webhook", pact: true do
     it "returns a CommandResult with success = true" do
       expect(subject).to be_a PactBroker::Client::CommandResult
       expect(subject.success).to be true
-      expect(subject.message).to eq "Webhook \"A title\" created"
+      expect(subject.message).to eq "Webhook \"a webhook\" created"
     end
   end
 
@@ -201,7 +203,7 @@ RSpec.describe "creating a webhook", pact: true do
 
     it "returns a CommandResult with success = true" do
       expect(subject.success).to be true
-      expect(subject.message).to eq "Webhook \"A title\" created"
+      expect(subject.message).to eq "Webhook \"a webhook\" created"
     end
   end
 
@@ -282,23 +284,50 @@ RSpec.describe "creating a webhook", pact: true do
       request_body["provider"] = { "name" => "Pricing Service" }
       request_body["consumer"] = { "name" => "Condor" }
       mock_pact_broker_index_with_webhook_relation(self)
-
-      pact_broker
-        .upon_receiving("a request to create a webhook with a JSON body and a uuid")
-        .given("the 'Pricing Service' and 'Condor' already exist in the pact-broker")
-        .with(
-            method: :put,
-            path: "/webhooks/#{uuid}",
-            headers: put_request_headers,
-            body: request_body)
-        .will_respond_with(success_response)
     end
+
     let(:uuid) { '696c5f93-1b7f-44bc-8d03-59440fcaa9a0' }
 
-    it "returns a CommandResult with success = true" do
-      expect(subject).to be_a PactBroker::Client::CommandResult
-      expect(subject.success).to be true
-      expect(subject.message).to eq "Webhook \"A title\" created"
+    context "when the webhook does not already exist" do
+      before do
+        pact_broker
+          .upon_receiving("a request to create a webhook with a JSON body and a uuid")
+          .given("the 'Pricing Service' and 'Condor' already exist in the pact-broker")
+          .with(
+              method: :put,
+              path: "/webhooks/#{uuid}",
+              headers: put_request_headers,
+              body: request_body)
+          .will_respond_with(success_response)
+      end
+
+      it "returns a CommandResult with success = true" do
+        expect(subject).to be_a PactBroker::Client::CommandResult
+        expect(subject.success).to be true
+        expect(subject.message).to eq "Webhook \"a webhook\" created"
+      end
+    end
+
+    context "when the webhook does exist" do
+      before do
+        pact_broker
+          .upon_receiving("a request to update a webhook")
+          .given("a webhook with the uuid #{uuid} exists")
+          .with(
+              method: :put,
+              path: "/webhooks/#{uuid}",
+              headers: put_request_headers,
+              body: request_body)
+          .will_respond_with(success_response)
+      end
+
+      let(:response_status) { 200 }
+
+      it "returns a CommandResult with success = true" do
+        expect(subject).to be_a PactBroker::Client::CommandResult
+        expect(subject.success).to be true
+        expect(subject.message).to eq "Webhook \"a webhook\" updated"
+      end
     end
   end
 end

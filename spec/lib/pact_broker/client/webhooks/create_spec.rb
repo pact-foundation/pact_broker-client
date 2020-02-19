@@ -70,6 +70,28 @@ module PactBroker
               expect(subject.message).to match /"some":"error"/
             end
           end
+
+          context "when there is an empty description returned" do
+            let!(:webhook_request) do
+              stub_request(:post, "http://broker/webhooks").to_return(status: 200, body: response_body.to_json, headers: { "Content-Type" => "application/hal+json" })
+            end
+
+            let(:response_body) do
+              {
+                description: "",
+                _links: {
+                  self: {
+                    href: "href",
+                    title: "the title"
+                  }
+                }
+              }
+            end
+
+            it "uses the self title in the message instead" do
+              expect(subject.message).to include "the title"
+            end
+          end
         end
       end
     end

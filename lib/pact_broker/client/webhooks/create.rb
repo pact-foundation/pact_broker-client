@@ -101,7 +101,13 @@ module PactBroker
         end
 
         def success_result(webhook_entity)
-          CommandResult.new(true, "Webhook #{webhook_entity._link('self').title_or_name.inspect} created")
+          action = webhook_entity.response.status == 201 ? "created" : "updated"
+          name = if webhook_entity.description && webhook_entity.description.size > 0
+            webhook_entity.description
+          else
+            webhook_entity._link('self').title_or_name
+          end
+          CommandResult.new(true, "Webhook #{name.inspect} #{action}")
         end
 
         def error_result(message)

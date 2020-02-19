@@ -6,11 +6,9 @@ module PactBroker
   module Client
     module Hal
       class RelationNotFoundError < ::PactBroker::Client::Error; end
-
       class ErrorResponseReturned < ::PactBroker::Client::Error; end
 
       class Entity
-
         def initialize(href, data, http_client, response = nil)
           @href = href
           @data = data
@@ -71,7 +69,7 @@ module PactBroker
           elsif @links.key?(method_name)
             Link.new(@links[method_name], @client).run(*args)
           else
-            super
+            nil
           end
         end
 

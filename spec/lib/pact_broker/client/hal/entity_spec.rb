@@ -17,6 +17,7 @@ module PactBroker::Client
           "name" => "Provider"
         }
       end
+
       let(:pact_hash) do
         {
           "name" => "a name",

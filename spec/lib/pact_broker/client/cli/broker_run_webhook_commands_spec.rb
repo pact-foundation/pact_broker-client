@@ -22,6 +22,7 @@ module PactBroker
           let(:options_hash) do
             {
               uuid: '9999',
+              description: "some webhook",
               request: "POST",
               header: header,
               data: data,
@@ -39,6 +40,7 @@ module PactBroker
           let(:expected_params) do
             {
               uuid: '9999',
+              description: "some webhook",
               http_method: "POST",
               url: "http://webhook",
               headers: { "Foo" => "bar", "Bar" => "foo"},
