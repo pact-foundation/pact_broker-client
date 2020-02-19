@@ -45,20 +45,31 @@ module PactBroker
           def self.turn_muliple_tag_options_into_array argv
             new_argv = []
             opt_name = nil
-            argv.each_with_index do | arg, i |
-              if arg.start_with?('-')
-                opt_name = arg
-                existing = new_argv.find { | a | a.first == opt_name }
-                if !existing
-                  new_argv << [arg]
+            argv.each_with_index do | word, i |
+              if word.start_with?('-')
+                if word.include?('=')
+                  opt_name, opt_value = word.split('=', 2)
+
+                  existing = new_argv.find { | a | a.first == opt_name }
+                  if existing
+                    existing << opt_value
+                  else
+                    new_argv << [opt_name, opt_value]
+                  end
+                else
+                  opt_name = word
+                  existing = new_argv.find { | a | a.first == opt_name }
+                  if !existing
+                    new_argv << [word]
+                  end
                 end
               else
                 if opt_name
                   existing = new_argv.find { | a | a.first == opt_name }
-                  existing << arg
+                  existing << word
                   opt_name = nil
                 else
-                  new_argv << [arg]
+                  new_argv << [word]
                 end
               end
             end

@@ -109,6 +109,12 @@ module PactBroker::Client::CLI
         expect(TestThor.turn_muliple_tag_options_into_array(input)).to eq output
       end
 
+      it "turns '--tag=foo --tag=bar' into '--tag foo bar'" do
+        input = %w{--ignore this --tag=foo --tag=bar --wiffle --that}
+        output = %w{--ignore this --tag foo bar --wiffle --that }
+        expect(TestThor.turn_muliple_tag_options_into_array(input)).to eq output
+      end
+
       it "doesn't change anything when there are no duplicate options" do
         input = %w{--ignore this --taggy foo --blah bar --wiffle --that}
         expect(TestThor.turn_muliple_tag_options_into_array(input)).to eq input
