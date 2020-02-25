@@ -87,17 +87,17 @@ module PactBroker
           end
 
           def self.shared_options_for_webhook_commands
-            method_option :request, banner: "METHOD", aliases: "-X", desc: "HTTP method", required: true
-            method_option :header, aliases: "-H", type: :array, desc: "Header"
-            method_option :data, aliases: "-d", desc: "Data"
-            method_option :user, aliases: "-u", desc: "Basic auth username and password eg. username:password"
+            method_option :request, banner: "METHOD", aliases: "-X", desc: "Webhook HTTP method", required: true
+            method_option :header, aliases: "-H", type: :array, desc: "Webhook Header"
+            method_option :data, aliases: "-d", desc: "Webhook payload (file or string)"
+            method_option :user, aliases: "-u", desc: "Webhook basic auth username and password eg. username:password"
             method_option :consumer, desc: "Consumer name"
             method_option :provider, desc: "Provider name"
             method_option :broker_base_url, required: true, aliases: "-b", desc: "The base URL of the Pact Broker"
             method_option :broker_username, desc: "Pact Broker basic auth username"
             method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
             method_option :broker_token, aliases: "-k", desc: "Pact Broker bearer token"
-            method_option :description, desc: "The description of the webhook"
+            method_option :description, desc: "Wwebhook description"
             method_option :contract_content_changed, type: :boolean, desc: "Trigger this webhook when the pact content changes"
             method_option :contract_published, type: :boolean, desc: "Trigger this webhook when a pact is published"
             method_option :provider_verification_published, type: :boolean, desc: "Trigger this webhook when a provider verification result is published"
