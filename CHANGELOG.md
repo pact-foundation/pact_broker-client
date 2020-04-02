@@ -1,3 +1,19 @@
+<a name="v1.25.1"></a>
+### v1.25.1 (2020-04-02)
+
+
+#### Features
+
+* **create-or-update-webhook**
+  * print 'created' or 'updated' based on response status	 ([0c34090](/../../commit/0c34090))
+
+
+#### Bug Fixes
+
+* incorrect require path for hal entity	 ([64f3b7b](/../../commit/64f3b7b))
+* correctly handle multiple parameters specified in the format --name=value	 ([946001b](/../../commit/946001b))
+
+
 <a name="v1.25.0"></a>
 ### v1.25.0 (2020-02-18)
 
