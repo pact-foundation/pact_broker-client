@@ -130,6 +130,15 @@ module PactBroker
           run_webhook_commands webhook_url
         end
 
+        desc 'test-webhook', 'Test the execution of a webhook'
+        method_option :uuid, type: :string, required: true, desc: "Specify the uuid for the webhook"
+        shared_authentication_options_for_pact_broker
+        def test_webhook
+          require 'pact_broker/client/webhooks/test'
+          result = PactBroker::Client::Webhooks::Test.call(options, pact_broker_client_options)
+          $stdout.puts result.message
+        end
+
         ignored_and_hidden_potential_options_from_environment_variables
         desc 'generate-uuid', 'Generate a UUID for use when calling create-or-update-webhook'
         def generate_uuid

@@ -20,7 +20,7 @@ module PactBroker
           end
 
           def self.add_broker_config_from_environment_variables argv
-            return argv if argv[0] == 'help'
+            return argv if argv[0] == 'help' || argv.empty?
 
             new_argv = add_option_from_environment_variable(argv, 'broker-base-url', 'b', 'PACT_BROKER_BASE_URL')
             new_argv = add_option_from_environment_variable(new_argv, 'broker-username', 'u', 'PACT_BROKER_USERNAME')
@@ -104,6 +104,13 @@ module PactBroker
             method_option :provider_verification_failed, type: :boolean, desc: "Trigger this webhook when a failed provider verification result is published"
             method_option :provider_verification_succeeded, type: :boolean, desc: "Trigger this webhook when a successful provider verification result is published"
             method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
+          end
+
+          def self.shared_authentication_options_for_pact_broker
+            method_option :broker_base_url, required: true, aliases: "-b", desc: "The base URL of the Pact Broker"
+            method_option :broker_username, aliases: "-u", desc: "Pact Broker basic auth username"
+            method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
+            method_option :broker_token, aliases: "-k", desc: "Pact Broker bearer token"
           end
         end
       end

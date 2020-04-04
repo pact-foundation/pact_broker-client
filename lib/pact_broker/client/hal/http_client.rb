@@ -1,6 +1,7 @@
 require 'pact_broker/client/retry'
 require 'pact_broker/client/hal/authorization_header_redactor'
 require 'net/http'
+require 'json'
 
 module PactBroker
   module Client
