@@ -87,6 +87,7 @@ module PactBroker
         if retry_while_unknown?
           check_if_retry_while_unknown_supported(matrix)
           if matrix.any_unknown?
+            $stderr.puts "Waiting for verification results to be published (up to #{wait_time} seconds)"
             matrix = Retry.until_truthy_or_max_times(retry_options) do
               fetch_matrix
             end
@@ -118,6 +119,10 @@ module PactBroker
 
       def retry_tries
         options[:retry_while_unknown]
+      end
+
+      def wait_time
+        retry_interval * retry_tries
       end
 
       def check_if_retry_while_unknown_supported(matrix)

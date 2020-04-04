@@ -76,7 +76,17 @@ module PactBroker
         end
 
         context "when any_unknown? is true" do
+          before do
+            allow($stderr).to receive(:puts)
+            allow(Retry).to receive(:until_truthy_or_max_times)
+          end
+
           let(:any_unknown) { true }
+
+          it "puts a message to stderr" do
+            expect($stderr).to receive(:puts).with("Waiting for verification results to be published (up to 5 seconds)")
+            subject
+          end
 
           it "retries the request" do
             expect(Retry).to receive(:until_truthy_or_max_times).with(hash_including(times: 1, sleep: 5, sleep_first: true))
