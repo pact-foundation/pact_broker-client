@@ -85,7 +85,7 @@ module PactBroker
         Retry.while_error do
           pacts = pact_broker_client.pacticipants.versions.pacts
           if pacts.version_published?(consumer: pact.consumer_name, provider: pact.provider_name, consumer_version: consumer_version)
-            $stdout.puts ::Term::ANSIColor.yellow("The given version of pact is already published. Overwriting...")
+            $stdout.puts ::Term::ANSIColor.yellow("A pact for this consumer version is already published. Overwriting. (Note: Overwriting pacts is not recommended as it can lead to race conditions. Best practice is to provide a unique consumer version number for each publication.)")
           end
 
           latest_pact_url = pacts.publish(pact_hash: pact, consumer_version: consumer_version)
