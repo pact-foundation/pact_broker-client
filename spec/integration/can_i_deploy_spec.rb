@@ -1,7 +1,7 @@
-describe "pact-broker can-i-deploy", skip_windows: true, skip_ci: true do
+describe "pact-broker can-i-deploy", skip_windows: true do
   before(:all) do
-    @pipe = IO.popen("bundle exec pact-stub-service spec/pacts/pact_broker_client-pact_broker.json -p 5000")
-    sleep 2
+    @pipe = IO.popen("bundle exec pact-stub-service spec/pacts/pact_broker_client-pact_broker.json -p 5000 --log tmp/pact-stub-can-i-deploy.log")
+    sleep 4
   end
 
   context "when the pacticipants can be deployed" do

@@ -1,7 +1,6 @@
-# Currently failing on Travis, skip for now
-describe "pact-broker create-version-tag", skip_windows: true, skip_ci: true do
+describe "pact-broker create-version-tag", skip_windows: true do
   before(:all) do
-    @pipe = IO.popen("bundle exec pact-stub-service spec/pacts/pact_broker_client-pact_broker.json -p 5001")
+    @pipe = IO.popen("bundle exec pact-stub-service spec/pacts/pact_broker_client-pact_broker.json -p 5001 --log tmp/pact-stub-service-create-verison-tag.log")
     sleep 2
   end
 
