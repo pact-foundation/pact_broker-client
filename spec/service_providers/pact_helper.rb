@@ -58,8 +58,37 @@ module PactBrokerPactHelperMethods
             _links: {
               :'pb:webhooks' => {
                 href: placeholder_url_term('pb:webhooks')
+              },
+              :'pb:pacticipants' => {
+                href: placeholder_url_term('pb:pacticipants')
+              },
+              :'pb:pacticipant' => {
+                href: placeholder_url_term('pb:pacticipant', ['pacticipant'])
               }
             }
+          }
+        )
+  end
+
+  def mock_pact_broker_index_with_relations(context, links, provider_state)
+    _links = links.each_with_object({}) do | (key, value), new_links |
+      new_links[key] = {
+        href: value
+      }
+    end
+
+    pact_broker
+      .given(provider_state)
+      .upon_receiving("a request for the index resource")
+      .with(
+          method: :get,
+          path: '/',
+          headers: context.get_request_headers).
+        will_respond_with(
+          status: 200,
+          headers: context.pact_broker_response_headers,
+          body: {
+            _links: _links
           }
         )
   end

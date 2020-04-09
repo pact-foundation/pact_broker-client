@@ -53,6 +53,10 @@ module PactBroker
           wrap_response(href, @http_client.post(href, payload ? JSON.dump(payload) : nil, headers))
         end
 
+        def patch(payload = nil, headers = {})
+          wrap_response(href, @http_client.patch(href, payload ? JSON.dump(payload) : nil, headers))
+        end
+
         def expand(params)
           expanded_url = expand_url(params, href)
           new_attrs = @attrs.merge('href' => expanded_url)

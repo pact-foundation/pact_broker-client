@@ -22,6 +22,8 @@
 
 * [A request for the index resource](#a_request_for_the_index_resource)
 
+* [A request for the index resource](#a_request_for_the_index_resource_given_the_pacticipant_relations_are_present) given the pacticipant relations are present
+
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:latest-tagged-version_relation_exists_in_the_index_resource) given the pb:latest-tagged-version relation exists in the index resource
 
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:latest-version_relation_exists_in_the_index_resource) given the pb:latest-version relation exists in the index resource
@@ -37,6 +39,8 @@
 * [A request retrieve a pact for a specific version](#a_request_retrieve_a_pact_for_a_specific_version_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker,_and_Condor_already_has_a_pact_published_for_version_1.3.0) given the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0
 
 * [A request to create a global webhook with a JSON body](#a_request_to_create_a_global_webhook_with_a_JSON_body)
+
+* [A request to create a pacticipant](#a_request_to_create_a_pacticipant)
 
 * [A request to create a webhook for a consumer and provider](#a_request_to_create_a_webhook_for_a_consumer_and_provider_given_&#39;Condor&#39;_does_not_exist_in_the_pact-broker) given 'Condor' does not exist in the pact-broker
 
@@ -76,6 +80,10 @@
 
 * [A request to register the repository URL of a pacticipant](#a_request_to_register_the_repository_URL_of_a_pacticipant_given_the_&#39;Pricing_Service&#39;_does_not_exist_in_the_pact-broker) given the 'Pricing Service' does not exist in the pact-broker
 
+* [A request to retrieve a pacticipant](#a_request_to_retrieve_a_pacticipant_given_a_pacticipant_with_name_Foo_exists) given a pacticipant with name Foo exists
+
+* [A request to retrieve a pacticipant](#a_request_to_retrieve_a_pacticipant)
+
 * [A request to retrieve the latest 'production' version of Condor](#a_request_to_retrieve_the_latest_&#39;production&#39;_version_of_Condor_given_&#39;Condor&#39;_exists_in_the_pact-broker_with_the_latest_tagged_&#39;production&#39;_version_1.2.3) given 'Condor' exists in the pact-broker with the latest tagged 'production' version 1.2.3
 
 * [A request to retrieve the latest pact between Condor and the Pricing Service](#a_request_to_retrieve_the_latest_pact_between_Condor_and_the_Pricing_Service_given_a_pact_between_Condor_and_the_Pricing_Service_exists) given a pact between Condor and the Pricing Service exists
@@ -91,6 +99,8 @@
 * [A request to tag the production version of Condor](#a_request_to_tag_the_production_version_of_Condor_given_&#39;Condor&#39;_does_not_exist_in_the_pact-broker) given 'Condor' does not exist in the pact-broker
 
 * [A request to tag the production version of Condor](#a_request_to_tag_the_production_version_of_Condor_given_&#39;Condor&#39;_exists_in_the_pact-broker) given 'Condor' exists in the pact-broker
+
+* [A request to update a pacticipant](#a_request_to_update_a_pacticipant_given_a_pacticipant_with_name_Foo_exists) given a pacticipant with name Foo exists
 
 * [A request to update a webhook](#a_request_to_update_a_webhook_given_a_webhook_with_the_uuid_696c5f93-1b7f-44bc-8d03-59440fcaa9a0_exists) given a webhook with the uuid 696c5f93-1b7f-44bc-8d03-59440fcaa9a0 exists
 
@@ -506,6 +516,42 @@ Pact Broker will respond with:
     "_links": {
       "pb:webhooks": {
         "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-WEBHOOKS"
+      },
+      "pb:pacticipants": {
+        "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-PACTICIPANTS"
+      },
+      "pb:pacticipant": {
+        "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-{pacticipant}"
+      }
+    }
+  }
+}
+```
+<a name="a_request_for_the_index_resource_given_the_pacticipant_relations_are_present"></a>
+Given **the pacticipant relations are present**, upon receiving **a request for the index resource** from Pact Broker Client, with
+```json
+{
+  "method": "get",
+  "path": "/",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "pb:pacticipants": {
+        "href": "http://localhost:1234/pacticipants"
+      },
+      "pb:pacticipant": {
+        "href": "http://localhost:1234/pacticipants/{pacticipant}"
       }
     }
   }
@@ -773,6 +819,40 @@ Pact Broker will respond with:
       "self": {
         "href": "http://localhost:1234/some-url",
         "title": "A title"
+      }
+    }
+  }
+}
+```
+<a name="a_request_to_create_a_pacticipant"></a>
+Upon receiving **a request to create a pacticipant** from Pact Broker Client, with
+```json
+{
+  "method": "post",
+  "path": "/pacticipants",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/hal+json"
+  },
+  "body": {
+    "name": "Foo",
+    "repositoryUrl": "http://foo"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 201,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "name": "Foo",
+    "repositoryUrl": "http://foo",
+    "_links": {
+      "self": {
+        "href": "http://localhost:1234/pacticipants/Foo"
       }
     }
   }
@@ -1598,6 +1678,50 @@ Pact Broker will respond with:
   }
 }
 ```
+<a name="a_request_to_retrieve_a_pacticipant_given_a_pacticipant_with_name_Foo_exists"></a>
+Given **a pacticipant with name Foo exists**, upon receiving **a request to retrieve a pacticipant** from Pact Broker Client, with
+```json
+{
+  "method": "get",
+  "path": "/pacticipants/Foo",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "self": {
+        "href": "http://localhost:1234/pacticipants/Foo"
+      }
+    }
+  }
+}
+```
+<a name="a_request_to_retrieve_a_pacticipant"></a>
+Upon receiving **a request to retrieve a pacticipant** from Pact Broker Client, with
+```json
+{
+  "method": "get",
+  "path": "/pacticipants/Foo",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 404
+}
+```
 <a name="a_request_to_retrieve_the_latest_&#39;production&#39;_version_of_Condor_given_&#39;Condor&#39;_exists_in_the_pact-broker_with_the_latest_tagged_&#39;production&#39;_version_1.2.3"></a>
 Given **'Condor' exists in the pact-broker with the latest tagged 'production' version 1.2.3**, upon receiving **a request to retrieve the latest 'production' version of Condor** from Pact Broker Client, with
 ```json
@@ -1804,6 +1928,40 @@ Pact Broker will respond with:
     "_links": {
       "self": {
         "href": "http://localhost:1234/pacticipants/Condor/versions/1.3.0/tags/prod"
+      }
+    }
+  }
+}
+```
+<a name="a_request_to_update_a_pacticipant_given_a_pacticipant_with_name_Foo_exists"></a>
+Given **a pacticipant with name Foo exists**, upon receiving **a request to update a pacticipant** from Pact Broker Client, with
+```json
+{
+  "method": "patch",
+  "path": "/pacticipants/Foo",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/hal+json"
+  },
+  "body": {
+    "name": "Foo",
+    "repositoryUrl": "http://foo"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "name": "Foo",
+    "repositoryUrl": "http://foo",
+    "_links": {
+      "self": {
+        "href": "http://localhost:1234/pacticipants/Foo"
       }
     }
   }

@@ -112,6 +112,10 @@ module PactBroker
             method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
             method_option :broker_token, aliases: "-k", desc: "Pact Broker bearer token"
           end
+
+          def self.verbose_option
+            method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
+          end
         end
       end
     end

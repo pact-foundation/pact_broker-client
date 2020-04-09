@@ -29,6 +29,10 @@ module PactBroker
           _link(key).put(*args)
         end
 
+        def patch(key, *args)
+          _link(key).patch(*args)
+        end
+
         def can?(key)
           @links.key? key.to_s
         end
@@ -53,6 +57,10 @@ module PactBroker
 
         def success?
           true
+        end
+
+        def does_not_exist?
+          false
         end
 
         def response
@@ -83,13 +91,16 @@ module PactBroker
       end
 
       class ErrorEntity < Entity
-
         def initialize(href, data, http_client, response = nil)
           @href = href
           @data = data
           @links = {}
           @client = http_client
           @response = response
+        end
+
+        def does_not_exist?
+          response&.status == 404
         end
 
         def success?

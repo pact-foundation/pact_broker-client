@@ -147,6 +147,18 @@ module PactBroker
           puts SecureRandom.uuid
         end
 
+        desc 'create-or-update-pacticipant', 'Create or update pacticipant by name'
+        method_option :name, type: :string, required: true, desc: "Pacticipant name"
+        method_option :repository_url, type: :string, required: false, desc: "The repository URL of the pacticipant"
+        shared_authentication_options_for_pact_broker
+        verbose_option
+        def create_or_update_pacticipant(*required_but_ignored)
+          raise ::Thor::RequiredArgumentMissingError, "Pacticipant name cannot be blank" if options.name.strip.size == 0
+          require 'pact_broker/client/pacticipants/create'
+          result = PactBroker::Client::Pacticipants2::Create.call({ name: options.name, repository_url: options.repository_url }, options.broker_base_url, pact_broker_client_options)
+          $stdout.puts result.message
+        end
+
         ignored_and_hidden_potential_options_from_environment_variables
         desc 'version', "Show the pact_broker-client gem version"
         def version

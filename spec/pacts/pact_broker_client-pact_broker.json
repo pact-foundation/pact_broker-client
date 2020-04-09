@@ -1250,6 +1250,161 @@
       }
     },
     {
+      "description": "a request for the index resource",
+      "providerState": "the pacticipant relations are present",
+      "request": {
+        "method": "get",
+        "path": "/",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pb:pacticipants": {
+              "href": "http://localhost:1234/pacticipants"
+            },
+            "pb:pacticipant": {
+              "href": "http://localhost:1234/pacticipants/{pacticipant}"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:pacticipants.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          },
+          "$.body._links.pb:pacticipant.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*\\{pacticipant\\}"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to retrieve a pacticipant",
+      "request": {
+        "method": "get",
+        "path": "/pacticipants/Foo",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 404,
+        "headers": {
+        }
+      }
+    },
+    {
+      "description": "a request to create a pacticipant",
+      "request": {
+        "method": "post",
+        "path": "/pacticipants",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "name": "Foo",
+          "repositoryUrl": "http://foo"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "name": "Foo",
+          "repositoryUrl": "http://foo",
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/pacticipants/Foo"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to retrieve a pacticipant",
+      "providerState": "a pacticipant with name Foo exists",
+      "request": {
+        "method": "get",
+        "path": "/pacticipants/Foo",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/pacticipants/Foo"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to update a pacticipant",
+      "providerState": "a pacticipant with name Foo exists",
+      "request": {
+        "method": "patch",
+        "path": "/pacticipants/Foo",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "name": "Foo",
+          "repositoryUrl": "http://foo"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "name": "Foo",
+          "repositoryUrl": "http://foo",
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/pacticipants/Foo"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          }
+        }
+      }
+    },
+    {
       "description": "a request to create a webhook with a JSON body for a consumer and provider",
       "providerState": "the 'Pricing Service' and 'Condor' already exist in the pact-broker",
       "request": {
@@ -1550,6 +1705,12 @@
           "_links": {
             "pb:webhooks": {
               "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-WEBHOOKS"
+            },
+            "pb:pacticipants": {
+              "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-PACTICIPANTS"
+            },
+            "pb:pacticipant": {
+              "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-{pacticipant}"
             }
           }
         },
@@ -1557,6 +1718,14 @@
           "$.body._links.pb:webhooks.href": {
             "match": "regex",
             "regex": "http:\\/\\/.*"
+          },
+          "$.body._links.pb:pacticipants.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          },
+          "$.body._links.pb:pacticipant.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*{pacticipant}"
           }
         }
       }

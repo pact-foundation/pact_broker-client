@@ -33,6 +33,11 @@ module PactBroker
           perform_request(create_request(uri, 'Post', body, headers), uri)
         end
 
+        def patch href, body = nil, headers = {}
+          uri = URI(href)
+          perform_request(create_request(uri, 'Patch', body, headers), uri)
+        end
+
         def create_request uri, http_method, body = nil, headers = {}
           request = Net::HTTP.const_get(http_method).new(uri.request_uri)
           request['Content-Type'] = "application/json" if ['Post', 'Put', 'Patch'].include?(http_method)
