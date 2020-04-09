@@ -100,7 +100,7 @@ module PactBroker
         end
 
         def does_not_exist?
-          response&.status == 404
+          response && response.status == 404
         end
 
         def success?
