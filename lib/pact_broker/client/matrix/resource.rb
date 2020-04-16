@@ -11,7 +11,7 @@ module PactBroker
 
         def any_unknown?
           if supports_unknown_count?
-            self[:summary][:unknown] > 0
+            unknown_count > 0
           else
             false
           end
@@ -19,6 +19,10 @@ module PactBroker
 
         def supports_unknown_count?
           !!(self[:summary] && Integer === self[:summary][:unknown] )
+        end
+
+        def unknown_count
+          supports_unknown_count? ? self[:summary][:unknown] : nil
         end
 
         def reason

@@ -9,11 +9,19 @@ module PactBroker
       let(:matrix_options) { {} }
       let(:pact_broker_client_options) { { foo: 'bar' } }
       let(:matrix_client) { instance_double('PactBroker::Client::Matrix') }
-      let(:matrix) { instance_double('Matrix::Resource', deployable?: true, reason: 'some reason', any_unknown?: any_unknown, supports_unknown_count?: supports_unknown_count) }
-      let(:any_unknown) { false }
+      let(:matrix) do
+        instance_double('Matrix::Resource',
+          deployable?: true,
+          reason: 'some reason',
+          any_unknown?: any_unknown,
+          supports_unknown_count?: supports_unknown_count,
+          unknown_count: unknown_count)
+      end
+      let(:unknown_count) { 0 }
+      let(:any_unknown) { unknown_count > 0 }
       let(:supports_unknown_count) { true }
       let(:retry_while_unknown) { 0 }
-      let(:options) { { output: 'text', retry_while_unknown: retry_while_unknown, retry_interval: 5} }
+      let(:options) { { output: 'text', retry_while_unknown: retry_while_unknown, retry_interval: 5 } }
 
 
       before do
@@ -81,10 +89,10 @@ module PactBroker
             allow(Retry).to receive(:until_truthy_or_max_times)
           end
 
-          let(:any_unknown) { true }
+          let(:unknown_count) { 1 }
 
           it "puts a message to stderr" do
-            expect($stderr).to receive(:puts).with("Waiting for verification results to be published (up to 5 seconds)")
+            expect($stderr).to receive(:puts).with("Waiting for 1 verification result to be published (maximum of 5 seconds)")
             subject
           end
 
