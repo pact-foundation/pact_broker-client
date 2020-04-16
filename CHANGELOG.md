@@ -1,3 +1,22 @@
+<a name="v1.26.0"></a>
+### v1.26.0 (2020-04-17)
+
+
+#### Features
+
+* update message when waiting for verification results	 ([68df012](/../../commit/68df012))
+* add create-or-update-pacticipant	 ([f1c33ae](/../../commit/f1c33ae))
+
+* **can i deploy**
+  * put out a message while waiting for verification results to be published	 ([cc1ba5f](/../../commit/cc1ba5f))
+
+* **publish pacts**
+  * improve message when overwriting pacts	 ([17b93f3](/../../commit/17b93f3))
+
+* **webhooks**
+  * add command to test webhook execution	 ([0ee1f7a](/../../commit/0ee1f7a))
+
+
 <a name="v1.25.1"></a>
 ### v1.25.1 (2020-04-02)
 
