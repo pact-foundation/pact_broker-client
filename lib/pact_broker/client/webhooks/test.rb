@@ -1,4 +1,3 @@
-
 require 'pact_broker/client/hal'
 require 'pact_broker/client/command_result'
 
