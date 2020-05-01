@@ -157,6 +157,17 @@ module PactBroker
           require 'pact_broker/client/pacticipants/create'
           result = PactBroker::Client::Pacticipants2::Create.call({ name: options.name, repository_url: options.repository_url }, options.broker_base_url, pact_broker_client_options)
           $stdout.puts result.message
+          exit(1) unless result.success
+        end
+
+        desc 'list-latest-pact-versions', 'List the latest pact for each integration'
+        shared_authentication_options_for_pact_broker
+        method_option :output, aliases: "-o", desc: "json or table", default: 'table'
+        def list_latest_pact_versions(*required_but_ignored)
+          require 'pact_broker/client/pacts/list_latest_versions'
+          result = PactBroker::Client::Pacts::ListLatestVersions.call(options.broker_base_url, options.output, pact_broker_client_options)
+          $stdout.puts result.message
+          exit(1) unless result.success
         end
 
         ignored_and_hidden_potential_options_from_environment_variables
