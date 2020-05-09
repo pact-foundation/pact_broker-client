@@ -1,3 +1,13 @@
+<a name="v1.27.0"></a>
+### v1.27.0 (2020-05-09)
+
+
+#### Features
+
+* add BITBUCKET_BRANCH to list of known branch variables (#69)	 ([d1dc088](/../../commit/d1dc088))
+* add list-latest-pact-versions command	 ([ed45d58](/../../commit/ed45d58))
+
+
 <a name="v1.26.0"></a>
 ### v1.26.0 (2020-04-17)
 
