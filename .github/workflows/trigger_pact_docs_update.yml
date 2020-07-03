@@ -19,8 +19,8 @@ jobs:
                 -H "Authorization: Bearer $GITHUB_TOKEN" \
                 -d '{"event_type": "pact-js-docs-updated"}' 2>&1)
           echo "${response}"
-          if  ! echo "${response}" | grep "HTTP\/1.1 200 OK" > /dev/null; then
+          if ! echo "${response}" | grep "HTTP\/1.1 200 OK" > /dev/null; then
             exit 1
           fi
-        #env:
-          #GITHUB_TOKEN: ${{ secrets.GHTOKENFORTRIGGERINGPACTDOCSUPDATE }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GHTOKENFORTRIGGERINGPACTDOCSUPDATE }}
