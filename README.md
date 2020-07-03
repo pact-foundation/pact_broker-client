@@ -4,6 +4,8 @@ A client for the Pact Broker. Publishes pacts to, and retrieves pacts from, a Pa
 
 [![Build Status](https://travis-ci.org/pact-foundation/pact_broker-client.svg?branch=master)](https://travis-ci.org/pact-foundation/pact_broker-client)
 
+![Trigger update to docs.pact.io](https://github.com/pact-foundation/pact_broker-client/workflows/Trigger%20update%20to%20docs.pact.io/badge.svg)
+
 ## Installation
 
 ### CLI
