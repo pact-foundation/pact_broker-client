@@ -345,6 +345,5 @@ end
 bundle exec rake pact:publish
 ```
 
-[wiki-tags]: https://github.com/pact-foundation/pact_broker/wiki/Using-tags
 [pact-ruby-standalone]: https://github.com/pact-foundation/pact-ruby-standalone/releases
-[docker]: https://cloud.docker.com/u/pactfoundation/repository/docker/pactfoundation/pact-cli
+[docker]: https://hub.docker.com/r/pactfoundation/pact-cli
