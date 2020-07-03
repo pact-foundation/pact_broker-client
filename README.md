@@ -1,6 +1,6 @@
 # Pact Broker Client
 
-A client for the Pact Broker. Publishes pacts to, and retrieves pacts from, a Pact Broker. The functionality is available via a CLI, or via Ruby Rake tasks. You can also use the [Pact CLI Docker image](https://hub.docker.com/r/pactfoundation/pact-cli).
+A client for the Pact Broker. Publishes and retrieves pacts, verification results, pacticipants, pacticipant versions and tags. The functionality is available via a CLI, or via Ruby Rake tasks. You can also use the [Pact CLI Docker image](https://hub.docker.com/r/pactfoundation/pact-cli).
 
 [![Build Status](https://travis-ci.org/pact-foundation/pact_broker-client.svg?branch=master)](https://travis-ci.org/pact-foundation/pact_broker-client)
 
@@ -349,3 +349,4 @@ bundle exec rake pact:publish
 
 [pact-ruby-standalone]: https://github.com/pact-foundation/pact-ruby-standalone/releases
 [docker]: https://hub.docker.com/r/pactfoundation/pact-cli
+
