@@ -349,4 +349,3 @@ bundle exec rake pact:publish
 
 [pact-ruby-standalone]: https://github.com/pact-foundation/pact-ruby-standalone/releases
 [docker]: https://hub.docker.com/r/pactfoundation/pact-cli
-
