@@ -114,7 +114,7 @@ Upon receiving **a request for the compatibility matrix for a pacticipant that d
 {
   "method": "get",
   "path": "/matrix",
-  "query": "q[][pacticipant]=Wiffle&q[][version]=1.2.3&q[][pacticipant]=Meep&q[][version]=9.9.9&latestby=cvpv"
+  "query": "q%5B%5D%5Bpacticipant%5D=Wiffle&q%5B%5D%5Bversion%5D=1.2.3&q%5B%5D%5Bpacticipant%5D=Meep&q%5B%5D%5Bversion%5D=9.9.9&latestby=cvpv"
 }
 ```
 Pact Broker will respond with:
@@ -137,7 +137,7 @@ Given **the pact for Foo version 1.2.3 and 1.2.4 has been verified by Bar versio
 {
   "method": "get",
   "path": "/matrix",
-  "query": "q[][pacticipant]=Foo&q[][pacticipant]=Bar&latestby=cvpv"
+  "query": "q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Bpacticipant%5D=Bar&latestby=cvpv"
 }
 ```
 Pact Broker will respond with:
@@ -201,7 +201,7 @@ Given **the pact for Foo Thing version 1.2.3 has been verified by Bar version 4.
 {
   "method": "get",
   "path": "/matrix",
-  "query": "q[][pacticipant]=Foo%20Thing&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=4.5.6&latestby=cvpv"
+  "query": "q%5B%5D%5Bpacticipant%5D=Foo%20Thing&q%5B%5D%5Bversion%5D=1.2.3&q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Bversion%5D=4.5.6&latestby=cvpv"
 }
 ```
 Pact Broker will respond with:
@@ -249,7 +249,7 @@ Given **the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6**,
 {
   "method": "get",
   "path": "/matrix",
-  "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=4.5.6&latestby=cvpv"
+  "query": "q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Bversion%5D=1.2.3&q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Bversion%5D=4.5.6&latestby=cvpv"
 }
 ```
 Pact Broker will respond with:
@@ -297,7 +297,7 @@ Given **the pact for Foo version 1.2.3 has been successfully verified by Bar ver
 {
   "method": "get",
   "path": "/matrix",
-  "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][latest]=true&q[][tag]=prod&latestby=cvpv"
+  "query": "q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Bversion%5D=1.2.3&q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Blatest%5D=true&q%5B%5D%5Btag%5D=prod&latestby=cvpv"
 }
 ```
 Pact Broker will respond with:
@@ -345,7 +345,7 @@ Given **the pact for Foo version 1.2.3 has been successfully verified by Bar ver
 {
   "method": "get",
   "path": "/matrix",
-  "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&latestby=cvp&latest=true&tag=prod"
+  "query": "q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Bversion%5D=1.2.3&latestby=cvp&latest=true&tag=prod"
 }
 ```
 Pact Broker will respond with:
@@ -381,7 +381,7 @@ Given **the pact for Foo version 1.2.3 has been successfully verified by Bar ver
 {
   "method": "get",
   "path": "/matrix",
-  "query": "q[][pacticipant]=Foo&q[][version]=1.2.4&q[][pacticipant]=Bar&q[][latest]=true&latestby=cvpv"
+  "query": "q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Bversion%5D=1.2.4&q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Blatest%5D=true&latestby=cvpv"
 }
 ```
 Pact Broker will respond with:
@@ -429,7 +429,7 @@ Given **the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6**,
 {
   "method": "get",
   "path": "/matrix",
-  "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&q[][pacticipant]=Bar&q[][version]=9.9.9&latestby=cvpv"
+  "query": "q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Bversion%5D=1.2.3&q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Bversion%5D=9.9.9&latestby=cvpv"
 }
 ```
 Pact Broker will respond with:
@@ -452,7 +452,7 @@ Given **the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6 an
 {
   "method": "get",
   "path": "/matrix",
-  "query": "q[][pacticipant]=Foo&q[][version]=1.2.3&latestby=cvp&latest=true"
+  "query": "q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Bversion%5D=1.2.3&latestby=cvp&latest=true"
 }
 ```
 Pact Broker will respond with:
@@ -703,7 +703,7 @@ Given **the pact for Foo version 1.2.3 has been successfully verified by Bar ver
 {
   "method": "get",
   "path": "/matrix",
-  "query": "q[][pacticipant]=Foo&q[][pacticipant]=Bar&latestby=cvpv&success[]=true"
+  "query": "q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Bpacticipant%5D=Bar&latestby=cvpv&success%5B%5D=true"
 }
 ```
 Pact Broker will respond with:

@@ -21,12 +21,11 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.license       = 'MIT'
 
-  gem.add_runtime_dependency 'httparty'
-  gem.add_runtime_dependency 'json'
-  gem.add_runtime_dependency 'term-ansicolor'
+  gem.add_runtime_dependency 'httparty', '~>0.18'
+  gem.add_runtime_dependency 'term-ansicolor', '~> 1.7'
   gem.add_runtime_dependency 'table_print', '~> 1.5'
   gem.add_runtime_dependency 'thor', '~> 0.20'
-  gem.add_runtime_dependency 'rake' #For FileList
+  gem.add_runtime_dependency 'rake', '~> 10.0' #For FileList
 
   gem.add_development_dependency 'fakefs', '~> 0.4'
   gem.add_development_dependency 'webmock', '~> 3.0'
