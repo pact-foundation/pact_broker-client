@@ -2,7 +2,7 @@
 set -e
 
 # bundle exec rake
-increment={INCREMENT:-patch}
+increment=${INCREMENT:-patch}
 bundle exec bump ${increment} --no-commit
 bundle exec rake generate_changelog
 version_file=$(bundle exec bump file --value-only)
