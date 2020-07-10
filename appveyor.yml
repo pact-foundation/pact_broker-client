@@ -6,7 +6,7 @@ build: off
 
 install:
   - set PATH=C:\Ruby22\bin;%PATH%
-  - bundle install
+  - bundle install --without release
 
 before_test:
   - ruby -v
