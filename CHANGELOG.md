@@ -1,3 +1,13 @@
+<a name="v1.27.1"></a>
+### v1.27.1 (2020-07-10)
+
+
+#### Features
+
+* **deps**
+  * this isn't really a feature, but I want to test the release workflow	 ([29a7b72](/../../commit/29a7b72))
+
+
 <a name="v1.27.0"></a>
 ### v1.27.0 (2020-05-09)
 
