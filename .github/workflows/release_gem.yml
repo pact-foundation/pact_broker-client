@@ -19,7 +19,7 @@ jobs:
       run: |
         gem install bundler -v 2.0.2
         bundle install
-    - name: configure git
+    - name: Configure git
       run: |
         git config user.email "beth@bethesque.com"
         git config user.name "Beth Skurrie via Github Actions"
@@ -30,5 +30,6 @@ jobs:
     - name: Release gem
       run: script/release-gem.sh
       env:
-        RUBYGEMS_API_KEY: '${{ secrets.RUBYGEMS_API_KEY }}'
+        BUNDLE_GEM__PUSH_KEY: '${{ secrets.RUBYGEMS_API_KEY }}'
+        BUNDLE_GITHUB__COM: x-access-token:${{ secrets.GITHUB_TOKEN }}
         GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
