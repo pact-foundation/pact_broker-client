@@ -44,4 +44,10 @@ jobs:
       with:
         tag_name: ${{ env.TAG }}
         release_name: ${{ env.TAG }}
-        both_path: tmp/RELEASE_NOTES.md
+        body_path: tmp/RELEASE_NOTES.md
+    - name: Trigger release of pact-cli Docker image
+      uses: peter-evans/repository-dispatch@v1
+      with:
+        token: ${{ secrets.GHTOKENFORPACTCLIRELEASE }}
+        repository: pact-foundation/pact-ruby-cli
+        event-type: gem-released
