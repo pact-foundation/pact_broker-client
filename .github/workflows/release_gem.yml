@@ -28,8 +28,8 @@ jobs:
       env:
         INCREMENT: patch
     - name: Release gem
-      run: script/release-gem.sh
+      run: touch ~/.gem/credentials && script/release-gem.sh
       env:
-        BUNDLE_GEM__PUSH_KEY: '${{ secrets.RUBYGEMS_API_KEY }}'
+        GEM_HOST_API_KEY: '${{ secrets.RUBYGEMS_API_KEY }}'
         BUNDLE_GITHUB__COM: x-access-token:${{ secrets.GITHUB_TOKEN }}
-        GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+        #GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
