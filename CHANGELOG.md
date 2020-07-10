@@ -1,3 +1,12 @@
+<a name="v1.27.14"></a>
+### v1.27.14 (2020-07-11)
+
+
+#### Bug Fixes
+
+* not a real fix, just testing release notes	 ([1fabb8b](/../../commit/1fabb8b))
+
+
 <a name="v1.27.13"></a>
 ### v1.27.13 (2020-07-11)
 
