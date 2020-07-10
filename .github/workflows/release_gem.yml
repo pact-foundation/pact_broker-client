@@ -23,13 +23,9 @@ jobs:
       run: |
         git config user.email "beth@bethesque.com"
         git config user.name "Beth Skurrie via Github Actions"
-    - name: "script"
+    - name: Prepare release
       run: script/prepare-release.sh
       env:
         INCREMENT: patch
-    - name: Release Gem
-      uses: cadwallion/publish-rubygems-action@v1.0.0
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
-        RELEASE_COMMAND: bundle exec rake release
+    - name: Release gem
+      run: script/release-gem.sh
