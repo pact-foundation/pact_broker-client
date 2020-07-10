@@ -19,17 +19,16 @@ jobs:
       run: |
         gem install bundler -v 2.0.2
         bundle install
-    # - name: bump version
-    # - run: |
-    #   export VERSION=$(bundle exec bump show-next minor)
-    #   bundle exec bump minor --no-commit
-    #   bundle exec rake generate_changelog
-    #   git add
+    - name: configure git
+      run: |
+        git config user.email "beth@bethesque.com"
+        git config user.name "Beth Skurrie via Github Actions"
     - name: "script"
-      run: script/release.sh
-
-
-# - name: Publish gem
-#   uses: dawidd6/action-publish-gem@v1
-#   with:
-#     api_key: ${{secrets.RUBYGEMS_API_KEY}}
+      run: script/prepare-release.sh
+      env:
+        INCREMENT: patch
+    - name: Release Gem
+      uses: cadwallion/publish-rubygems-action@v1.0.0
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
