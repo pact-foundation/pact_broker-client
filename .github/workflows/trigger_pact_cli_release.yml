@@ -1,7 +1,7 @@
 name: Trigger release of the pact-cli Docker image
 on:
   release:
-    types: [created]
+    types: [published]
 
 jobs:
   build:
