@@ -29,3 +29,5 @@ jobs:
         INCREMENT: patch
     - name: Release gem
       run: script/release-gem.sh
+      env:
+        RUBYGEMS_API_KEY: '${{ secrets.RUBYGEMS_API_KEY }}'

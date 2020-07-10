@@ -1,10 +1,8 @@
 #!/bin/bash
 
 if [ -n "${GITHUB_ACTIONS}" ]; then
-  if [ -z "${RUBYGEMS_API_KEY}" ]; then
-    echo "RUBYGEMS_API_KEY must be set"
-    exit 1
-  fi
+  : "${RUBYGEMS_API_KEY:?RUBYGEMS_API_KEY must be set}"
+  : "${GITHUB_TOKEN:?GITHUB_TOKEN must be set}"
 
   echo "Setting up gem credentials..."
   set +x
