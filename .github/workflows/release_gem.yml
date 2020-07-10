@@ -1,0 +1,34 @@
+name: Release gem
+
+on:
+  repository_dispatch:
+    types:
+      - release-patch
+
+jobs:
+  build:
+    steps:
+    - uses: actions/checkout@v2
+      # with:
+      #   fetch-depth: 0
+    - uses: actions/setup-ruby@v1
+      with:
+        ruby-version: '2.6'
+    - name: Install gems
+      run: |
+        gem install bundler -v 2.0.2
+        bundle install
+    # - name: bump version
+    # - run: |
+    #   export VERSION=$(bundle exec bump show-next minor)
+    #   bundle exec bump minor --no-commit
+    #   bundle exec rake generate_changelog
+    #   git add
+    - name: "script"
+      run: script/release.sh
+
+
+# - name: Publish gem
+#   uses: dawidd6/action-publish-gem@v1
+#   with:
+#     api_key: ${{secrets.RUBYGEMS_API_KEY}}
