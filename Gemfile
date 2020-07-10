@@ -6,7 +6,7 @@ gemspec
 # even thought it's in the development dependencies. Trying it here.
 gem 'rake', '~> 13.0'
 
-gem 'bump', git: 'git@github.com:bethesque/bump.git'
+gem 'bump', git: 'https://github.com/bethesque/bump.git'
 
 if ENV['X_PACT_DEVELOPMENT'] == 'true'
   gem 'pact-mock_service', path: '../pact-mock_service'
