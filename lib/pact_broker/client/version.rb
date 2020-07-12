@@ -1,5 +1,5 @@
 module PactBroker
   module Client
-    VERSION = '1.27.25'
+    VERSION = '1.27.26'
   end
 end
