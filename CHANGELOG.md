@@ -1,3 +1,12 @@
+<a name="v1.27.22"></a>
+### v1.27.22 (2020-07-12)
+
+
+#### Bug Fixes
+
+* not really a fix, just testing release notes	 ([13ddd06](/../../commit/13ddd06))
+
+
 <a name="v1.27.20"></a>
 ### v1.27.20 (2020-07-12)
 
