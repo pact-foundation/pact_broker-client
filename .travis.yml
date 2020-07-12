@@ -1,12 +1,11 @@
 language: ruby
 rvm:
   - 2.2.4
-  - 2.3.1
   - 2.4.1
 
-before_install:
-  - (git show-ref | grep $(git log --pretty=%h -1) | sed 's|.*/\(.*\)|\1|' | sort -u | grep -v HEAD) || true
-  - (git show -s --pretty=%d HEAD) || true
-  - (git for-each-ref --format='%(objectname) %(refname:short)' refs/heads | awk "/^$(git rev-parse HEAD)/ {print \$2}") || true
-  - (git show -s --pretty=%D HEAD | tr -s ', ' '\n' | grep -v HEAD | head -n1) || true
-  - (git name-rev --name-only HEAD) || true
+# before_install:
+#   - (git show-ref | grep $(git log --pretty=%h -1) | sed 's|.*/\(.*\)|\1|' | sort -u | grep -v HEAD) || true
+#   - (git show -s --pretty=%d HEAD) || true
+#   - (git for-each-ref --format='%(objectname) %(refname:short)' refs/heads | awk "/^$(git rev-parse HEAD)/ {print \$2}") || true
+#   - (git show -s --pretty=%D HEAD | tr -s ', ' '\n' | grep -v HEAD | head -n1) || true
+#   - (git name-rev --name-only HEAD) || true
