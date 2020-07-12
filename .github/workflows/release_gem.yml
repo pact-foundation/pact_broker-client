@@ -31,7 +31,6 @@ jobs:
     - name: Release gem
       run: |
         touch ~/.gem/credentials
-        # chmod 0600 ~/.gem/credentials
         script/release-gem.sh
       env:
         GEM_HOST_API_KEY: '${{ secrets.RUBYGEMS_API_KEY }}'
