@@ -1,4 +1,4 @@
-name: Release gem 2
+name: Release gem
 
 on:
   repository_dispatch:
