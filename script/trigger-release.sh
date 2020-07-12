@@ -10,3 +10,5 @@ if  ! echo "${output}" | grep "HTTP\/1.1 204" > /dev/null; then
   echo "Failed to do the thing"
   exit 1
 fi
+
+echo "See https://github.com/pact-foundation/pact_broker-client/actions?query=workflow%3A%22Release+gem%22"
