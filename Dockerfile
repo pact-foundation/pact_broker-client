@@ -12,4 +12,4 @@ RUN bundle install
 RUN git config --global user.email "beth@bethesque.com"
 RUN git config --global user.name "Beth Skurrie via Github Actions"
 
-CMD []
+ENTRYPOINT [/entrypoint.sh]
