@@ -1,6 +1,0 @@
-# action.yml
-name: 'Release gem'
-description: 'Release gem to rubygems, generate changelog, create release notes'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'
