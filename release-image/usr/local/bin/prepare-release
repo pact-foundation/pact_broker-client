@@ -1,4 +1,6 @@
 #!/bin/sh
+
+echo "::group::Internal logs"
 set -ex
 
 # Because the BUNDLE_GEMFILE is set on the docker image, everything
@@ -15,3 +17,5 @@ version_file=$(bundle exec bump file --value-only)
 version=$(bundle exec bump current --value-only)
 git add CHANGELOG.md "${version_file}"
 git commit -m "chore(release): version ${version}"
+
+echo "::endgroup::"
