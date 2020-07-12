@@ -15,6 +15,7 @@ jobs:
     - uses: pact-foundation/release-gem@0.0.1
       env:
         GEM_HOST_API_KEY: '${{ secrets.RUBYGEMS_API_KEY }}'
+        GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
     # - name: Trigger release of pact-cli Docker image
     #   uses: peter-evans/repository-dispatch@v1
     #   with:
