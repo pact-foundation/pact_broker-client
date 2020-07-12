@@ -10,4 +10,3 @@ if  ! echo "${output}" | grep "HTTP\/1.1 204" > /dev/null; then
   echo "Failed to do the thing"
   exit 1
 fi
-
