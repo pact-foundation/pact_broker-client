@@ -3,7 +3,7 @@ name: Release gem
 on:
   repository_dispatch:
     types:
-      - release
+      - release-triggered
 
 jobs:
   build:
