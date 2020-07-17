@@ -1,3 +1,13 @@
+<a name="v1.28.2"></a>
+### v1.28.2 (2020-07-17)
+
+
+#### Bug Fixes
+
+* **create-version-tag**
+  * raise an error if the version does not exist rather than automatically creating it.	 ([2ed7a55](/../../commit/2ed7a55))
+
+
 <a name="v1.28.0"></a>
 ### v1.28.0 (2020-07-12)
 
