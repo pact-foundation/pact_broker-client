@@ -5,7 +5,7 @@ describe "pact-broker create-version-tag", skip_windows: true do
   end
 
   context "when the version is successfully tagged" do
-    subject { `bundle exec bin/pact-broker create-version-tag --pacticipant Condor --version 1.3.0 --tag prod --broker-base-url http://localhost:5001` }
+    subject { `bundle exec bin/pact-broker create-version-tag --auto-create-version --pacticipant Condor --version 1.3.0 --tag prod --broker-base-url http://localhost:5001` }
 
     it "returns a success exit code" do
       subject

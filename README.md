@@ -42,13 +42,11 @@ Publish pacts to a Pact Broker.
 ### create-version-tag
 
 ```
-Usage:
-  pact-broker create-version-tag -a, --pacticipant=PACTICIPANT -b, --broker-base-url=BROKER_BASE_URL -e, --version=VERSION
-
 Options:
   -a, --pacticipant=PACTICIPANT                            # The pacticipant name
   -e, --version=VERSION                                    # The pacticipant version
   -t, [--tag=TAG]                                          # Tag name for pacticipant version. Can be specified multiple times.
+      [--auto-create-version], [--no-auto-create-version]  # Automatically create the pacticipant version if it does not exist. Default: false
   -g, [--tag-with-git-branch], [--no-tag-with-git-branch]  # Tag pacticipant version with the name of the current git branch. Default: false
   -b, --broker-base-url=BROKER_BASE_URL                    # The base URL of the Pact Broker
   -u, [--broker-username=BROKER_USERNAME]                  # Pact Broker basic auth username

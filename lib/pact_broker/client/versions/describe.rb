@@ -28,7 +28,7 @@ module PactBroker
 
         def call
           version_hash = if params[:version]
-            versions_client.find params
+            versions_client.find(params)
           else
             pact_broker_client.pacticipants.versions.latest(params)
           end
