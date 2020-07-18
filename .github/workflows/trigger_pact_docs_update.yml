@@ -6,6 +6,9 @@ on:
       - master
     paths:
       - '**.md'
+  repository_dispatch:
+    types:
+      - gem-released
 
 jobs:
   build:
