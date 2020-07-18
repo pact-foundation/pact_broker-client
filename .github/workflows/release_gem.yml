@@ -16,6 +16,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+    - name: Test
+      runs: bundle exec rake
     - uses: pact-foundation/release-gem@v0.0.10
       id: release
       env:
