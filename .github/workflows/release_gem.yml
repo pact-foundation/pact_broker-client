@@ -17,7 +17,10 @@ jobs:
       with:
         fetch-depth: 0
     - name: Test
-      run: bundle exec rake
+      run: |
+        gem install bundler -v 2.1
+        bundle install
+        bundle exec rake
     - uses: pact-foundation/release-gem@v0.0.10
       id: release
       env:
