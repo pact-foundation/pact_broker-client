@@ -6,6 +6,24 @@ on:
       - release-triggered
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-ruby@v1
+      with:
+        ruby-version: '2.6'
+    - run: |
+        gem install bundler -v 2.1
+        bundle install
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Test
+      run: bundle exec rake
+
   release:
     runs-on: ubuntu-latest
     outputs:
@@ -13,20 +31,13 @@ jobs:
       version: ${{ steps.release.outputs.version }}
       increment: ${{ steps.release.outputs.increment }}
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - name: Test
-      run: |
-        gem install bundler -v 2.1
-        bundle install
-        bundle exec rake
     - uses: pact-foundation/release-gem@v0.0.10
       id: release
       env:
         GEM_HOST_API_KEY: '${{ secrets.RUBYGEMS_API_KEY }}'
         GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
         INCREMENT: '${{ github.event.client_payload.increment }}'
+
   notify-gem-released:
     needs: release
     strategy:
