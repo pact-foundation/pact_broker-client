@@ -6,22 +6,16 @@ on:
       - release-triggered
 
 jobs:
-  setup:
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
     - uses: actions/setup-ruby@v1
       with:
         ruby-version: '2.6'
     - run: |
         gem install bundler -v 2.1
         bundle install
-  test:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
     - name: Test
       run: bundle exec rake
 
@@ -33,6 +27,9 @@ jobs:
       version: ${{ steps.release.outputs.version }}
       increment: ${{ steps.release.outputs.increment }}
     steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - uses: pact-foundation/release-gem@v0.0.10
       id: release
       env:
