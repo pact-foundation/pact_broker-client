@@ -1,12 +1,3 @@
-<a name="v1.28.3"></a>
-### v1.28.3 (2020-07-18)
-
-
-#### Bug Fixes
-
-* testing release process	 ([24d800f](/../../commit/24d800f))
-
-
 <a name="v1.28.2"></a>
 ### v1.28.2 (2020-07-17)
 
