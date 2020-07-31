@@ -53,6 +53,7 @@ module PactBroker
         method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
 
         def publish(*pact_files)
+          require 'pact_broker/client/error'
           validate_credentials
           validate_pact_files(pact_files)
           success = publish_pacts(pact_files)
