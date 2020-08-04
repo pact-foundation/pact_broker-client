@@ -81,6 +81,25 @@ module PactBroker
           end
         end
 
+        context "when publishing multiple files with different consumers" do
+          let(:pact_file_paths) { ['spec/pacts/consumer-provider.json','spec/pacts/foo-bar.json']}
+          let(:tags) { ['dev'] }
+
+          it "tags each consumer" do
+            expect(pact_versions_client).to receive(:tag).with(
+              pacticipant: "Consumer",
+              version: consumer_version,
+              tag: "dev"
+            )
+            expect(pact_versions_client).to receive(:tag).with(
+              pacticipant: "Foo",
+              version: consumer_version,
+              tag: "dev"
+            )
+            subject.call
+          end
+        end
+
         context "when publishing one or more pacts fails" do
           let(:pact_file_paths) { ['spec/pacts/consumer-provider.json','spec/pacts/foo-bar.json']}
 

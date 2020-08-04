@@ -52,6 +52,10 @@ module PactBroker
         @pact_files ||= pact_file_paths.collect{ |pact_file_path| PactFile.new(pact_file_path) }
       end
 
+      def consumer_names
+        pact_files.collect(&:consumer_name).uniq
+      end
+
       def publish_pact pact
         begin
           $stdout.puts "Publishing #{pact.pact_name} to pact broker at #{pact_broker_base_url}"
@@ -72,12 +76,14 @@ module PactBroker
       def tag_consumer_version tag
         versions = pact_broker_client.pacticipants.versions
         Retry.while_error do
-          $stdout.puts "Tagging version #{consumer_version} of #{consumer_name} as #{tag.inspect}"
-          versions.tag(pacticipant: consumer_name, version: consumer_version, tag: tag)
-          true
+          consumer_names.collect do | consumer_name |
+            $stdout.puts "Tagging version #{consumer_version} of #{consumer_name} as #{tag.inspect}"
+            versions.tag(pacticipant: consumer_name, version: consumer_version, tag: tag)
+            true
+          end
         end
       rescue => e
-        $stderr.puts "Failed to tag version #{consumer_version} of #{consumer_name} due to error: #{e.class} - #{e}}"
+        $stderr.puts "Failed to tag versions due to error: #{e.class} - #{e}"
         false
       end
 
@@ -92,10 +98,6 @@ module PactBroker
           $stdout.puts "The latest version of this pact can be accessed at the following URL (use this to configure the provider verification):\n#{latest_pact_url}"
           true
         end
-      end
-
-      def consumer_name
-        pact_files.first.consumer_name
       end
 
       def validate
