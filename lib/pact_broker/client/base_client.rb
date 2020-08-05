@@ -69,6 +69,12 @@ module PactBroker
           yield response
         elsif response.code == 404
           nil
+        elsif response.code == 403
+          message = "Authorization failed (insufficient permissions)"
+          if response.body && response.body.size > 0
+            message = message + ": #{response.body}"
+          end
+          raise Error.new(message)
         elsif response.code == 401
           message = "Authentication failed"
           if response.body && response.body.size > 0
