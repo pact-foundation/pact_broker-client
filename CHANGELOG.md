@@ -1,3 +1,10 @@
+<a name="v1.29.1"></a>
+### v1.29.1 (2020-08-07)
+
+#### Bug Fixes
+
+* explicitly set the CA file and path from SSL_CERT_FILE and SSL_CERT_DIR for the pact-ruby-standalone	 ([27a0fe6](/../../commit/27a0fe6))
+
 <a name="v1.29.0"></a>
 ### v1.29.0 (2020-08-05)
 
