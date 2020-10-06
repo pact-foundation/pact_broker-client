@@ -153,7 +153,7 @@ Can I deploy the latest version of the application Foo that has the tag "test" t
 
 If you are unable to use tags, or there is some other limitation that stops you from using the recommended approach, you can specify one or more of the dependencies explictly. You must also do this if you want to use the `--all TAG` option for any of the pacticipants.
 
-You can specify as many application versions as you like, and you can even specify multiple versions of the same application (repeat the `--pacticipant` name and supply a different version.)
+You can specify as many application versions as you like, and you can even specify multiple versions of the same application (repeat the `--pacticipant` name and supply a different version). If you have a monorepo and you deploy a group of applications together, you can either call `can-i-deploy` once for each application, or you can group them all together by specifying a `--pacticipant` and `--version` for each sub-application.
 
 You can use explictly declared dependencies with or without the `--to ENVIRONMENT`. For example, if you declare two (or more) application versions with no `--to ENVIRONMENT`, then only the applications you specify will be taken into account when determining if it is safe to deploy. If you declare two (or more) application versions _as well as_ a `--to ENVIRONMENT`, then the Pact Broker will work out what integrations your declared applications will have in that environment when determining if it safe to deploy. When using this script for a production release, and you are using tags, it is always the most future-proof option to use the `--to` if possible, as it will catch any newly added consumers or providers.
 
@@ -182,6 +182,13 @@ Can I deploy the latest version of Foo with tag "master" and the latest version 
                                --pacticipant Bar --latest master \
                                --broker-base-url BROKER_BASE_URL
 
+Can I deploy all the applications in my monorepo to prod?
+
+    $ pact-broker can-i-deploy --pacticipant A --version a7e28207 \
+                               --pacticipant B --version a7e28207 \
+                               --pacticipant C --version a7e28207 \
+                               --to prod \
+                               --broker-base-url BROKER_BASE_URL                               
 
 Mobile provider use case - can I deploy version b80e7b1b of Bar, all versions of Foo with tag "prod", and the latest version tagged "prod" of any other automatically calculated dependencies together? (Eg. where Bar is a provider and Foo is a mobile consumer with multiple versions in production, and Bar also has its own providers it needs to be compatible with.)
 
