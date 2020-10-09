@@ -95,7 +95,7 @@ module PactBroker
           end
 
           latest_pact_url = pacts.publish(pact_hash: pact, consumer_version: consumer_version)
-          $stdout.puts "The latest version of this pact can be accessed at the following URL (use this to configure the provider verification):\n#{latest_pact_url}"
+          $stdout.puts "The latest version of this pact can be accessed at the following URL:\n#{latest_pact_url}"
           true
         end
       end
