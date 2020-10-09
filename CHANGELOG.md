@@ -1,3 +1,10 @@
+<a name="v1.30.0"></a>
+### v1.30.0 (2020-10-09)
+
+#### Features
+
+* remove outdated comment from pact publishing output	 ([251b4df](/../../commit/251b4df))
+
 <a name="v1.29.1"></a>
 ### v1.29.1 (2020-08-07)
 
