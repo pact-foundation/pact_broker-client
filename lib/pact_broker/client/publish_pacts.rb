@@ -77,13 +77,13 @@ module PactBroker
         versions = pact_broker_client.pacticipants.versions
         Retry.while_error do
           consumer_names.collect do | consumer_name |
-            $stdout.puts "Tagging version #{consumer_version} of #{consumer_name} as #{tag.inspect}"
             versions.tag(pacticipant: consumer_name, version: consumer_version, tag: tag)
+            $stdout.puts "Tagged version #{consumer_version} of #{consumer_name} as #{tag.inspect}"
             true
           end
         end
       rescue => e
-        $stderr.puts "Failed to tag versions due to error: #{e.class} - #{e}"
+        $stderr.puts "Failed to tag version due to error: #{e.class} - #{e}"
         false
       end
 
