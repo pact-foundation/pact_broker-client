@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'base_client'
 require 'pact_broker/client/matrix/resource'
 
@@ -39,7 +41,7 @@ module PactBroker
               response.body
             end
           rescue
-            raise Error.new(response.body)
+            raise Error.new("status=#{response.code} #{response.body}")
           end
           raise Error.new(error_message)
         end
