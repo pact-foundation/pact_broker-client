@@ -2,10 +2,11 @@ require 'pact_broker/client/base_client'
 module PactBroker
   module Client
     describe BaseClient do
-      describe '#initialize' do
-        subject { BaseClient.new(base_url: base_url) }
+      subject { BaseClient.new(base_url: base_url) }
 
-        let(:base_url) { 'http://pact_broker_base_url'}
+      let(:base_url) { 'http://pact_broker_base_url'}
+
+      describe '#initialize' do
         let(:username) { 'pact_repo_username'}
         let(:password) { 'pact_repo_password'}
         let(:token) { '123456789' }
@@ -116,6 +117,63 @@ module PactBroker
             it "raises an error" do
               expect { subject.url_for_relation('pb:not-found', name: 'wiffle') }.to raise_error PactBroker::Client::RelationNotFound, /Could not find relation pb:not-found in index resource/
             end
+          end
+        end
+      end
+
+      describe '#handle_response' do
+        let(:response) { double('Response', success?: true) }
+
+        it 'yields response object' do
+          expect { |block| subject.handle_response(response, &block) }.to yield_with_args(response)
+        end
+
+        context 'with 404 response' do
+          let(:response) { double('Response', success?: false, code: 404) }
+          it 'returns nil' do
+            expect(subject.handle_response(response)).to be_nil
+          end
+        end
+
+        context 'with 401 response' do
+          let(:response) { double('Response', success?: false, code: 401, body: 'body') }
+          it 'raise an exception with meaningful message' do
+            expect { subject.handle_response(response) }
+              .to raise_error(PactBroker::Client::Error, "Authentication failed: body")
+          end
+        end
+
+        context 'with 403 response' do
+          let(:response) { double('Response', success?: false, code: 403, body: 'body') }
+          it 'raise an exception with meaningful message' do
+            expect { subject.handle_response(response) }
+              .to raise_error(PactBroker::Client::Error, "Authorization failed (insufficient permissions): body")
+          end
+        end
+
+        context 'with 409 response' do
+          let(:response) { double('Response', success?: false, code: 409, body: 'body') }
+          it 'raise an exception with meaningful message' do
+            expect { subject.handle_response(response) }
+              .to raise_error(PactBroker::Client::Error, "Potential duplicate pacticipants: body")
+          end
+        end
+
+        context 'with unsuccessful JSON response' do
+          let(:response) do
+            double('Response', success?: false, code: 500, body: '{"errors": ["Internal server error"]}')
+          end
+          it 'raise an exception with meaningful message' do
+            expect { subject.handle_response(response) }
+              .to raise_error(PactBroker::Client::Error, "Internal server error")
+          end
+        end
+
+        context 'with unsucessful nono-JSON response ' do
+          let(:response) { double('Response', success?: false, code: 500, body: 'Internal server error') }
+          it 'raise an exception with meaningful message' do
+            expect { subject.handle_response(response) }
+              .to raise_error(PactBroker::Client::Error, "status=500 Internal server error")
           end
         end
       end

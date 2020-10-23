@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'erb'
 require 'httparty'
 require 'pact_broker/client/error'
@@ -30,6 +32,12 @@ module PactBroker
     end
 
     class BaseClient
+      ERROR_CODE_MAPPING = {
+        401 => "Authentication failed",
+        403 => "Authorization failed (insufficient permissions)",
+        409 => "Potential duplicate pacticipants"
+      }.freeze
+
       include UrlHelpers
       include HTTParty
       include StringToSymbol
@@ -69,14 +77,8 @@ module PactBroker
           yield response
         elsif response.code == 404
           nil
-        elsif response.code == 403
-          message = "Authorization failed (insufficient permissions)"
-          if response.body && response.body.size > 0
-            message = message + ": #{response.body}"
-          end
-          raise Error.new(message)
-        elsif response.code == 401
-          message = "Authentication failed"
+        elsif ERROR_CODE_MAPPING.key?(response.code)
+          message = ERROR_CODE_MAPPING.fetch(response.code)
           if response.body && response.body.size > 0
             message = message + ": #{response.body}"
           end
@@ -93,7 +95,7 @@ module PactBroker
               response.body
             end
           rescue
-            raise Error.new(response.body)
+            raise Error.new("status=#{response.code} #{response.body}")
           end
           raise Error.new(error_message)
         end
