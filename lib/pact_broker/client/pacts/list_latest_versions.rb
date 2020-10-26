@@ -20,7 +20,7 @@ module PactBroker
 
         def call
           message = if output == 'json'
-            versions_resource.response.body
+            versions_resource.response.raw_body
           else
             to_text(versions)
           end
