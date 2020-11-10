@@ -37,6 +37,10 @@ module PactBroker
         @pact_broker_client ||= PactBroker::Client::PactBrokerClient.new(base_url: pact_broker_base_url, client_options: pact_broker_client_options)
       end
 
+      def merge_on_server?
+        pact_broker_client_options[:write] == :merge
+      end
+
       def publish_pacts
         pact_files.group_by(&:pact_name).collect do | pact_name, pact_files |
           $stdout.puts "Merging #{pact_files.collect(&:path).join(", ")}" if pact_files.size > 1
@@ -91,7 +95,11 @@ module PactBroker
         Retry.while_error do
           pacts = pact_broker_client.pacticipants.versions.pacts
           if pacts.version_published?(consumer: pact.consumer_name, provider: pact.provider_name, consumer_version: consumer_version)
-            $stdout.puts ::Term::ANSIColor.yellow("A pact for this consumer version is already published. Overwriting. (Note: Overwriting pacts is not recommended as it can lead to race conditions. Best practice is to provide a unique consumer version number for each publication.)")
+            if merge_on_server?
+              $stdout.puts "A pact for this consumer version is already published. Merging contents."
+            else
+              $stdout.puts ::Term::ANSIColor.yellow("A pact for this consumer version is already published. Overwriting. (Note: Overwriting pacts is not recommended as it can lead to race conditions. Best practice is to provide a unique consumer version number for each publication.)")
+            end
           end
 
           latest_pact_url = pacts.publish(pact_hash: pact, consumer_version: consumer_version)
