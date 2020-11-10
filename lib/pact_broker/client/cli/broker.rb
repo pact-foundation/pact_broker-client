@@ -50,7 +50,7 @@ module PactBroker
         method_option :broker_token, aliases: "-k", desc: "Pact Broker bearer token"
         method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for consumer version. Can be specified multiple times."
         method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Default: false"
-        method_option :merge, type: :boolean, default: false, require: false, desc: "If a pact already exists for this consumer verison and provider, merge the contents."
+        method_option :merge, type: :boolean, default: false, require: false, desc: "If a pact already exists for this consumer version and provider, merge the contents. Useful when running Pact tests concurrently on different build nodes."
         method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
 
         def publish(*pact_files)
