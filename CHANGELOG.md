@@ -1,3 +1,11 @@
+<a name="v1.33.0"></a>
+### v1.33.0 (2020-11-10)
+
+#### Features
+
+* **publish**
+  * allow pacts to be merged on the server side	 ([bd80f10](/../../commit/bd80f10))
+
 <a name="v1.32.0"></a>
 ### v1.32.0 (2020-10-26)
 
