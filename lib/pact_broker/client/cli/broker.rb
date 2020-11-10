@@ -50,6 +50,7 @@ module PactBroker
         method_option :broker_token, aliases: "-k", desc: "Pact Broker bearer token"
         method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for consumer version. Can be specified multiple times."
         method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Default: false"
+        method_option :merge, type: :boolean, default: false, require: false, desc: "If a pact already exists for this consumer verison and provider, merge the contents."
         method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
 
         def publish(*pact_files)
@@ -209,13 +210,14 @@ module PactBroker
 
           def publish_pacts pact_files
             require 'pact_broker/client/publish_pacts'
+            write_options = options[:merge] ? { write: :merge } : {}
 
             PactBroker::Client::PublishPacts.call(
               options.broker_base_url,
               file_list(pact_files),
               options.consumer_app_version,
               tags,
-              pact_broker_client_options
+              pact_broker_client_options.merge(write_options)
             )
           end
 
