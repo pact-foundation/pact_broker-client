@@ -16,8 +16,8 @@ module PactBroker
       def initialize pact_broker_base_url, pact_file_paths, consumer_version, tags, pact_broker_client_options={}
         @pact_broker_base_url = pact_broker_base_url
         @pact_file_paths = pact_file_paths
-        @consumer_version = consumer_version
-        @tags = tags
+        @consumer_version = consumer_version.respond_to?(:strip) ? consumer_version.strip : consumer_version
+        @tags = tags ? tags.collect{ |tag| tag.respond_to?(:strip) ? tag.strip : tag } : tags
         @pact_broker_client_options = pact_broker_client_options
       end
 

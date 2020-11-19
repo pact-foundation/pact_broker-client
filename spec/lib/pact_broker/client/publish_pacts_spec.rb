@@ -62,12 +62,12 @@ module PactBroker
         end
 
         context "when publishing is successful" do
-
           it "puts the location of the latest pact" do
             allow($stdout).to receive(:puts)
             expect($stdout).to receive(:puts).with(/#{latest_pact_url}/)
             subject.call
           end
+
           it "returns true" do
             expect(subject.call).to be true
           end
@@ -142,6 +142,15 @@ module PactBroker
           end
         end
 
+        context "when consumer_version has a new line" do
+          let(:consumer_version) { "1\n" }
+
+          it "strips the new line" do
+            expect(pacts_client).to receive(:publish).with(pact_hash: pact_hash, consumer_version: "1")
+            subject.call
+          end
+        end
+
         context "when pact_broker_base_url is blank" do
           let(:pact_broker_base_url) { " " }
           it "raises a validation errror" do
@@ -162,6 +171,16 @@ module PactBroker
             expect(pact_versions_client).to receive(:tag).ordered
             expect(pacts_client).to receive(:publish).ordered
             subject.call
+          end
+
+          context "when the tag has a new line on the end of it" do
+            let(:tags) { ["foo\n"] }
+
+            it "strips the newline" do
+              expect(pact_versions_client).to receive(:tag).with({pacticipant: "Consumer",
+                version: consumer_version, tag: "foo"})
+              subject.call
+            end
           end
 
           context "when an error occurs tagging the pact" do
