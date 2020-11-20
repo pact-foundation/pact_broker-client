@@ -1,3 +1,14 @@
+<a name="v1.34.0"></a>
+### v1.34.0 (2020-11-20)
+
+#### Features
+
+* **pact publish**
+  * strip new lines from version numbers and tags	 ([5842d24](/../../commit/5842d24))
+
+* **publish**
+  * update output text when pact already exists and merging	 ([9b849d3](/../../commit/9b849d3))
+
 <a name="v1.33.0"></a>
 ### v1.33.0 (2020-11-10)
 
