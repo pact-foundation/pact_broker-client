@@ -16,6 +16,10 @@ Download the latest [pact-ruby-standalone][pact-ruby-standalone] package. You do
 
 Add `gem 'pact_broker-client'` to your Gemfile and run `bundle install`, or install the gem directly by running `gem install pact_broker-client`.
 
+## Connecting to a Pact Broker with a self signed certificate
+
+To connect to a Pact Broker that uses custom SSL cerificates, set the environment variable `$SSL_CERT_FILE` or `$SSL_CERT_DIR` to a path that contains the appropriate certificate. Read more at https://docs.pact.io/pact_broker/advanced_topics/using-tls#for-non-jvm
+
 ## Usage - CLI
 
 The Pact Broker base URL can be specified either using the environment variable `$PACT_BROKER_BASE_URL` or the `-b` or `--broker-base-url` parameters.
@@ -25,8 +29,6 @@ Pact Broker authentication can be performed either using basic auth or a bearer 
 Basic auth parameters can be specified using the `$PACT_BROKER_USERNAME` and `$PACT_BROKER_PASSWORD` environment variables, or the `-u` or `--broker-username` and `-p` or `--broker-password` parameters.
 
 Authentication using a bearer token can be specified using the environment variable `$PACT_BROKER_TOKEN` or the `-k` or `--broker-token` parameters. This authentication system is used by [Pactflow](pactflow.io).
-
-To connect to a Pact Broker that uses custom SSL cerificates, set the environment variable `$SSL_CERT_FILE` or `$SSL_CERT_DIR` to a path that contains the appropriate certificate.
 
 ### publish
 
