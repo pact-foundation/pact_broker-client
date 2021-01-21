@@ -164,7 +164,12 @@ Pact Broker will respond with:
         },
         "verificationResult": {
           "verifiedAt": "2017-10-10T12:49:04+11:00",
-          "success": true
+          "success": true,
+          "_links": {
+            "self": {
+              "href": "http://result"
+            }
+          }
         },
         "pact": {
           "createdAt": "2017-10-10T12:49:04+11:00"
@@ -185,7 +190,12 @@ Pact Broker will respond with:
         },
         "verificationResult": {
           "verifiedAt": "2017-10-10T12:49:04+11:00",
-          "success": true
+          "success": true,
+          "_links": {
+            "self": {
+              "href": "http://result"
+            }
+          }
         },
         "pact": {
           "createdAt": "2017-10-10T12:49:04+11:00"
@@ -233,7 +243,12 @@ Pact Broker will respond with:
         },
         "verificationResult": {
           "verifiedAt": "2017-10-10T12:49:04+11:00",
-          "success": true
+          "success": true,
+          "_links": {
+            "self": {
+              "href": "http://result"
+            }
+          }
         },
         "pact": {
           "createdAt": "2017-10-10T12:49:04+11:00"
@@ -281,7 +296,12 @@ Pact Broker will respond with:
         },
         "verificationResult": {
           "verifiedAt": "2017-10-10T12:49:04+11:00",
-          "success": true
+          "success": true,
+          "_links": {
+            "self": {
+              "href": "http://result"
+            }
+          }
         },
         "pact": {
           "createdAt": "2017-10-10T12:49:04+11:00"
@@ -329,7 +349,12 @@ Pact Broker will respond with:
         },
         "verificationResult": {
           "verifiedAt": "2017-10-10T12:49:04+11:00",
-          "success": true
+          "success": true,
+          "_links": {
+            "self": {
+              "href": "http://result"
+            }
+          }
         },
         "pact": {
           "createdAt": "2017-10-10T12:49:04+11:00"
@@ -413,7 +438,12 @@ Pact Broker will respond with:
         },
         "verificationResult": {
           "verifiedAt": "2017-10-10T12:49:04+11:00",
-          "success": true
+          "success": true,
+          "_links": {
+            "self": {
+              "href": "http://result"
+            }
+          }
         },
         "pact": {
           "createdAt": "2017-10-10T12:49:04+11:00"
@@ -484,7 +514,12 @@ Pact Broker will respond with:
         },
         "verificationResult": {
           "verifiedAt": "2017-10-10T12:49:04+11:00",
-          "success": true
+          "success": true,
+          "_links": {
+            "self": {
+              "href": "http://result"
+            }
+          }
         },
         "pact": {
           "createdAt": "2017-10-10T12:49:04+11:00"
@@ -735,7 +770,12 @@ Pact Broker will respond with:
         },
         "verificationResult": {
           "verifiedAt": "2017-10-10T12:49:04+11:00",
-          "success": true
+          "success": true,
+          "_links": {
+            "self": {
+              "href": "http://result"
+            }
+          }
         },
         "pact": {
           "createdAt": "2017-10-10T12:49:04+11:00"

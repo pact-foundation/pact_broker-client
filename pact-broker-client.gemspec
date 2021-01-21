@@ -26,6 +26,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'table_print', '~> 1.5'
   gem.add_runtime_dependency 'thor', '>= 0.20', '< 2.0'
   gem.add_runtime_dependency 'rake', '~> 13.0' #For FileList
+  gem.add_runtime_dependency 'dig_rb', '~> 1.0'
 
   gem.add_development_dependency 'fakefs', '~> 0.4'
   gem.add_development_dependency 'webmock', '~> 3.0'

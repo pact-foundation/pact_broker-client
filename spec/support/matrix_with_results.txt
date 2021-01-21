@@ -1,0 +1,10 @@
+CONSUMER | C.VERSION | PROVIDER | P.VERSION | SUCCESS? | RESULT#
+---------|-----------|----------|-----------|----------|--------
+Foo      | 4         | Bar      | 5         | true     | 1
+Foo      | 4         | Bar      | 5         | ???      |
+Foo      | 4         | Bar      | 5         | false    | 2
+
+VERIFICATION RESULTS
+--------------------
+1. http://result (success)
+2. http://result (failure)
