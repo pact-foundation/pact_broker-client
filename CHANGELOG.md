@@ -1,3 +1,11 @@
+<a name="v1.35.0"></a>
+### v1.35.0 (2021-01-21)
+
+#### Features
+
+* **can-i-deploy**
+  * display links to verification results in the output of can-i-deploy when using text format	 ([976950d](/../../commit/976950d))
+
 <a name="v1.34.0"></a>
 ### v1.34.0 (2020-11-20)
 
