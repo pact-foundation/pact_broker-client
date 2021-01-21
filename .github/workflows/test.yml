@@ -11,9 +11,9 @@ jobs:
       matrix:
         ruby_version: ["2.2", "2.7", "3.0"]
         experimental: [false]
-      include:
-        - ruby_version: "3.0"
-          experimental: true
+        include:
+          - ruby_version: "3.0"
+            experimental: true
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
