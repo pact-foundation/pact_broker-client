@@ -2,7 +2,9 @@
 
 A client for the Pact Broker. Publishes and retrieves pacts, verification results, pacticipants, pacticipant versions and tags. The functionality is available via a CLI, or via Ruby Rake tasks. You can also use the [Pact CLI Docker image](https://hub.docker.com/r/pactfoundation/pact-cli).
 
-[![Build Status](https://travis-ci.org/pact-foundation/pact_broker-client.svg?branch=master)](https://travis-ci.org/pact-foundation/pact_broker-client)
+![Build status](https://github.com/pact-foundation/pact_broker-client/workflows/Test/badge.svg)
+
+[![Gem Version](https://badge.fury.io/rb/pact_broker-client.svg)](http://badge.fury.io/rb/pact_broker-client)
 
 ![Trigger update to docs.pact.io](https://github.com/pact-foundation/pact_broker-client/workflows/Trigger%20update%20to%20docs.pact.io/badge.svg)
 
@@ -198,7 +200,7 @@ Can I deploy all the applications in my monorepo to prod?
                                --pacticipant B --version a7e28207 \
                                --pacticipant C --version a7e28207 \
                                --to prod \
-                               --broker-base-url BROKER_BASE_URL                               
+                               --broker-base-url BROKER_BASE_URL
 
 Mobile provider use case - can I deploy version b80e7b1b of Bar, all versions of Foo with tag "prod", and the latest version tagged "prod" of any other automatically calculated dependencies together? (Eg. where Bar is a provider and Foo is a mobile consumer with multiple versions in production, and Bar also has its own providers it needs to be compatible with.)
 
