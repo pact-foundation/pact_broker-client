@@ -48,8 +48,11 @@ module PactBroker
         method_option :broker_username, aliases: "-u", desc: "Pact Broker basic auth username"
         method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
         method_option :broker_token, aliases: "-k", desc: "Pact Broker bearer token"
+        method_option :branch, aliases: "-h", desc: "Repository branch of the consumer version"
+        method_option :auto_detect_branch, type: :boolean, default: true, desc: "Automatically detect the repository branch from known CI environment variables or git CLI."
         method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for consumer version. Can be specified multiple times."
         method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Default: false"
+        method_option :build_url, desc: "The build URL that created the pact"
         method_option :merge, type: :boolean, default: false, require: false, desc: "If a pact already exists for this consumer version and provider, merge the contents. Useful when running Pact tests concurrently on different build nodes."
         method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
 
@@ -211,12 +214,18 @@ module PactBroker
           def publish_pacts pact_files
             require 'pact_broker/client/publish_pacts'
             write_options = options[:merge] ? { write: :merge } : {}
+            consumer_version_params = {
+              number: options.consumer_app_version,
+              branch: branch,
+              tags: tags,
+              build_url: options.build_url,
+              version_required: (!!options.branch || !!options.build_url || explict_auto_detect_branch)
+            }.compact
 
             PactBroker::Client::PublishPacts.call(
               options.broker_base_url,
               file_list(pact_files),
-              options.consumer_app_version,
-              tags,
+              consumer_version_params,
               pact_broker_client_options.merge(write_options)
             )
           end
@@ -238,8 +247,22 @@ module PactBroker
             require 'pact_broker/client/git'
 
             t = [*options.tag]
-            t << PactBroker::Client::Git.branch if options.tag_with_git_branch
+            t << PactBroker::Client::Git.branch(raise_error: true) if options.tag_with_git_branch
             t.compact.uniq
+          end
+
+          def branch
+            require 'pact_broker/client/git'
+
+            if options.branch.nil? && options.auto_detect_branch
+              PactBroker::Client::Git.branch(raise_error: explict_auto_detect_branch)
+            else
+              options.branch
+            end
+          end
+
+          def explict_auto_detect_branch
+            @explict_auto_detect_branch ||= ARGV.include?("--auto-detect-branch")
           end
 
           def pact_broker_client_options

@@ -19,17 +19,37 @@ module PactBroker
     class PublicationTask < ::Rake::TaskLib
 
       attr_accessor :pattern, :pact_broker_base_url, :consumer_version, :tag, :write_method, :tag_with_git_branch, :pact_broker_basic_auth, :pact_broker_token
+      attr_reader :auto_detect_branch, :branch, :build_url
       alias_method :tags=, :tag=
       alias_method :tags, :tag
 
       def initialize name = nil, &block
         @name = name
+        @auto_detect_branch = nil
+        @version_required = false
         @pattern = 'spec/pacts/*.json'
         @pact_broker_base_url = 'http://pact-broker'
         rake_task &block
       end
 
+      def auto_detect_branch= auto_detect_branch
+        @version_required = version_required || auto_detect_branch
+        @auto_detect_branch = auto_detect_branch
+      end
+
+      def branch= branch
+        @version_required = version_required || !!branch
+        @branch = branch
+      end
+
+      def build_url= build_url
+        @version_required = version_required || !!build_url
+        @build_url = build_url
+      end
+
       private
+
+      attr_reader :version_required
 
       def rake_task &block
         namespace :pact do
@@ -37,11 +57,11 @@ module PactBroker
           task task_name do
             block.call(self)
             require 'pact_broker/client/publish_pacts'
-            pact_broker_client_options =  {}
-              .merge( pact_broker_basic_auth ? { basic_auth: pact_broker_basic_auth } : {} )
-              .merge( write_method ? { write: write_method } : {} )
-              .merge( pact_broker_token ? { token: pact_broker_token } : {} )
-            success = PactBroker::Client::PublishPacts.new(pact_broker_base_url, FileList[pattern], consumer_version, all_tags, pact_broker_client_options).call
+            pact_broker_client_options = { write: write_method, token: pact_broker_token }
+            pact_broker_client_options[:basic_auth] = pact_broker_basic_auth if pact_broker_basic_auth && pact_broker_basic_auth.any?
+            pact_broker_client_options.compact!
+            consumer_version_params = { number: consumer_version, branch: the_branch, build_url: build_url, tags: all_tags, version_required: version_required }.compact
+            success = PactBroker::Client::PublishPacts.new(pact_broker_base_url, FileList[pattern], consumer_version_params, pact_broker_client_options).call
             raise "One or more pacts failed to be published" unless success
           end
         end
@@ -53,9 +73,18 @@ module PactBroker
 
       def all_tags
         t = [*tags]
-        t << PactBroker::Client::Git.branch if tag_with_git_branch
+        t << PactBroker::Client::Git.branch(raise_error: true) if tag_with_git_branch
         t.compact.uniq
       end
+
+      def the_branch
+        if branch.nil? && auto_detect_branch != false
+          PactBroker::Client::Git.branch(raise_error: auto_detect_branch == true)
+        else
+          branch
+        end
+      end
+
     end
   end
 end

@@ -1,6 +1,5 @@
-require 'spec_helper'
-require 'pact_broker/client'
 require_relative 'pact_helper'
+require 'pact_broker/client'
 
 describe PactBroker::Client::Versions, pact: true do
 

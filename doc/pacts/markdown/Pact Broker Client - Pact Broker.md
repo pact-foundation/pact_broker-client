@@ -28,6 +28,8 @@
 
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:latest-version_relation_exists_in_the_index_resource) given the pb:latest-version relation exists in the index resource
 
+* [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:pacticipant-version_relation_exists_in_the_index_resource) given the pb:pacticipant-version relation exists in the index resource
+
 * [A request for the index resource with the webhook relation](#a_request_for_the_index_resource_with_the_webhook_relation)
 
 * [A request for the list of the latest pacts from all consumers for the Pricing Service'](#a_request_for_the_list_of_the_latest_pacts_from_all_consumers_for_the_Pricing_Service&#39;_given_a_latest_pact_between_Condor_and_the_Pricing_Service_exists) given a latest pact between Condor and the Pricing Service exists
@@ -41,6 +43,10 @@
 * [A request to create a global webhook with a JSON body](#a_request_to_create_a_global_webhook_with_a_JSON_body)
 
 * [A request to create a pacticipant](#a_request_to_create_a_pacticipant)
+
+* [A request to create a pacticipant version](#a_request_to_create_a_pacticipant_version_given_version_26f353580936ad3b9baddb17b00e84f33c69e7cb_of_pacticipant_Foo_does_exist) given version 26f353580936ad3b9baddb17b00e84f33c69e7cb of pacticipant Foo does exist
+
+* [A request to create a pacticipant version](#a_request_to_create_a_pacticipant_version_given_version_26f353580936ad3b9baddb17b00e84f33c69e7cb_of_pacticipant_Foo_does_not_exist) given version 26f353580936ad3b9baddb17b00e84f33c69e7cb of pacticipant Foo does not exist
 
 * [A request to create a webhook for a consumer and provider](#a_request_to_create_a_webhook_for_a_consumer_and_provider_given_&#39;Condor&#39;_does_not_exist_in_the_pact-broker) given 'Condor' does not exist in the pact-broker
 
@@ -646,6 +652,33 @@ Pact Broker will respond with:
   }
 }
 ```
+<a name="a_request_for_the_index_resource_given_the_pb:pacticipant-version_relation_exists_in_the_index_resource"></a>
+Given **the pb:pacticipant-version relation exists in the index resource**, upon receiving **a request for the index resource** from Pact Broker Client, with
+```json
+{
+  "method": "get",
+  "path": "/",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "pb:pacticipant-version": {
+        "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-{pacticipant}-{version}"
+      }
+    }
+  }
+}
+```
 <a name="a_request_for_the_index_resource_with_the_webhook_relation"></a>
 Upon receiving **a request for the index resource with the webhook relation** from Pact Broker Client, with
 ```json
@@ -893,6 +926,76 @@ Pact Broker will respond with:
     "_links": {
       "self": {
         "href": "http://localhost:1234/pacticipants/Foo"
+      }
+    }
+  }
+}
+```
+<a name="a_request_to_create_a_pacticipant_version_given_version_26f353580936ad3b9baddb17b00e84f33c69e7cb_of_pacticipant_Foo_does_exist"></a>
+Given **version 26f353580936ad3b9baddb17b00e84f33c69e7cb of pacticipant Foo does exist**, upon receiving **a request to create a pacticipant version** from Pact Broker Client, with
+```json
+{
+  "method": "put",
+  "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-Foo-26f353580936ad3b9baddb17b00e84f33c69e7cb",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/hal+json"
+  },
+  "body": {
+    "branch": "main",
+    "buildUrl": "http://my-ci/builds/1"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "number": "26f353580936ad3b9baddb17b00e84f33c69e7cb",
+    "branch": "main",
+    "buildUrl": "http://my-ci/builds/1",
+    "_links": {
+      "self": {
+        "href": "http://localhost:1234/some-url"
+      }
+    }
+  }
+}
+```
+<a name="a_request_to_create_a_pacticipant_version_given_version_26f353580936ad3b9baddb17b00e84f33c69e7cb_of_pacticipant_Foo_does_not_exist"></a>
+Given **version 26f353580936ad3b9baddb17b00e84f33c69e7cb of pacticipant Foo does not exist**, upon receiving **a request to create a pacticipant version** from Pact Broker Client, with
+```json
+{
+  "method": "put",
+  "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-Foo-26f353580936ad3b9baddb17b00e84f33c69e7cb",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/hal+json"
+  },
+  "body": {
+    "branch": "main",
+    "buildUrl": "http://my-ci/builds/1"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 201,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "number": "26f353580936ad3b9baddb17b00e84f33c69e7cb",
+    "branch": "main",
+    "buildUrl": "http://my-ci/builds/1",
+    "_links": {
+      "self": {
+        "href": "http://localhost:1234/some-url"
       }
     }
   }

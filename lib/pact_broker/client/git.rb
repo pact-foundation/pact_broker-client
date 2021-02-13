@@ -16,10 +16,12 @@ BITBUCKET_BRANCH BITBUCKET_COMMIT https://confluence.atlassian.com/bitbucket/var
 =end
 
 # Keep in sync with pact-provider-verifier/lib/pact/provider_verifier/git.rb
+
+# `git name-rev --name-only HEAD` provides "tags/v1.35.0^0"
 module PactBroker
   module Client
     module Git
-      COMMAND = 'git name-rev --name-only HEAD'.freeze
+      COMMAND = 'git rev-parse --abbrev-ref HEAD'.freeze
       BRANCH_ENV_VAR_NAMES = %w{BUILDKITE_BRANCH CIRCLE_BRANCH TRAVIS_BRANCH GIT_BRANCH GIT_LOCAL_BRANCH APPVEYOR_REPO_BRANCH CI_COMMIT_REF_NAME BITBUCKET_BRANCH}.freeze
       COMMIT_ENV_VAR_NAMES = %w{BUILDKITE_COMMIT CIRCLE_SHA1 TRAVIS_COMMIT GIT_COMMIT APPVEYOR_REPO_COMMIT CI_COMMIT_ID BITBUCKET_COMMIT}
 
@@ -27,8 +29,8 @@ module PactBroker
         find_commit_from_env_vars
       end
 
-      def self.branch
-        find_branch_from_env_vars || branch_from_git_command
+      def self.branch(options)
+        find_branch_from_known_env_vars || find_branch_from_env_var_ending_with_branch || branch_from_git_command(options[:raise_error])
       end
 
       # private
@@ -37,8 +39,19 @@ module PactBroker
         COMMIT_ENV_VAR_NAMES.collect { |env_var_name| value_from_env_var(env_var_name) }.compact.first
       end
 
-      def self.find_branch_from_env_vars
+      def self.find_branch_from_known_env_vars
         BRANCH_ENV_VAR_NAMES.collect { |env_var_name| value_from_env_var(env_var_name) }.compact.first
+      end
+
+      def self.find_branch_from_env_var_ending_with_branch
+        values = ENV.keys
+          .select{ |env_var_name| env_var_name.end_with?("_BRANCH") }
+          .collect{ |env_var_name| value_from_env_var(env_var_name) }.compact
+        if values.size == 1
+          values.first
+        else
+          nil
+        end
       end
 
       def self.value_from_env_var(env_var_name)
@@ -50,24 +63,10 @@ module PactBroker
         end
       end
 
-      def self.branch_from_git_command
-        branch_names = nil
-        begin
-          branch_names = execute_git_command
-            .split("\n")
-            .collect(&:strip)
-            .reject(&:empty?)
-            .collect(&:split)
-            .collect(&:first)
-            .collect{ |line| line.gsub(/^origin\//, '') }
-            .reject{ |line| line == "HEAD" }
-
-        rescue StandardError => e
-          raise PactBroker::Client::Error, "Could not determine current git branch using command `#{COMMAND}`. #{e.class} #{e.message}"
-        end
-
-        validate_branch_names(branch_names)
-        branch_names[0]
+      def self.branch_from_git_command(raise_error)
+        branch_names = execute_and_parse_command(raise_error)
+        validate_branch_names(branch_names) if raise_error
+        branch_names.size == 1 ? branch_names[0] : nil
       end
 
       def self.validate_branch_names(branch_names)
@@ -82,6 +81,23 @@ module PactBroker
 
       def self.execute_git_command
         `#{COMMAND}`
+      end
+
+      def self.execute_and_parse_command(raise_error)
+        execute_git_command
+          .split("\n")
+          .collect(&:strip)
+          .reject(&:empty?)
+          .collect(&:split)
+          .collect(&:first)
+          .collect{ |line| line.gsub(/^origin\//, '') }
+          .reject{ |line| line == "HEAD" }
+      rescue StandardError => e
+        if raise_error
+          raise PactBroker::Client::Error, "Could not determine current git branch using command `#{COMMAND}`. #{e.class} #{e.message}"
+        else
+          return []
+        end
       end
     end
   end

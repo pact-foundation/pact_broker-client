@@ -1,1 +1,7 @@
-bundle exec bin/pact-broker publish spec/pacts/pact_broker_client-pact_broker.json --consumer-app-version 1.2.3 --broker-base-url http://localhost:9292 --tag-with-git-branch --broker-username localhost --broker-password localhost
+bundle exec bin/pact-broker publish spec/pacts/pact_broker_client-pact_broker.json \
+  --consumer-app-version 1.2.7 \
+  --broker-base-url http://localhost:9292 \
+   --broker-username localhost --broker-password localhost \
+    --auto-detect-branch \
+    --build-url http://mybuild
+

@@ -23,6 +23,7 @@ module PactBroker
         File.open("spec/pacts/consumer-provider.json", "w") { |file| file << pact_hash.to_json }
         File.open("spec/pacts/consumer-provider-2.json", "w") { |file| file << pact_hash.to_json }
         File.open("spec/pacts/foo-bar.json", "w") { |file| file << pact_hash_2.to_json }
+        allow_any_instance_of(PublishPacts).to receive(:create_index_entry_point).and_return(index_entry_point)
       end
 
       after do
@@ -34,11 +35,23 @@ module PactBroker
       let(:pact_file_paths) { ['spec/pacts/consumer-provider.json']}
       let(:consumer_version) { "1.2.3" }
       let(:tags) { nil }
-      let(:pact_hash) { {consumer: {name: 'Consumer'}, provider: {name: 'Provider'}, interactions: [] } }
-      let(:pact_hash_2) { {consumer: {name: 'Foo'}, provider: {name: 'Bar'}, interactions: [] } }
+      let(:branch) { nil }
+      let(:build_url) { nil }
+      let(:version_required) { false }
+      let(:pact_hash) { { consumer: { name: 'Consumer'}, provider: { name: 'Provider' }, interactions: [] } }
+      let(:pact_hash_2) { {consumer: { name: 'Foo' }, provider: { name: 'Bar' }, interactions: [] } }
       let(:pacts_client) { instance_double("PactBroker::ClientSupport::Pacts")}
       let(:pact_versions_client) { instance_double("PactBroker::Client::Versions", tag: false) }
       let(:pact_broker_base_url) { 'http://some-host'}
+      let(:consumer_version_params) do
+        {
+          number: consumer_version,
+          branch: branch,
+          tags: tags,
+          build_url: build_url,
+          version_required: version_required
+        }
+      end
       let(:pact_broker_client_options) do
         {
           basic_auth: {
@@ -47,8 +60,11 @@ module PactBroker
           }
         }
       end
+      let(:index_entry_point) { instance_double("PactBroker::Client::Hal::EntryPoint", :get! => index_resource )}
+      let(:index_resource) { instance_double("PactBroker::Client::Hal::Entity", can?: can_create_version ) }
+      let(:can_create_version) { false }
 
-      subject { PublishPacts.new(pact_broker_base_url, pact_file_paths, consumer_version, tags, pact_broker_client_options) }
+      subject { PublishPacts.new(pact_broker_base_url, pact_file_paths, consumer_version_params, pact_broker_client_options) }
 
       describe "call" do
         it "creates a PactBroker Client" do
@@ -184,7 +200,6 @@ module PactBroker
           end
 
           context "when an error occurs tagging the pact" do
-
             before do
               allow(pact_versions_client).to receive(:tag).and_raise("an error")
               allow(Retry).to receive(:sleep)
@@ -203,7 +218,6 @@ module PactBroker
         end
 
         context "when an error occurs every time while publishing a pact" do
-
           before do
             allow(Retry).to receive(:sleep)
             allow(pacts_client).to receive(:publish).and_raise("an error")
@@ -221,7 +235,6 @@ module PactBroker
         end
 
         context "when an error occurs less than the maximum number of retries" do
-
           before do
             allow(Retry).to receive(:sleep)
             tries = 0
@@ -243,6 +256,86 @@ module PactBroker
 
           it "returns true" do
             expect(subject.call).to eq true
+          end
+        end
+
+        context "when the broker does not support creation of a version with a branch but a branch is specified" do
+          let(:branch) { "main" }
+
+          context "when version_required is true" do
+            let(:version_required) { true }
+
+            it "raises an error" do
+              expect { subject.call }.to raise_error PactBroker::Client::Error
+            end
+          end
+        end
+
+        context "when the broker supports creation of a version with a branch" do
+          before do
+            allow(version_link).to receive(:expand).and_return(version_link)
+            allow(version_resource).to receive(:assert_success!).and_return(version_resource)
+            allow(version_resource).to receive_message_chain(:response, :status).and_return(version_creation_response_status)
+          end
+          let(:can_create_version) { true }
+          let(:version_link) { instance_double("PactBroker::Client::Hal::Link", put: version_resource) }
+          let(:version_resource) { instance_double("PactBroker::Client::Hal::Entity") }
+          let(:version_creation_response_status) { 201 }
+
+          before do
+            allow(index_resource).to receive(:_link).and_return(version_link)
+          end
+
+          context "when there is a branch, build_url or tags specified" do
+            let(:tags) { ["dev"] }
+            let(:branch) { ["main"] }
+            let(:build_url) { "build_url" }
+
+            it "creates a version with the branch, build_url and tags" do
+              expect(index_resource).to receive(:_link)
+              expect(version_link).to receive(:expand).with(pacticipant: "Consumer", version: "1.2.3")
+              expect(version_link).to receive(:put).with(branch: branch, buildUrl: build_url)
+              subject.call
+            end
+
+            context "when there is a branch but no tags" do
+              let(:tags) { [] }
+
+              it "does not set the tags, as this would overwrite the existing ones - not sure about this implementation" do
+                expect(version_link).to receive(:put).with(branch: branch, buildUrl: build_url)
+                subject.call
+              end
+            end
+
+            context "when the version response status is 201" do
+              it "puts a message indicating the version was created" do
+                expect($stdout).to receive(:puts).with(/Created/)
+                subject.call
+              end
+            end
+
+            context "when the version response status is 200" do
+              let(:version_creation_response_status) { 200 }
+
+              it "puts a message indicating the version was replaced" do
+                expect($stdout).to receive(:puts).with(/Replaced/)
+                subject.call
+              end
+            end
+          end
+
+          context "when there is no branch, tags or build_url specified" do
+            before do
+              allow(Retry).to receive(:while_error) { |&block| block.call }
+            end
+            let(:tags) { [] }
+            let(:branch) { nil }
+            let(:build_url) { nil }
+
+            it "does not create a version resource" do
+              expect(index_resource).to_not receive(:_link)
+              subject.call
+            end
           end
         end
       end

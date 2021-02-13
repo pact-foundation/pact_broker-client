@@ -5,6 +5,8 @@ PactBroker::Client::PublicationTask.new(:localhost) do | task |
   task.tag = `git rev-parse --abbrev-ref HEAD`.strip
   task.consumer_version = PactBroker::Client::VERSION
   task.pact_broker_base_url = "http://localhost:9292"
+  task.build_url = "http://ci"
+  # task.branch = "main"
 end
 
 PactBroker::Client::PublicationTask.new(:remote) do | task |

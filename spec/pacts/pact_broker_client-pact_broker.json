@@ -187,6 +187,112 @@
       }
     },
     {
+      "description": "a request for the index resource",
+      "providerState": "the pb:pacticipant-version relation exists in the index resource",
+      "request": {
+        "method": "get",
+        "path": "/",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pb:pacticipant-version": {
+              "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-{pacticipant}-{version}"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:pacticipant-version.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*{pacticipant}.*{version}"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to create a pacticipant version",
+      "providerState": "version 26f353580936ad3b9baddb17b00e84f33c69e7cb of pacticipant Foo does not exist",
+      "request": {
+        "method": "put",
+        "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-Foo-26f353580936ad3b9baddb17b00e84f33c69e7cb",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "branch": "main",
+          "buildUrl": "http://my-ci/builds/1"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "number": "26f353580936ad3b9baddb17b00e84f33c69e7cb",
+          "branch": "main",
+          "buildUrl": "http://my-ci/builds/1",
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/some-url"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to create a pacticipant version",
+      "providerState": "version 26f353580936ad3b9baddb17b00e84f33c69e7cb of pacticipant Foo does exist",
+      "request": {
+        "method": "put",
+        "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-Foo-26f353580936ad3b9baddb17b00e84f33c69e7cb",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "branch": "main",
+          "buildUrl": "http://my-ci/builds/1"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "number": "26f353580936ad3b9baddb17b00e84f33c69e7cb",
+          "branch": "main",
+          "buildUrl": "http://my-ci/builds/1",
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/some-url"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          }
+        }
+      }
+    },
+    {
       "description": "a request for the compatibility matrix for Foo version 1.2.3 and Bar version 4.5.6",
       "providerState": "the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6",
       "request": {

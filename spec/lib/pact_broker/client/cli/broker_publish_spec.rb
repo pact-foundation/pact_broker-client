@@ -27,9 +27,8 @@ module PactBroker::Client::CLI
           expect(PactBroker::Client::PublishPacts).to receive(:call).with(
             "http://pact-broker",
             ["spec/support/cli_test_pacts/foo.json"],
-            "1.2.3",
-            [],
-            {verbose: nil}
+            { number: "1.2.3", tags: [], version_required: false },
+            { verbose: nil }
           )
           invoke_broker
         end
@@ -42,7 +41,6 @@ module PactBroker::Client::CLI
           expect(PactBroker::Client::PublishPacts).to receive(:call).with(
             anything,
             ["spec/support/cli_test_pacts/bar.json", "spec/support/cli_test_pacts/foo.json"],
-            anything,
             anything,
             anything
           )
@@ -58,7 +56,6 @@ module PactBroker::Client::CLI
             anything,
             ["spec/support/cli_test_pacts/bar.json", "spec/support/cli_test_pacts/foo.json"],
             anything,
-            anything,
             anything
           )
           invoke_broker
@@ -72,7 +69,6 @@ module PactBroker::Client::CLI
           expect(PactBroker::Client::PublishPacts).to receive(:call).with(
             anything,
             ["spec/support/cli_test_pacts/bar.json", "spec/support/cli_test_pacts/foo.json"],
-            anything,
             anything,
             anything
           )
@@ -89,8 +85,7 @@ module PactBroker::Client::CLI
           expect(PactBroker::Client::PublishPacts).to receive(:call).with(
             anything,
             anything,
-            anything,
-            ['foo'],
+            hash_including(tags: ['foo']),
             anything
           )
           invoke_broker
@@ -100,7 +95,7 @@ module PactBroker::Client::CLI
       context "with tag-with-git-branch" do
         before do
           subject.options = OpenStruct.new(
-            minimum_valid_options.merge(tag_with_git_branch: true)
+            minimum_valid_options.merge(tag_with_git_branch: true, tag: ['foo'])
           )
         end
 
@@ -113,8 +108,110 @@ module PactBroker::Client::CLI
           expect(PactBroker::Client::PublishPacts).to receive(:call).with(
             anything,
             anything,
+            hash_including(tags: ['foo', 'bar']),
+            anything
+          )
+          invoke_broker
+        end
+      end
+
+      context "with a branch specified" do
+        before do
+          subject.options = OpenStruct.new(
+            minimum_valid_options.merge(branch: "main")
+          )
+        end
+
+        it "passes in the branch option" do
+          expect(PactBroker::Client::PublishPacts).to receive(:call).with(
             anything,
-            ['bar'],
+            anything,
+            hash_including(branch: "main", version_required: true),
+            anything
+          )
+          invoke_broker
+        end
+      end
+
+      context "with --auto-detect-branch on by default" do
+        before do
+          subject.options = OpenStruct.new(
+            minimum_valid_options.merge(auto_detect_branch: true)
+          )
+          allow(subject).to receive(:explict_auto_detect_branch).and_return(false)
+        end
+
+        it "determines the git branch name" do
+          expect(PactBroker::Client::Git).to receive(:branch).with(raise_error: false)
+          invoke_broker
+        end
+
+        it "passes in the auto detected branch option with version_required: false" do
+          expect(PactBroker::Client::PublishPacts).to receive(:call).with(
+            anything,
+            anything,
+            hash_including(branch: "bar", version_required: false),
+            anything
+          )
+          invoke_broker
+        end
+      end
+
+
+      context "with --auto-detect-branch specified explicitly" do
+        before do
+          subject.options = OpenStruct.new(
+            minimum_valid_options.merge(auto_detect_branch: true)
+          )
+          allow(subject).to receive(:explict_auto_detect_branch).and_return(true)
+        end
+
+        it "determines the git branch name" do
+          expect(PactBroker::Client::Git).to receive(:branch).with(raise_error: true)
+          invoke_broker
+        end
+
+        it "passes in the auto detected branch option with version_required: true" do
+          expect(PactBroker::Client::PublishPacts).to receive(:call).with(
+            anything,
+            anything,
+            hash_including(branch: "bar", version_required: true),
+            anything
+          )
+          invoke_broker
+        end
+
+        context "with the branch specified as well" do
+          before do
+            subject.options = OpenStruct.new(
+              minimum_valid_options.merge(branch: "specified-branch", auto_detect_branch: true)
+            )
+          end
+
+          it "uses the specified branch" do
+            expect(PactBroker::Client::PublishPacts).to receive(:call).with(
+              anything,
+              anything,
+              hash_including(branch: "specified-branch", version_required: true),
+              anything
+            )
+            invoke_broker
+          end
+        end
+      end
+
+      context "with the build_url specified" do
+        before do
+          subject.options = OpenStruct.new(
+            minimum_valid_options.merge(build_url: "http://ci")
+          )
+        end
+
+        it "passes in the branch option" do
+          expect(PactBroker::Client::PublishPacts).to receive(:call).with(
+            anything,
+            anything,
+            hash_including(build_url: "http://ci"),
             anything
           )
           invoke_broker
@@ -133,8 +230,7 @@ module PactBroker::Client::CLI
             anything,
             anything,
             anything,
-            anything,
-            hash_including({basic_auth: {username: 'foo', password: 'bar'}})
+            hash_including(basic_auth: { username: 'foo', password: 'bar' })
           )
           invoke_broker
         end
