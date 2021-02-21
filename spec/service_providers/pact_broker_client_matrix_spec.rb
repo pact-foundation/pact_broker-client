@@ -279,6 +279,10 @@ module PactBroker::Client
           expect(matrix[:matrix].size).to eq 1
         end
       end
+
+      context "with an environment name" do
+        it "passes the environment name in the options"
+      end
     end
   end
 end

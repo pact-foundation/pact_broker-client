@@ -53,10 +53,11 @@ module PactBroker
           opts[:success] = [*options[:success]]
         end
         opts[:limit] = options[:limit] if options[:limit]
+        opts[:environment] = options[:to_environment] if options[:to_environment]
         if options[:to_tag]
           opts[:latest] = 'true'
           opts[:tag] = options[:to_tag]
-        elsif selectors.size == 1
+        elsif selectors.size == 1 && !options[:to_environment]
           opts[:latest] = 'true'
         end
         opts

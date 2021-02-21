@@ -35,7 +35,7 @@ module PactBroker
         end
 
         it "invokes the CanIDeploy service" do
-          expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, {to_tag: nil, limit: 1000}, {output: 'table', retry_while_unknown: 1, retry_interval: 2}, {verbose: 'verbose'})
+          expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, {to_tag: nil, to_environment: nil, limit: 1000}, {output: 'table', retry_while_unknown: 1, retry_interval: 2}, {verbose: 'verbose'})
           invoke_can_i_deploy
         end
 
@@ -53,7 +53,18 @@ module PactBroker
           end
 
           it "passes the value as the matrix options" do
-            expect(CanIDeploy).to receive(:call).with(anything, anything, {to_tag: 'prod', limit: 1000}, anything, anything)
+            expect(CanIDeploy).to receive(:call).with(anything, anything, {to_tag: 'prod', to_environment: nil, limit: 1000}, anything, anything)
+            invoke_can_i_deploy
+          end
+        end
+
+        context "with --to-environment" do
+          before do
+            subject.options.to_environment = 'prod'
+          end
+
+          it "passes the value as the matrix options" do
+            expect(CanIDeploy).to receive(:call).with(anything, anything, {to_tag: nil, to_environment: 'prod', limit: 1000}, anything, anything)
             invoke_can_i_deploy
           end
         end
