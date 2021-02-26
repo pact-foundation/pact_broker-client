@@ -31,6 +31,8 @@ end
 desc 'List provider states'
 task 'pact:list_provider_states' do
   require 'json'
+  require 'pact_broker/client/backports'
+
   puts Dir.glob("spec/pacts/**.json").collect { | pact_file |
     puts pact_file
     JSON.parse(File.read(pact_file))['interactions'].collect{ | interaction| interaction['providerState'] }

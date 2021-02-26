@@ -57,6 +57,7 @@ module PactBroker
           task task_name do
             block.call(self)
             require 'pact_broker/client/publish_pacts'
+            require 'pact_broker/client/backports'
             pact_broker_client_options = { write: write_method, token: pact_broker_token }
             pact_broker_client_options[:basic_auth] = pact_broker_basic_auth if pact_broker_basic_auth && pact_broker_basic_auth.any?
             pact_broker_client_options.compact!

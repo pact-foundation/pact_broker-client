@@ -1,5 +1,6 @@
 require 'table_print'
 require 'dig_rb'
+require 'pact_broker/client/backports'
 
 module PactBroker
   module Client

@@ -1,4 +1,5 @@
 require 'pact_broker/client/error'
+require 'pact_broker/client/backports'
 
 =begin
 

@@ -214,6 +214,7 @@ module PactBroker
 
           def publish_pacts pact_files
             require 'pact_broker/client/publish_pacts'
+            require 'pact_broker/client/backports'
             write_options = options[:merge] ? { write: :merge } : {}
             consumer_version_params = {
               number: options.consumer_app_version,
