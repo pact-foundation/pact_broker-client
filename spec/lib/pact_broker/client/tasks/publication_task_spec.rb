@@ -63,7 +63,7 @@ module PactBroker::Client
         PactBroker::Client::PublicationTask.new(:git_branch) do | task |
           task.consumer_version = '1.2.3'
           task.tag_with_git_branch = true
-          task.auto_detect_branch = false
+          task.auto_detect_version_properties = false
           task.tags = ['bar']
         end
       end
@@ -79,11 +79,11 @@ module PactBroker::Client
       end
     end
 
-    context "when auto_detect_branch is explicitly set to true" do
+    context "when auto_detect_version_properties is explicitly set to true" do
       before :all do
         PactBroker::Client::PublicationTask.new(:git_branch_auto_detect_true) do | task |
           task.consumer_version = '1.2.3'
-          task.auto_detect_branch = true
+          task.auto_detect_version_properties = true
         end
       end
 
@@ -98,11 +98,11 @@ module PactBroker::Client
       end
     end
 
-    context "when auto_detect_branch is explicitly set to true and the branch is specified" do
+    context "when auto_detect_version_properties is explicitly set to true and the branch is specified" do
       before :all do
         PactBroker::Client::PublicationTask.new(:git_branch_auto_detect_true_with_branch) do | task |
           task.consumer_version = '1.2.3'
-          task.auto_detect_branch = true
+          task.auto_detect_version_properties = true
           task.branch = "main"
         end
       end
@@ -118,11 +118,11 @@ module PactBroker::Client
       end
     end
 
-    context "when auto_detect_branch is explicitly set to false" do
+    context "when auto_detect_version_properties is explicitly set to false" do
       before :all do
         PactBroker::Client::PublicationTask.new(:git_branch_auto_detect_false) do | task |
           task.consumer_version = '1.2.3'
-          task.auto_detect_branch = false
+          task.auto_detect_version_properties = false
         end
       end
 
@@ -137,7 +137,7 @@ module PactBroker::Client
       end
     end
 
-    context "when auto_detect_branch is left as its default" do
+    context "when auto_detect_version_properties is left as its default" do
       before :all do
         PactBroker::Client::PublicationTask.new(:git_branch_auto_detect_default) do | task |
           task.consumer_version = '1.2.3'

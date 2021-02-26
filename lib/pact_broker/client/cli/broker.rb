@@ -50,7 +50,7 @@ module PactBroker
         method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
         method_option :broker_token, aliases: "-k", desc: "Pact Broker bearer token"
         method_option :branch, aliases: "-h", desc: "Repository branch of the consumer version"
-        method_option :auto_detect_branch, type: :boolean, default: true, desc: "Automatically detect the repository branch from known CI environment variables or git CLI."
+        method_option :auto_detect_version_properties, hidden: true, type: :boolean, default: false, desc: "Automatically detect the repository branch from known CI environment variables or git CLI."
         method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for consumer version. Can be specified multiple times."
         method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Default: false"
         method_option :build_url, desc: "The build URL that created the pact"
@@ -220,7 +220,7 @@ module PactBroker
               branch: branch,
               tags: tags,
               build_url: options.build_url,
-              version_required: (!!options.branch || !!options.build_url || explict_auto_detect_branch)
+              version_required: (!!options.branch || !!options.build_url || explict_auto_detect_version_properties)
             }.compact
 
             PactBroker::Client::PublishPacts.call(
@@ -255,15 +255,15 @@ module PactBroker
           def branch
             require 'pact_broker/client/git'
 
-            if options.branch.nil? && options.auto_detect_branch
-              PactBroker::Client::Git.branch(raise_error: explict_auto_detect_branch)
+            if options.branch.nil? && options.auto_detect_version_properties
+              PactBroker::Client::Git.branch(raise_error: explict_auto_detect_version_properties)
             else
               options.branch
             end
           end
 
-          def explict_auto_detect_branch
-            @explict_auto_detect_branch ||= ARGV.include?("--auto-detect-branch")
+          def explict_auto_detect_version_properties
+            @explict_auto_detect_version_properties ||= ARGV.include?("--auto-detect-version-properties")
           end
 
           def pact_broker_client_options

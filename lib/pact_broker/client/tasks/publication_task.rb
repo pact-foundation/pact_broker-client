@@ -19,22 +19,22 @@ module PactBroker
     class PublicationTask < ::Rake::TaskLib
 
       attr_accessor :pattern, :pact_broker_base_url, :consumer_version, :tag, :write_method, :tag_with_git_branch, :pact_broker_basic_auth, :pact_broker_token
-      attr_reader :auto_detect_branch, :branch, :build_url
+      attr_reader :auto_detect_version_properties, :branch, :build_url
       alias_method :tags=, :tag=
       alias_method :tags, :tag
 
       def initialize name = nil, &block
         @name = name
-        @auto_detect_branch = nil
+        @auto_detect_version_properties = nil
         @version_required = false
         @pattern = 'spec/pacts/*.json'
         @pact_broker_base_url = 'http://pact-broker'
         rake_task &block
       end
 
-      def auto_detect_branch= auto_detect_branch
-        @version_required = version_required || auto_detect_branch
-        @auto_detect_branch = auto_detect_branch
+      def auto_detect_version_properties= auto_detect_version_properties
+        @version_required = version_required || auto_detect_version_properties
+        @auto_detect_version_properties = auto_detect_version_properties
       end
 
       def branch= branch
@@ -78,8 +78,8 @@ module PactBroker
       end
 
       def the_branch
-        if branch.nil? && auto_detect_branch != false
-          PactBroker::Client::Git.branch(raise_error: auto_detect_branch == true)
+        if branch.nil? && auto_detect_version_properties != false
+          PactBroker::Client::Git.branch(raise_error: auto_detect_version_properties == true)
         else
           branch
         end

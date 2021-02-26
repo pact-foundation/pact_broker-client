@@ -133,12 +133,12 @@ module PactBroker::Client::CLI
         end
       end
 
-      context "with --auto-detect-branch on by default" do
+      context "with --auto-detect-version-properties on by default" do
         before do
           subject.options = OpenStruct.new(
-            minimum_valid_options.merge(auto_detect_branch: true)
+            minimum_valid_options.merge(auto_detect_version_properties: true)
           )
-          allow(subject).to receive(:explict_auto_detect_branch).and_return(false)
+          allow(subject).to receive(:explict_auto_detect_version_properties).and_return(false)
         end
 
         it "determines the git branch name" do
@@ -158,12 +158,12 @@ module PactBroker::Client::CLI
       end
 
 
-      context "with --auto-detect-branch specified explicitly" do
+      context "with --auto-detect-version-properties specified explicitly" do
         before do
           subject.options = OpenStruct.new(
-            minimum_valid_options.merge(auto_detect_branch: true)
+            minimum_valid_options.merge(auto_detect_version_properties: true)
           )
-          allow(subject).to receive(:explict_auto_detect_branch).and_return(true)
+          allow(subject).to receive(:explict_auto_detect_version_properties).and_return(true)
         end
 
         it "determines the git branch name" do
@@ -184,7 +184,7 @@ module PactBroker::Client::CLI
         context "with the branch specified as well" do
           before do
             subject.options = OpenStruct.new(
-              minimum_valid_options.merge(branch: "specified-branch", auto_detect_branch: true)
+              minimum_valid_options.merge(branch: "specified-branch", auto_detect_version_properties: true)
             )
           end
 
