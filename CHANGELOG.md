@@ -1,3 +1,13 @@
+<a name="v1.36.0"></a>
+### v1.36.0 (2021-02-21)
+
+#### Features
+
+* **can-i-deploy**
+  * add --to-environment option	 ([05ae44c](/../../commit/05ae44c))
+
+* support version branch and build URL when publishing pacts	 ([a75f7df](/../../commit/a75f7df))
+
 <a name="v1.35.0"></a>
 ### v1.35.0 (2021-01-21)
 
