@@ -19,16 +19,12 @@ module PactBroker
         method_option :latest, required: false, aliases: "-l", banner: '[TAG]', desc: "Use the latest pacticipant version. Optionally specify a TAG to use the latest version with the specified tag."
         method_option :to, required: false, banner: 'TAG', desc: "This is too hard to explain in a short sentence. Look at the examples.", default: nil
         method_option :to_environment, required: false, banner: 'ENVIRONMENT', desc: "The environment into which the pacticipant(s) are to be deployed", default: nil, hide: true
-        method_option :broker_base_url, required: true, aliases: "-b", desc: "The base URL of the Pact Broker"
-        method_option :broker_username, aliases: "-u", desc: "Pact Broker basic auth username"
-        method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
-        method_option :broker_token, aliases: "-k", desc: "Pact Broker bearer token"
         method_option :output, aliases: "-o", desc: "json or table", default: 'table'
-        method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
         method_option :retry_while_unknown, banner: 'TIMES', type: :numeric, default: 0, required: false, desc: "The number of times to retry while there is an unknown verification result (ie. the provider verification is likely still running)"
         method_option :retry_interval, banner: 'SECONDS', type: :numeric, default: 10, required: false, desc: "The time between retries in seconds. Use in conjuction with --retry-while-unknown"
         # Allow limit to be set manually until https://github.com/pact-foundation/pact_broker-client/issues/53 is fixed
         method_option :limit, hide: true
+        shared_authentication_options
 
         def can_i_deploy(*ignored_but_necessary)
           require 'pact_broker/client/cli/version_selector_options_parser'
@@ -45,17 +41,13 @@ module PactBroker
 
         desc 'publish PACT_DIRS_OR_FILES ...', "Publish pacts to a Pact Broker."
         method_option :consumer_app_version, required: true, aliases: "-a", desc: "The consumer application version"
-        method_option :broker_base_url, required: true, aliases: "-b", desc: "The base URL of the Pact Broker"
-        method_option :broker_username, aliases: "-u", desc: "Pact Broker basic auth username"
-        method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
-        method_option :broker_token, aliases: "-k", desc: "Pact Broker bearer token"
         method_option :branch, aliases: "-h", desc: "Repository branch of the consumer version"
         method_option :auto_detect_version_properties, hidden: true, type: :boolean, default: false, desc: "Automatically detect the repository branch from known CI environment variables or git CLI."
         method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for consumer version. Can be specified multiple times."
         method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Default: false"
         method_option :build_url, desc: "The build URL that created the pact"
         method_option :merge, type: :boolean, default: false, require: false, desc: "If a pact already exists for this consumer version and provider, merge the contents. Useful when running Pact tests concurrently on different build nodes."
-        method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
+        shared_authentication_options
 
         def publish(*pact_files)
           require 'pact_broker/client/error'
@@ -73,11 +65,7 @@ module PactBroker
         method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for pacticipant version. Can be specified multiple times."
         method_option :auto_create_version, type: :boolean, default: false, desc: "Automatically create the pacticipant version if it does not exist. Default: false"
         method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag pacticipant version with the name of the current git branch. Default: false"
-        method_option :broker_base_url, required: true, aliases: "-b", desc: "The base URL of the Pact Broker"
-        method_option :broker_username, aliases: "-u", desc: "Pact Broker basic auth username"
-        method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
-        method_option :broker_token, aliases: "-k", desc: "Pact Broker bearer token"
-        method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
+        shared_authentication_options
 
         def create_version_tag
           require 'pact_broker/client/create_tag'
@@ -97,12 +85,8 @@ module PactBroker
         method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that the version belongs to."
         method_option :version, required: false, aliases: "-e", desc: "The pacticipant version number."
         method_option :latest, required: false, aliases: "-l", banner: '[TAG]', desc: "Describe the latest pacticipant version. Optionally specify a TAG to describe the latest version with the specified tag."
-        method_option :broker_base_url, required: true, aliases: "-b", desc: "The base URL of the Pact Broker"
-        method_option :broker_username, aliases: "-u", desc: "Pact Broker basic auth username"
-        method_option :broker_password, aliases: "-p", desc: "Pact Broker basic auth password"
-        method_option :broker_token, aliases: "-k", desc: "Pact Broker bearer token"
         method_option :output, aliases: "-o", desc: "json or table or id", default: 'table'
-        method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
+        shared_authentication_options
 
         desc 'describe-version', 'Describes a pacticipant version. If no version or tag is specified, the latest version is described.'
         def describe_version
@@ -143,7 +127,7 @@ module PactBroker
 
         desc 'test-webhook', 'Test the execution of a webhook'
         method_option :uuid, type: :string, required: true, desc: "Specify the uuid for the webhook"
-        shared_authentication_options_for_pact_broker
+        shared_authentication_options
         def test_webhook
           require 'pact_broker/client/webhooks/test'
           result = PactBroker::Client::Webhooks::Test.call(options, pact_broker_client_options)
@@ -161,7 +145,7 @@ module PactBroker
         desc 'create-or-update-pacticipant', 'Create or update pacticipant by name'
         method_option :name, type: :string, required: true, desc: "Pacticipant name"
         method_option :repository_url, type: :string, required: false, desc: "The repository URL of the pacticipant"
-        shared_authentication_options_for_pact_broker
+        shared_authentication_options
         verbose_option
         def create_or_update_pacticipant(*required_but_ignored)
           raise ::Thor::RequiredArgumentMissingError, "Pacticipant name cannot be blank" if options.name.strip.size == 0
@@ -172,7 +156,7 @@ module PactBroker
         end
 
         desc 'list-latest-pact-versions', 'List the latest pact for each integration'
-        shared_authentication_options_for_pact_broker
+        shared_authentication_options
         method_option :output, aliases: "-o", desc: "json or table", default: 'table'
         def list_latest_pact_versions(*required_but_ignored)
           require 'pact_broker/client/pacts/list_latest_versions'
