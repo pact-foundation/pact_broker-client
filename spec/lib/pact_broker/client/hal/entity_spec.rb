@@ -9,8 +9,9 @@ module PactBroker::Client
       end
 
       let(:provider_response) do
-        double('response', body: provider_hash, success?: true)
+        double('response', body: provider_hash, success?: true, status: status)
       end
+      let(:status) { 200 }
 
       let(:provider_hash) do
         {
@@ -72,12 +73,12 @@ module PactBroker::Client
           subject(:entity) { ErrorEntity.new("http://pact", pact_hash, http_client) }
 
           it "raises an error" do
-            expect { entity.assert_success! }.to raise_error ErrorResponseReturned, "Error retrieving http://pact status= "
+            expect { entity.assert_success! }.to raise_error ErrorResponseReturned, "Error retrieving http://pact status="
           end
         end
 
         context "when the response is not successful and there is a response" do
-          let(:response) { double('response', code: 200, raw_body: "body") }
+          let(:response) { double('response', status: 200, raw_body: "body") }
 
           subject(:entity) { ErrorEntity.new("http://pact", pact_hash, http_client, response) }
 

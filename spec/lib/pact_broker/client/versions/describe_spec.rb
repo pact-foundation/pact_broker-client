@@ -5,7 +5,6 @@ module PactBroker
     class Versions
       describe Describe do
         describe ".call" do
-
           let(:versions_client) do
             instance_double('PactBroker::Client::Versions', latest: version_hash)
           end

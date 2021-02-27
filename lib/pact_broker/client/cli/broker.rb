@@ -166,6 +166,33 @@ module PactBroker
         end
 
         ignored_and_hidden_potential_options_from_environment_variables
+        desc "record-deployment", "Record deployment of a pacticipant version to an environment"
+        method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that was deployed."
+        method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number that was deployed."
+        method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was deployed to."
+        method_option :replaced_previous_deployed_version, type: :boolean, default: true, required: false, desc: "Whether or not this deployment replaced the previous deployed version. If it did, the previous deployed version of this pacticipant will be marked as undeployed in the Pact Broker."
+        method_option :output, aliases: "-o", desc: "json or text", default: 'text'
+        shared_authentication_options
+
+        def record_deployment
+          require 'pact_broker/client/versions/record_deployment'
+          params = {
+            pacticipant_name: options.pacticipant,
+            version_number: options.version,
+            environment_name: options.environment,
+            replaced_previous_deployed_version: options.replaced_previous_deployed_version,
+            output: options.output
+          }
+          result = PactBroker::Client::Versions::RecordDeployment.call(
+            params,
+            options.broker_base_url,
+            pact_broker_client_options
+          )
+          $stdout.puts result.message
+          exit(1) unless result.success
+        end
+
+        ignored_and_hidden_potential_options_from_environment_variables
         desc 'version', "Show the pact_broker-client gem version"
         def version
           require 'pact_broker/client/version'

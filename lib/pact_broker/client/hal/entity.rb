@@ -1,6 +1,7 @@
 require 'erb'
 require 'delegate'
 require 'pact_broker/client/hal/link'
+require 'pact_broker/client/hal/links'
 
 module PactBroker
   module Client
@@ -51,8 +52,25 @@ module PactBroker
           end
         end
 
+        def _links(key)
+          if @links[key] && @links[key].is_a?(Array)
+            link_collection = @links[key].collect do | hash |
+              Link.new(hash, @client)
+            end
+            Links.new(@href, key, link_collection)
+          elsif @links[key].is_a?(Hash)
+            Links.new(@href, key, [Link.new(@links[key], @client)])
+          else
+            nil
+          end
+        end
+
         def _link!(key)
           _link(key) or raise RelationNotFoundError.new("Could not find relation '#{key}' in resource at #{@href}")
+        end
+
+        def _links!(key)
+          _links(key) or raise RelationNotFoundError.new("Could not find relation '#{key}' in resource at #{@href}")
         end
 
         def success?
@@ -85,7 +103,7 @@ module PactBroker
           @data.key?(method_name) || @links.key?(method_name)
         end
 
-        def assert_success!
+        def assert_success!(_ignored = nil)
           self
         end
       end
@@ -107,8 +125,14 @@ module PactBroker
           false
         end
 
-        def assert_success!
-          raise ErrorResponseReturned.new("Error retrieving #{@href} status=#{response ? response.code: nil} #{response ? response.raw_body : ''}")
+        def assert_success!(messages = {})
+          default_message = "Error retrieving #{@href} status=#{response ? response.status: nil} #{response ? response.raw_body : ''}".strip
+          message = if response && messages[response.status]
+            (messages[response.status] || "") + " (#{default_message})"
+          else
+            default_message
+          end
+          raise ErrorResponseReturned.new(message)
         end
       end
     end

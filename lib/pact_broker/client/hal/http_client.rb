@@ -83,6 +83,10 @@ module PactBroker
             end
           end
 
+          def headers
+            __getobj__().to_hash
+          end
+
           def raw_body
             __getobj__().body
           end
