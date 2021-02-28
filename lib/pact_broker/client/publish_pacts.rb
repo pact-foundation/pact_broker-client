@@ -5,11 +5,12 @@ require 'pact_broker/client/pact_file'
 require 'pact_broker/client/pact_hash'
 require 'pact_broker/client/merge_pacts'
 require 'pact_broker/client/hal_client_methods'
+require 'pact_broker/client/hash_refinements'
 
 module PactBroker
   module Client
     class PublishPacts
-
+      using PactBroker::Client::HashRefinements
       include HalClientMethods
 
       def self.call(pact_broker_base_url, pact_file_paths, consumer_version_params, pact_broker_client_options={})
