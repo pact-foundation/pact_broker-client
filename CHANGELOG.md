@@ -1,3 +1,14 @@
+<a name="v1.37.0"></a>
+### v1.37.0 (2021-03-01)
+
+#### Features
+
+* add record-deployment	 ([6e5e208](/../../commit/6e5e208))
+
+#### Bug Fixes
+
+* use refinement to add compact to Hash	 ([c2c1cab](/../../commit/c2c1cab))
+
 <a name="v1.36.0"></a>
 ### v1.36.0 (2021-02-21)
 
