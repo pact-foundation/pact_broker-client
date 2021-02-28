@@ -1,4 +1,5 @@
 require 'pact_broker/client/cli/custom_thor'
+require 'pact_broker/client/hash_refinements'
 require 'thor/error'
 
 module PactBroker
@@ -11,6 +12,8 @@ module PactBroker
       class VersionCreationError < ::Thor::Error; end
 
       class Broker < CustomThor
+        using PactBroker::Client::HashRefinements
+
         desc 'can-i-deploy', ''
         long_desc File.read(File.join(File.dirname(__FILE__), 'can_i_deploy_long_desc.txt'))
 
@@ -229,7 +232,7 @@ module PactBroker
 
           def publish_pacts pact_files
             require 'pact_broker/client/publish_pacts'
-            require 'pact_broker/client/backports'
+
             write_options = options[:merge] ? { write: :merge } : {}
             consumer_version_params = {
               number: options.consumer_app_version,

@@ -1,5 +1,5 @@
 require 'pact_broker/client/error'
-require 'pact_broker/client/backports'
+require 'pact_broker/client/hash_refinements'
 
 =begin
 
@@ -22,6 +22,8 @@ BITBUCKET_BRANCH BITBUCKET_COMMIT https://confluence.atlassian.com/bitbucket/var
 module PactBroker
   module Client
     module Git
+      using PactBroker::Client::HashRefinements
+
       COMMAND = 'git rev-parse --abbrev-ref HEAD'.freeze
       BRANCH_ENV_VAR_NAMES = %w{BUILDKITE_BRANCH CIRCLE_BRANCH TRAVIS_BRANCH GIT_BRANCH GIT_LOCAL_BRANCH APPVEYOR_REPO_BRANCH CI_COMMIT_REF_NAME BITBUCKET_BRANCH}.freeze
       COMMIT_ENV_VAR_NAMES = %w{BUILDKITE_COMMIT CIRCLE_SHA1 TRAVIS_COMMIT GIT_COMMIT APPVEYOR_REPO_COMMIT CI_COMMIT_ID BITBUCKET_COMMIT}

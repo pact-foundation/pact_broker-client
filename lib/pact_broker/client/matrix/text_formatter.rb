@@ -1,11 +1,12 @@
 require 'table_print'
 require 'dig_rb'
-require 'pact_broker/client/backports'
+require 'pact_broker/client/hash_refinements'
 
 module PactBroker
   module Client
     class Matrix
       class TextFormatter
+        using PactBroker::Client::HashRefinements
 
         Line = Struct.new(:consumer, :consumer_version, :provider, :provider_version, :success, :ref)
 

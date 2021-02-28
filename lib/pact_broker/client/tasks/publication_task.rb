@@ -1,5 +1,6 @@
 require 'rake/tasklib'
 require 'pact_broker/client/git'
+require 'pact_broker/client/hash_refinements'
 
 =begin
 require pact_broker/client/tasks
@@ -17,6 +18,7 @@ end
 module PactBroker
   module Client
     class PublicationTask < ::Rake::TaskLib
+      using PactBroker::Client::HashRefinements
 
       attr_accessor :pattern, :pact_broker_base_url, :consumer_version, :tag, :write_method, :tag_with_git_branch, :pact_broker_basic_auth, :pact_broker_token
       attr_reader :auto_detect_version_properties, :branch, :build_url
@@ -57,7 +59,6 @@ module PactBroker
           task task_name do
             block.call(self)
             require 'pact_broker/client/publish_pacts'
-            require 'pact_broker/client/backports'
             pact_broker_client_options = { write: write_method, token: pact_broker_token }
             pact_broker_client_options[:basic_auth] = pact_broker_basic_auth if pact_broker_basic_auth && pact_broker_basic_auth.any?
             pact_broker_client_options.compact!
