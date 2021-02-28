@@ -26,7 +26,6 @@ module PactBroker
 
         def call
           check_if_command_supported
-          check_environment_exists
           record_deployment
 
           PactBroker::Client::CommandResult.new(true, result_message)
@@ -45,20 +44,26 @@ module PactBroker
             ._link!("pb:environments")
             .get!
             ._links("pb:environments")
-            .find(environment_name, "Could not find environment with name '#{environment_name}'")
+            .find!(environment_name, "No environment found with name '#{environment_name}'")
         end
 
         def record_deployment
           @deployed_version_resource =
-            record_deployment_relation
+            get_record_deployment_relation
             .post(record_deployment_request_body)
             .assert_success!
         end
 
-        def record_deployment_relation
-          get_pacticipant_version
-            ._links!("pb:record-deployment")
-            .find(environment_name, "Environment '#{environment_name}' is not an available option for recording a deployment of #{pacticipant_name}.")
+        def get_record_deployment_relation
+          record_deployment_links = get_pacticipant_version._links!("pb:record-deployment")
+          link_for_environment = record_deployment_links.find(environment_name)
+          if link_for_environment
+            link_for_environment
+          else
+            check_environment_exists
+            # Force the exception to be raised
+            record_deployment_links.find!(environment_name, "Environment '#{environment_name}' is not an available option for recording a deployment of #{pacticipant_name}.")
+          end
         end
 
         def get_pacticipant_version

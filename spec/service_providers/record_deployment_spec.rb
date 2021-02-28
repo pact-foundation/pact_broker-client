@@ -163,7 +163,6 @@ RSpec.describe "recording a deployment", pact: true do
   context "when the deployment is recorded successfully" do
     before do
       mock_index
-      mock_environments
       mock_pacticipant_version_with_test_environment_available_for_deployment
       mock_record_deployment
     end
@@ -182,25 +181,9 @@ RSpec.describe "recording a deployment", pact: true do
     end
   end
 
-  context "when the specified environment does not exist" do
-    before do
-      mock_index
-      mock_environments
-    end
-
-    let(:environment_name) { "prod" }
-
-    it "returns an error response" do
-      expect(subject.success).to be false
-      expect(subject.message).to eq "Could not find environment with name 'prod'. Available options: test"
-    end
-  end
-
-
   context "when the specified version does not exist" do
     before do
       mock_index
-      mock_environments
       mock_pacticipant_version_not_found
     end
 
@@ -210,16 +193,27 @@ RSpec.describe "recording a deployment", pact: true do
     end
   end
 
-  context "when the specified environment is available for recording a deployment" do
+  context "when the specified environment is not available for recording a deployment" do
     before do
       mock_index
-      mock_environments
       mock_pacticipant_version_without_test_environment_available_for_deployment
+      mock_environments
     end
 
-    it "returns an error response" do
-      expect(subject.success).to be false
-      expect(subject.message).to eq "Environment 'test' is not an available option for recording a deployment of Foo. Available options: prod, dev"
+    context "when the specified environment does not exist" do
+      let(:environment_name) { "foo" }
+
+      it "returns an error response" do
+        expect(subject.success).to be false
+        expect(subject.message).to eq "No environment found with name 'foo'. Available options: test"
+      end
+    end
+
+    context "when the specified environment does exist" do
+      it "returns an error response" do
+        expect(subject.success).to be false
+        expect(subject.message).to eq "Environment 'test' is not an available option for recording a deployment of Foo. Available options: prod, dev"
+      end
     end
   end
 end

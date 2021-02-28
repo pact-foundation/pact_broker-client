@@ -1588,38 +1588,6 @@
       }
     },
     {
-      "description": "a request for the environments",
-      "providerState": "an environment with name test exists",
-      "request": {
-        "method": "GET",
-        "path": "/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS",
-        "headers": {
-          "Accept": "application/hal+json"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/hal+json;charset=utf-8"
-        },
-        "body": {
-          "_links": {
-            "pb:environments": [
-              {
-                "name": "test",
-                "href": "href"
-              }
-            ]
-          }
-        },
-        "matchingRules": {
-          "$.body._links.pb:environments[0].href": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
       "description": "a request for a pacticipant version",
       "providerState": "version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for deployment",
       "request": {
@@ -1726,6 +1694,38 @@
             "match": "type"
           },
           "$.body._links.pb:record-deployment[1]": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request for the environments",
+      "providerState": "an environment with name test exists",
+      "request": {
+        "method": "GET",
+        "path": "/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pb:environments": [
+              {
+                "name": "test",
+                "href": "href"
+              }
+            ]
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:environments[0].href": {
             "match": "type"
           }
         }
