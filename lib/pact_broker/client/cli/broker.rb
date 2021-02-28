@@ -165,7 +165,7 @@ module PactBroker
           exit(1) unless result.success
         end
 
-        if ENV["PACT_BROKER_FEATURES"].include?("deployments")
+        if ENV.fetch("PACT_BROKER_FEATURES", "").include?("deployments")
 
           ignored_and_hidden_potential_options_from_environment_variables
           desc "record-deployment", "Record deployment of a pacticipant version to an environment"
