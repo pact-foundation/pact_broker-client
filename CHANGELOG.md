@@ -1,3 +1,10 @@
+<a name="v1.37.1"></a>
+### v1.37.1 (2021-03-11)
+
+#### Bug Fixes
+
+* set username from PACT_BROKER_USERNAME environment variable correctly when -u specified for create-or-update-webhook and create-webhook	 ([2411396](/../../commit/2411396))
+
 <a name="v1.37.0"></a>
 ### v1.37.0 (2021-03-01)
 
