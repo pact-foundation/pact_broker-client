@@ -1,1 +1,3 @@
 Create a curl command that executes the request that you want your webhook to execute, then replace "curl" with "pact-broker create-or-update-webhook" and add the consumer, provider, event types and broker details. Note that the URL must be the first parameter when executing create-or-update-webhook and a uuid must also be provided. You can generate a valid UUID by using the `generate-uuid` command.
+
+Note that the -u option from the curl command clashes with the -u option from the pact-broker CLI. When used in this command, the -u will be used as a curl option. Please use the --broker-username or environment variable for the Pact Broker username.

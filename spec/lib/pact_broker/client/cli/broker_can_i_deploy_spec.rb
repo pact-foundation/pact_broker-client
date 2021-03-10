@@ -1,4 +1,6 @@
 require 'pact_broker/client/cli/broker'
+require 'pact_broker/client/cli/version_selector_options_parser'
+require 'pact_broker/client/can_i_deploy'
 
 module PactBroker
   module Client

@@ -28,7 +28,7 @@ module PactBroker::Client::CLI
             "http://pact-broker",
             ["spec/support/cli_test_pacts/foo.json"],
             { number: "1.2.3", tags: [], version_required: false },
-            { verbose: nil }
+            { }
           )
           invoke_broker
         end

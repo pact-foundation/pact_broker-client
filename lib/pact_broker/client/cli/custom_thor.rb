@@ -22,10 +22,7 @@ module PactBroker
           def self.add_broker_config_from_environment_variables argv
             return argv if argv[0] == 'help' || argv.empty?
 
-            new_argv = add_option_from_environment_variable(argv, 'broker-base-url', 'b', 'PACT_BROKER_BASE_URL')
-            new_argv = add_option_from_environment_variable(new_argv, 'broker-username', 'u', 'PACT_BROKER_USERNAME')
-            new_argv = add_option_from_environment_variable(new_argv, 'broker-token', 'k', 'PACT_BROKER_TOKEN')
-            add_option_from_environment_variable(new_argv, 'broker-password', 'p', 'PACT_BROKER_PASSWORD')
+            add_option_from_environment_variable(argv, 'broker-base-url', 'b', 'PACT_BROKER_BASE_URL')
           end
 
           def self.add_option_from_environment_variable argv, long_name, short_name, environment_variable_name

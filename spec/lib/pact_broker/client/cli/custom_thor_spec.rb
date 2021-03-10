@@ -52,12 +52,9 @@ module PactBroker::Client::CLI
         ENV['PACT_BROKER_TOKEN'] = 'token'
       end
 
-      it "populates the options from the environment variables" do
+      it "populates the base URL from the environment variables" do
         expect(Delegate).to receive(:call) do | options |
           expect(options.broker_base_url).to eq 'http://foo'
-          expect(options.broker_username).to eq 'username'
-          expect(options.broker_password).to eq 'password'
-          expect(options.broker_token).to eq 'token'
         end
         TestThor.start(%w{test_using_env_vars})
       end
@@ -65,9 +62,6 @@ module PactBroker::Client::CLI
       it "does not override a value specifed on the command line" do
         expect(Delegate).to receive(:call) do | options |
           expect(options.broker_base_url).to eq 'http://bar'
-          expect(options.broker_username).to eq 'username'
-          expect(options.broker_password).to eq 'password'
-          expect(options.broker_token).to eq 'token'
         end
         TestThor.start(%w{test_using_env_vars --broker-base-url http://bar})
       end

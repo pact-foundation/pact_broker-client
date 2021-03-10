@@ -287,15 +287,15 @@ module PactBroker
 
           def pact_broker_client_options
             client_options = { verbose: options.verbose }
-            client_options[:token] =  options.broker_token if options.broker_token
-            if options.broker_username
+            client_options[:token] = options.broker_token || ENV['PACT_BROKER_TOKEN']
+            if options.broker_username || ENV['PACT_BROKER_USERNAME']
               client_options[:basic_auth] = {
-                  username: options.broker_username,
-                  password: options.broker_password
-                }
+                  username: options.broker_username || ENV['PACT_BROKER_USERNAME'],
+                  password: options.broker_password || ENV['PACT_BROKER_PASSWORD']
+                }.compact
             end
 
-            client_options
+            client_options.compact
           end
 
           def parse_webhook_events
