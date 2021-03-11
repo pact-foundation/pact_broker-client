@@ -278,7 +278,7 @@ module PactBroker
             allow(version_resource).to receive_message_chain(:response, :status).and_return(version_creation_response_status)
           end
           let(:can_create_version) { true }
-          let(:version_link) { instance_double("PactBroker::Client::Hal::Link", put: version_resource) }
+          let(:version_link) { instance_double("PactBroker::Client::Hal::Link", patch: version_resource) }
           let(:version_resource) { instance_double("PactBroker::Client::Hal::Entity") }
           let(:version_creation_response_status) { 201 }
 
@@ -294,7 +294,7 @@ module PactBroker
             it "creates a version with the branch, build_url and tags" do
               expect(index_resource).to receive(:_link)
               expect(version_link).to receive(:expand).with(pacticipant: "Consumer", version: "1.2.3")
-              expect(version_link).to receive(:put).with(branch: branch, buildUrl: build_url)
+              expect(version_link).to receive(:patch).with(branch: branch, buildUrl: build_url)
               subject.call
             end
 
@@ -302,7 +302,7 @@ module PactBroker
               let(:tags) { [] }
 
               it "does not set the tags, as this would overwrite the existing ones - not sure about this implementation" do
-                expect(version_link).to receive(:put).with(branch: branch, buildUrl: build_url)
+                expect(version_link).to receive(:patch).with(branch: branch, buildUrl: build_url)
                 subject.call
               end
             end

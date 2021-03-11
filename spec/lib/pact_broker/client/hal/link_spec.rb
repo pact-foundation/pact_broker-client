@@ -78,7 +78,7 @@ module PactBroker::Client
         let(:do_get) { subject.get({ 'foo' => 'bar' }) }
 
         it "executes an HTTP Get request" do
-          expect(http_client).to receive(:get).with('http://foo/{bar}', { 'foo' => 'bar' }, {})
+          expect(http_client).to receive(:get).with('http://foo/{bar}', { 'foo' => 'bar' }, { "Accept"=>"application/hal+json" })
           do_get
         end
       end
@@ -88,7 +88,7 @@ module PactBroker::Client
 
         context "with custom headers" do
           it "executes an HTTP Post request with the custom headers" do
-            expect(http_client).to receive(:post).with('http://foo/{bar}', '{"foo":"bar"}', { 'Accept' => 'foo' })
+            expect(http_client).to receive(:post).with('http://foo/{bar}', '{"foo":"bar"}', { "Accept"=>"foo", "Content-Type"=>"application/json" })
             do_post
           end
         end

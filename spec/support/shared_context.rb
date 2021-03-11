@@ -12,7 +12,8 @@ shared_context "pact broker" do
   let(:pact_broker_version) { Pact::Term.new(:matcher => /\d+\.\d+\.\d+/, :generate => '1.0.0') }
   let(:pact_broker_response_headers) { {'Content-Type' => 'application/hal+json;charset=utf-8'} }
   let(:default_request_headers) { { 'Content-Type' => 'application/json'} }
-  let(:patch_request_headers)   { { 'Content-Type' => 'application/json'} }
+  let(:old_patch_request_headers)   { { 'Content-Type' => 'application/json'} }
+  let(:patch_request_headers)   { { 'Content-Type' => 'application/merge-patch+json', 'Accept' => 'application/hal+json'} }
   let(:put_request_headers)     { { 'Content-Type' => 'application/json', 'Accept' => 'application/hal+json'} }
   let(:post_request_headers)    { { 'Content-Type' => 'application/json', 'Accept' => 'application/hal+json'} }
   let(:get_request_headers)     { { 'Accept' => 'application/hal+json'} }

@@ -220,10 +220,10 @@
       "description": "a request to create a pacticipant version",
       "providerState": "version 26f353580936ad3b9baddb17b00e84f33c69e7cb of pacticipant Foo does not exist",
       "request": {
-        "method": "put",
+        "method": "patch",
         "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-Foo-26f353580936ad3b9baddb17b00e84f33c69e7cb",
         "headers": {
-          "Content-Type": "application/json",
+          "Content-Type": "application/merge-patch+json",
           "Accept": "application/hal+json"
         },
         "body": {
@@ -258,10 +258,10 @@
       "description": "a request to create a pacticipant version",
       "providerState": "version 26f353580936ad3b9baddb17b00e84f33c69e7cb of pacticipant Foo does exist",
       "request": {
-        "method": "put",
+        "method": "patch",
         "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-Foo-26f353580936ad3b9baddb17b00e84f33c69e7cb",
         "headers": {
-          "Content-Type": "application/json",
+          "Content-Type": "application/merge-patch+json",
           "Accept": "application/hal+json"
         },
         "body": {
@@ -1520,8 +1520,7 @@
         "method": "patch",
         "path": "/pacticipants/Foo",
         "headers": {
-          "Content-Type": "application/json",
-          "Accept": "application/hal+json"
+          "Content-Type": "application/json"
         },
         "body": {
           "name": "Foo",

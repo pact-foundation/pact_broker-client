@@ -1088,10 +1088,10 @@ Pact Broker will respond with:
 Given **version 26f353580936ad3b9baddb17b00e84f33c69e7cb of pacticipant Foo does exist**, upon receiving **a request to create a pacticipant version** from Pact Broker Client, with
 ```json
 {
-  "method": "put",
+  "method": "patch",
   "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-Foo-26f353580936ad3b9baddb17b00e84f33c69e7cb",
   "headers": {
-    "Content-Type": "application/json",
+    "Content-Type": "application/merge-patch+json",
     "Accept": "application/hal+json"
   },
   "body": {
@@ -1123,10 +1123,10 @@ Pact Broker will respond with:
 Given **version 26f353580936ad3b9baddb17b00e84f33c69e7cb of pacticipant Foo does not exist**, upon receiving **a request to create a pacticipant version** from Pact Broker Client, with
 ```json
 {
-  "method": "put",
+  "method": "patch",
   "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-Foo-26f353580936ad3b9baddb17b00e84f33c69e7cb",
   "headers": {
-    "Content-Type": "application/json",
+    "Content-Type": "application/merge-patch+json",
     "Accept": "application/hal+json"
   },
   "body": {
@@ -2263,8 +2263,7 @@ Given **a pacticipant with name Foo exists**, upon receiving **a request to upda
   "method": "patch",
   "path": "/pacticipants/Foo",
   "headers": {
-    "Content-Type": "application/json",
-    "Accept": "application/hal+json"
+    "Content-Type": "application/json"
   },
   "body": {
     "name": "Foo",

@@ -7,6 +7,20 @@ module PactBroker
       class Link
         attr_reader :request_method, :href
 
+        DEFAULT_GET_HEADERS = {
+          "Accept" => "application/hal+json"
+        }.freeze
+
+        DEFAULT_POST_HEADERS = {
+          "Accept" => "application/hal+json",
+          "Content-Type" => "application/json"
+        }.freeze
+
+        DEFAULT_PATCH_HEADERS = {
+          "Accept" => "application/hal+json",
+          "Content-Type" => "application/merge-patch+json"
+        }
+
         def initialize(attrs, http_client)
           @attrs = attrs
           @request_method = attrs.fetch(:method, :get).to_sym
@@ -38,7 +52,7 @@ module PactBroker
         end
 
         def get(payload = {}, headers = {})
-          wrap_response(href, @http_client.get(href, payload, headers))
+          wrap_response(href, @http_client.get(href, payload, DEFAULT_GET_HEADERS.merge(headers)))
         end
 
         def get!(*args)
@@ -46,15 +60,23 @@ module PactBroker
         end
 
         def put(payload = nil, headers = {})
-          wrap_response(href, @http_client.put(href, payload ? JSON.dump(payload) : nil, headers))
+          wrap_response(href, @http_client.put(href, payload ? payload.to_json : nil, DEFAULT_POST_HEADERS.merge(headers)))
         end
 
         def post(payload = nil, headers = {})
-          wrap_response(href, @http_client.post(href, payload ? JSON.dump(payload) : nil, headers))
+          wrap_response(href, @http_client.post(href, payload ? payload.to_json : nil, DEFAULT_POST_HEADERS.merge(headers)))
+        end
+
+        def post!(payload = nil, headers = {})
+          post(payload, headers).assert_success!
         end
 
         def patch(payload = nil, headers = {})
-          wrap_response(href, @http_client.patch(href, payload ? JSON.dump(payload) : nil, headers))
+          wrap_response(href, @http_client.patch(href, payload ? payload.to_json : nil, DEFAULT_PATCH_HEADERS.merge(headers)))
+        end
+
+        def patch!(payload = nil, headers = {})
+          patch(payload, headers).assert_success!
         end
 
         def expand(params)

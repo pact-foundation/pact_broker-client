@@ -118,7 +118,7 @@ module PactBroker
 
       def create_version(index_resource, consumer_name)
         Retry.while_error do
-          version_resource = index_resource._link('pb:pacticipant-version').expand(version: consumer_version_number, pacticipant: consumer_name).put(version_body).assert_success!
+          version_resource = index_resource._link('pb:pacticipant-version').expand(version: consumer_version_number, pacticipant: consumer_name).patch(version_body).assert_success!
           message = if version_resource.response.status == 200
             "Replaced version #{consumer_version_number} of #{consumer_name}"
           else

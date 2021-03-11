@@ -48,9 +48,9 @@ describe PactBroker::Client::Versions, pact: true do
         .given(provider_state)
         .upon_receiving("a request to create a pacticipant version")
         .with(
-            method: :put,
+            method: :patch,
             path: "/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-Foo-#{number}",
-            headers: put_request_headers,
+            headers: patch_request_headers,
             body: {
               branch: branch,
               buildUrl: build_url

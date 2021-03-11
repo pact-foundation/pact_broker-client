@@ -102,7 +102,7 @@ RSpec.describe "creating or updating a pacticipant", pact: true do
         .with(
           method: :patch,
           path: '/pacticipants/Foo',
-          headers: post_request_headers,
+          headers: old_patch_request_headers,
           body: request_body)
         .will_respond_with(create_success_response)
     end

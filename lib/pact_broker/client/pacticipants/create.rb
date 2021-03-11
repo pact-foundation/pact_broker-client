@@ -28,7 +28,7 @@ module PactBroker
             index_entity._link!('pb:pacticipants').post(pacticipant_resource_params)
           else
             message = "Pacticipant \"#{params[:name]}\" updated"
-            pacticipant_entity._link!('self').patch(pacticipant_resource_params)
+            pacticipant_entity._link!('self').patch(pacticipant_resource_params, { "Content-Type" => "application/json" })
           end
 
           response_entity.assert_success!
