@@ -17,7 +17,7 @@ module PactBroker
         end
 
         def get href, params = {}, headers = {}
-          query = params.collect{ |(key, value)| "#{CGI::escape(key)}=#{CGI::escape(value)}" }.join("&")
+          query = params.collect{ |(key, value)| "#{CGI::escape(key.to_s)}=#{CGI::escape(value)}" }.join("&")
           uri = URI(href)
           uri.query = query
           perform_request(create_request(uri, 'Get', nil, headers), uri)

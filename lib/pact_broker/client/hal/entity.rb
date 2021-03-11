@@ -1,5 +1,6 @@
 require 'erb'
 require 'delegate'
+require 'pact_broker/client/error'
 require 'pact_broker/client/hal/link'
 require 'pact_broker/client/hal/links'
 
@@ -71,6 +72,22 @@ module PactBroker
 
         def _links!(key)
           _links(key) or raise RelationNotFoundError.new("Could not find relation '#{key}' in resource at #{@href}")
+        end
+
+        def embedded_entity
+          embedded_ent = yield @data["_embedded"]
+          Entity.new(embedded_ent["_links"]["self"]["href"], embedded_ent, @client, response)
+        end
+
+        def embedded_entities(key = nil)
+          embedded_ents = if key
+            @data["_embedded"][key]
+          else
+            yield @data["_embedded"]
+          end
+          embedded_ents.collect do | embedded_ent |
+            Entity.new(embedded_ent["_links"]["self"]["href"], embedded_ent, @client, response)
+          end
         end
 
         def success?
