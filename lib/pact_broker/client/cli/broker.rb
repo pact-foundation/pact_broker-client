@@ -39,6 +39,7 @@ module PactBroker
           can_i_deploy_options = { output: options.output, retry_while_unknown: options.retry_while_unknown, retry_interval: options.retry_interval }
           result = CanIDeploy.call(options.broker_base_url, selectors, { to_tag: options.to, to_environment: options.to_environment, limit: options.limit }, can_i_deploy_options, pact_broker_client_options)
           $stdout.puts result.message
+          $stdout.flush
           exit(can_i_deploy_exit_status) unless result.success
         end
 
