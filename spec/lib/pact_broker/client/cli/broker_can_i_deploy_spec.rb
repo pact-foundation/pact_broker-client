@@ -113,13 +113,45 @@ module PactBroker
           end
 
           it "exits with code 1" do
-            exited_with_error = false
+            exited_explicitly = false
+            exited_explicitlyerror = nil
             begin
               invoke_can_i_deploy
-            rescue SystemExit
-              exited_with_error = true
+            rescue SystemExit => e
+              exited_explicitly = true
+              error = e
             end
-            expect(exited_with_error).to be true
+            expect(exited_explicitly).to be true
+            expect(error.status).to be 1
+          end
+
+          context "when an exit status is specified" do
+            before do
+              allow(ENV).to receive(:fetch).and_call_original
+              allow(ENV).to receive(:fetch).with('PACT_BROKER_CAN_I_DEPLOY_EXIT_STATUS_BETA', '').and_return("0")
+            end
+
+            it "exits with the specified code" do
+              exited_explicitly = false
+              error = nil
+              begin
+                invoke_can_i_deploy
+              rescue SystemExit => e
+                exited_explicitly = true
+                error = e
+              end
+              expect(exited_explicitly).to be true
+              expect(error.status).to be 0
+            end
+
+            it "prints the configured exit code" do
+              expect($stderr).to receive(:puts).with("Exiting can-i-deploy with configured exit code 0")
+              expect($stdout).to receive(:puts).with(message)
+              begin
+                invoke_can_i_deploy
+              rescue SystemExit
+              end
+            end
           end
         end
       end

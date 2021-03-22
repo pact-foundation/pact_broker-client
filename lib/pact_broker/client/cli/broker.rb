@@ -39,7 +39,7 @@ module PactBroker
           can_i_deploy_options = { output: options.output, retry_while_unknown: options.retry_while_unknown, retry_interval: options.retry_interval }
           result = CanIDeploy.call(options.broker_base_url, selectors, { to_tag: options.to, to_environment: options.to_environment, limit: options.limit }, can_i_deploy_options, pact_broker_client_options)
           $stdout.puts result.message
-          exit(1) unless result.success
+          exit(can_i_deploy_exit_status) unless result.success
         end
 
         desc 'publish PACT_DIRS_OR_FILES ...', "Publish pacts to a Pact Broker."
@@ -236,6 +236,16 @@ module PactBroker
 
           def self.exit_on_failure?
             true
+          end
+
+          def can_i_deploy_exit_status
+            exit_code_string = ENV.fetch('PACT_BROKER_CAN_I_DEPLOY_EXIT_STATUS_BETA', '')
+            if exit_code_string =~ /^\d+$/
+              $stderr.puts "Exiting can-i-deploy with configured exit code #{exit_code_string}"
+              exit_code_string.to_i
+            else
+              1
+            end
           end
 
           def validate_credentials
