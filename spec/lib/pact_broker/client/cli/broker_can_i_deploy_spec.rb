@@ -128,7 +128,7 @@ module PactBroker
           context "when an exit status is specified" do
             before do
               allow(ENV).to receive(:fetch).and_call_original
-              allow(ENV).to receive(:fetch).with('PACT_BROKER_CAN_I_DEPLOY_EXIT_STATUS_BETA', '').and_return("0")
+              allow(ENV).to receive(:fetch).with('PACT_BROKER_CAN_I_DEPLOY_EXIT_CODE_BETA', '').and_return("0")
             end
 
             it "exits with the specified code" do

@@ -239,7 +239,7 @@ module PactBroker
           end
 
           def can_i_deploy_exit_status
-            exit_code_string = ENV.fetch('PACT_BROKER_CAN_I_DEPLOY_EXIT_STATUS_BETA', '')
+            exit_code_string = ENV.fetch('PACT_BROKER_CAN_I_DEPLOY_EXIT_CODE_BETA', '')
             if exit_code_string =~ /^\d+$/
               $stderr.puts "Exiting can-i-deploy with configured exit code #{exit_code_string}"
               exit_code_string.to_i
