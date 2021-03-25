@@ -7,6 +7,7 @@ module PactBroker
   module Client
     module Hal
       class HttpClient
+        RETRYABLE_ERRORS = [Errno::ECONNREFUSED, Errno::ECONNRESET, Errno::ETIMEDOUT, Errno::EHOSTUNREACH, Net::ReadTimeout]
         attr_accessor :username, :password, :verbose, :token
 
         def initialize options
@@ -53,7 +54,7 @@ module PactBroker
         end
 
         def perform_request request, uri
-          response = Retry.until_truthy_or_max_times do
+          response = until_truthy_or_max_times(times: 5, sleep: 5, condition: ->(resp) { resp.code.to_i < 500 }) do
             http = Net::HTTP.new(uri.host, uri.port, :ENV)
             http.set_debug_output(output_stream) if verbose
             http.use_ssl = (uri.scheme == 'https')
@@ -67,6 +68,37 @@ module PactBroker
             end
           end
           Response.new(response)
+        end
+
+        def until_truthy_or_max_times options = {}
+          max_tries = options.fetch(:times, 3)
+          tries = 0
+          sleep_interval = options.fetch(:sleep, 5)
+          sleep(sleep_interval) if options[:sleep_first]
+          while true
+            begin
+              result = yield
+              return result if max_tries < 2
+              if options[:condition]
+                condition_result = options[:condition].call(result)
+                return result if condition_result
+              else
+                return result if result
+              end
+              tries += 1
+              return result if max_tries == tries
+              sleep sleep_interval
+            rescue *RETRYABLE_ERRORS => e
+              tries += 1
+              $stderr.puts "ERROR: Error making request - #{e.class} #{e.message} #{e.backtrace.find{|l| l.include?('pact_broker-client')}}, attempt #{tries} of #{max_tries}"
+              raise e if max_tries == tries
+              sleep sleep_interval
+            end
+          end
+        end
+
+        def sleep seconds
+          Kernel.sleep seconds
         end
 
         def output_stream

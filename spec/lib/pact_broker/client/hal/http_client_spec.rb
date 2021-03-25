@@ -3,13 +3,13 @@ require 'pact_broker/client/hal/http_client'
 module PactBroker::Client
   module Hal
     describe HttpClient do
-      before do
-        allow(Retry).to receive(:until_truthy_or_max_times) { |&block| block.call }
-      end
-
       subject { HttpClient.new(username: 'foo', password: 'bar') }
 
       describe "get" do
+        before do
+          allow(subject).to receive(:until_truthy_or_max_times) { |&block| block.call }
+        end
+
         let!(:request) do
           stub_request(:get, "http://example.org/").
             with(  headers: {
@@ -41,18 +41,22 @@ module PactBroker::Client
           end
         end
 
-
         it "retries on failure" do
-          expect(Retry).to receive(:until_truthy_or_max_times)
+          expect(subject).to receive(:until_truthy_or_max_times)
           do_get
         end
 
         it "returns a response" do
           expect(do_get.body).to eq({"some" => "json"})
         end
+
       end
 
       describe "post" do
+        before do
+          allow(subject).to receive(:until_truthy_or_max_times) { |&block| block.call }
+        end
+
         let!(:request) do
           stub_request(:post, "http://example.org/").
             with(  headers: {
@@ -75,7 +79,7 @@ module PactBroker::Client
         end
 
         it "calls Retry.until_truthy_or_max_times" do
-          expect(Retry).to receive(:until_truthy_or_max_times)
+          expect(subject).to receive(:until_truthy_or_max_times)
           do_post
         end
 
@@ -97,6 +101,59 @@ module PactBroker::Client
           it "performs a post request with custom headers" do
             do_post
             expect(request).to have_been_made
+          end
+        end
+      end
+
+      describe "integration test" do
+        before do
+          allow(subject).to receive(:sleep)
+        end
+
+        let(:do_get) { subject.get('http://example.org') }
+
+        context "with a 50x error is returned less than the max number of tries" do
+          let!(:request) do
+            stub_request(:get, "http://example.org").
+              to_return({ status: 500 }, { status: 502 }, { status: 503 }, { status: 200 })
+          end
+
+          it "retries" do
+            expect(do_get.status).to eq 200
+          end
+        end
+
+        context "with a 50x error is returned more than the max number of tries" do
+          let!(:request) do
+            stub_request(:get, "http://example.org").
+              to_return({ status: 500 }, { status: 501 }, { status: 502 }, { status: 503 }, { status: 504 })
+          end
+
+          it "retries and returns the last 50x response" do
+            expect(do_get.status).to eq 504
+          end
+        end
+
+        context "when exceptions are raised" do
+          before do
+            allow($stderr).to receive(:puts)
+          end
+
+          let!(:request) do
+            stub_request(:get, "http://example.org")
+              .to_raise(Errno::ECONNREFUSED)
+          end
+
+          it "logs the error" do
+            expect($stderr).to receive(:puts).with(/Errno::ECONNREFUSED/)
+            begin
+              do_get
+            rescue Errno::ECONNREFUSED
+            end
+          end
+
+          it "retries and raises the last exception" do
+            expect { do_get }.to raise_error(Errno::ECONNREFUSED)
           end
         end
       end
