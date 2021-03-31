@@ -1,3 +1,11 @@
+<a name="v1.38.2"></a>
+### v1.38.2 (2021-04-01)
+
+#### Features
+
+* allow SSL verification to be disabled	 ([eb2125b](/../../commit/eb2125b))
+* automatically retry at the http client level for 50x responses	 ([a7343f8](/../../commit/a7343f8))
+
 <a name="v1.38.1"></a>
 ### v1.38.1 (2021-03-22)
 
