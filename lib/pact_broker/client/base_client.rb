@@ -119,7 +119,7 @@ module PactBroker
           if relation
             url = relation['href']
             params.each do | (key, value) |
-              url = url.gsub("{#{key}}", value)
+              url = url.gsub("{#{key}}", encode_param(value))
             end
             url
           else
