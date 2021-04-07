@@ -1,3 +1,10 @@
+<a name="v1.38.3"></a>
+### v1.38.3 (2021-04-08)
+
+#### Bug Fixes
+
+* URL encode parameters for HAL templated URLs	 ([764a0fa](/../../commit/764a0fa))
+
 <a name="v1.38.2"></a>
 ### v1.38.2 (2021-04-01)
 
