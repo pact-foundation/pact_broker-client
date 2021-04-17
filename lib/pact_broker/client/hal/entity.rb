@@ -23,16 +23,32 @@ module PactBroker
           _link(key).get(*args)
         end
 
+        def get!(key, *args)
+          get(key, *args).assert_success!
+        end
+
         def post(key, *args)
           _link(key).post(*args)
+        end
+
+        def post!(key, *args)
+          post(key, *args).assert_success!
         end
 
         def put(key, *args)
           _link(key).put(*args)
         end
 
+        def put!(key, *args)
+          put(key, *args).assert_success!
+        end
+
         def patch(key, *args)
           _link(key).patch(*args)
+        end
+
+        def patch!(key, *args)
+          patch(key, *args).assert_success!
         end
 
         def can?(key)

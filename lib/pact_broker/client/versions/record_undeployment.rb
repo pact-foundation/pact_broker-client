@@ -2,6 +2,10 @@ require 'pact_broker/client/hal_client_methods'
 require 'pact_broker/client/error'
 require 'pact_broker/client/command_result'
 
+# TODO
+# --limit 1
+# order by date so that the oldest one gets undeployed first
+
 module PactBroker
   module Client
     class Versions
@@ -24,10 +28,17 @@ module PactBroker
         end
 
         def call
-          check_environment_exists
-          # record_undeployment
+          check_if_command_supported
+          if deployed_version_links_for_environment.any?
+            @undeployment_entities = deployed_version_links_for_environment.collect do | deployed_version_link |
+              deployed_version_link.get!._link!("pb:record-undeployment").post!
+            end
+          else
+            check_environment_exists
+            raise_not_found_error
+          end
 
-          PactBroker::Client::CommandResult.new(true, result_message)
+          PactBroker::Client::CommandResult.new(true, "foo")
         rescue PactBroker::Client::Error => e
           PactBroker::Client::CommandResult.new(false, e.message)
         end
@@ -36,82 +47,48 @@ module PactBroker
 
         attr_reader :pact_broker_base_url, :pact_broker_client_options
         attr_reader :pacticipant_name, :version_number, :environment_name, :replaced_previous_deployed_version, :output
-        attr_reader :deployed_version_resource
+        attr_reader :deployed_version_resource, :undeployment_entities
+
+        def version_resource
+          index_resource._link!("pb:pacticipant-version").expand(pacticipant: pacticipant_name, version: version_number).get!
+        end
+
+        def deployed_version_links
+          @deployed_version_links ||= version_resource._links!("pb:currently-deployed-versions")
+        end
+
+        def deployed_version_links_for_environment
+          @deployed_version_links_for_environment ||= deployed_version_links.select(environment_name)
+        end
 
         def check_environment_exists
-          deployed_versions = currently_deployed_versions_for_pacticipant
-                                .get(version: version_number)
-                                .embedded_entities("deployedVersions")
-          deployed_versions
-        end
-
-        def currently_deployed_versions_for_pacticipant
-          @currently_deployed_versions_for_pacticipant ||= index_resource
+          index_resource
             ._link!("pb:environments")
-            .get!(name: environment_name)
-            .embedded_entities("environments")
-            .tap { |it| raise "Environment not found '#{environment_name}'" if it.empty? }
-            .first
-            ._link!("pb:currently-deployed-versions-for-pacticipant")
-            .expand(pacticipant: pacticipant_name)
+            .get!
+            ._links("pb:environments")
+            .find!(environment_name, "No environment found with name '#{environment_name}'")
         end
 
-        def currently_deployed_versions_for_pacticipant_version
-          @currently_deployed_versions ||= currently_deployed_versions_for_pacticipant
-            .get(version: version_number)
-            .embedded_entities("deployedVersions")
+        def raise_not_found_error
+          raise PactBroker::Client::Error.new(deployed_version_not_found_message)
         end
 
-        # def record_deployment
-        #   @deployed_version_resource =
-        #     get_record_deployment_relation
-        #     .post(record_deployment_request_body)
-        #     .assert_success!
-        # end
-
-        # def get_record_deployment_relation
-        #   record_deployment_links = get_pacticipant_version._links!("pb:record-deployment")
-        #   link_for_environment = record_deployment_links.find(environment_name)
-        #   if link_for_environment
-        #     link_for_environment
-        #   else
-        #     check_environment_exists
-        #     # Force the exception to be raised
-        #     record_deployment_links.find!(environment_name, "Environment '#{environment_name}' is not an available option for recording a deployment of #{pacticipant_name}.")
-        #   end
-        # end
-
-        # def get_pacticipant_version
-        #   index_resource
-        #     ._link!("pb:pacticipant-version")
-        #     .expand(pacticipant: pacticipant_name, version: version_number)
-        #     .get
-        #     .assert_success!(404 => "#{pacticipant_name} version #{version_number} not found")
-        # end
-
-        # def record_deployment_request_body
-        #   { replacedPreviousDeployedVersion: replaced_previous_deployed_version }
-        # end
+        def deployed_version_not_found_message
+          if (env_names = deployed_version_links.names).any?
+            "#{pacticipant_name} version #{version_number} is not currently deployed to #{environment_name}. It is currently deployed to: #{env_names.join(", ")}"
+          else
+            "#{pacticipant_name} version #{version_number} is not currently deployed to any environment."
+          end
+        end
 
         def result_message
-          ""
-          # if output == "text"
-          #   message = "Recorded deployment of #{pacticipant_name} version #{version_number} to #{environment_name} in #{pact_broker_name}."
-          #   suffix = replaced_previous_deployed_version ? " Marked previous deployed version as undeployed." : ""
-          #   message + suffix
-          # elsif output == "json"
-          #   deployed_version_resource.response.raw_body
-          # else
-          #   ""
-          # end
-        end
-
-        def pact_broker_name
-          is_pactflow? ? "Pactflow" : "the Pact Broker"
-        end
-
-        def is_pactflow?
-          deployed_version_resource.response.headers.keys.any?{ | header_name | header_name.downcase.include?("pactflow") }
+          if output == "text"
+            message = "Recorded undeployment of #{pacticipant_name} version #{version_number} from #{environment_name} in #{pact_broker_name}."
+          elsif output == "json"
+            undeployment_entities.last.response.raw_body
+          else
+            ""
+          end
         end
 
         def check_if_command_supported

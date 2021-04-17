@@ -21,6 +21,14 @@ module PactBroker
           index_entry_point.get!
         end
       end
+
+      def is_pactflow?
+        index_resource.response.headers.keys.any?{ | header_name | header_name.downcase.include?("pactflow") }
+      end
+
+      def pact_broker_name
+        is_pactflow? ? "Pactflow" : "the Pact Broker"
+      end
     end
   end
 end
