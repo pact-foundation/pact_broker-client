@@ -57,8 +57,9 @@ module PactBroker
           require 'pact_broker/client/error'
           validate_credentials
           validate_pact_files(pact_files)
-          success = publish_pacts(pact_files)
-          raise PactPublicationError, "One or more pacts failed to be published" unless success
+          result = publish_pacts(pact_files)
+          $stdout.puts result.message
+          exit(1) unless result.success
         rescue PactBroker::Client::Error => e
           raise PactPublicationError, "#{e.class} - #{e.message}"
         end

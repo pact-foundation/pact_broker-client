@@ -58,12 +58,12 @@ module PactBroker
           desc "Publish pacts to pact broker"
           task task_name do
             block.call(self)
-            require 'pact_broker/client/publish_pacts'
+            require 'pact_broker/client/publish_pacts_the_old_way'
             pact_broker_client_options = { write: write_method, token: pact_broker_token }
             pact_broker_client_options[:basic_auth] = pact_broker_basic_auth if pact_broker_basic_auth && pact_broker_basic_auth.any?
             pact_broker_client_options.compact!
             consumer_version_params = { number: consumer_version, branch: the_branch, build_url: build_url, tags: all_tags, version_required: version_required }.compact
-            success = PactBroker::Client::PublishPacts.new(pact_broker_base_url, FileList[pattern], consumer_version_params, pact_broker_client_options).call
+            success = PactBroker::Client::PublishPactsTheOldWay.new(pact_broker_base_url, FileList[pattern], consumer_version_params, pact_broker_client_options).call
             raise "One or more pacts failed to be published" unless success
           end
         end

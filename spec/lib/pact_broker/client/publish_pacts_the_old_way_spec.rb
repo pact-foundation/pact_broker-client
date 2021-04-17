@@ -1,11 +1,11 @@
 require 'spec_helper'
 require 'fakefs/safe'
-require 'pact_broker/client/publish_pacts'
+require 'pact_broker/client/publish_pacts_the_old_way'
 require 'json'
 
 module PactBroker
   module Client
-    describe PublishPacts do
+    describe PublishPactsTheOldWay do
 
       # The amount of stubbing that we have to do here indicates this class is doing
       # TOO MUCH and needs to be split up!
@@ -23,7 +23,7 @@ module PactBroker
         File.open("spec/pacts/consumer-provider.json", "w") { |file| file << pact_hash.to_json }
         File.open("spec/pacts/consumer-provider-2.json", "w") { |file| file << pact_hash.to_json }
         File.open("spec/pacts/foo-bar.json", "w") { |file| file << pact_hash_2.to_json }
-        allow_any_instance_of(PublishPacts).to receive(:create_index_entry_point).and_return(index_entry_point)
+        allow_any_instance_of(PublishPactsTheOldWay).to receive(:create_index_entry_point).and_return(index_entry_point)
       end
 
       after do
@@ -64,7 +64,7 @@ module PactBroker
       let(:index_resource) { instance_double("PactBroker::Client::Hal::Entity", can?: can_create_version ) }
       let(:can_create_version) { false }
 
-      subject { PublishPacts.new(pact_broker_base_url, pact_file_paths, consumer_version_params, pact_broker_client_options) }
+      subject { PublishPactsTheOldWay.new(pact_broker_base_url, pact_file_paths, consumer_version_params, pact_broker_client_options) }
 
       describe "call" do
         it "creates a PactBroker Client" do
@@ -85,7 +85,7 @@ module PactBroker
           end
 
           it "returns true" do
-            expect(subject.call).to be true
+            expect(subject.call.success).to eq true
           end
         end
 
@@ -140,7 +140,7 @@ module PactBroker
           end
 
           it "returns false" do
-            expect(subject.call).to be false
+            expect(subject.call.success).to be false
           end
         end
 
@@ -212,7 +212,7 @@ module PactBroker
             end
 
             it "returns false" do
-              expect(subject.call).to eq false
+              expect(subject.call.success).to eq false
             end
           end
         end
@@ -230,7 +230,7 @@ module PactBroker
           end
 
           it "returns false" do
-            expect(subject.call).to eq false
+            expect(subject.call.success).to eq false
           end
         end
 
@@ -255,7 +255,7 @@ module PactBroker
           end
 
           it "returns true" do
-            expect(subject.call).to eq true
+            expect(subject.call.success).to eq true
           end
         end
 

@@ -1,6 +1,6 @@
 require_relative 'pact_helper'
 require 'pact_broker/client'
-require 'pact_broker/client/publish_pacts'
+require 'pact_broker/client/publish_pacts_the_old_way'
 
 describe PactBroker::Client::Versions, pact: true do
 
@@ -9,7 +9,7 @@ describe PactBroker::Client::Versions, pact: true do
 
   describe "creating a pacticipant version" do
     before do
-      allow(publish_pacts).to receive(:consumer_names).and_return(["Foo"])
+      allow(publish_pacts_the_old_way).to receive(:consumer_names).and_return(["Foo"])
       allow($stdout).to receive(:puts)
     end
     let(:version_path) { "/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-{pacticipant}-{version}" }
@@ -18,11 +18,11 @@ describe PactBroker::Client::Versions, pact: true do
     let(:branch) { "main" }
     let(:build_url) { "http://my-ci/builds/1" }
     let(:consumer_version_params) { { number: number, branch: branch, build_url: build_url } }
-    let(:publish_pacts) { PactBroker::Client::PublishPacts.new(pact_broker.mock_service_base_url, ["some-pact.json"], consumer_version_params, {}) }
+    let(:publish_pacts_the_old_way) { PactBroker::Client::PublishPactsTheOldWay.new(pact_broker.mock_service_base_url, ["some-pact.json"], consumer_version_params, {}) }
     let(:provider_state) { "version #{number} of pacticipant Foo does not exist" }
     let(:expected_response_status) { 201 }
 
-    subject { publish_pacts.send(:create_consumer_versions) }
+    subject { publish_pacts_the_old_way.send(:create_consumer_versions) }
 
     before do
       pact_broker
