@@ -5,6 +5,9 @@ module PactBroker
     module Pacticipants2
       describe Create do
         describe ".call" do
+          before do
+            allow_any_instance_of(PactBroker::Client::Hal::HttpClient).to receive(:sleep)
+          end
           let(:pact_broker_client_options) { {} }
           let(:broker_base_url) { "http://url" }
           let(:params) { { name: 'Foo' } }
