@@ -309,6 +309,24 @@ Description:
   the `generate-uuid` command.
 ```
 
+### create-or-update-pacticipant
+
+```
+Usage:
+  pact-broker create-or-update-pacticipant --name=NAME -b, --broker-base-url=BROKER_BASE_URL
+
+Options:
+      --name=NAME                          # Pacticipant name
+      [--repository-url=REPOSITORY_URL]    # The repository URL of the pacticipant
+  -b, --broker-base-url=BROKER_BASE_URL    # The base URL of the Pact Broker
+  -u, [--broker-username=BROKER_USERNAME]  # Pact Broker basic auth username
+  -p, [--broker-password=BROKER_PASSWORD]  # Pact Broker basic auth password
+  -k, [--broker-token=BROKER_TOKEN]        # Pact Broker bearer token
+  -v, [--verbose], [--no-verbose]          # Verbose output. Default: false
+
+Create or update pacticipant by name
+```
+
 ### describe-version
 
 ```
