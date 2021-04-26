@@ -291,13 +291,26 @@ module PactBroker
             require 'rake/file_list'
 
             correctly_separated_pact_files = pact_files.collect{ |path| path.gsub(/\\+/, '/') }
-            Rake::FileList[correctly_separated_pact_files].collect do | path |
+            paths = Rake::FileList[correctly_separated_pact_files].collect do | path |
               if File.directory?(path)
                 Rake::FileList[File.join(path, "*.json")]
               else
                 path
               end
             end.flatten
+            validate_pact_path_list(paths)
+          end
+
+          def validate_pact_path_list(paths)
+            paths.collect do | path |
+              if File.exist?(path)
+                path
+              elsif path.start_with?("-")
+                raise Thor::Error.new("ERROR: pact-broker publish was called with invalid arguments #{[path]}")
+              else
+                raise Thor::Error.new("Specified pact file '#{path}' does not exist. This sometimes indicates one of the arguments has been specified with the wrong name and has been incorrectly identified as a file path.")
+              end
+            end
           end
 
           def tags

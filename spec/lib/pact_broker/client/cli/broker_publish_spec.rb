@@ -76,6 +76,22 @@ module PactBroker::Client::CLI
         end
       end
 
+      context "with an invalid argument specified that gets interpreted as a path" do
+        let(:file_list) { ['--wrong'] }
+
+        it "raises a more helpful error" do
+          expect{ invoke_broker }.to raise_error(Thor::Error, 'ERROR: pact-broker publish was called with invalid arguments ["--wrong"]')
+        end
+      end
+
+      context "when a specified file does not exist" do
+        let(:file_list) { ['no-existy'] }
+
+        it "raises a more helpful error" do
+          expect{ invoke_broker }.to raise_error(Thor::Error, /Specified pact file 'no-existy' does not exist/)
+        end
+      end
+
       context "with a tag" do
         before do
           subject.options = OpenStruct.new(minimum_valid_options.merge(tag: ['foo']))
