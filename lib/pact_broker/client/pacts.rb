@@ -4,7 +4,6 @@ require 'pact_broker/client/pact_hash'
 module PactBroker
   module Client
     class Pacts  < BaseClient
-
       def publish options
         consumer_version = options[:consumer_version]
         pact_hash = options[:pact_hash]

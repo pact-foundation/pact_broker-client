@@ -14,11 +14,11 @@ module PactBroker
       using PactBroker::Client::HashRefinements
       include HalClientMethods
 
-      def self.call(pact_broker_base_url, pact_file_paths, consumer_version_params, pact_broker_client_options={})
-        new(pact_broker_base_url, pact_file_paths, consumer_version_params, pact_broker_client_options).call
+      def self.call(pact_broker_base_url, pact_file_paths, consumer_version_params, options, pact_broker_client_options={})
+        new(pact_broker_base_url, pact_file_paths, consumer_version_params, options, pact_broker_client_options).call
       end
 
-      def initialize pact_broker_base_url, pact_file_paths, consumer_version_params, pact_broker_client_options={}
+      def initialize pact_broker_base_url, pact_file_paths, consumer_version_params, options, pact_broker_client_options={}
         @pact_broker_base_url = pact_broker_base_url
         @pact_file_paths = pact_file_paths
         @consumer_version_number = consumer_version_params[:number].respond_to?(:strip) ? consumer_version_params[:number].strip : consumer_version_params[:number]

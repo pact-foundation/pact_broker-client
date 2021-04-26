@@ -63,8 +63,9 @@ module PactBroker
       let(:index_entry_point) { instance_double("PactBroker::Client::Hal::EntryPoint", :get! => index_resource )}
       let(:index_resource) { instance_double("PactBroker::Client::Hal::Entity", can?: can_create_version ) }
       let(:can_create_version) { false }
+      let(:options) { {} }
 
-      subject { PublishPactsTheOldWay.new(pact_broker_base_url, pact_file_paths, consumer_version_params, pact_broker_client_options) }
+      subject { PublishPactsTheOldWay.new(pact_broker_base_url, pact_file_paths, consumer_version_params, options, pact_broker_client_options) }
 
       describe "call" do
         it "creates a PactBroker Client" do

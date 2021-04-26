@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'pact_broker/client/tasks/publication_task'
-require 'pact_broker/client/publish_pacts_the_old_way'
+require 'pact_broker/client/publish_pacts'
+require 'pact_broker/client/command_result'
 
 module PactBroker::Client
   describe PublicationTask do
@@ -9,13 +10,16 @@ module PactBroker::Client
       @consumer_version = "1.2.3"
     end
 
-    let(:publish_pacts_the_old_way) { instance_double("PactBroker::ClientSupport::PublishPactsTheOldWay", call: true)}
+    let(:publish_pacts) { instance_double("PactBroker::ClientSupport::PublishPacts", call: result)}
     let(:pact_file_list) { ['spec/pact/consumer-provider.json'] }
+    let(:success) { true }
+    let(:result) { instance_double(PactBroker::Client::CommandResult, success: success, message: "message")}
 
     before do
-      allow(PactBroker::Client::PublishPactsTheOldWay).to receive(:new).and_return(publish_pacts_the_old_way)
+      allow(PactBroker::Client::PublishPacts).to receive(:new).and_return(publish_pacts)
       allow(FileList).to receive(:[]).with(pattern).and_return(pact_file_list)
       allow(PactBroker::Client::Git).to receive(:branch).and_return('foo')
+      allow($stdout).to receive(:puts)
     end
 
     let(:pattern) { "spec/pacts/*.json" }
@@ -28,16 +32,17 @@ module PactBroker::Client
       end
 
       context "when pacts are succesfully published" do
-        it "invokes PublishPactsTheOldWay with the default values" do
-          expect(PactBroker::Client::PublishPactsTheOldWay).to receive(:new).with('http://pact-broker', pact_file_list, { number: '1.2.3', branch: "foo", tags: [], version_required: false}, {}).and_return(publish_pacts_the_old_way)
-          expect(publish_pacts_the_old_way).to receive(:call).and_return(true)
+        it "invokes PublishPacts with the default values" do
+          expect(PactBroker::Client::PublishPacts).to receive(:new).with('http://pact-broker', pact_file_list, { number: '1.2.3', branch: "foo", tags: [], version_required: false}, {}, {}).and_return(publish_pacts)
+          expect(publish_pacts).to receive(:call).and_return(result)
           Rake::Task['pact:publish'].execute
         end
       end
 
       context "when a pact fails to be published" do
+        let(:success) { false }
+
         it "raises an error" do
-          expect(publish_pacts_the_old_way).to receive(:call).and_return(false)
           expect { Rake::Task['pact:publish'].execute }.to raise_error("One or more pacts failed to be published")
         end
       end
@@ -51,9 +56,9 @@ module PactBroker::Client
         end
       end
 
-      it "invokes PublishPactsTheOldWay with the write method set" do
-        expect(PactBroker::Client::PublishPactsTheOldWay).to receive(:new).with('http://pact-broker', pact_file_list, { number: "1.2.3", branch: "foo", tags: [], version_required: false }, {write: :merge}).and_return(publish_pacts_the_old_way)
-        expect(publish_pacts_the_old_way).to receive(:call).and_return(true)
+      it "invokes PublishPacts with the write method set" do
+        expect(PactBroker::Client::PublishPacts).to receive(:new).with('http://pact-broker', pact_file_list, { number: "1.2.3", branch: "foo", tags: [], version_required: false }, {}, {write: :merge}).and_return(publish_pacts)
+        expect(publish_pacts).to receive(:call).and_return(result)
         Rake::Task['pact:publish:merge'].execute
       end
     end
@@ -73,8 +78,8 @@ module PactBroker::Client
         Rake::Task['pact:publish:git_branch'].execute
       end
 
-      it "invokes PublishPactsTheOldWay with the git branch name as a tag" do
-        expect(PactBroker::Client::PublishPactsTheOldWay).to receive(:new).with(anything, anything, hash_including(tags: ['bar', 'foo']), anything).and_return(publish_pacts_the_old_way)
+      it "invokes PublishPacts with the git branch name as a tag" do
+        expect(PactBroker::Client::PublishPacts).to receive(:new).with(anything, anything, hash_including(tags: ['bar', 'foo']), anything, anything).and_return(publish_pacts)
         Rake::Task['pact:publish:git_branch'].execute
       end
     end
@@ -92,8 +97,8 @@ module PactBroker::Client
         Rake::Task['pact:publish:git_branch_auto_detect_true'].execute
       end
 
-      it "invokes PublishPactsTheOldWay with the branch name" do
-        expect(PactBroker::Client::PublishPactsTheOldWay).to receive(:new).with(anything, anything, hash_including(branch: "foo"), anything).and_return(publish_pacts_the_old_way)
+      it "invokes PublishPacts with the branch name" do
+        expect(PactBroker::Client::PublishPacts).to receive(:new).with(anything, anything, hash_including(branch: "foo"), anything, anything).and_return(publish_pacts)
         Rake::Task['pact:publish:git_branch_auto_detect_true'].execute
       end
     end
@@ -112,8 +117,8 @@ module PactBroker::Client
         Rake::Task['pact:publish:git_branch_auto_detect_true_with_branch'].execute
       end
 
-      it "invokes PublishPactsTheOldWay with the specified branch name" do
-        expect(PactBroker::Client::PublishPactsTheOldWay).to receive(:new).with(anything, anything, hash_including(branch: "main"), anything).and_return(publish_pacts_the_old_way)
+      it "invokes PublishPacts with the specified branch name" do
+        expect(PactBroker::Client::PublishPacts).to receive(:new).with(anything, anything, hash_including(branch: "main"), anything, anything).and_return(publish_pacts)
         Rake::Task['pact:publish:git_branch_auto_detect_true_with_branch'].execute
       end
     end
@@ -131,8 +136,8 @@ module PactBroker::Client
         Rake::Task['pact:publish:git_branch_auto_detect_false'].execute
       end
 
-      it "invokes PublishPactsTheOldWay without the branch name" do
-        expect(PactBroker::Client::PublishPactsTheOldWay).to receive(:new).with(anything, anything, hash_not_including(branch: "foo"), anything).and_return(publish_pacts_the_old_way)
+      it "invokes PublishPacts without the branch name" do
+        expect(PactBroker::Client::PublishPacts).to receive(:new).with(anything, anything, hash_not_including(branch: "foo"), anything, anything).and_return(publish_pacts)
         Rake::Task['pact:publish:git_branch_auto_detect_false'].execute
       end
     end
@@ -149,8 +154,8 @@ module PactBroker::Client
         Rake::Task['pact:publish:git_branch_auto_detect_default'].execute
       end
 
-      it "invokes PublishPactsTheOldWay with the branch name" do
-        expect(PactBroker::Client::PublishPactsTheOldWay).to receive(:new).with(anything, anything, hash_including(branch: "foo"), anything).and_return(publish_pacts_the_old_way)
+      it "invokes PublishPacts with the branch name" do
+        expect(PactBroker::Client::PublishPacts).to receive(:new).with(anything, anything, hash_including(branch: "foo"),anything, anything).and_return(publish_pacts)
         Rake::Task['pact:publish:git_branch_auto_detect_default'].execute
       end
     end
@@ -175,14 +180,15 @@ module PactBroker::Client
 
       let(:pattern) { @pattern }
 
-      it "invokes PublishPactsTheOldWay with the customised values" do
-        expect(PactBroker::Client::PublishPactsTheOldWay).to receive(:new).with(
+      it "invokes PublishPacts with the customised values" do
+        expect(PactBroker::Client::PublishPacts).to receive(:new).with(
           @pact_broker_base_url,
           pact_file_list,
           { number: "1.2.3", tags: [@tag], branch: "foo", version_required: false},
+          {},
           { basic_auth: @pact_broker_basic_auth, token: @pact_broker_token }
         )
-        expect(publish_pacts_the_old_way).to receive(:call).and_return(true)
+        expect(publish_pacts).to receive(:call).and_return(result)
         Rake::Task['pact:publish:custom'].execute
       end
     end

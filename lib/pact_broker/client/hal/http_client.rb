@@ -54,7 +54,7 @@ module PactBroker
         end
 
         def perform_request request, uri
-          response = until_truthy_or_max_times(times: 5, sleep: 5, condition: ->(resp) { resp.code.to_i < 500 }) do
+          response = until_truthy_or_max_times(condition: ->(resp) { resp.code.to_i < 500 }) do
             http = Net::HTTP.new(uri.host, uri.port, :ENV)
             http.set_debug_output(output_stream) if verbose
             http.use_ssl = (uri.scheme == 'https')
@@ -71,7 +71,7 @@ module PactBroker
         end
 
         def until_truthy_or_max_times options = {}
-          max_tries = options.fetch(:times, 3)
+          max_tries = options.fetch(:times, default_max_tries)
           tries = 0
           sleep_interval = options.fetch(:sleep, 5)
           sleep(sleep_interval) if options[:sleep_first]
@@ -95,6 +95,10 @@ module PactBroker
               sleep sleep_interval
             end
           end
+        end
+
+        def default_max_tries
+          5
         end
 
         def sleep seconds

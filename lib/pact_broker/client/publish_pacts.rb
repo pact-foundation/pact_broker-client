@@ -9,18 +9,19 @@ module PactBroker
       using PactBroker::Client::HashRefinements
       include HalClientMethods
 
-      def self.call(pact_broker_base_url, pact_file_paths, consumer_version_params, pact_broker_client_options={})
-        new(pact_broker_base_url, pact_file_paths, consumer_version_params, pact_broker_client_options).call
+      def self.call(pact_broker_base_url, pact_file_paths, consumer_version_params, options, pact_broker_client_options={})
+        new(pact_broker_base_url, pact_file_paths, consumer_version_params, options, pact_broker_client_options).call
       end
 
-      def initialize pact_broker_base_url, pact_file_paths, consumer_version_params, pact_broker_client_options={}
+      def initialize pact_broker_base_url, pact_file_paths, consumer_version_params, options, pact_broker_client_options={}
         @pact_broker_base_url = pact_broker_base_url
         @pact_file_paths = pact_file_paths
+        @consumer_version_params = consumer_version_params
         @consumer_version_number = consumer_version_params[:number].respond_to?(:strip) ? consumer_version_params[:number].strip : consumer_version_params[:number]
-        @branch = consumer_version_params[:branch]
-        @build_url = consumer_version_params[:build_url]
+        @branch = consumer_version_params[:branch]&.strip
+        @build_url = consumer_version_params[:build_url]&.strip
         @tags = consumer_version_params[:tags] ? consumer_version_params[:tags].collect{ |tag| tag.respond_to?(:strip) ? tag.strip : tag } : []
-        @version_required = consumer_version_params[:version_required]
+        @options = options
         @pact_broker_client_options = pact_broker_client_options
       end
 
@@ -30,18 +31,18 @@ module PactBroker
           publish_pacts
           PactBroker::Client::CommandResult.new(success?, message)
         else
-          PublishPactsTheOldWay.call(pact_broker_base_url, pact_file_paths, consumer_version_params, pact_broker_client_options)
+          PublishPactsTheOldWay.call(pact_broker_base_url, pact_file_paths, consumer_version_params, options, pact_broker_client_options)
         end
       end
 
       private
 
-      attr_reader :pact_broker_base_url, :pact_file_paths, :consumer_version_number, :branch, :tags, :build_url, :pact_broker_client_options, :response_entities
+      attr_reader :pact_broker_base_url, :pact_file_paths, :consumer_version_params, :consumer_version_number, :branch, :tags, :build_url, :options, :pact_broker_client_options, :response_entities
 
       def request_body_for(consumer_name)
         {
           pacticipantName: consumer_name,
-          versionNumber: consumer_version_number,
+          pacticipantVersionNumber: consumer_version_number,
           tags: tags,
           branch: branch,
           buildUrl: build_url,
@@ -60,10 +61,22 @@ module PactBroker
       end
 
       def message
+        if options[:output] == "json"
+          response_entities.collect(&:response).collect(&:body).to_a.to_json
+        else
+          text_message
+        end
+      end
+
+      def text_message
         response_entities.flat_map do | response_entity |
           if response_entity.success?
-            response_entity.logs.collect do | log |
-              colorized_message(log)
+            if response_entity.logs
+              response_entity.logs.collect do | log |
+                colorized_message(log)
+              end
+            else
+              "Successfully published pacts"
             end
           else
             ::Term::ANSIColor.red(response_entity.response.body.to_s)
@@ -90,18 +103,16 @@ module PactBroker
       end
 
       def contracts_for(consumer_name)
-        pact_files_for(consumer_name).collect do | pact_file |
-        end
-
         pact_files_for(consumer_name).group_by(&:pact_name).values.collect do | pact_files |
           $stderr.puts "Merging #{pact_files.collect(&:path).join(", ")}" if pact_files.size > 1
           pact_hash = PactHash[merge_contents(pact_files)]
           {
-            role: "consumer",
+            consumerName: pact_hash.consumer_name,
             providerName: pact_hash.provider_name,
             specification: "pact",
             contentType: "application/json",
-            content: Base64.strict_encode64(pact_hash.to_json)
+            content: Base64.strict_encode64(pact_hash.to_json),
+            writeMode: write_mode
           }
         end
       end
@@ -120,6 +131,10 @@ module PactBroker
 
       def consumer_names
         pact_files.collect(&:consumer_name).uniq
+      end
+
+      def write_mode
+        options[:merge] ? "merge" : "overwrite"
       end
 
       def validate
