@@ -10,13 +10,13 @@ RSpec.describe "recording a deployment", pact: true do
   let(:version_number) { "5556b8149bf8bac76bc30f50a8a2dd4c22c85f30" }
   let(:environment_name) { "test" }
   let(:output) { "text" }
-  let(:replaced_previous_deployed_version) { true }
+  let(:target) { true }
   let(:params) do
     {
       pacticipant_name: pacticipant_name,
       version_number: version_number,
       environment_name: environment_name,
-      replaced_previous_deployed_version: replaced_previous_deployed_version,
+      target: target,
       output: output
     }
   end
@@ -148,14 +148,14 @@ RSpec.describe "recording a deployment", pact: true do
         path: "/HAL-REL-PLACEHOLDER-PB-RECORD-DEPLOYMENT-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST",
         headers: post_request_headers,
         body: {
-          replacedPreviousDeployedVersion: replaced_previous_deployed_version
+          replacedPreviousDeployedVersion: target
         }
       )
       .will_respond_with(
         status: 201,
         headers: pact_broker_response_headers,
         body: {
-          replacedPreviousDeployedVersion: replaced_previous_deployed_version
+          replacedPreviousDeployedVersion: target
         }
       )
   end
@@ -176,7 +176,7 @@ RSpec.describe "recording a deployment", pact: true do
       let(:output) { "json" }
 
       it "returns the JSON payload" do
-        expect(JSON.parse(subject.message)).to eq "replacedPreviousDeployedVersion" => replaced_previous_deployed_version
+        expect(JSON.parse(subject.message)).to eq "replacedPreviousDeployedVersion" => target
       end
     end
   end

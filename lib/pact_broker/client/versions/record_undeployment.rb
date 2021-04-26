@@ -46,7 +46,7 @@ module PactBroker
         private
 
         attr_reader :pact_broker_base_url, :pact_broker_client_options
-        attr_reader :pacticipant_name, :version_number, :environment_name, :replaced_previous_deployed_version, :output
+        attr_reader :pacticipant_name, :version_number, :environment_name, :target, :output
         attr_reader :deployed_version_resource, :undeployment_entities
 
         def version_resource

@@ -1,0 +1,55 @@
+The record-deployment command is used to allow the Pact Broker to keep track of which version(s) of an application are currently deployed in each environment. It is used to keep track of applications that are deployed to known instances. If you are releasing a client library or mobile application to a repository or application store, please use record-release instead.
+
+## Examples
+
+
+record-deployment --pacticipant Foo --version 6897aa95e --environment production
+record-deployment --pacticipant Foo --version 6897aa95e --environment production --target blue
+record-deployment --pacticipant Foo --version 6897aa95e --environment production --target green
+
+## Target
+
+The "target" field is used to distinguish between deployed versions of an application within the same environment, and most importantly, to identify which previously deployed version has been replaced by the current deployment. The Pact Broker only allows one unique combination of pacticipant/environment/target to be considered the "currently deployed" one, and any call to record a deployment will cause the previously deployed version with the same pacticipant/environment/target to be automatically marked as undeployed (mimicking the real world process of "deploying over" a previous version).
+
+### Use cases
+
+#### There is a single instance of an application deployed within an environment and deployments of integrated applications are NOT likely to happen during the deployment window of this application
+
+eg.
+
+* the window of time when there are multiple versions in prod is small
+* or there aren't many other integrations
+* or deployments happen rarely
+* or the same team controls all the deployments and generally only runs one deployment at a time
+
+In this case, there is no need to specify a target. The call to record deployment should be done at the end of the deployment and it will automatically mark the version of Foo that was previously the currently deployed version as undeployed. Only one version of the pacticipant is ever considered to be currently deployed at a time.
+
+eg.
+
+# actual call to deploy here...
+record-deployment --pacticipant Foo --version 6897aa95e --environment production
+
+#### There is a single instance of an application deployed within an environment and but deployments of integrated applications ARE likely to happen during the deployment window of this application
+
+eg.
+* the window of time when there are multiple versions in prod is large
+* or there are many integrations
+* or deployments happen often
+* or there are many different teams deploying and deployments aren't coordinated
+
+To allow multiple versions to be considered currently deployed at the same time, use two different targets, and call the first record-deployment at the start of the deployment process and a second one at the end.
+
+eg.
+
+This will use the targets "blue" and "green" to model stages of the deployment.
+
+record-deployment --pacticipant Foo --version 6897aa95e --environment production --target blue
+# actual call to deploy here...
+record-deployment --pacticipant Foo --version 6897aa95e --environment production --target green
+
+After the first call to record-deployment, there will be two versions considered currently deployed - the "blue" one that was just recorded, and the one from the previous "green" deployment. After the second call to record-deployment, there is only one version considered currently deployed - both "blue" and "green" targets will be have version 6897aa95e deployed to them.
+
+
+#### There are multiple permanent application versions deployed to the same environment
+
+TBC
