@@ -15,14 +15,14 @@ module PactBroker
             stub_request(:get, broker_base_url).to_return(status: 200, body: index_body_hash.to_json, headers: { "Content-Type" => "application/hal+json" }  )
           end
 
-          let(:replaced_previous_deployed_version) { true }
+          let(:target) { true }
 
           let(:params) do
             {
               pacticipant_name: "Foo",
               version_number: "1",
               environment_name: "test",
-              replaced_previous_deployed_version: replaced_previous_deployed_version,
+              target: target,
               output: "text"
             }
           end
@@ -57,7 +57,7 @@ module PactBroker
             end
           end
 
-          context "when replaced_previous_deployed_version is false" do
+          context "when target is false" do
             before do
               allow_any_instance_of(RecordDeployment).to receive(:check_if_command_supported)
               allow_any_instance_of(RecordDeployment).to receive(:check_environment_exists)
@@ -65,7 +65,7 @@ module PactBroker
               allow_any_instance_of(RecordDeployment).to receive(:pact_broker_name).and_return("")
             end
 
-            let(:replaced_previous_deployed_version) { false }
+            let(:target) { false }
 
             let(:deployed_version_resource) do
               double('PactBroker::Client::Hal::Entity', response: double('response', headers: response_headers) )

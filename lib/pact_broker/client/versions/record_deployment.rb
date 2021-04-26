@@ -19,7 +19,7 @@ module PactBroker
           @pacticipant_name = params.fetch(:pacticipant_name)
           @version_number = params.fetch(:version_number)
           @environment_name = params.fetch(:environment_name)
-          @replaced_previous_deployed_version = params.fetch(:replaced_previous_deployed_version)
+          @target = params.fetch(:target)
           @output = params.fetch(:output)
           @pact_broker_client_options = pact_broker_client_options
         end
@@ -36,7 +36,7 @@ module PactBroker
         private
 
         attr_reader :pact_broker_base_url, :pact_broker_client_options
-        attr_reader :pacticipant_name, :version_number, :environment_name, :replaced_previous_deployed_version, :output
+        attr_reader :pacticipant_name, :version_number, :environment_name, :target, :output
         attr_reader :deployed_version_resource
 
         def check_environment_exists
@@ -75,13 +75,13 @@ module PactBroker
         end
 
         def record_deployment_request_body
-          { replacedPreviousDeployedVersion: replaced_previous_deployed_version }
+          { replacedPreviousDeployedVersion: target }
         end
 
         def result_message
           if output == "text"
             message = "Recorded deployment of #{pacticipant_name} version #{version_number} to #{environment_name} in #{pact_broker_name}."
-            suffix = replaced_previous_deployed_version ? " Marked previous deployed version as undeployed." : ""
+            suffix = target ? " Marked previous deployed version as undeployed." : ""
             message + suffix
           elsif output == "json"
             deployed_version_resource.response.raw_body

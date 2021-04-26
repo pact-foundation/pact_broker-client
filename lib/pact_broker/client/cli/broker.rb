@@ -15,7 +15,7 @@ module PactBroker
         using PactBroker::Client::HashRefinements
 
         desc 'can-i-deploy', ''
-        long_desc File.read(File.join(File.dirname(__FILE__), 'can_i_deploy_long_desc.txt'))
+        long_desc File.read(File.join(__dir__, 'can_i_deploy_long_desc.txt'))
 
         method_option :pacticipant, required: true, aliases: "-a", desc: "The pacticipant name. Use once for each pacticipant being checked."
         method_option :version, required: false, aliases: "-e", desc: "The pacticipant version. Must be entered after the --pacticipant that it relates to."
@@ -173,10 +173,11 @@ module PactBroker
 
           ignored_and_hidden_potential_options_from_environment_variables
           desc "record-deployment", "Record deployment of a pacticipant version to an environment"
+          long_desc File.read(File.join(__dir__, 'record_deployment_long_desc.txt'))
           method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that was deployed."
           method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number that was deployed."
           method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was deployed to."
-          method_option :replaced_previous_deployed_version, type: :boolean, default: true, required: false, desc: "Whether or not this deployment replaced the previous deployed version. If it did, the previous deployed version of this pacticipant will be marked as undeployed in the Pact Broker."
+          method_option :target, default: nil, required: false, desc: "The target of the deployment - a logical identifer that represents where the application version was deployed to. See the usage docs for information on when to use this."
           method_option :output, aliases: "-o", desc: "json or text", default: 'text'
           shared_authentication_options
 
@@ -186,7 +187,7 @@ module PactBroker
               pacticipant_name: options.pacticipant,
               version_number: options.version,
               environment_name: options.environment,
-              replaced_previous_deployed_version: options.replaced_previous_deployed_version,
+              target: options.target,
               output: options.output
             }
             result = PactBroker::Client::Versions::RecordDeployment.call(
