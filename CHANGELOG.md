@@ -1,3 +1,11 @@
+<a name="v1.40.0"></a>
+### v1.40.0 (2021-04-26)
+
+#### Features
+
+* use the pb:publish-contracts relation and endpoint to publish pacts	 ([19f1b0b](/../../commit/19f1b0b))
+* update publish pacts command to use new 'all in one' contract publishing endpoint	 ([50dfb11](/../../commit/50dfb11))
+
 <a name="v1.39.0"></a>
 ### v1.39.0 (2021-04-27)
 
