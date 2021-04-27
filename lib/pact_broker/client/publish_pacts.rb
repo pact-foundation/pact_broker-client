@@ -17,10 +17,10 @@ module PactBroker
         @pact_broker_base_url = pact_broker_base_url
         @pact_file_paths = pact_file_paths
         @consumer_version_params = consumer_version_params
-        @consumer_version_number = consumer_version_params[:number].respond_to?(:strip) ? consumer_version_params[:number].strip : consumer_version_params[:number]
-        @branch = consumer_version_params[:branch]&.strip
-        @build_url = consumer_version_params[:build_url]&.strip
-        @tags = consumer_version_params[:tags] ? consumer_version_params[:tags].collect{ |tag| tag.respond_to?(:strip) ? tag.strip : tag } : []
+        @consumer_version_number = strip(consumer_version_params[:number])
+        @branch = strip(consumer_version_params[:branch])
+        @build_url = strip(consumer_version_params[:build_url])
+        @tags = consumer_version_params[:tags] ? consumer_version_params[:tags].collect{ |tag| strip(tag) } : []
         @options = options
         @pact_broker_client_options = pact_broker_client_options
       end
@@ -141,6 +141,10 @@ module PactBroker
         raise PactBroker::Client::Error.new("Please specify the consumer_version_number") unless (consumer_version_number && consumer_version_number.to_s.strip.size > 0)
         raise PactBroker::Client::Error.new("Please specify the pact_broker_base_url") unless (pact_broker_base_url && pact_broker_base_url.to_s.strip.size > 0)
         raise PactBroker::Client::Error.new("No pact files found") unless (pact_file_paths && pact_file_paths.any?)
+      end
+
+      def strip(maybe_string)
+        maybe_string.respond_to?(:strip) ? maybe_string.strip : maybe_string
       end
     end
   end
