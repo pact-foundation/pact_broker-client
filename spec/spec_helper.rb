@@ -1,6 +1,6 @@
 require 'webmock/rspec'
 
-ENV['PACT_BROKER_FEATURES'] = 'deployments'
+ENV['PACT_BROKER_FEATURES'] = 'deployments publish_contracts'
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
