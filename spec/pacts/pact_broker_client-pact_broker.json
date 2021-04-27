@@ -1552,6 +1552,112 @@
     },
     {
       "description": "a request for the index resource",
+      "providerState": "the pb:publish-contracts relations exists in the index resource",
+      "request": {
+        "method": "GET",
+        "path": "/",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pb:publish-contracts": {
+              "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-PUBLISH-CONTRACTS"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:publish-contracts.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to publish contracts",
+      "request": {
+        "method": "POST",
+        "path": "/HAL-REL-PLACEHOLDER-PB-PUBLISH-CONTRACTS",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "pacticipantName": "Foo",
+          "pacticipantVersionNumber": "5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
+          "branch": "main",
+          "tags": [
+            "dev"
+          ],
+          "buildUrl": "http://build",
+          "contracts": [
+            {
+              "consumerName": "Foo",
+              "providerName": "Bar",
+              "specification": "pact",
+              "contentType": "application/json",
+              "content": "eyJjb25zdW1lciI6eyJuYW1lIjoiRm9vIn0sInByb3ZpZGVyIjp7Im5hbWUiOiJCYXIifSwiaW50ZXJhY3Rpb25zIjpbeyJkZXNjcmlwdGlvbiI6ImFuIGV4YW1wbGUgcmVxdWVzdCIsInByb3ZpZGVyU3RhdGUiOiJhIHByb3ZpZGVyIHN0YXRlIiwicmVxdWVzdCI6eyJtZXRob2QiOiJHRVQiLCJwYXRoIjoiLyIsImhlYWRlcnMiOnt9fSwicmVzcG9uc2UiOnsic3RhdHVzIjoyMDAsImhlYWRlcnMiOnsiQ29udGVudC1UeXBlIjoiYXBwbGljYXRpb24vaGFsK2pzb24ifX19XSwibWV0YWRhdGEiOnsicGFjdFNwZWNpZmljYXRpb24iOnsidmVyc2lvbiI6IjIuMC4wIn19fQ==",
+              "writeMode": "overwrite"
+            }
+          ]
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_embedded": {
+            "pacticipant": {
+              "name": "Foo"
+            },
+            "version": {
+              "number": "5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
+              "buildUrl": "http://build"
+            }
+          },
+          "logs": [
+            {
+              "level": "info",
+              "message": "some message"
+            }
+          ],
+          "_links": {
+            "pb:pacticipant-version-tags": [
+              {
+                "name": "dev"
+              }
+            ],
+            "pb:contracts": [
+              {
+                "href": "http://some-pact"
+              }
+            ]
+          }
+        },
+        "matchingRules": {
+          "$.body.logs": {
+            "min": 1
+          },
+          "$.body.logs[*].*": {
+            "match": "type"
+          },
+          "$.body._links.pb:contracts[0].href": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request for the index resource",
       "providerState": "the pb:pacticipant-version and pb:environments relations exist in the index resource",
       "request": {
         "method": "GET",

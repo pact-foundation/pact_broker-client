@@ -6,11 +6,14 @@ module PactBroker::Client::CLI
   describe Broker do
     describe ".broker" do
       before do
-        allow(PactBroker::Client::PublishPacts).to receive(:call).and_return(true)
+        allow(PactBroker::Client::PublishPacts).to receive(:call).and_return(result)
         allow(PactBroker::Client::Git).to receive(:branch).and_return("bar")
         subject.options = OpenStruct.new(minimum_valid_options)
+        allow($stdout).to receive(:puts)
       end
 
+      let(:success) { true }
+      let(:result) { instance_double(PactBroker::Client::CommandResult, success: success, message: "message")}
       let(:file_list) { ["spec/support/cli_test_pacts/foo.json"] }
       let(:minimum_valid_options) do
         {
@@ -28,7 +31,8 @@ module PactBroker::Client::CLI
             "http://pact-broker",
             ["spec/support/cli_test_pacts/foo.json"],
             { number: "1.2.3", tags: [], version_required: false },
-            { }
+            {},
+            {}
           )
           invoke_broker
         end
@@ -41,6 +45,7 @@ module PactBroker::Client::CLI
           expect(PactBroker::Client::PublishPacts).to receive(:call).with(
             anything,
             ["spec/support/cli_test_pacts/bar.json", "spec/support/cli_test_pacts/foo.json"],
+            anything,
             anything,
             anything
           )
@@ -56,6 +61,7 @@ module PactBroker::Client::CLI
             anything,
             ["spec/support/cli_test_pacts/bar.json", "spec/support/cli_test_pacts/foo.json"],
             anything,
+            anything,
             anything
           )
           invoke_broker
@@ -69,6 +75,7 @@ module PactBroker::Client::CLI
           expect(PactBroker::Client::PublishPacts).to receive(:call).with(
             anything,
             ["spec/support/cli_test_pacts/bar.json", "spec/support/cli_test_pacts/foo.json"],
+            anything,
             anything,
             anything
           )
@@ -102,6 +109,7 @@ module PactBroker::Client::CLI
             anything,
             anything,
             hash_including(tags: ['foo']),
+            anything,
             anything
           )
           invoke_broker
@@ -125,6 +133,7 @@ module PactBroker::Client::CLI
             anything,
             anything,
             hash_including(tags: ['foo', 'bar']),
+            anything,
             anything
           )
           invoke_broker
@@ -143,6 +152,7 @@ module PactBroker::Client::CLI
             anything,
             anything,
             hash_including(branch: "main", version_required: true),
+            anything,
             anything
           )
           invoke_broker
@@ -167,6 +177,7 @@ module PactBroker::Client::CLI
             anything,
             anything,
             hash_including(branch: "bar", version_required: false),
+            anything,
             anything
           )
           invoke_broker
@@ -192,6 +203,7 @@ module PactBroker::Client::CLI
             anything,
             anything,
             hash_including(branch: "bar", version_required: true),
+            anything,
             anything
           )
           invoke_broker
@@ -209,6 +221,7 @@ module PactBroker::Client::CLI
               anything,
               anything,
               hash_including(branch: "specified-branch", version_required: true),
+              anything,
               anything
             )
             invoke_broker
@@ -228,6 +241,7 @@ module PactBroker::Client::CLI
             anything,
             anything,
             hash_including(build_url: "http://ci"),
+            anything,
             anything
           )
           invoke_broker
@@ -243,6 +257,7 @@ module PactBroker::Client::CLI
 
         it "passes in the basic auth options" do
           expect(PactBroker::Client::PublishPacts).to receive(:call).with(
+            anything,
             anything,
             anything,
             anything,
@@ -283,12 +298,10 @@ module PactBroker::Client::CLI
       end
 
       context "when the publish command is not successful" do
-        before do
-          allow(PactBroker::Client::PublishPacts).to receive(:call).and_return(false)
-        end
+        let(:success) { false }
 
-        it "raises a PactPublicationError" do
-          expect { invoke_broker }.to raise_error PactPublicationError
+        it "raises a SystemExit" do
+          expect { invoke_broker }.to raise_error SystemExit
         end
       end
     end

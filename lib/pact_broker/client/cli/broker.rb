@@ -51,14 +51,16 @@ module PactBroker
         method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Default: false"
         method_option :build_url, desc: "The build URL that created the pact"
         method_option :merge, type: :boolean, default: false, require: false, desc: "If a pact already exists for this consumer version and provider, merge the contents. Useful when running Pact tests concurrently on different build nodes."
+        method_option :output, aliases: "-o", desc: "json or text", default: 'text'
         shared_authentication_options
 
         def publish(*pact_files)
           require 'pact_broker/client/error'
           validate_credentials
           validate_pact_files(pact_files)
-          success = publish_pacts(pact_files)
-          raise PactPublicationError, "One or more pacts failed to be published" unless success
+          result = publish_pacts(pact_files)
+          $stdout.puts result.message
+          exit(1) unless result.success
         rescue PactBroker::Client::Error => e
           raise PactPublicationError, "#{e.class} - #{e.message}"
         end
@@ -283,6 +285,7 @@ module PactBroker
               options.broker_base_url,
               file_list(pact_files),
               consumer_version_params,
+              { merge: options[:merge], output: options.output }.compact,
               pact_broker_client_options.merge(write_options)
             )
           end
@@ -393,7 +396,6 @@ module PactBroker
               provider: options.provider,
               events: events
             }
-
           end
 
           def run_webhook_commands webhook_url

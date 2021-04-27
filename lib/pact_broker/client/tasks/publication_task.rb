@@ -63,8 +63,9 @@ module PactBroker
             pact_broker_client_options[:basic_auth] = pact_broker_basic_auth if pact_broker_basic_auth && pact_broker_basic_auth.any?
             pact_broker_client_options.compact!
             consumer_version_params = { number: consumer_version, branch: the_branch, build_url: build_url, tags: all_tags, version_required: version_required }.compact
-            success = PactBroker::Client::PublishPacts.new(pact_broker_base_url, FileList[pattern], consumer_version_params, pact_broker_client_options).call
-            raise "One or more pacts failed to be published" unless success
+            result = PactBroker::Client::PublishPacts.new(pact_broker_base_url, FileList[pattern], consumer_version_params, {}, pact_broker_client_options).call
+            $stdout.puts result.message
+            raise "One or more pacts failed to be published" unless result.success
           end
         end
       end
@@ -86,7 +87,6 @@ module PactBroker
           branch
         end
       end
-
     end
   end
 end

@@ -1,0 +1,31 @@
+{
+  "consumer": {
+    "name": "Foo"
+  },
+  "provider": {
+    "name": "Bar"
+  },
+  "interactions": [
+    {
+      "description": "an example request",
+      "providerState": "a provider state",
+      "request": {
+        "method": "GET",
+        "path": "/",
+        "headers": {
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
