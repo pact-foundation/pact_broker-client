@@ -1,3 +1,11 @@
+<a name="v1.39.0"></a>
+### v1.39.0 (2021-04-27)
+
+#### Features
+
+* publish pacts using the "all in one" endpoint (#86)	 ([3a1ea22](/../../commit/3a1ea22))
+* provide a more helpful error message when the specified pact file does not exist	 ([29a7962](/../../commit/29a7962))
+
 <a name="v1.38.3"></a>
 ### v1.38.3 (2021-04-08)
 
