@@ -1,6 +1,9 @@
 require 'pact_broker/client/pact_hash'
 shared_context "pact broker" do
-
+  before do
+    allow_any_instance_of(PactBroker::Client::Hal::HttpClient).to receive(:sleep)
+    allow_any_instance_of(PactBroker::Client::Hal::HttpClient).to receive(:default_max_tries).and_return(1)
+  end
   let(:pact_hash) { PactBroker::Client::PactHash[consumer: {name: 'Condor'}, provider: {name: 'Pricing Service'}, interactions: []] }
   let(:consumer_contract) { Pact::ConsumerContract.from_hash pact_hash }
   let(:pact_json) { pact_hash.to_json }

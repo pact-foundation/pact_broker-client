@@ -75,7 +75,7 @@ module PactBroker
         end
 
         def record_deployment_request_body
-          { replacedPreviousDeployedVersion: target }
+          { target: target }
         end
 
         def result_message

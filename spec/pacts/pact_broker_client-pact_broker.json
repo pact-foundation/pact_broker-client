@@ -1737,7 +1737,7 @@
           "Accept": "application/hal+json"
         },
         "body": {
-          "replacedPreviousDeployedVersion": true
+          "target": "blue"
         }
       },
       "response": {
@@ -1746,7 +1746,7 @@
           "Content-Type": "application/hal+json;charset=utf-8"
         },
         "body": {
-          "replacedPreviousDeployedVersion": true
+          "target": "blue"
         }
       }
     },
