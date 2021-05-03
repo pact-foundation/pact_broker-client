@@ -1,7 +1,7 @@
 require 'service_providers/pact_helper'
 require 'pact_broker/client/versions/record_deployment'
 
-RSpec.describe "recording a deployment", pact: true do
+RSpec.describe "recording a deployment", pact: true, skip: true do
   include_context "pact broker"
   include PactBrokerPactHelperMethods
 
