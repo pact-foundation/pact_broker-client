@@ -174,12 +174,11 @@ module PactBroker
         if ENV.fetch("PACT_BROKER_FEATURES", "").include?("deployments")
 
           ignored_and_hidden_potential_options_from_environment_variables
-          desc "record-deployment", "Record deployment of a pacticipant version to an environment"
-          long_desc File.read(File.join(__dir__, 'record_deployment_long_desc.txt'))
+          desc "record-deployment", "Record deployment of a pacticipant version to an environment. See https://docs.pact.io/go/record_deployment for more information."
           method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that was deployed."
           method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number that was deployed."
           method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was deployed to."
-          method_option :target, default: nil, required: false, desc: "The target of the deployment - a logical identifer that represents where the application version was deployed to. See the usage docs for information on when to use this."
+          method_option :target, default: nil, required: false, desc: "Optional. The target of the deployment - a logical identifer required to differentiate deployments when there are multiple instances of the same application in an environment."
           method_option :output, aliases: "-o", desc: "json or text", default: 'text'
           shared_authentication_options
 
