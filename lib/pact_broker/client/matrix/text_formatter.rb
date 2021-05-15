@@ -1,6 +1,7 @@
 require 'table_print'
 require 'dig_rb'
 require 'pact_broker/client/hash_refinements'
+require 'pact_broker/client/matrix/abbreviate_version_number'
 
 module PactBroker
   module Client
@@ -8,18 +9,19 @@ module PactBroker
       class TextFormatter
         using PactBroker::Client::HashRefinements
 
-        Line = Struct.new(:consumer, :consumer_version, :provider, :provider_version, :success, :ref)
+        Line = Struct.new(:consumer, :consumer_version, :provider, :provider_version, :success, :ref, :ignored)
 
-        OPTIONS = [
+        TP_OPTIONS = [
           { consumer: {} },
           { consumer_version: {display_name: 'C.VERSION'} },
           { provider: {} },
           { provider_version: {display_name: 'P.VERSION'} },
           { success: {display_name: 'SUCCESS?'} },
-          { ref: { display_name: 'RESULT#' }}
+          { ref: { display_name: 'RESULT#' } }
         ]
 
         def self.call(matrix)
+          tp_options = TP_OPTIONS.dup
           matrix_rows = matrix[:matrix]
           return "" if matrix_rows.size == 0
           verification_result_number = 0
@@ -30,15 +32,16 @@ module PactBroker
             end
             Line.new(
               lookup(line, "???", :consumer, :name),
-              lookup(line, "???", :consumer, :version, :number),
+              AbbreviateVersionNumber.call(lookup(line, "???", :consumer, :version, :number)),
               lookup(line, "???", :provider, :name) ,
-              lookup(line, "???", :provider, :version, :number),
-              (lookup(line, "???", :verificationResult, :success)).to_s,
-              has_verification_result_url ? verification_result_number : ""
+              AbbreviateVersionNumber.call(lookup(line, "???", :provider, :version, :number)),
+              (lookup(line, "???", :verificationResult, :success)).to_s + ( line[:ignored] ? " [ignored]" : ""),
+              has_verification_result_url ? verification_result_number : "",
+              lookup(line, nil, :ignored)
             )
           end
 
-          printer = TablePrint::Printer.new(data, OPTIONS)
+          printer = TablePrint::Printer.new(data, tp_options)
           printer.table_print + verification_result_urls_text(matrix)
         end
 

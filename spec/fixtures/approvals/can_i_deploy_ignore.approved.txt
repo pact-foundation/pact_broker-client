@@ -1,0 +1,13 @@
+[32mComputer says yes \o/ [0m
+
+CONSUMER | C.VERSION | PROVIDER | P.VERSION | SUCCESS?        | RESULT#
+---------|-----------|----------|-----------|-----------------|--------
+Foo      | 1.2.3     | Bar      | 4.5.6     | true            | 1      
+Foo      | 3.4.5     | Bar      | 4.5.6     | false [ignored] | 2      
+
+VERIFICATION RESULTS
+--------------------
+1. http://result (success)
+2. http://result (failure)
+
+some notice

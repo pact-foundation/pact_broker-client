@@ -12,6 +12,8 @@ module PactBroker
             case word
             when "--pacticipant", "-a"
               selectors << {}
+            when "--ignore"
+              selectors << { ignore: true }
             when "--latest", "-l"
               selectors << { pacticipant: nil } if selectors.empty?
               selectors.last[:latest] = true
@@ -20,6 +22,8 @@ module PactBroker
             else
               case previous_option
               when "--pacticipant", "-a"
+                selectors.last[:pacticipant] = word
+              when "--ignore"
                 selectors.last[:pacticipant] = word
               when "--version", "-e"
                 selectors << { pacticipant: nil } if selectors.empty?

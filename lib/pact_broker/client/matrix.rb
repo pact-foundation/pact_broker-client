@@ -60,6 +60,9 @@ module PactBroker
         elsif selectors.size == 1 && !options[:to_environment]
           opts[:latest] = 'true'
         end
+        if options[:ignore_selectors] && options[:ignore_selectors].any?
+          opts[:ignore] = convert_selector_hashes_to_params(options[:ignore_selectors])
+        end
         opts
       end
 
@@ -69,6 +72,7 @@ module PactBroker
             hash[:version] = selector[:version] if selector[:version]
             hash[:latest] = 'true' if selector[:latest]
             hash[:tag] = selector[:tag] if selector[:tag]
+            hash[:branch] = selector[:branch] if selector[:branch]
           end
         end
       end

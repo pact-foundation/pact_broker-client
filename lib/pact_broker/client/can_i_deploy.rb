@@ -3,6 +3,7 @@ require 'pact_broker/client/pact_broker_client'
 require 'pact_broker/client/retry'
 require 'pact_broker/client/matrix/formatter'
 require 'term/ansicolor'
+require 'pact_broker/client/colorize_notices'
 
 module PactBroker
   module Client
@@ -32,7 +33,7 @@ module PactBroker
       def call
         create_result(fetch_matrix_with_retries)
       rescue PactBroker::Client::Error => e
-        Result.new(false, e.message)
+        Result.new(false, Term::ANSIColor.red(e.message))
       rescue StandardError => e
         Result.new(false, "Error retrieving matrix. #{e.class} - #{e.message}\n#{e.backtrace.join("\n")}")
       end
@@ -52,7 +53,7 @@ module PactBroker
       def success_message(matrix)
         message = format_matrix(matrix)
         if format != 'json'
-          message = 'Computer says yes \o/ ' + message + "\n\n" + Term::ANSIColor.green(matrix.reason)
+          message = warning(matrix) + Term::ANSIColor.green('Computer says yes \o/ ') + message + "\n\n" + notice_or_reason(matrix, :green)
         end
         message
       end
@@ -60,9 +61,17 @@ module PactBroker
       def failure_message(matrix)
         message = format_matrix(matrix)
         if format != 'json'
-          message = 'Computer says no ¯\_(ツ)_/¯ ' + message + "\n\n" + Term::ANSIColor.red(matrix.reason)
+          message = warning(matrix) + Term::ANSIColor.red('Computer says no ¯\_(ツ)_/¯ ') + message + "\n\n" + notice_or_reason(matrix, :red)
         end
         message
+      end
+
+      def notice_or_reason(matrix, reason_color)
+        if matrix.notices
+          PactBroker::Client::ColorizeNotices.call(matrix.notices).join("\n")
+        else
+          Term::ANSIColor.send(reason_color, matrix.reason)
+        end
       end
 
       def format_matrix(matrix)
@@ -129,6 +138,14 @@ module PactBroker
       def check_if_retry_while_unknown_supported(matrix)
         if !matrix.supports_unknown_count?
           raise PactBroker::Client::Error.new("This version of the Pact Broker does not provide a count of the unknown verification results. Please upgrade your Broker to >= v2.23.4")
+        end
+      end
+
+      def warning(matrix)
+        if matrix_options[:ignore_selectors] && matrix_options[:ignore_selectors].any? && !matrix.supports_ignore?
+          Term::ANSIColor.yellow("WARN: This version of the Pact Broker does not support ignoring pacticipants. Please upgrade your Broker to >= 2.80.0") + "\n\n"
+        else
+          ""
         end
       end
     end

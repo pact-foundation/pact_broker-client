@@ -1,10 +1,11 @@
 require 'webmock/rspec'
 
-ENV['PACT_BROKER_FEATURES'] = 'deployments publish_contracts'
+ENV['PACT_BROKER_FEATURES'] = 'deployments publish_contracts ignore'
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
 require "./spec/support/shared_context.rb"
+require "./spec/support/approvals.rb"
 
 is_windows = (RbConfig::CONFIG['host_os'] =~ /bccwin|cygwin|djgpp|mingw|mswin|wince/i) != nil
 is_ci = ENV['CI'] == 'true'

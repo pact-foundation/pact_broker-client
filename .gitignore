@@ -2,6 +2,7 @@
 *.rbc
 .bundle
 .config
+.approvals
 coverage
 InstalledFiles
 lib/bundler/man

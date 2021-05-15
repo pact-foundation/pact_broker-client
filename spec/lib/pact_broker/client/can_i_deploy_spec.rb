@@ -6,22 +6,27 @@ module PactBroker
     describe CanIDeploy do
       let(:pact_broker_base_url) { 'http://example.org' }
       let(:version_selectors) { [{ pacticipant: "Foo", version: "1" }] }
-      let(:matrix_options) { {} }
+      let(:matrix_options) { { } }
       let(:pact_broker_client_options) { { foo: 'bar' } }
       let(:matrix_client) { instance_double('PactBroker::Client::Matrix') }
       let(:matrix) do
         instance_double('Matrix::Resource',
-          deployable?: true,
+          deployable?: deployable,
           reason: 'some reason',
           any_unknown?: any_unknown,
           supports_unknown_count?: supports_unknown_count,
-          unknown_count: unknown_count)
+          supports_ignore?: supports_ignore,
+          unknown_count: unknown_count,
+          notices: notices)
       end
       let(:unknown_count) { 0 }
       let(:any_unknown) { unknown_count > 0 }
       let(:supports_unknown_count) { true }
       let(:retry_while_unknown) { 0 }
       let(:options) { { output: 'text', retry_while_unknown: retry_while_unknown, retry_interval: 5 } }
+      let(:notices) { nil }
+      let(:supports_ignore) { true }
+      let(:deployable) { true }
 
 
       before do
@@ -55,10 +60,19 @@ module PactBroker
         it "returns a success reason" do
           expect(subject.message).to include "some reason"
         end
+
+        context "when there are notices" do
+          let(:notices) { [Notice.new(text: "some notice", type: "info")] }
+
+          it "returns the notices instead of the reason" do
+            expect(subject.message).to_not include "some reason"
+            expect(subject.message).to include "some notice"
+          end
+        end
       end
 
       context "when the versions are not deployable" do
-        let(:matrix) { instance_double('Matrix::Resource', deployable?: false, reason: 'some reason', any_unknown?: false) }
+        let(:matrix) { instance_double('Matrix::Resource', deployable?: false, reason: 'some reason', any_unknown?: false, notices: notices) }
 
         it "returns a failure response" do
           expect(subject.success).to be false
@@ -70,6 +84,15 @@ module PactBroker
 
         it "returns a failure reason" do
           expect(subject.message).to include "some reason"
+        end
+
+        context "when there are notices" do
+          let(:notices) { [Notice.new(text: "some notice", type: "info")] }
+
+          it "returns the notices instead of the reason" do
+            expect(subject.message).to_not include "some reason"
+            expect(subject.message).to include "some notice"
+          end
         end
       end
 
@@ -115,6 +138,25 @@ module PactBroker
         end
       end
 
+      context "when there are ignore selectors but the matrix does not support ignoring" do
+        let(:matrix_options) { { ignore_selectors: [{ pacticipant_name: "Foo" }]} }
+        let(:supports_ignore) { false }
+
+        context "when deployable" do
+          it "returns a warning" do
+            expect(subject.message).to include "does not support"
+          end
+        end
+
+        context "when not deployable" do
+          let(:deployable) { false }
+
+          it "returns a warning" do
+            expect(subject.message).to include "does not support"
+          end
+        end
+      end
+
       context "when a PactBroker::Client::Error is raised" do
         before do
           allow(matrix_client).to receive(:get).and_raise(PactBroker::Client::Error.new('error text'))
@@ -125,7 +167,7 @@ module PactBroker
         end
 
         it "returns a failure message" do
-          expect(subject.message).to eq "error text"
+          expect(subject.message).to include "error text"
         end
       end
 

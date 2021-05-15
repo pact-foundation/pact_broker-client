@@ -1,4 +1,6 @@
 require 'pact_broker/client/pact_hash'
+require 'pact_broker/client/hal/http_client'
+
 shared_context "pact broker" do
   before do
     allow_any_instance_of(PactBroker::Client::Hal::HttpClient).to receive(:sleep)
@@ -19,5 +21,4 @@ shared_context "pact broker" do
   let(:put_request_headers)     { { 'Content-Type' => 'application/json', 'Accept' => 'application/hal+json'} }
   let(:post_request_headers)    { { 'Content-Type' => 'application/json', 'Accept' => 'application/hal+json'} }
   let(:get_request_headers)     { { 'Accept' => 'application/hal+json'} }
-
 end

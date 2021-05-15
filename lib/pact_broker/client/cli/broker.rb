@@ -19,6 +19,10 @@ module PactBroker
 
         method_option :pacticipant, required: true, aliases: "-a", desc: "The pacticipant name. Use once for each pacticipant being checked."
         method_option :version, required: false, aliases: "-e", desc: "The pacticipant version. Must be entered after the --pacticipant that it relates to."
+
+        if ENV.fetch("PACT_BROKER_FEATURES", "").include?("ignore")
+          method_option :ignore, required: false, desc: "The pacticipant name to ignore. Use once for each pacticipant being ignored. A specific version can be ignored by also specifying a --version."
+        end
         method_option :latest, required: false, aliases: "-l", banner: '[TAG]', desc: "Use the latest pacticipant version. Optionally specify a TAG to use the latest version with the specified tag."
         method_option :to, required: false, banner: 'TAG', desc: "This is too hard to explain in a short sentence. Look at the examples.", default: nil
         method_option :to_environment, required: false, banner: 'ENVIRONMENT', desc: "The environment into which the pacticipant(s) are to be deployed", default: nil, hide: true
@@ -34,10 +38,15 @@ module PactBroker
           require 'pact_broker/client/can_i_deploy'
 
           validate_credentials
-          selectors = VersionSelectorOptionsParser.call(ARGV)
+          selectors = VersionSelectorOptionsParser.call(ARGV).select { |s| !s[:ignore] }
+          ignore_selectors = if ENV.fetch("PACT_BROKER_FEATURES", "").include?("ignore")
+            VersionSelectorOptionsParser.call(ARGV).select { |s| s[:ignore] }
+          else
+            []
+          end
           validate_can_i_deploy_selectors(selectors)
           can_i_deploy_options = { output: options.output, retry_while_unknown: options.retry_while_unknown, retry_interval: options.retry_interval }
-          result = CanIDeploy.call(options.broker_base_url, selectors, { to_tag: options.to, to_environment: options.to_environment, limit: options.limit }, can_i_deploy_options, pact_broker_client_options)
+          result = CanIDeploy.call(options.broker_base_url, selectors, { to_tag: options.to, to_environment: options.to_environment, limit: options.limit, ignore_selectors: ignore_selectors }, can_i_deploy_options, pact_broker_client_options)
           $stdout.puts result.message
           $stdout.flush
           exit(can_i_deploy_exit_status) unless result.success

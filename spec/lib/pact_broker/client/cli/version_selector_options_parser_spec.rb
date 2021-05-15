@@ -48,6 +48,27 @@ module PactBroker
           ],[
             ["--pacticipant", "Foo=Bar", "--version", "1.2.3"],
             [{ pacticipant: "Foo=Bar", version: "1.2.3" } ]
+          ],[
+            ["--ignore", "Foo", "--version", "1.2.3"],
+            [{ pacticipant: "Foo", version: "1.2.3", ignore: true }]
+          ],[
+            ["--ignore", "Foo", "--ignore", "Bar", "--version", "1.2.3"],
+            [{ pacticipant: "Foo", ignore: true }, { pacticipant: "Bar", version: "1.2.3", ignore: true }]
+          ],[
+            ["--ignore", "Foo", "--pacticipant", "Bar", "--version", "1.2.3"],
+            [{ pacticipant: "Foo", ignore: true }, { pacticipant: "Bar", version: "1.2.3" }]
+          ],[
+            ["--pacticipant", "Foo", "--version", "1", "--version", "2"],
+            [{ pacticipant: "Foo", version: "2" }]
+          ],[
+            ["--pacticipant", "Foo", "--version", "2", "--latest"],
+            [{ pacticipant: "Foo", version: "2", latest: true }]
+          ],[
+            ["--pacticipant", "Foo", "--version", "2", "--latest", "--latest"],
+            [{ pacticipant: "Foo", version: "2", latest: true }]
+          ],[
+            ["--version", "2"],
+            [{ pacticipant: nil, version: "2" }]
           ]
         ]
 
