@@ -80,9 +80,9 @@ module PactBroker
 
         def result_message
           if output == "text"
-            message = "Recorded deployment of #{pacticipant_name} version #{version_number} to #{environment_name} in #{pact_broker_name}."
-            suffix = target ? " Marked previous deployed version as undeployed." : ""
-            message + suffix
+            message = "Recorded deployment of #{pacticipant_name} version #{version_number} to #{environment_name}"
+            message = "#{message} (target #{target})" if target
+            "#{message} in #{pact_broker_name}."
           elsif output == "json"
             deployed_version_resource.response.raw_body
           else

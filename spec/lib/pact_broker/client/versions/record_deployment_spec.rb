@@ -15,7 +15,7 @@ module PactBroker
             stub_request(:get, broker_base_url).to_return(status: 200, body: index_body_hash.to_json, headers: { "Content-Type" => "application/hal+json" }  )
           end
 
-          let(:target) { true }
+          let(:target) { "blue" }
 
           let(:params) do
             {
@@ -53,7 +53,7 @@ module PactBroker
             end
 
             it "indicates the API was Pactflow" do
-              expect(subject.message).to include "Recorded deployment of Foo version 1 to test in Pactflow"
+              expect(subject.message).to include "Recorded deployment of Foo version 1 to test (target blue) in Pactflow"
             end
           end
 
