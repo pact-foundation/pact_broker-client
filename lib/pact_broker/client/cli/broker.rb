@@ -1,6 +1,7 @@
 require 'pact_broker/client/cli/custom_thor'
 require 'pact_broker/client/hash_refinements'
 require 'thor/error'
+require 'term/ansicolor'
 
 module PactBroker
   module Client
@@ -31,6 +32,7 @@ module PactBroker
         method_option :retry_interval, banner: 'SECONDS', type: :numeric, default: 10, required: false, desc: "The time between retries in seconds. Use in conjuction with --retry-while-unknown"
         # Allow limit to be set manually until https://github.com/pact-foundation/pact_broker-client/issues/53 is fixed
         method_option :limit, hide: true
+        method_option :dry_run, type: :boolean, default: false, desc: "When enabled, always exits process with a success code"
         shared_authentication_options
 
         def can_i_deploy(*ignored_but_necessary)
@@ -47,9 +49,19 @@ module PactBroker
           validate_can_i_deploy_selectors(selectors)
           can_i_deploy_options = { output: options.output, retry_while_unknown: options.retry_while_unknown, retry_interval: options.retry_interval }
           result = CanIDeploy.call(options.broker_base_url, selectors, { to_tag: options.to, to_environment: options.to_environment, limit: options.limit, ignore_selectors: ignore_selectors }, can_i_deploy_options, pact_broker_client_options)
-          $stdout.puts result.message
-          $stdout.flush
-          exit(can_i_deploy_exit_status) unless result.success
+
+          if options.dry_run
+            $stderr.puts Term::ANSIColor.yellow("Dry run enabled - ignoring any failures")
+            # $stdout.puts Term::ANSIColor.uncolor(result.message)
+            $stdout.puts result.message
+            # $stdout.puts result.message.split("\n").collect { |line| Term::ANSIColor.yellow("[dry-run] ") + line }
+            # $stderr.puts Term::ANSIColor.yellow("Dry run enabled - ignoring any failures")
+            $stdout.flush
+          else
+            $stdout.puts result.message
+            $stdout.flush
+            exit(1) unless result.success
+          end
         end
 
         desc 'publish PACT_DIRS_OR_FILES ...', "Publish pacts to a Pact Broker."
@@ -253,7 +265,7 @@ module PactBroker
           def can_i_deploy_exit_status
             exit_code_string = ENV.fetch('PACT_BROKER_CAN_I_DEPLOY_EXIT_CODE_BETA', '')
             if exit_code_string =~ /^\d+$/
-              $stderr.puts "Exiting can-i-deploy with configured exit code #{exit_code_string}"
+              $stderr.puts Term::ANSIColor.yellow("Dry run enabled - ignoring any failures")
               exit_code_string.to_i
             else
               1
