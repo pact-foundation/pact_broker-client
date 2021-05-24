@@ -1604,7 +1604,8 @@
               "specification": "pact",
               "contentType": "application/json",
               "content": "eyJjb25zdW1lciI6eyJuYW1lIjoiRm9vIn0sInByb3ZpZGVyIjp7Im5hbWUiOiJCYXIifSwiaW50ZXJhY3Rpb25zIjpbeyJkZXNjcmlwdGlvbiI6ImFuIGV4YW1wbGUgcmVxdWVzdCIsInByb3ZpZGVyU3RhdGUiOiJhIHByb3ZpZGVyIHN0YXRlIiwicmVxdWVzdCI6eyJtZXRob2QiOiJHRVQiLCJwYXRoIjoiLyIsImhlYWRlcnMiOnt9fSwicmVzcG9uc2UiOnsic3RhdHVzIjoyMDAsImhlYWRlcnMiOnsiQ29udGVudC1UeXBlIjoiYXBwbGljYXRpb24vaGFsK2pzb24ifX19XSwibWV0YWRhdGEiOnsicGFjdFNwZWNpZmljYXRpb24iOnsidmVyc2lvbiI6IjIuMC4wIn19fQ==",
-              "writeMode": "overwrite"
+              "writeMode": "overwrite",
+              "onConflict": "overwrite"
             }
           ]
         }

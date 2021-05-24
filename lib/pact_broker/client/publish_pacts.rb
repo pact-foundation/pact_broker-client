@@ -112,7 +112,8 @@ module PactBroker
             specification: "pact",
             contentType: "application/json",
             content: Base64.strict_encode64(pact_hash.to_json),
-            writeMode: write_mode
+            writeMode: write_mode,
+            onConflict: write_mode
           }
         end
       end

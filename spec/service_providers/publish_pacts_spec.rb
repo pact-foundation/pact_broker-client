@@ -42,7 +42,8 @@ RSpec.describe "publishing contracts", pact: true do
           specification: "pact",
           contentType: "application/json",
           content: expected_content,
-          writeMode: "overwrite"
+          writeMode: "overwrite",
+          onConflict: "overwrite"
         }
       ]
     }
