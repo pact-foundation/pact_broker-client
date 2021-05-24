@@ -10,3 +10,7 @@ if ENV['X_PACT_DEVELOPMENT'] == 'true'
   gem 'pact-mock_service', path: '../pact-mock_service'
   gem 'pact-support', path: '../pact-support'
 end
+
+group :development do
+  gem 'pry-byebug'
+end
