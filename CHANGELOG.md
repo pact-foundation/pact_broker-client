@@ -1,3 +1,10 @@
+<a name="v1.41.0"></a>
+### v1.41.0 (2021-05-25)
+
+#### Features
+
+* update colours of pact publish output	 ([2a51e37](/../../commit/2a51e37))
+
 <a name="v1.40.0"></a>
 ### v1.40.0 (2021-04-26)
 
