@@ -1,3 +1,5 @@
+require 'term/ansicolor'
+
 module PactBroker
   module Client
     class ColorizeNotices
@@ -10,7 +12,7 @@ module PactBroker
       def self.colorized_message(notice)
         color = color_for_type(notice.type)
         if color
-          ::Term::ANSIColor.send(color, notice.text || '')
+          ::Term::ANSIColor.color(color, notice.text || '')
         else
           notice.text
         end
@@ -18,7 +20,7 @@ module PactBroker
 
       def self.color_for_type(type)
         case type
-        when "warning" then :yellow
+        when "warning", "prompt" then "yellow"
         when "error", "danger" then :red
         when "success" then :green
         else nil
