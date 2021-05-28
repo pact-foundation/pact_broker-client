@@ -73,7 +73,7 @@ module PactBroker::Client
           subject(:entity) { ErrorEntity.new("http://pact", pact_hash, http_client) }
 
           it "raises an error" do
-            expect { entity.assert_success! }.to raise_error ErrorResponseReturned, "Error retrieving http://pact status="
+            expect { entity.assert_success! }.to raise_error ErrorResponseReturned, "Error making request to http://pact status="
           end
         end
 
@@ -83,7 +83,7 @@ module PactBroker::Client
           subject(:entity) { ErrorEntity.new("http://pact", pact_hash, http_client, response) }
 
           it "raises an error" do
-            expect { entity.assert_success! }.to raise_error ErrorResponseReturned, "Error retrieving http://pact status=200 body"
+            expect { entity.assert_success! }.to raise_error ErrorResponseReturned, "Error making request to http://pact status=200 body"
           end
         end
       end
