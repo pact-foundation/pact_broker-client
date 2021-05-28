@@ -41,7 +41,7 @@ module PactBroker
             body = e.entity.response.raw_body
             (body.nil? || body == "") ? "{}" : body
           else
-            e.message
+            ::Term::ANSIColor.red(e.message)
           end
           PactBroker::Client::CommandResult.new(false, message)
         end

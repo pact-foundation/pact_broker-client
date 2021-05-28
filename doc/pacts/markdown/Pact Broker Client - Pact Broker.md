@@ -24,8 +24,6 @@
 
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pacticipant_relations_are_present) given the pacticipant relations are present
 
-* [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:environments_relation_exists_in_the_index_resource) given the pb:environments relation exists in the index resource
-
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:latest-tagged-version_relation_exists_in_the_index_resource) given the pb:latest-tagged-version relation exists in the index resource
 
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:latest-version_relation_exists_in_the_index_resource) given the pb:latest-version relation exists in the index resource
@@ -67,8 +65,6 @@
 * [A request to create a webhook with a non-JSON body for a consumer and provider](#a_request_to_create_a_webhook_with_a_non-JSON_body_for_a_consumer_and_provider_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker) given the 'Pricing Service' and 'Condor' already exist in the pact-broker
 
 * [A request to create a webhook with every possible event type](#a_request_to_create_a_webhook_with_every_possible_event_type_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker) given the 'Pricing Service' and 'Condor' already exist in the pact-broker
-
-* [A request to create an environment](#a_request_to_create_an_environment)
 
 * [A request to get the Pricing Service](#a_request_to_get_the_Pricing_Service_given_the_&#39;Pricing_Service&#39;_already_exists_in_the_pact-broker) given the 'Pricing Service' already exists in the pact-broker
 
@@ -601,33 +597,6 @@ Pact Broker will respond with:
       },
       "pb:pacticipant": {
         "href": "http://localhost:1234/pacticipants/{pacticipant}"
-      }
-    }
-  }
-}
-```
-<a name="a_request_for_the_index_resource_given_the_pb:environments_relation_exists_in_the_index_resource"></a>
-Given **the pb:environments relation exists in the index resource**, upon receiving **a request for the index resource** from Pact Broker Client, with
-```json
-{
-  "method": "GET",
-  "path": "/",
-  "headers": {
-    "Accept": "application/hal+json"
-  }
-}
-```
-Pact Broker will respond with:
-```json
-{
-  "status": 200,
-  "headers": {
-    "Content-Type": "application/hal+json;charset=utf-8"
-  },
-  "body": {
-    "_links": {
-      "pb:environments": {
-        "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS"
       }
     }
   }
@@ -1482,54 +1451,6 @@ Pact Broker will respond with:
         "title": "A title"
       }
     }
-  }
-}
-```
-<a name="a_request_to_create_an_environment"></a>
-Upon receiving **a request to create an environment** from Pact Broker Client, with
-```json
-{
-  "method": "POST",
-  "path": "/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS",
-  "headers": {
-    "Content-Type": "application/json",
-    "Accept": "application/hal+json"
-  },
-  "body": {
-    "name": "test",
-    "displayName": "Test",
-    "production": false,
-    "contacts": [
-      {
-        "name": "Foo team",
-        "details": {
-          "emailAddress": "foo@bar.com"
-        }
-      }
-    ]
-  }
-}
-```
-Pact Broker will respond with:
-```json
-{
-  "status": 201,
-  "headers": {
-    "Content-Type": "application/hal+json;charset=utf-8"
-  },
-  "body": {
-    "name": "test",
-    "displayName": "Test",
-    "production": false,
-    "contacts": [
-      {
-        "name": "Foo team",
-        "details": {
-          "emailAddress": "foo@bar.com"
-        }
-      }
-    ],
-    "uuid": "ffe683ef-dcd7-4e4f-877d-f6eb3db8e86e"
   }
 }
 ```

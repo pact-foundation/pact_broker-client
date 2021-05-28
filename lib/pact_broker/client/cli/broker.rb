@@ -16,8 +16,6 @@ module PactBroker
         using PactBroker::Client::HashRefinements
         include PactBroker::Client::CLI::EnvironmentCommands
 
-
-
         desc 'can-i-deploy', ''
         long_desc File.read(File.join(__dir__, 'can_i_deploy_long_desc.txt'))
 

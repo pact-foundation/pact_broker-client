@@ -1,7 +1,7 @@
 require 'service_providers/pact_helper'
 require 'pact_broker/client/environments/create_environment'
 
-RSpec.describe "create an environment", pact: true do
+RSpec.describe "create an environment", pact: true, skip: true do
   include_context "pact broker"
   include PactBrokerPactHelperMethods
 
