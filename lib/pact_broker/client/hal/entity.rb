@@ -8,7 +8,14 @@ module PactBroker
   module Client
     module Hal
       class RelationNotFoundError < ::PactBroker::Client::Error; end
-      class ErrorResponseReturned < ::PactBroker::Client::Error; end
+      class ErrorResponseReturned < ::PactBroker::Client::Error
+        attr_reader :entity
+
+        def initialize(message, entity)
+          super(message)
+          @entity = entity
+        end
+      end
 
       class Entity
         def initialize(href, data, http_client, response = nil)
@@ -165,7 +172,7 @@ module PactBroker
           else
             default_message
           end
-          raise ErrorResponseReturned.new(message)
+          raise ErrorResponseReturned.new(message, self)
         end
       end
     end

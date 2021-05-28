@@ -1,46 +1,29 @@
-require 'pact_broker/client/environments/create_environment'
-require 'pact_broker/client/backports'
+require 'pact_broker/client/environments/environment_command'
 
 module PactBroker
   module Client
     module Environments
-      class UpdateEnvironment < PactBroker::Client::Environments::CreateEnvironment
-        def call
-          check_if_command_supported
-          update_environment
-        rescue PactBroker::Client::Error => e
-          PactBroker::Client::CommandResult.new(false, ::Term::ANSIColor.red(e.message))
-        end
+      class UpdateEnvironment < PactBroker::Client::Environments::EnvironmentCommand
 
         private
 
-        def update_environment
-          index_resource
-            ._link!("pb:environment")
-            .expand(uuid: params[:uuid])
-            .put!(request_body)
-          PactBroker::Client::CommandResult.new(true, result_message)
+        attr_reader :updated_environment_resource
+
+        def do_call
+          @updated_environment_resource = existing_environment_link.put!(request_body)
+          PactBroker::Client::CommandResult.new(updated_environment_resource.success?, result_message)
         end
 
         def request_body
-          @request_body ||= begin
-            incoming_params = super
-            existing_environment_params.merge(incoming_params)
-          end
-        end
-
-        def existing_environment_params
-          @existing_environment_params ||= index_resource
-            ._link!("pb:environment")
-            .expand(uuid: params[:uuid])
-            .get!
-            .response
-            .body
-            .except("_links", "createdAt", "updatedAt")
+          @request_body ||= existing_environment_body.merge(new_environment_body)
         end
 
         def result_message
-          ::Term::ANSIColor.green("Updated environment #{request_body["name"]} in #{pact_broker_name}")
+          if json_output?
+            updated_environment_resource.response.raw_body
+          else
+            ::Term::ANSIColor.green("Updated #{request_body["name"]} environment in #{pact_broker_name}")
+          end
         end
       end
     end

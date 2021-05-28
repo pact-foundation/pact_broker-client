@@ -37,20 +37,20 @@ RSpec.describe "create an environment", pact: true do
       .given("the pb:environments relation exists in the index resource")
       .upon_receiving("a request for the index resource")
       .with(
-          method: "GET",
-          path: '/',
-          headers: get_request_headers).
-        will_respond_with(
-          status: 200,
-          headers: pact_broker_response_headers,
-          body: {
-            _links: {
-              :'pb:environments' => {
-                href: placeholder_url_term("pb:environments")
-              }
+        method: "GET",
+        path: '/',
+        headers: get_request_headers).
+      will_respond_with(
+        status: 200,
+        headers: pact_broker_response_headers,
+        body: {
+          _links: {
+            :'pb:environments' => {
+              href: placeholder_url_term("pb:environments")
             }
           }
-        )
+        }
+      )
   end
 
   def mock_environment_creation_request
@@ -65,7 +65,7 @@ RSpec.describe "create an environment", pact: true do
       .will_respond_with(
         status: 201,
         headers: pact_broker_response_headers,
-        body: request_body
+        body: request_body.merge("uuid" => Pact.like("ffe683ef-dcd7-4e4f-877d-f6eb3db8e86e"))
       )
   end
 
@@ -73,6 +73,6 @@ RSpec.describe "create an environment", pact: true do
     mock_index
     mock_environment_creation_request
     expect(subject.success).to be true
+    expect(subject.message).to include "Created test environment in the Pact Broker with UUID ffe683ef-dcd7-4e4f-877d-f6eb3db8e86e"
   end
 end
-

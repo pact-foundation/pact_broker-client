@@ -1528,7 +1528,8 @@ Pact Broker will respond with:
           "emailAddress": "foo@bar.com"
         }
       }
-    ]
+    ],
+    "uuid": "ffe683ef-dcd7-4e4f-877d-f6eb3db8e86e"
   }
 }
 ```

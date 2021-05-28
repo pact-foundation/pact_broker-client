@@ -113,6 +113,7 @@ module PactBroker
             method_option :production, type: :boolean, default: false, desc: "Whether or not this environment is a production environment. Default: false"
             method_option :contact_name, required: false, desc: "The name of the team/person responsible for this environment"
             method_option :contact_email_address, required: false, desc: "The email address of the team/person responsible for this environment"
+            method_option :output, aliases: "-o", desc: "json or text", default: 'text'
           end
 
           def self.verbose_option

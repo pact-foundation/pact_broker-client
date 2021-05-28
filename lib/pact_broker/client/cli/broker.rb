@@ -14,7 +14,7 @@ module PactBroker
       class Broker < CustomThor
         using PactBroker::Client::HashRefinements
 
-        ENVIRONMENT_PARAM_NAMES = [:name, :display_name, :production, :contact_name, :contact_email_address]
+        ENVIRONMENT_PARAM_NAMES = [:name, :display_name, :production, :contact_name, :contact_email_address, :output]
 
         desc 'can-i-deploy', ''
         long_desc File.read(File.join(__dir__, 'can_i_deploy_long_desc.txt'))
@@ -186,11 +186,22 @@ module PactBroker
         desc "create-environment", "Create an environment resource in the Pact Broker to represent a real world deployment or release environment."
         shared_environment_options
         shared_authentication_options
-
         def create_environment
           require 'pact_broker/client/environments/create_environment'
           params = ENVIRONMENT_PARAM_NAMES.each_with_object({}) { | key, p | p[key] = options[key] }
           result = PactBroker::Client::Environments::CreateEnvironment.call(params, options.broker_base_url, pact_broker_client_options)
+          $stdout.puts result.message
+          exit(1) unless result.success
+        end
+
+        desc "delete-environment", "Delete an environment"
+        method_option :uuid, required: true, desc: "The UUID of the environment to delete"
+        method_option :output, aliases: "-o", desc: "json or text", default: 'text'
+        shared_authentication_options
+        def delete_environment
+          require 'pact_broker/client/environments/delete_environment'
+          params = { uuid: options.uuid, output: options.output }
+          result = PactBroker::Client::Environments::DeleteEnvironment.call(params, options.broker_base_url, pact_broker_client_options)
           $stdout.puts result.message
           exit(1) unless result.success
         end
@@ -208,7 +219,6 @@ module PactBroker
           $stdout.puts result.message
           exit(1) unless result.success
         end
-
 
         if ENV.fetch("PACT_BROKER_FEATURES", "").include?("deployments")
           ignored_and_hidden_potential_options_from_environment_variables

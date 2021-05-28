@@ -69,6 +69,14 @@ module PactBroker
           patch(*args).assert_success!
         end
 
+        def delete(payload = nil, headers = {})
+          wrap_response(href, @http_client.delete(href, payload ? JSON.dump(payload) : nil, headers))
+        end
+
+        def delete!(*args)
+          delete(*args).assert_success!
+        end
+
         def expand(params)
           expanded_url = expand_url(params, href)
           new_attrs = @attrs.merge('href' => expanded_url)

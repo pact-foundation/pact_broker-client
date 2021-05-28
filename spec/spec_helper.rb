@@ -1,4 +1,5 @@
 require 'webmock/rspec'
+require 'rspec/its'
 
 ENV['PACT_BROKER_FEATURES'] = 'deployments publish_contracts ignore'
 
