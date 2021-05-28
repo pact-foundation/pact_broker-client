@@ -14,6 +14,8 @@ module PactBroker
       class Broker < CustomThor
         using PactBroker::Client::HashRefinements
 
+        ENVIRONMENT_PARAM_NAMES = [:name, :display_name, :production, :contact_name, :contact_email_address]
+
         desc 'can-i-deploy', ''
         long_desc File.read(File.join(__dir__, 'can_i_deploy_long_desc.txt'))
 
@@ -182,21 +184,31 @@ module PactBroker
 
         ignored_and_hidden_potential_options_from_environment_variables
         desc "create-environment", "Create an environment resource in the Pact Broker to represent a real world deployment or release environment."
-        method_option :name, required: true, desc: "The uniquely identifying name of the environment as used in deployment code"
-        method_option :display_name, desc: "The display name of the environment"
-        method_option :production, type: :boolean, default: false, desc: "Whether or not this environment is a production environment. Default: false"
-        method_option :contact_name, required: false, desc: "The name of the team/person responsible for this environment"
-        method_option :contact_email_address, required: false, desc: "The email address of the team/person responsible for this environment"
+        shared_environment_options
         shared_authentication_options
 
         def create_environment
           require 'pact_broker/client/environments/create_environment'
-          param_names = [:name, :display_name, :production, :contact_name, :contact_email_address]
-          params = param_names.each_with_object({}) { | key, p | p[key] = options[key] }
+          params = ENVIRONMENT_PARAM_NAMES.each_with_object({}) { | key, p | p[key] = options[key] }
           result = PactBroker::Client::Environments::CreateEnvironment.call(params, options.broker_base_url, pact_broker_client_options)
           $stdout.puts result.message
           exit(1) unless result.success
         end
+
+        ignored_and_hidden_potential_options_from_environment_variables
+        desc "update-environment", "Update an environment resource in the Pact Broker."
+        method_option :uuid, required: true, desc: "The UUID of the environment to update"
+        shared_environment_options
+        shared_authentication_options
+
+        def update_environment
+          require 'pact_broker/client/environments/update_environment'
+          params = (ENVIRONMENT_PARAM_NAMES + [:uuid]).each_with_object({}) { | key, p | p[key] = options[key] }
+          result = PactBroker::Client::Environments::UpdateEnvironment.call(params, options.broker_base_url, pact_broker_client_options)
+          $stdout.puts result.message
+          exit(1) unless result.success
+        end
+
 
         if ENV.fetch("PACT_BROKER_FEATURES", "").include?("deployments")
           ignored_and_hidden_potential_options_from_environment_variables

@@ -9,7 +9,7 @@ module PactBroker
       class CreateEnvironment
         include PactBroker::Client::HalClientMethods
 
-        NOT_SUPPORTED_MESSAGE = "This version of the Pact Broker does not support creation of environments. Please upgrade to version 2.80.0 or later."
+        NOT_SUPPORTED_MESSAGE = "This version of the Pact Broker does not support environments. Please upgrade to version 2.80.0 or later."
 
         def self.call(params, pact_broker_base_url, pact_broker_client_options)
           new(params, pact_broker_base_url, pact_broker_client_options).call
@@ -42,10 +42,10 @@ module PactBroker
 
         def request_body
           {
-            name: params[:name],
-            displayName: params[:display_name],
-            production: params[:production],
-            contacts: contacts
+            "name" => params[:name],
+            "displayName" => params[:display_name],
+            "production" => params[:production],
+            "contacts" => contacts
           }.compact
         end
 
