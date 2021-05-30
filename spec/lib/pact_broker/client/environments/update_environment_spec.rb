@@ -88,6 +88,41 @@ module PactBroker
           its(:message) { is_expected.to include "does not support environments" }
         end
 
+        context "when a StandardError occurs" do
+          before do
+            allow_any_instance_of(described_class).to receive(:do_call).and_raise(StandardError.new("Foo"))
+          end
+
+          its(:success) { is_expected.to be false }
+          its(:message) { is_expected.to include "StandardError - Foo" }
+
+          context "when verbose is on" do
+            let(:pact_broker_client_options) { { verbose: true } }
+
+            it "includes the message and class and backtrace in the error" do
+              expect(subject.message.split("\n").size).to be > 2
+            end
+          end
+
+          context "when output is json" do
+            let(:output) { "json" }
+
+            it "includes the message and class in the error" do
+              message_hash = JSON.parse(subject.message)
+              expect(message_hash).to eq "error" => { "message" => "Foo", "class" => "StandardError" }
+            end
+
+            context "when verbose is on" do
+              let(:pact_broker_client_options) { { verbose: true } }
+
+              it "includes the message and class and backtrace in the error" do
+                message_hash = JSON.parse(subject.message)
+                expect(message_hash["error"]["backtrace"]).to be_a(Array)
+              end
+            end
+          end
+        end
+
         context "when the environment does not exist" do
           let(:get_environment_response_status) { 404 }
           let(:get_environment_response_body) { "" }

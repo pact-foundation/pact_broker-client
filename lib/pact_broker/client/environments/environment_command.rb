@@ -29,6 +29,8 @@ module PactBroker
           handle_http_error(e)
         rescue PactBroker::Client::Error => e
           handle_ruby_error(e)
+        rescue StandardError => e
+          handle_ruby_error(e, pact_broker_client_options[:verbose])
         end
 
         private
@@ -46,14 +48,32 @@ module PactBroker
           PactBroker::Client::CommandResult.new(false, message)
         end
 
-        def handle_ruby_error(e)
-           message = if json_output?
-            { error: { message: e.message, class: e.class.name } }.to_json
-          else
-           ::Term::ANSIColor.red(e.message)
-          end
-          PactBroker::Client::CommandResult.new(false,  message)
+        def handle_ruby_error(e, include_backtrace = false)
+          PactBroker::Client::CommandResult.new(false,  error_message(e, include_backtrace))
         end
+
+        def error_message(e, include_backtrace)
+          if json_output?
+            json_error_message(e, include_backtrace)
+          else
+            text_error_message(e, include_backtrace)
+          end
+        end
+
+        def json_error_message(e, include_backtrace)
+          error_hash = { message: e.message }
+          error_hash[:class] = e.class.name unless e.is_a?(PactBroker::Client::Error)
+          error_hash[:backtrace] = e.backtrace if include_backtrace
+          { error: error_hash }.to_json
+        end
+
+
+        def text_error_message(e, include_backtrace)
+          maybe_backtrace = (include_backtrace ? "\n" + e.backtrace.join("\n") : "")
+          exception_message = e.is_a?(PactBroker::Client::Error) ? e.message : "#{e.class} - #{e.message}"
+          ::Term::ANSIColor.red(exception_message) + maybe_backtrace
+        end
+
 
         def new_environment_body
           {
