@@ -7,9 +7,18 @@ module PactBroker
         def self.included(thor)
           thor.class_eval do
 
+            def self.shared_environment_options(name_required: false)
+              method_option :name, required: name_required, desc: "The uniquely identifying name of the environment as used in deployment code"
+              method_option :display_name, desc: "The display name of the environment"
+              method_option :production, type: :boolean, default: false, desc: "Whether or not this environment is a production environment. Default: false"
+              method_option :contact_name, required: false, desc: "The name of the team/person responsible for this environment"
+              method_option :contact_email_address, required: false, desc: "The email address of the team/person responsible for this environment"
+              method_option :output, aliases: "-o", desc: "json or text", default: 'text'
+            end
+
             ignored_and_hidden_potential_options_from_environment_variables
             desc "create-environment", "Create an environment resource in the Pact Broker to represent a real world deployment or release environment."
-            shared_environment_options
+            shared_environment_options(name_required: true)
             shared_authentication_options
             def create_environment
               params = ENVIRONMENT_PARAM_NAMES.each_with_object({}) { | key, p | p[key] = options[key] }
@@ -19,9 +28,8 @@ module PactBroker
             ignored_and_hidden_potential_options_from_environment_variables
             desc "update-environment", "Update an environment resource in the Pact Broker."
             method_option :uuid, required: true, desc: "The UUID of the environment to update"
-            shared_environment_options
+            shared_environment_options(name_required: false)
             shared_authentication_options
-
             def update_environment
               params = (ENVIRONMENT_PARAM_NAMES + [:uuid]).each_with_object({}) { | key, p | p[key] = options[key] }
               execute_command(params, "UpdateEnvironment")
