@@ -1,3 +1,20 @@
+<a name="v1.42.0"></a>
+### v1.42.0 (2021-05-31)
+
+#### Features
+
+* add list-pacticipants	 ([fc8ce3b](/../../commit/fc8ce3b))
+* add --display-name to create-or-update-pacticipant	 ([76f323b](/../../commit/76f323b))
+* add backtrace to error output when verbose is true	 ([abf1ef0](/../../commit/abf1ef0))
+* add list-environments and describe-environment	 ([4472d48](/../../commit/4472d48))
+* add delete-environment	 ([361eed1](/../../commit/361eed1))
+* add update-environment command	 ([95276cd](/../../commit/95276cd))
+* add create-environment command	 ([a9fab50](/../../commit/a9fab50))
+
+#### Bug Fixes
+
+* stop long values in columns from being truncated	 ([18063fd](/../../commit/18063fd))
+
 <a name="v1.41.0"></a>
 ### v1.41.0 (2021-05-25)
 
