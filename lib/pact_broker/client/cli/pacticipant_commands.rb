@@ -16,11 +16,25 @@ module PactBroker
 
             def create_or_update_pacticipant(*required_but_ignored)
               raise ::Thor::RequiredArgumentMissingError, "Pacticipant name cannot be blank" if options.name.strip.size == 0
-              require 'pact_broker/client/pacticipants/create'
-              params = PACTICIPANT_PARAM_NAMES.each_with_object({}) { | key, p | p[key] = options[key] }
-              result = PactBroker::Client::Pacticipants2::Create.call(params, { verbose: options.verbose, output: options.output }, pact_broker_client_options)
-              $stdout.puts result.message
-              exit(1) unless result.success
+              execute_command(params_from_options(PACTICIPANT_PARAM_NAMES), 'Create')
+            end
+
+            desc 'list-pacticipants', 'List pacticipants'
+            output_option_json_or_text
+            shared_authentication_options
+            verbose_option
+            def list_pacticipants
+              execute_command(params_from_options(PACTICIPANT_PARAM_NAMES), 'List')
+            end
+
+            no_commands do
+              def execute_command(params, command_class_name)
+                require 'pact_broker/client/pacticipants'
+                command_options = { verbose: options.verbose, output: options.output }
+                result = PactBroker::Client::Pacticipants2.const_get(command_class_name).call(params, command_options, pact_broker_client_options)
+                $stdout.puts result.message
+                exit(1) unless result.success
+              end
             end
           end
         end

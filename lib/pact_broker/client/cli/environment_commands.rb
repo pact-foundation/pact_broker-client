@@ -12,26 +12,22 @@ module PactBroker
               method_option :production, type: :boolean, default: false, desc: "Whether or not this environment is a production environment. Default: false"
               method_option :contact_name, required: false, desc: "The name of the team/person responsible for this environment"
               method_option :contact_email_address, required: false, desc: "The email address of the team/person responsible for this environment"
-              method_option :output, aliases: "-o", desc: "json or text", default: 'text'
+              output_option_json_or_text
             end
 
-            ignored_and_hidden_potential_options_from_environment_variables
             desc "create-environment", "Create an environment resource in the Pact Broker to represent a real world deployment or release environment."
             shared_environment_options(name_required: true)
             shared_authentication_options
             def create_environment
-              params = ENVIRONMENT_PARAM_NAMES.each_with_object({}) { | key, p | p[key] = options[key] }
-              execute_command(params, "CreateEnvironment")
+              execute_command(params_from_options(ENVIRONMENT_PARAM_NAMES), "CreateEnvironment")
             end
 
-            ignored_and_hidden_potential_options_from_environment_variables
             desc "update-environment", "Update an environment resource in the Pact Broker."
             method_option :uuid, required: true, desc: "The UUID of the environment to update"
             shared_environment_options(name_required: false)
             shared_authentication_options
             def update_environment
-              params = (ENVIRONMENT_PARAM_NAMES + [:uuid]).each_with_object({}) { | key, p | p[key] = options[key] }
-              execute_command(params, "UpdateEnvironment")
+              execute_command(params_from_options(ENVIRONMENT_PARAM_NAMES + [:uuid]), "UpdateEnvironment")
             end
 
             desc "describe-environment", "Describe an environment"
@@ -39,8 +35,7 @@ module PactBroker
             method_option :output, aliases: "-o", desc: "json or text", default: 'text'
             shared_authentication_options
             def describe_environment
-              params = { uuid: options.uuid }
-              execute_command(params, "DescribeEnvironment")
+              execute_command(params_from_options([:uuid]), "DescribeEnvironment")
             end
 
             desc "list-environments", "List environment"
@@ -55,8 +50,7 @@ module PactBroker
             method_option :output, aliases: "-o", desc: "json or text", default: 'text'
             shared_authentication_options
             def delete_environment
-              params = { uuid: options.uuid }
-              execute_command(params, "DeleteEnvironment")
+              execute_command(params_from_options([:uuid]), "DeleteEnvironment")
             end
 
             no_commands do

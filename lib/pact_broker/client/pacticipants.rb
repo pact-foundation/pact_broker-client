@@ -1,3 +1,10 @@
+# New code
+Dir.glob(File.join(__FILE__.gsub(".rb", "/**/*.rb"))).sort.each do | path |
+  puts path
+  require path
+end
+
+# Old code
 require 'pact_broker/client/base_client'
 
 module PactBroker

@@ -118,6 +118,10 @@ module PactBroker
           def self.output_option_json_or_table
             method_option :output, aliases: "-o", desc: "json or table", default: 'table'
           end
+
+          def params_from_options(keys)
+            keys.each_with_object({}) { | key, p | p[key] = options[key] }
+          end
         end
       end
     end
