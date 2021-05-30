@@ -13,9 +13,13 @@ module PactBroker
             OpenStruct.new({ uuid: "" }.merge(pacticipant).merge(url: pacticipant["_links"]["self"]["href"]))
           end.sort_by{ | pacticipant | pacticipant.name.downcase }
 
-          uuid_width = max_width(data, :uuid)
-          name_width = max_width(data, :name)
-          display_name_width = max_width(data, :display_name)
+          TablePrint::Printer.new(data, tp_options(data)).table_print
+        end
+
+        def self.tp_options(data)
+          uuid_width = max_width(data, :uuid, "")
+          name_width = max_width(data, :name, "NAME")
+          display_name_width = max_width(data, :displayName, "DISPLAY NAME")
 
           tp_options = [
             { name: { width: name_width} },
@@ -25,12 +29,11 @@ module PactBroker
           if uuid_width > 0
             tp_options.unshift({ uuid: { width: uuid_width } })
           end
-
-          TablePrint::Printer.new(data, tp_options).table_print
+          tp_options
         end
 
-        def self.max_width(data, column)
-          data.collect{ |row| row.send(column) }.compact.collect(&:size).max
+        def self.max_width(data, column, title)
+          (data.collect{ |row| row.send(column) } + [title]).compact.collect(&:size).max
         end
       end
     end

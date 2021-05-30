@@ -19,7 +19,7 @@ module PactBroker
             shared_environment_options(name_required: true)
             shared_authentication_options
             def create_environment
-              execute_command(params_from_options(ENVIRONMENT_PARAM_NAMES), "CreateEnvironment")
+              execute_environment_command(params_from_options(ENVIRONMENT_PARAM_NAMES), "CreateEnvironment")
             end
 
             desc "update-environment", "Update an environment resource in the Pact Broker."
@@ -27,7 +27,7 @@ module PactBroker
             shared_environment_options(name_required: false)
             shared_authentication_options
             def update_environment
-              execute_command(params_from_options(ENVIRONMENT_PARAM_NAMES + [:uuid]), "UpdateEnvironment")
+              execute_environment_command(params_from_options(ENVIRONMENT_PARAM_NAMES + [:uuid]), "UpdateEnvironment")
             end
 
             desc "describe-environment", "Describe an environment"
@@ -35,14 +35,14 @@ module PactBroker
             method_option :output, aliases: "-o", desc: "json or text", default: 'text'
             shared_authentication_options
             def describe_environment
-              execute_command(params_from_options([:uuid]), "DescribeEnvironment")
+              execute_environment_command(params_from_options([:uuid]), "DescribeEnvironment")
             end
 
             desc "list-environments", "List environment"
             method_option :output, aliases: "-o", desc: "json or text", default: 'text'
             shared_authentication_options
             def list_environments
-              execute_command({}, "ListEnvironments")
+              execute_environment_command({}, "ListEnvironments")
             end
 
             desc "delete-environment", "Delete an environment"
@@ -50,11 +50,11 @@ module PactBroker
             method_option :output, aliases: "-o", desc: "json or text", default: 'text'
             shared_authentication_options
             def delete_environment
-              execute_command(params_from_options([:uuid]), "DeleteEnvironment")
+              execute_environment_command(params_from_options([:uuid]), "DeleteEnvironment")
             end
 
             no_commands do
-              def execute_command(params, command_class_name)
+              def execute_environment_command(params, command_class_name)
                 require 'pact_broker/client/environments'
                 command_options = { verbose: options.verbose, output: options.output }
                 result = PactBroker::Client::Environments.const_get(command_class_name).call(params, command_options, pact_broker_client_options)

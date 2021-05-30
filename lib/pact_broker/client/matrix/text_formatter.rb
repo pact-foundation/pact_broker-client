@@ -11,21 +11,17 @@ module PactBroker
 
         Line = Struct.new(:consumer, :consumer_version, :provider, :provider_version, :success, :ref, :ignored)
 
-        TP_OPTIONS = [
-          { consumer: {} },
-          { consumer_version: {display_name: 'C.VERSION'} },
-          { provider: {} },
-          { provider_version: {display_name: 'P.VERSION'} },
-          { success: {display_name: 'SUCCESS?'} },
-          { ref: { display_name: 'RESULT#' } }
-        ]
-
         def self.call(matrix)
-          tp_options = TP_OPTIONS.dup
           matrix_rows = matrix[:matrix]
           return "" if matrix_rows.size == 0
+          data = prepare_data(matrix_rows)
+          printer = TablePrint::Printer.new(data, tp_options(data))
+          printer.table_print + verification_result_urls_text(matrix)
+        end
+
+        def self.prepare_data(matrix_rows)
           verification_result_number = 0
-          data = matrix_rows.each_with_index.collect do | line |
+          matrix_rows.each_with_index.collect do | line |
             has_verification_result_url = lookup(line, nil, :verificationResult, :_links, :self, :href)
             if has_verification_result_url
               verification_result_number += 1
@@ -40,9 +36,17 @@ module PactBroker
               lookup(line, nil, :ignored)
             )
           end
+        end
 
-          printer = TablePrint::Printer.new(data, tp_options)
-          printer.table_print + verification_result_urls_text(matrix)
+        def self.tp_options(data)
+          [
+            { consumer: { width: max_width(data, :consumer, 'CONSUMER') } },
+            { consumer_version: { display_name: 'C.VERSION', width: max_width(data, :consumer_version, 'C.VERSION') } },
+            { provider: { width: max_width(data, :provider, 'PROVIDER') } },
+            { provider_version: { display_name: 'P.VERSION', width: max_width(data, :provider_version, 'P.VERSION') } },
+            { success: { display_name: 'SUCCESS?' } },
+            { ref: { display_name: 'RESULT#' } }
+          ]
         end
 
         def self.lookup line, default, *keys
@@ -74,6 +78,10 @@ module PactBroker
           else
             text
           end
+        end
+
+        def self.max_width(data, column, title)
+          (data.collect{ |row| row.send(column) } + [title]).compact.collect(&:size).max
         end
       end
     end
