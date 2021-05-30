@@ -8,11 +8,11 @@ module PactBroker
           before do
             allow_any_instance_of(PactBroker::Client::Hal::HttpClient).to receive(:sleep)
           end
-          let(:pact_broker_client_options) { {} }
+          let(:pact_broker_client_options) { { pact_broker_base_url: broker_base_url} }
           let(:broker_base_url) { "http://url" }
           let(:params) { { name: 'Foo' } }
 
-          subject { Create.call(params, broker_base_url, pact_broker_client_options)}
+          subject { Create.call(params, {}, pact_broker_client_options)}
 
           context "when there is an http error" do
             let!(:index_request) do

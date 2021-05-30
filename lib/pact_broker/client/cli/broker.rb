@@ -2,6 +2,7 @@ require 'pact_broker/client/cli/custom_thor'
 require 'pact_broker/client/hash_refinements'
 require 'thor/error'
 require 'pact_broker/client/cli/environment_commands'
+require 'pact_broker/client/cli/pacticipant_commands'
 
 module PactBroker
   module Client
@@ -15,6 +16,7 @@ module PactBroker
       class Broker < CustomThor
         using PactBroker::Client::HashRefinements
         include PactBroker::Client::CLI::EnvironmentCommands
+        include PactBroker::Client::CLI::PacticipantCommands
 
         desc 'can-i-deploy', ''
         long_desc File.read(File.join(__dir__, 'can_i_deploy_long_desc.txt'))
@@ -62,7 +64,7 @@ module PactBroker
         method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Default: false"
         method_option :build_url, desc: "The build URL that created the pact"
         method_option :merge, type: :boolean, default: false, require: false, desc: "If a pact already exists for this consumer version and provider, merge the contents. Useful when running Pact tests concurrently on different build nodes."
-        method_option :output, aliases: "-o", desc: "json or text", default: 'text'
+        output_option_json_or_text
         shared_authentication_options
 
         def publish(*pact_files)
@@ -159,22 +161,9 @@ module PactBroker
           puts SecureRandom.uuid
         end
 
-        desc 'create-or-update-pacticipant', 'Create or update pacticipant by name'
-        method_option :name, type: :string, required: true, desc: "Pacticipant name"
-        method_option :repository_url, type: :string, required: false, desc: "The repository URL of the pacticipant"
-        shared_authentication_options
-        verbose_option
-        def create_or_update_pacticipant(*required_but_ignored)
-          raise ::Thor::RequiredArgumentMissingError, "Pacticipant name cannot be blank" if options.name.strip.size == 0
-          require 'pact_broker/client/pacticipants/create'
-          result = PactBroker::Client::Pacticipants2::Create.call({ name: options.name, repository_url: options.repository_url }, options.broker_base_url, pact_broker_client_options)
-          $stdout.puts result.message
-          exit(1) unless result.success
-        end
-
         desc 'list-latest-pact-versions', 'List the latest pact for each integration'
         shared_authentication_options
-        method_option :output, aliases: "-o", desc: "json or table", default: 'table'
+        output_option_json_or_table
         def list_latest_pact_versions(*required_but_ignored)
           require 'pact_broker/client/pacts/list_latest_versions'
           result = PactBroker::Client::Pacts::ListLatestVersions.call(options.broker_base_url, options.output, pact_broker_client_options)
@@ -191,7 +180,7 @@ module PactBroker
           method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number that was deployed."
           method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was deployed to."
           method_option :target, default: nil, required: false, desc: "Optional. The target of the deployment - a logical identifer required to differentiate deployments when there are multiple instances of the same application in an environment."
-          method_option :output, aliases: "-o", desc: "json or text", default: 'text'
+          output_option_json_or_text
           shared_authentication_options
 
           def record_deployment
@@ -217,7 +206,7 @@ module PactBroker
           method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that was deployed."
           method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number that was deployed."
           method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was deployed to."
-          method_option :output, aliases: "-o", desc: "json or text", default: 'text'
+          output_option_json_or_text
           shared_authentication_options
 
           def record_undeployment

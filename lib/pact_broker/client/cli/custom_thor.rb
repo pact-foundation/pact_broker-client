@@ -110,6 +110,14 @@ module PactBroker
           def self.verbose_option
             method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
           end
+
+          def self.output_option_json_or_text
+            method_option :output, aliases: "-o", desc: "json or text", default: 'text'
+          end
+
+          def self.output_option_json_or_table
+            method_option :output, aliases: "-o", desc: "json or table", default: 'table'
+          end
         end
       end
     end

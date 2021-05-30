@@ -54,9 +54,10 @@ RSpec.describe "creating or updating a pacticipant", pact: true do
     }
   end
 
-  let(:pact_broker_client_options) { {} }
+  let(:pact_broker_client_options) { { pact_broker_base_url: broker_base_url} }
+  let(:options) { {} }
 
-  subject { PactBroker::Client::Pacticipants2::Create.call(params, broker_base_url, pact_broker_client_options) }
+  subject { PactBroker::Client::Pacticipants2::Create.call(params, options, pact_broker_client_options) }
 
   context "when the pacticipant does not already exist" do
     before do
@@ -81,7 +82,7 @@ RSpec.describe "creating or updating a pacticipant", pact: true do
     it "returns a CommandResult with success = true" do
       expect(subject).to be_a PactBroker::Client::CommandResult
       expect(subject.success).to be true
-      expect(subject.message).to eq "Pacticipant \"Foo\" created"
+      expect(subject.message).to include "Pacticipant \"Foo\" created"
     end
   end
 
@@ -112,7 +113,7 @@ RSpec.describe "creating or updating a pacticipant", pact: true do
     it "returns a CommandResult with success = true" do
       expect(subject).to be_a PactBroker::Client::CommandResult
       expect(subject.success).to be true
-      expect(subject.message).to eq "Pacticipant \"Foo\" updated"
+      expect(subject.message).to include "Pacticipant \"Foo\" updated"
     end
   end
 end

@@ -6,7 +6,6 @@ module PactBroker
 
         def self.included(thor)
           thor.class_eval do
-
             def self.shared_environment_options(name_required: false)
               method_option :name, required: name_required, desc: "The uniquely identifying name of the environment as used in deployment code"
               method_option :display_name, desc: "The display name of the environment"

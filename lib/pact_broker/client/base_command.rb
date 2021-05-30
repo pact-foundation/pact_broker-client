@@ -41,7 +41,7 @@ module PactBroker
           body = e.entity.response.raw_body
           (body.nil? || body == "") ? "{}" : body
         else
-          ::Term::ANSIColor.red(e.message)
+          red(e.message)
         end
         PactBroker::Client::CommandResult.new(false, message)
       end
@@ -69,7 +69,7 @@ module PactBroker
       def text_error_message(e, include_backtrace)
         maybe_backtrace = (include_backtrace ? "\n" + e.backtrace.join("\n") : "")
         exception_message = e.is_a?(PactBroker::Client::Error) ? e.message : "#{e.class} - #{e.message}"
-        ::Term::ANSIColor.red(exception_message) + maybe_backtrace
+        red(exception_message) + maybe_backtrace
       end
 
       def check_if_command_supported
@@ -81,6 +81,14 @@ module PactBroker
 
       def verbose?
         options[:verbose]
+      end
+
+      def green(text)
+        ::Term::ANSIColor.green(text)
+      end
+
+      def red(text)
+        ::Term::ANSIColor.red(text)
       end
     end
   end
