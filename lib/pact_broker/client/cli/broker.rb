@@ -15,7 +15,9 @@ module PactBroker
 
       class Broker < CustomThor
         using PactBroker::Client::HashRefinements
-        include PactBroker::Client::CLI::EnvironmentCommands
+        if ENV.fetch("PACT_BROKER_FEATURES", "").include?("deployments")
+          include PactBroker::Client::CLI::EnvironmentCommands
+        end
         include PactBroker::Client::CLI::PacticipantCommands
 
         desc 'can-i-deploy', ''
@@ -170,8 +172,6 @@ module PactBroker
           $stdout.puts result.message
           exit(1) unless result.success
         end
-
-
 
         if ENV.fetch("PACT_BROKER_FEATURES", "").include?("deployments")
           ignored_and_hidden_potential_options_from_environment_variables
