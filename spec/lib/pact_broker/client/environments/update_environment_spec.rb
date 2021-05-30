@@ -14,15 +14,21 @@ module PactBroker
             uuid: uuid,
             name: "new name",
             display_name: "new display name",
-            production: false,
-            output: output
+            production: false
+          }
+        end
+        let(:options) do
+          {
+            output: output,
+            verbose: verbose
           }
         end
         let(:uuid) { "a9aa4c22-66bb-45d3-ba4c-4916ac8b48c5" }
         let(:pact_broker_base_url) { "http://example.org" }
-        let(:pact_broker_client_options) { {} }
+        let(:pact_broker_client_options) { { pact_broker_base_url: pact_broker_base_url } }
         let(:response_headers) { { "Content-Type" => "application/hal+json"} }
         let(:output) { "text" }
+        let(:verbose) { false }
 
         before do
           stub_request(:get, "http://example.org/").to_return(status: 200, body: index_response_body, headers: response_headers)
@@ -62,7 +68,7 @@ module PactBroker
           JSON.parse(get_environment_response_body).merge("updatedAt" => "2021-05-28T13:34:54+10:00").to_json
         end
 
-        subject { UpdateEnvironment.call(params, pact_broker_base_url, pact_broker_client_options) }
+        subject { UpdateEnvironment.call(params, options, pact_broker_client_options) }
 
         it "updates the environment" do
           request = stub_request(:put, "http://example.org/environments/#{uuid}").with(body: put_request_body)
@@ -97,7 +103,7 @@ module PactBroker
           its(:message) { is_expected.to include "StandardError - Foo" }
 
           context "when verbose is on" do
-            let(:pact_broker_client_options) { { verbose: true } }
+            let(:verbose) { true }
 
             it "includes the message and class and backtrace in the error" do
               expect(subject.message.split("\n").size).to be > 2
@@ -113,7 +119,7 @@ module PactBroker
             end
 
             context "when verbose is on" do
-              let(:pact_broker_client_options) { { verbose: true } }
+              let(:verbose) { true }
 
               it "includes the message and class and backtrace in the error" do
                 message_hash = JSON.parse(subject.message)

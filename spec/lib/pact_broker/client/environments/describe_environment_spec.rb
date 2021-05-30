@@ -9,10 +9,11 @@ module PactBroker
           allow_any_instance_of(PactBroker::Client::Hal::HttpClient).to receive(:default_max_tries).and_return(1)
         end
 
-        let(:params) { { uuid: uuid, output: output} }
+        let(:params) { { uuid: uuid } }
+        let(:options) { { output: output }}
         let(:uuid) { "a9aa4c22-66bb-45d3-ba4c-4916ac8b48c5" }
         let(:pact_broker_base_url) { "http://example.org" }
-        let(:pact_broker_client_options) { {} }
+        let(:pact_broker_client_options) { { pact_broker_base_url: pact_broker_base_url } }
         let(:response_headers) { { "Content-Type" => "application/hal+json"} }
         let(:output) { "text" }
 
@@ -45,7 +46,7 @@ module PactBroker
           }.to_json
         end
 
-        subject { DescribeEnvironment.call(params, pact_broker_base_url, pact_broker_client_options) }
+        subject { DescribeEnvironment.call(params, options, pact_broker_client_options) }
 
         context "when the environment exists" do
           its(:success) { is_expected.to be true }

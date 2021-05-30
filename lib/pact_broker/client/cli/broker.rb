@@ -350,7 +350,7 @@ module PactBroker
           end
 
           def pact_broker_client_options
-            client_options = { verbose: options.verbose }
+            client_options = { verbose: options.verbose, pact_broker_base_url: options.broker_base_url }
             client_options[:token] = options.broker_token || ENV['PACT_BROKER_TOKEN']
             if options.broker_username || ENV['PACT_BROKER_USERNAME']
               client_options[:basic_auth] = {

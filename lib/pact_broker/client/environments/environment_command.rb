@@ -12,13 +12,14 @@ module PactBroker
 
         NOT_SUPPORTED_MESSAGE = "This version of the Pact Broker does not support environments. Please upgrade to version 2.80.0 or later."
 
-        def self.call(params, pact_broker_base_url, pact_broker_client_options)
-          new(params, pact_broker_base_url, pact_broker_client_options).call
+        def self.call(params, options, pact_broker_client_options)
+          new(params, options, pact_broker_client_options).call
         end
 
-        def initialize(params, pact_broker_base_url, pact_broker_client_options)
+        def initialize(params, options, pact_broker_client_options)
           @params = params
-          @pact_broker_base_url = pact_broker_base_url
+          @options = options
+          @pact_broker_base_url = pact_broker_client_options.fetch(:pact_broker_base_url)
           @pact_broker_client_options = pact_broker_client_options
         end
 
@@ -30,12 +31,12 @@ module PactBroker
         rescue PactBroker::Client::Error => e
           handle_ruby_error(e)
         rescue StandardError => e
-          handle_ruby_error(e, pact_broker_client_options[:verbose])
+          handle_ruby_error(e, verbose?)
         end
 
         private
 
-        attr_reader :params
+        attr_reader :params, :options
         attr_reader :pact_broker_base_url, :pact_broker_client_options
 
         def handle_http_error(e)
@@ -129,7 +130,11 @@ module PactBroker
         end
 
         def json_output?
-          params[:output] == "json"
+          options[:output] == "json"
+        end
+
+        def verbose?
+          options[:verbose]
         end
       end
     end

@@ -2,7 +2,7 @@ module PactBroker
   module Client
     module CLI
       module EnvironmentCommands
-        ENVIRONMENT_PARAM_NAMES = [:name, :display_name, :production, :contact_name, :contact_email_address, :output]
+        ENVIRONMENT_PARAM_NAMES = [:name, :display_name, :production, :contact_name, :contact_email_address]
 
         def self.included(thor)
           thor.class_eval do
@@ -40,7 +40,7 @@ module PactBroker
             method_option :output, aliases: "-o", desc: "json or text", default: 'text'
             shared_authentication_options
             def describe_environment
-              params = { uuid: options.uuid, output: options.output }
+              params = { uuid: options.uuid }
               execute_command(params, "DescribeEnvironment")
             end
 
@@ -48,8 +48,7 @@ module PactBroker
             method_option :output, aliases: "-o", desc: "json or text", default: 'text'
             shared_authentication_options
             def list_environments
-              params = { output: options.output }
-              execute_command(params, "ListEnvironments")
+              execute_command({}, "ListEnvironments")
             end
 
             desc "delete-environment", "Delete an environment"
@@ -57,14 +56,15 @@ module PactBroker
             method_option :output, aliases: "-o", desc: "json or text", default: 'text'
             shared_authentication_options
             def delete_environment
-              params = { uuid: options.uuid, output: options.output }
+              params = { uuid: options.uuid }
               execute_command(params, "DeleteEnvironment")
             end
 
             no_commands do
               def execute_command(params, command_class_name)
                 require 'pact_broker/client/environments'
-                result = PactBroker::Client::Environments.const_get(command_class_name).call(params, options.broker_base_url, pact_broker_client_options)
+                command_options = { verbose: options.verbose, output: options.output }
+                result = PactBroker::Client::Environments.const_get(command_class_name).call(params, command_options, pact_broker_client_options)
                 $stdout.puts result.message
                 exit(1) unless result.success
               end

@@ -32,7 +32,7 @@ module PactBroker::Client::CLI
             ["spec/support/cli_test_pacts/foo.json"],
             { number: "1.2.3", tags: [], version_required: false },
             {},
-            {}
+            { pact_broker_base_url: 'http://pact-broker' }
           )
           invoke_broker
         end

@@ -11,7 +11,7 @@ module PactBroker
 
           data = environments.collect do | environment |
             OpenStruct.new(environment)
-          end
+          end.sort_by{ | environment | environment.name.downcase }
 
           uuid_width = data.collect(&:uuid).collect(&:size).max
 
