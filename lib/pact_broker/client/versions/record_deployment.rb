@@ -1,41 +1,27 @@
-require 'pact_broker/client/hal_client_methods'
-require 'pact_broker/client/error'
-require 'pact_broker/client/command_result'
+require 'pact_broker/client/base_command'
 
 module PactBroker
   module Client
     class Versions
-      class RecordDeployment
-        include PactBroker::Client::HalClientMethods
+      class RecordDeployment < PactBroker::Client::BaseCommand
 
         NOT_SUPPORTED_MESSAGE = "This version of the Pact Broker does not support recording deployments. Please upgrade to version 2.80.0 or later."
 
-        def self.call(params, pact_broker_base_url, pact_broker_client_options)
-          new(params, pact_broker_base_url, pact_broker_client_options).call
-        end
-
-        def initialize(params, pact_broker_base_url, pact_broker_client_options)
-          @pact_broker_base_url = pact_broker_base_url
+        def initialize(params, options, pact_broker_client_options)
+          super
           @pacticipant_name = params.fetch(:pacticipant_name)
           @version_number = params.fetch(:version_number)
           @environment_name = params.fetch(:environment_name)
           @target = params.fetch(:target)
-          @output = params.fetch(:output)
-          @pact_broker_client_options = pact_broker_client_options
-        end
-
-        def call
-          check_if_command_supported
-          record_deployment
-
-          PactBroker::Client::CommandResult.new(true, result_message)
-        rescue PactBroker::Client::Error => e
-          PactBroker::Client::CommandResult.new(false, e.message)
         end
 
         private
 
-        attr_reader :pact_broker_base_url, :pact_broker_client_options
+        def do_call
+          record_deployment
+          PactBroker::Client::CommandResult.new(true, result_message)
+        end
+
         attr_reader :pacticipant_name, :version_number, :environment_name, :target, :output
         attr_reader :deployed_version_resource
 
@@ -79,23 +65,13 @@ module PactBroker
         end
 
         def result_message
-          if output == "text"
-            message = "Recorded deployment of #{pacticipant_name} version #{version_number} to #{environment_name} environment"
-            message = "#{message} (target #{target})" if target
-            "#{message} in #{pact_broker_name}."
-          elsif output == "json"
+          if json_output?
             deployed_version_resource.response.raw_body
           else
-            ""
+            message = "Recorded deployment of #{pacticipant_name} version #{version_number} to #{environment_name} environment"
+            message = "#{message} (target #{target})" if target
+            green("#{message} in #{pact_broker_name}.")
           end
-        end
-
-        def pact_broker_name
-          is_pactflow? ? "Pactflow" : "the Pact Broker"
-        end
-
-        def is_pactflow?
-          deployed_version_resource.response.headers.keys.any?{ | header_name | header_name.downcase.include?("pactflow") }
         end
 
         def check_if_command_supported

@@ -22,14 +22,18 @@ module PactBroker
               pacticipant_name: "Foo",
               version_number: "1",
               environment_name: "test",
-              target: target,
-              output: "text"
+              target: target
             }
           end
 
-          let(:pact_broker_client_options) { {} }
+          let(:options) do
+            {
+              output: "text"
+            }
+          end
+          let(:pact_broker_client_options) { { pact_broker_base_url: broker_base_url} }
 
-          subject { RecordDeployment.call(params, broker_base_url, pact_broker_client_options) }
+          subject { RecordDeployment.call(params, options, pact_broker_client_options) }
 
           context "when the pb:environments relation does not exist" do
             it "returns an error response" do
@@ -43,36 +47,25 @@ module PactBroker
               allow_any_instance_of(RecordDeployment).to receive(:check_if_command_supported)
               allow_any_instance_of(RecordDeployment).to receive(:check_environment_exists)
               allow_any_instance_of(RecordDeployment).to receive(:record_deployment)
-              allow_any_instance_of(RecordDeployment).to receive(:deployed_version_resource).and_return(deployed_version_resource)
+              allow_any_instance_of(RecordDeployment).to receive(:index_resource).and_return(index_resource)
             end
 
             let(:response_headers) { { "X-Pactflow-Sha" => "abc" } }
 
-            let(:deployed_version_resource) do
+            let(:index_resource) do
               double('PactBroker::Client::Hal::Entity', response: double('response', headers: response_headers) )
             end
 
             it "indicates the API was Pactflow" do
               expect(subject.message).to include "Recorded deployment of Foo version 1 to test environment (target blue) in Pactflow"
             end
-          end
 
-          context "when target is false" do
-            before do
-              allow_any_instance_of(RecordDeployment).to receive(:check_if_command_supported)
-              allow_any_instance_of(RecordDeployment).to receive(:check_environment_exists)
-              allow_any_instance_of(RecordDeployment).to receive(:record_deployment)
-              allow_any_instance_of(RecordDeployment).to receive(:pact_broker_name).and_return("")
-            end
+            context "when target is nil" do
+              let(:target) { nil }
 
-            let(:target) { false }
-
-            let(:deployed_version_resource) do
-              double('PactBroker::Client::Hal::Entity', response: double('response', headers: response_headers) )
-            end
-
-            it "does not include the message about marking the previous version as undeployed" do
-              expect(subject.message).to_not include "undeployed"
+              it "does not include the target in the result message" do
+                expect(subject.message).to include "Recorded deployment of Foo version 1 to test environment in"
+              end
             end
           end
         end

@@ -2,6 +2,12 @@
 
 #### Requests from Pact Broker Client to Pact Broker
 
+* [A request for a pacticipant version](#a_request_for_a_pacticipant_version_given_version_5556b8149bf8bac76bc30f50a8a2dd4c22c85f30_of_pacticipant_Foo_exists_with_2_environments_that_aren&#39;t_test_available_for_deployment) given version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with 2 environments that aren't test available for deployment
+
+* [A request for a pacticipant version](#a_request_for_a_pacticipant_version_given_version_5556b8149bf8bac76bc30f50a8a2dd4c22c85f30_of_pacticipant_Foo_exists_with_a_test_environment_available_for_deployment) given version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for deployment
+
+* [A request for a pacticipant version](#a_request_for_a_pacticipant_version_given_version_5556b8149bf8bac76bc30f50a8a2dd4c22c85f30_of_pacticipant_Foo_does_not_exist) given version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo does not exist
+
 * [A request for the compatibility matrix for a pacticipant that does not exist](#a_request_for_the_compatibility_matrix_for_a_pacticipant_that_does_not_exist)
 
 * [A request for the compatibility matrix for all versions of Foo and Bar](#a_request_for_the_compatibility_matrix_for_all_versions_of_Foo_and_Bar_given_the_pact_for_Foo_version_1.2.3_and_1.2.4_has_been_verified_by_Bar_version_4.5.6) given the pact for Foo version 1.2.3 and 1.2.4 has been verified by Bar version 4.5.6
@@ -20,6 +26,8 @@
 
 * [A request for the compatibility matrix where only the version of Foo is specified](#a_request_for_the_compatibility_matrix_where_only_the_version_of_Foo_is_specified_given_the_pact_for_Foo_version_1.2.3_has_been_verified_by_Bar_version_4.5.6_and_version_5.6.7) given the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6 and version 5.6.7
 
+* [A request for the environments](#a_request_for_the_environments_given_an_environment_with_name_test_exists) given an environment with name test exists
+
 * [A request for the index resource](#a_request_for_the_index_resource)
 
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pacticipant_relations_are_present) given the pacticipant relations are present
@@ -27,6 +35,8 @@
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:latest-tagged-version_relation_exists_in_the_index_resource) given the pb:latest-tagged-version relation exists in the index resource
 
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:latest-version_relation_exists_in_the_index_resource) given the pb:latest-version relation exists in the index resource
+
+* [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:pacticipant-version_and_pb:environments_relations_exist_in_the_index_resource) given the pb:pacticipant-version and pb:environments relations exist in the index resource
 
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:pacticipant-version_relation_exists_in_the_index_resource) given the pb:pacticipant-version relation exists in the index resource
 
@@ -86,6 +96,8 @@
 
 * [A request to publish contracts](#a_request_to_publish_contracts)
 
+* [A request to record a deployment](#a_request_to_record_a_deployment_given_version_5556b8149bf8bac76bc30f50a8a2dd4c22c85f30_of_pacticipant_Foo_exists_with_a_test_environment_available_for_deployment) given version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for deployment
+
 * [A request to register the repository URL of a pacticipant](#a_request_to_register_the_repository_URL_of_a_pacticipant_given_the_&#39;Pricing_Service&#39;_already_exists_in_the_pact-broker) given the 'Pricing Service' already exists in the pact-broker
 
 * [A request to register the repository URL of a pacticipant](#a_request_to_register_the_repository_URL_of_a_pacticipant_given_the_&#39;Pricing_Service&#39;_does_not_exist_in_the_pact-broker) given the 'Pricing Service' does not exist in the pact-broker
@@ -118,6 +130,87 @@
 
 #### Interactions
 
+<a name="a_request_for_a_pacticipant_version_given_version_5556b8149bf8bac76bc30f50a8a2dd4c22c85f30_of_pacticipant_Foo_exists_with_2_environments_that_aren&#39;t_test_available_for_deployment"></a>
+Given **version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with 2 environments that aren't test available for deployment**, upon receiving **a request for a pacticipant version** from Pact Broker Client, with
+```json
+{
+  "method": "GET",
+  "path": "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-Foo-5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "pb:record-deployment": [
+        {
+          "name": "prod",
+          "href": "href"
+        },
+        {
+          "name": "dev",
+          "href": "href"
+        }
+      ]
+    }
+  }
+}
+```
+<a name="a_request_for_a_pacticipant_version_given_version_5556b8149bf8bac76bc30f50a8a2dd4c22c85f30_of_pacticipant_Foo_exists_with_a_test_environment_available_for_deployment"></a>
+Given **version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for deployment**, upon receiving **a request for a pacticipant version** from Pact Broker Client, with
+```json
+{
+  "method": "GET",
+  "path": "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-Foo-5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "pb:record-deployment": [
+        {
+          "name": "test",
+          "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-RECORD-DEPLOYMENT-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST"
+        }
+      ]
+    }
+  }
+}
+```
+<a name="a_request_for_a_pacticipant_version_given_version_5556b8149bf8bac76bc30f50a8a2dd4c22c85f30_of_pacticipant_Foo_does_not_exist"></a>
+Given **version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo does not exist**, upon receiving **a request for a pacticipant version** from Pact Broker Client, with
+```json
+{
+  "method": "GET",
+  "path": "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-Foo-5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 404
+}
+```
 <a name="a_request_for_the_compatibility_matrix_for_a_pacticipant_that_does_not_exist"></a>
 Upon receiving **a request for the compatibility matrix for a pacticipant that does not exist** from Pact Broker Client, with
 ```json
@@ -539,6 +632,36 @@ Pact Broker will respond with:
   }
 }
 ```
+<a name="a_request_for_the_environments_given_an_environment_with_name_test_exists"></a>
+Given **an environment with name test exists**, upon receiving **a request for the environments** from Pact Broker Client, with
+```json
+{
+  "method": "GET",
+  "path": "/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "pb:environments": [
+        {
+          "name": "test",
+          "href": "href"
+        }
+      ]
+    }
+  }
+}
+```
 <a name="a_request_for_the_index_resource"></a>
 Upon receiving **a request for the index resource** from Pact Broker Client, with
 ```json
@@ -651,6 +774,36 @@ Pact Broker will respond with:
     "_links": {
       "pb:latest-version": {
         "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-VERSION-{pacticipant}"
+      }
+    }
+  }
+}
+```
+<a name="a_request_for_the_index_resource_given_the_pb:pacticipant-version_and_pb:environments_relations_exist_in_the_index_resource"></a>
+Given **the pb:pacticipant-version and pb:environments relations exist in the index resource**, upon receiving **a request for the index resource** from Pact Broker Client, with
+```json
+{
+  "method": "GET",
+  "path": "/",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "pb:pacticipant-version": {
+        "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-{pacticipant}-{version}"
+      },
+      "pb:environments": {
+        "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS"
       }
     }
   }
@@ -1873,6 +2026,33 @@ Pact Broker will respond with:
         }
       ]
     }
+  }
+}
+```
+<a name="a_request_to_record_a_deployment_given_version_5556b8149bf8bac76bc30f50a8a2dd4c22c85f30_of_pacticipant_Foo_exists_with_a_test_environment_available_for_deployment"></a>
+Given **version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for deployment**, upon receiving **a request to record a deployment** from Pact Broker Client, with
+```json
+{
+  "method": "POST",
+  "path": "/HAL-REL-PLACEHOLDER-PB-RECORD-DEPLOYMENT-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/hal+json"
+  },
+  "body": {
+    "target": "blue"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 201,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "target": "blue"
   }
 }
 ```

@@ -1,7 +1,7 @@
 require 'service_providers/pact_helper'
 require 'pact_broker/client/versions/record_deployment'
 
-RSpec.describe "recording a deployment", pact: true, skip: true do
+RSpec.describe "recording a deployment", pact: true do
   include_context "pact broker"
   include PactBrokerPactHelperMethods
 
@@ -15,13 +15,17 @@ RSpec.describe "recording a deployment", pact: true, skip: true do
       pacticipant_name: pacticipant_name,
       version_number: version_number,
       environment_name: environment_name,
-      target: target,
+      target: target
+    }
+  end
+  let(:options) do
+    {
       output: output
     }
   end
-  let(:pact_broker_client_options) { {} }
+  let(:pact_broker_client_options) { { pact_broker_base_url: broker_base_url } }
 
-  subject { PactBroker::Client::Versions::RecordDeployment.call(params, broker_base_url, pact_broker_client_options) }
+  subject { PactBroker::Client::Versions::RecordDeployment.call(params, options, pact_broker_client_options) }
 
   def mock_index
     pact_broker
@@ -168,7 +172,7 @@ RSpec.describe "recording a deployment", pact: true, skip: true do
 
     it "returns a success message" do
       expect(subject.success).to be true
-      expect(subject.message).to eq "Recorded deployment of Foo version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 to test in the Pact Broker. Marked previous deployed version as undeployed."
+      expect(subject.message).to include "Recorded deployment of Foo version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 to test environment (target blue) in the Pact Broker."
     end
 
     context "when the output is json" do
@@ -204,14 +208,14 @@ RSpec.describe "recording a deployment", pact: true, skip: true do
 
       it "returns an error response" do
         expect(subject.success).to be false
-        expect(subject.message).to eq "No environment found with name 'foo'. Available options: test"
+        expect(subject.message).to include "No environment found with name 'foo'. Available options: test"
       end
     end
 
     context "when the specified environment does exist" do
       it "returns an error response" do
         expect(subject.success).to be false
-        expect(subject.message).to eq "Environment 'test' is not an available option for recording a deployment of Foo. Available options: prod, dev"
+        expect(subject.message).to include "Environment 'test' is not an available option for recording a deployment of Foo. Available options: prod, dev"
       end
     end
   end
