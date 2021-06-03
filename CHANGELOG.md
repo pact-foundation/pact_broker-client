@@ -1,3 +1,10 @@
+<a name="v1.43.0"></a>
+### v1.43.0 (2021-06-03)
+
+#### Features
+
+* enable --ignore option for can-i-deploy without a feature toggle	 ([bcc9dfe](/../../commit/bcc9dfe))
+
 <a name="v1.42.0"></a>
 ### v1.42.0 (2021-05-31)
 
