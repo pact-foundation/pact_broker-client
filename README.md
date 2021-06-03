@@ -78,27 +78,48 @@ Usage:
   pact-broker can-i-deploy -a, --pacticipant=PACTICIPANT -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-  -a, --pacticipant=PACTICIPANT            # The pacticipant name. Use once for each pacticipant being checked.
-  -e, [--version=VERSION]                  # The pacticipant version. Must be entered after the --pacticipant that it relates to.
-  -l, [--latest=[TAG]]                     # Use the latest pacticipant version. Optionally specify a TAG to use the latest version with the specified tag.
-      [--to=TAG]                           # This is too hard to explain in a short sentence. Look at the examples.
-  -b, --broker-base-url=BROKER_BASE_URL    # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]  # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]  # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]        # Pact Broker bearer token
-  -o, [--output=OUTPUT]                    # json or table
-                                           # Default: table
-  -v, [--verbose], [--no-verbose]          # Verbose output. Default: false
-      [--retry-while-unknown=TIMES]        # The number of times to retry while there is an unknown verification result (ie. the provider verification is likely still running)
-                                           # Default: 0
-      [--retry-interval=SECONDS]           # The time between retries in seconds. Use in conjuction with --retry-while-unknown
-                                           # Default: 10
+  -a, --pacticipant=PACTICIPANT            
+                # The pacticipant name. Use once for each pacticipant being checked.
+  -e, [--version=VERSION]                  
+                # The pacticipant version. Must be entered after the --pacticipant that it relates to.
+      [--ignore=IGNORE]                    
+                # The pacticipant name to ignore. Use once for each pacticipant being ignored. 
+                A specific version can be ignored by also specifying a --version after the pacticipant name option.
+  -l, [--latest=[TAG]]                     
+                # Use the latest pacticipant version. Optionally specify a TAG to use the 
+                latest version with the specified tag.
+      [--to=TAG]                           
+                # This is too hard to explain in a short sentence. Look at the examples.
+  -o, [--output=OUTPUT]                    
+                # json or table
+                                           
+                # Default: table
+      [--retry-while-unknown=TIMES]        
+                # The number of times to retry while there is an unknown verification result 
+                (ie. the provider verification is likely still running)
+                                           
+                # Default: 0
+      [--retry-interval=SECONDS]           
+                # The time between retries in seconds. Use in conjuction with --retry-while-unknown
+                                           
+                # Default: 10
+  -b, --broker-base-url=BROKER_BASE_URL    
+                # The base URL of the Pact Broker
+  -u, [--broker-username=BROKER_USERNAME]  
+                # Pact Broker basic auth username
+  -p, [--broker-password=BROKER_PASSWORD]  
+                # Pact Broker basic auth password
+  -k, [--broker-token=BROKER_TOKEN]        
+                # Pact Broker bearer token
+  -v, [--verbose], [--no-verbose]          
+                # Verbose output. Default: false
 
 Description:
-  Returns exit code 0 or 1, indicating whether or not the specified pacticipant versions are compatible. Prints out the relevant
-  pact/verification details.
+  Returns exit code 0 or 1, indicating whether or not the specified application (pacticipant) versions are
+  compatible (ie. safe to deploy). Prints out the relevant pact/verification details, indicating any
+  missing or failed verification results.
 
-  The environment variables PACT_BROKER_BASE_URL, PACT_BROKER_BASE_URL_USERNAME and PACT_BROKER_BASE_URL_PASSWORD may be used
+  The environment variables PACT_BROKER_BASE_URL, PACT_BROKER_USERNAME and PACT_BROKER_PASSWORD may be used
   instead of their respective command line options.
 ```
 

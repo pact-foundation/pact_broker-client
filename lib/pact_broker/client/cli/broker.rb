@@ -25,10 +25,7 @@ module PactBroker
 
         method_option :pacticipant, required: true, aliases: "-a", desc: "The pacticipant name. Use once for each pacticipant being checked."
         method_option :version, required: false, aliases: "-e", desc: "The pacticipant version. Must be entered after the --pacticipant that it relates to."
-
-        if ENV.fetch("PACT_BROKER_FEATURES", "").include?("ignore")
-          method_option :ignore, required: false, desc: "The pacticipant name to ignore. Use once for each pacticipant being ignored. A specific version can be ignored by also specifying a --version."
-        end
+        method_option :ignore, required: false, desc: "The pacticipant name to ignore. Use once for each pacticipant being ignored. A specific version can be ignored by also specifying a --version after the pacticipant name option."
         method_option :latest, required: false, aliases: "-l", banner: '[TAG]', desc: "Use the latest pacticipant version. Optionally specify a TAG to use the latest version with the specified tag."
         method_option :to, required: false, banner: 'TAG', desc: "This is too hard to explain in a short sentence. Look at the examples.", default: nil
         method_option :to_environment, required: false, banner: 'ENVIRONMENT', desc: "The environment into which the pacticipant(s) are to be deployed", default: nil, hide: true

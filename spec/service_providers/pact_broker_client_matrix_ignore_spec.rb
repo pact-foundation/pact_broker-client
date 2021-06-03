@@ -2,7 +2,7 @@ require_relative 'pact_helper'
 require 'pact_broker/client/can_i_deploy'
 
 module PactBroker::Client
-  describe Matrix, :pact => true, skip: true do
+  describe Matrix, :pact => true do
 
     include_context "pact broker"
 

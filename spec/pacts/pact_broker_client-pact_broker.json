@@ -293,6 +293,94 @@
       }
     },
     {
+      "description": "a request to determine if Bar can be deployed with all Foo tagged prod, ignoring the verification for Foo version 3.4.5",
+      "providerState": "provider Bar version 4.5.6 has a successful verification for Foo version 1.2.3 tagged prod and a failed verification for version 3.4.5 tagged prod",
+      "request": {
+        "method": "get",
+        "path": "/matrix",
+        "query": "q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Bversion%5D=4.5.6&q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Btag%5D=prod&latestby=cvpv&ignore%5B%5D%5Bpacticipant%5D=Foo&ignore%5B%5D%5Bversion%5D=3.4.5"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "summary": {
+            "deployable": true,
+            "ignored": 1
+          },
+          "notices": [
+            {
+              "text": "some notice",
+              "type": "info"
+            }
+          ],
+          "matrix": [
+            {
+              "consumer": {
+                "name": "Foo",
+                "version": {
+                  "number": "1.2.3"
+                }
+              },
+              "provider": {
+                "name": "Bar",
+                "version": {
+                  "number": "4.5.6"
+                }
+              },
+              "verificationResult": {
+                "success": true,
+                "_links": {
+                  "self": {
+                    "href": "http://result"
+                  }
+                }
+              }
+            },
+            {
+              "consumer": {
+                "name": "Foo",
+                "version": {
+                  "number": "3.4.5"
+                }
+              },
+              "provider": {
+                "name": "Bar",
+                "version": {
+                  "number": "4.5.6"
+                }
+              },
+              "verificationResult": {
+                "success": false,
+                "_links": {
+                  "self": {
+                    "href": "http://result"
+                  }
+                }
+              },
+              "ignored": true
+            }
+          ]
+        },
+        "matchingRules": {
+          "$.body.notices": {
+            "min": 1
+          },
+          "$.body.notices[*].*": {
+            "match": "type"
+          },
+          "$.body.matrix[0].verificationResult._links.self.href": {
+            "match": "type"
+          },
+          "$.body.matrix[1].verificationResult._links.self.href": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
       "description": "a request for the compatibility matrix for Foo version 1.2.3 and Bar version 4.5.6",
       "providerState": "the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6",
       "request": {

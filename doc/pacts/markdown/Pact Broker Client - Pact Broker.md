@@ -76,6 +76,8 @@
 
 * [A request to create a webhook with every possible event type](#a_request_to_create_a_webhook_with_every_possible_event_type_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker) given the 'Pricing Service' and 'Condor' already exist in the pact-broker
 
+* [A request to determine if Bar can be deployed with all Foo tagged prod, ignoring the verification for Foo version 3.4.5](#a_request_to_determine_if_Bar_can_be_deployed_with_all_Foo_tagged_prod,_ignoring_the_verification_for_Foo_version_3.4.5_given_provider_Bar_version_4.5.6_has_a_successful_verification_for_Foo_version_1.2.3_tagged_prod_and_a_failed_verification_for_version_3.4.5_tagged_prod) given provider Bar version 4.5.6 has a successful verification for Foo version 1.2.3 tagged prod and a failed verification for version 3.4.5 tagged prod
+
 * [A request to get the Pricing Service](#a_request_to_get_the_Pricing_Service_given_the_&#39;Pricing_Service&#39;_already_exists_in_the_pact-broker) given the 'Pricing Service' already exists in the pact-broker
 
 * [A request to get the Pricing Service](#a_request_to_get_the_Pricing_Service_given_the_&#39;Pricing_Service&#39;_does_not_exist_in_the_pact-broker) given the 'Pricing Service' does not exist in the pact-broker
@@ -1604,6 +1606,83 @@ Pact Broker will respond with:
         "title": "A title"
       }
     }
+  }
+}
+```
+<a name="a_request_to_determine_if_Bar_can_be_deployed_with_all_Foo_tagged_prod,_ignoring_the_verification_for_Foo_version_3.4.5_given_provider_Bar_version_4.5.6_has_a_successful_verification_for_Foo_version_1.2.3_tagged_prod_and_a_failed_verification_for_version_3.4.5_tagged_prod"></a>
+Given **provider Bar version 4.5.6 has a successful verification for Foo version 1.2.3 tagged prod and a failed verification for version 3.4.5 tagged prod**, upon receiving **a request to determine if Bar can be deployed with all Foo tagged prod, ignoring the verification for Foo version 3.4.5** from Pact Broker Client, with
+```json
+{
+  "method": "get",
+  "path": "/matrix",
+  "query": "q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Bversion%5D=4.5.6&q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Btag%5D=prod&latestby=cvpv&ignore%5B%5D%5Bpacticipant%5D=Foo&ignore%5B%5D%5Bversion%5D=3.4.5"
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "summary": {
+      "deployable": true,
+      "ignored": 1
+    },
+    "notices": [
+      {
+        "text": "some notice",
+        "type": "info"
+      }
+    ],
+    "matrix": [
+      {
+        "consumer": {
+          "name": "Foo",
+          "version": {
+            "number": "1.2.3"
+          }
+        },
+        "provider": {
+          "name": "Bar",
+          "version": {
+            "number": "4.5.6"
+          }
+        },
+        "verificationResult": {
+          "success": true,
+          "_links": {
+            "self": {
+              "href": "http://result"
+            }
+          }
+        }
+      },
+      {
+        "consumer": {
+          "name": "Foo",
+          "version": {
+            "number": "3.4.5"
+          }
+        },
+        "provider": {
+          "name": "Bar",
+          "version": {
+            "number": "4.5.6"
+          }
+        },
+        "verificationResult": {
+          "success": false,
+          "_links": {
+            "self": {
+              "href": "http://result"
+            }
+          }
+        },
+        "ignored": true
+      }
+    ]
   }
 }
 ```
