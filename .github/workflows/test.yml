@@ -21,3 +21,6 @@ jobs:
           ruby-version: ${{ matrix.ruby_version }}
       - run: "bundle install"
       - run: "bundle exec rake"
+      - run: "bundle exec rake pact:publish:pactflow"
+        env:
+          PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_PACT_OSS_TOKEN }}

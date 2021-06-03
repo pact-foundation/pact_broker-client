@@ -16,3 +16,11 @@ PactBroker::Client::PublicationTask.new(:remote) do | task |
   task.pact_broker_base_url = "https://test.pact.dius.com.au"
   task.pact_broker_basic_auth = {username: ENV.fetch('PACT_BROKER_USERNAME'), password: ENV.fetch('PACT_BROKER_PASSWORD')}
 end
+
+PactBroker::Client::PublicationTask.new(:pactflow) do | task |
+  require 'pact_broker/client/version'
+  task.tags = ENV['GITHUB_REF'] ? [ENV['GITHUB_REF'].gsub("refs/heads/", "")] : []
+  task.consumer_version = ENV['GITHUB_SHA']
+  task.pact_broker_base_url = "https://pact-oss.pactflow.io"
+  task.pact_broker_token = ENV['PACT_BROKER_TOKEN']
+end
