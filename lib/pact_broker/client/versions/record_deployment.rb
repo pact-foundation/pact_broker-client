@@ -80,7 +80,7 @@ module PactBroker
 
         def result_message
           if output == "text"
-            message = "Recorded deployment of #{pacticipant_name} version #{version_number} to #{environment_name}"
+            message = "Recorded deployment of #{pacticipant_name} version #{version_number} to #{environment_name} environment"
             message = "#{message} (target #{target})" if target
             "#{message} in #{pact_broker_name}."
           elsif output == "json"

@@ -53,7 +53,7 @@ module PactBroker
             end
 
             it "indicates the API was Pactflow" do
-              expect(subject.message).to include "Recorded deployment of Foo version 1 to test (target blue) in Pactflow"
+              expect(subject.message).to include "Recorded deployment of Foo version 1 to test environment (target blue) in Pactflow"
             end
           end
 
