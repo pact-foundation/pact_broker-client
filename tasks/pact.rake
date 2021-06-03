@@ -23,7 +23,7 @@ PactBroker::Client::PublicationTask.new(:pactflow) do | task |
 
   if ENV.fetch('TEST_FEATURE', '') != ''
     version = "#{version}+#{ENV['TEST_FEATURE']}"
-    tags << ENV['TEST_FEATURE']
+    tags = ENV['TEST_FEATURE']
   end
 
   require 'pact_broker/client/version'
