@@ -1,7 +1,9 @@
 require 'service_providers/pact_helper'
 require 'pact_broker/client/versions/record_deployment'
 
-RSpec.describe "recording a deployment", pact: true do
+deployment_feature_on = ENV.fetch('PACT_BROKER_FEATURES', '').include?("deployments")
+
+RSpec.describe "recording a deployment", pact: true, skip: !deployment_feature_on do
   include_context "pact broker"
   include PactBrokerPactHelperMethods
 
