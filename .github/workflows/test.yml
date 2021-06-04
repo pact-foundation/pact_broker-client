@@ -34,6 +34,7 @@ jobs:
         with:
           ruby-version: "2.7"
       - run: "bundle install"
+      - run: "rm -rf spec/pacts/*"
       - run: "bundle exec rspec spec/service_providers/"
       - run: "bundle exec rake pact:publish:pactflow"
         env:
