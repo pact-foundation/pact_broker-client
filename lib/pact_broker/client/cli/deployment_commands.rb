@@ -2,10 +2,11 @@ module PactBroker
   module Client
     module CLI
       module DeploymentCommands
+        HELP_URL = "https://docs.pact.io/pact_broker/recording_deployments_and_releases/"
+
         def self.included(thor)
           thor.class_eval do
-            ignored_and_hidden_potential_options_from_environment_variables
-            desc "record-deployment", "Record deployment of a pacticipant version to an environment. See https://docs.pact.io/go/record_deployment for more information."
+            desc "record-deployment", "Record deployment of a pacticipant version to an environment. See #{HELP_URL} for more information."
             method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that was deployed."
             method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number that was deployed."
             method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was deployed to."
@@ -23,8 +24,8 @@ module PactBroker
               execute_deployment_command(params, "RecordDeployment")
             end
 
-            ignored_and_hidden_potential_options_from_environment_variables
-            desc "record-undeployment", "Record undeployment of (or the end of support for) a pacticipant version from an environment"
+            desc "record-undeployment", "Record undeployment of a pacticipant version from an environment."
+            long_desc "Note that use of this command is not required if you are deploying over a previous version, as record-deployment will handle that scenario for you. This command is only required if you are permanently removing an application instance from an environment."
             method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that was undeployed."
             method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number that was undeployed."
             method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was undeployed from."
@@ -40,6 +41,22 @@ module PactBroker
                 target: options.target
               }
               execute_deployment_command(params, "RecordUndeployment")
+            end
+
+            desc "record-release", "Record release of a pacticipant version to an environment. See See #{HELP_URL} for more information."
+            method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that was released."
+            method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number that was released."
+            method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was released to."
+            output_option_json_or_text
+            shared_authentication_options
+
+            def record_release
+              params = {
+                pacticipant_name: options.pacticipant,
+                version_number: options.version,
+                environment_name: options.environment
+              }
+              execute_deployment_command(params, "RecordRelease")
             end
 
             no_commands do

@@ -3,7 +3,7 @@ require 'pact_broker/client/deployments/record_deployment'
 
 deployment_feature_on = ENV.fetch('PACT_BROKER_FEATURES', '').include?("deployments")
 
-RSpec.describe "recording a deployment", pact: true, skip: !deployment_feature_on do
+RSpec.describe "recording a release", pact: true, skip: !deployment_feature_on do
   include_context "pact broker"
   include PactBrokerPactHelperMethods
 
@@ -16,8 +16,7 @@ RSpec.describe "recording a deployment", pact: true, skip: !deployment_feature_o
     {
       pacticipant_name: pacticipant_name,
       version_number: version_number,
-      environment_name: environment_name,
-      target: target
+      environment_name: environment_name
     }
   end
   let(:options) do
@@ -27,7 +26,7 @@ RSpec.describe "recording a deployment", pact: true, skip: !deployment_feature_o
   end
   let(:pact_broker_client_options) { { pact_broker_base_url: broker_base_url } }
 
-  subject { PactBroker::Client::Deployments::RecordDeployment.call(params, options, pact_broker_client_options) }
+  subject { PactBroker::Client::Deployments::RecordRelease.call(params, options, pact_broker_client_options) }
 
   def mock_index
     pact_broker
@@ -53,9 +52,9 @@ RSpec.describe "recording a deployment", pact: true, skip: !deployment_feature_o
         )
   end
 
-  def mock_pacticipant_version_with_test_environment_available_for_deployment
+  def mock_pacticipant_version_with_test_environment_available_for_release
     pact_broker
-      .given("version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for deployment")
+      .given("version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for release")
       .upon_receiving("a request for a pacticipant version")
       .with(
         method: "GET",
@@ -67,40 +66,11 @@ RSpec.describe "recording a deployment", pact: true, skip: !deployment_feature_o
         headers: pact_broker_response_headers,
         body: {
           _links: {
-            "pb:record-deployment" => [
+            "pb:record-release" => [
               {
                 name: "test",
-                href: placeholder_url_term("pb:record-deployment-#{pacticipant_name}-#{version_number}-#{environment_name}")
+                href: placeholder_url_term("pb:record-release-#{pacticipant_name}-#{version_number}-#{environment_name}")
               }
-            ]
-          }
-        }
-      )
-  end
-
-  def mock_pacticipant_version_without_test_environment_available_for_deployment
-    pact_broker
-      .given("version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with 2 environments that aren't test available for deployment")
-      .upon_receiving("a request for a pacticipant version")
-      .with(
-        method: "GET",
-        path: "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-Foo-5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
-        headers: get_request_headers
-      )
-      .will_respond_with(
-        status: 200,
-        headers: pact_broker_response_headers,
-        body: {
-          _links: {
-            "pb:record-deployment" => [
-              Pact.like(
-                name: "prod",
-                href: "href"
-              ),
-              Pact.like(
-                name: "dev",
-                href: "href"
-              ),
             ]
           }
         }
@@ -132,17 +102,14 @@ RSpec.describe "recording a deployment", pact: true, skip: !deployment_feature_o
       )
   end
 
-  def mock_record_deployment
+  def mock_record_release
     pact_broker
       .given("version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for deployment")
-      .upon_receiving("a request to record a deployment")
+      .upon_receiving("a request to record a release")
       .with(
         method: "POST",
-        path: "/HAL-REL-PLACEHOLDER-PB-RECORD-DEPLOYMENT-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST",
-        headers: post_request_headers,
-        body: {
-          target: target
-        }
+        path: "/HAL-REL-PLACEHOLDER-PB-RECORD-RELEASE-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST",
+        headers: post_request_headers
       )
       .will_respond_with(
         status: 201,
@@ -156,45 +123,13 @@ RSpec.describe "recording a deployment", pact: true, skip: !deployment_feature_o
   context "when the deployment is recorded successfully" do
     before do
       mock_index
-      mock_pacticipant_version_with_test_environment_available_for_deployment
-      mock_record_deployment
+      mock_pacticipant_version_with_test_environment_available_for_release
+      mock_record_release
     end
 
     it "returns a success message" do
       expect(subject.success).to be true
-      expect(subject.message).to include "Recorded deployment of Foo version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 to test environment (target blue) in the Pact Broker."
-    end
-
-    context "when the output is json" do
-      let(:output) { "json" }
-
-      it "returns the JSON payload" do
-        expect(JSON.parse(subject.message)).to eq "target" => target
-      end
-    end
-  end
-
-  context "when the specified environment is not available for recording a deployment" do
-    before do
-      mock_index
-      mock_pacticipant_version_without_test_environment_available_for_deployment
-      mock_environments
-    end
-
-    context "when the specified environment does not exist" do
-      let(:environment_name) { "foo" }
-
-      it "returns an error response" do
-        expect(subject.success).to be false
-        expect(subject.message).to include "No environment found"
-      end
-    end
-
-    context "when the specified environment does exist" do
-      it "returns an error response" do
-        expect(subject.success).to be false
-        expect(subject.message).to include "not an available option"
-      end
+      expect(subject.message).to include "Recorded release of Foo version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 to test environment in the Pact Broker."
     end
   end
 end
