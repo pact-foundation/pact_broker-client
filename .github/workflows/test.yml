@@ -34,9 +34,10 @@ jobs:
         with:
           ruby-version: "2.7"
       - run: "bundle install"
-      - run: "rm -rf spec/pacts/*"
-      - run: "bundle exec rspec spec/service_providers/"
-      - run: "bundle exec rake pact:publish:pactflow"
+      - run: |
+          rm -rf spec/pacts/*
+          bundle exec rspec spec/service_providers/
+          bundle exec rake pact:publish:pactflow
         env:
           PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_PACT_OSS_TOKEN }}
           PACT_BROKER_FEATURES: ${{ matrix.feature }}
