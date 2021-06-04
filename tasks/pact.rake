@@ -27,6 +27,7 @@ PactBroker::Client::PublicationTask.new(:pactflow) do | task |
   end
 
   require 'pact_broker/client/version'
+  task.auto_detect_version_properties = false
   task.tags = tags
   task.branch = nil
   task.consumer_version = version
