@@ -1,4 +1,10 @@
 require_relative 'base_client'
+
+Dir.glob(File.join(__FILE__.gsub(".rb", "/**/*.rb"))).sort.each do | path |
+  require path
+end
+
+# Old code
 require 'pact_broker/client/pacts'
 
 module PactBroker

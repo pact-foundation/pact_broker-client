@@ -1,33 +1,23 @@
-require 'pact_broker/client/hal_client_methods'
-require 'pact_broker/client/error'
-require 'pact_broker/client/command_result'
-
-# TODO
-# --limit 1
-# order by date so that the oldest one gets undeployed first
+require 'pact_broker/client/base_command'
 
 module PactBroker
   module Client
-    class Versions
-      class RecordUndeployment
-        include PactBroker::Client::HalClientMethods
+    module Deployments
+      class RecordUndeployment < PactBroker::Client::BaseCommand
 
         NOT_SUPPORTED_MESSAGE = "This version of the Pact Broker does not support recording undeployments. Please upgrade to version 2.80.0 or later."
 
-        def self.call(params, pact_broker_base_url, pact_broker_client_options)
-          new(params, pact_broker_base_url, pact_broker_client_options).call
-        end
-
         def initialize(params, pact_broker_base_url, pact_broker_client_options)
-          @pact_broker_base_url = pact_broker_base_url
+          super
           @pacticipant_name = params.fetch(:pacticipant_name)
           @version_number = params.fetch(:version_number)
           @environment_name = params.fetch(:environment_name)
-          @output = params.fetch(:output)
-          @pact_broker_client_options = pact_broker_client_options
+          @target = params.fetch(:target)
         end
 
-        def call
+        private
+
+        def do_call
           check_if_command_supported
           if deployed_version_links_for_environment.any?
             @undeployment_entities = deployed_version_links_for_environment.collect do | deployed_version_link |
@@ -39,13 +29,8 @@ module PactBroker
           end
 
           PactBroker::Client::CommandResult.new(true, "foo")
-        rescue PactBroker::Client::Error => e
-          PactBroker::Client::CommandResult.new(false, e.message)
         end
 
-        private
-
-        attr_reader :pact_broker_base_url, :pact_broker_client_options
         attr_reader :pacticipant_name, :version_number, :environment_name, :target, :output
         attr_reader :deployed_version_resource, :undeployment_entities
 
@@ -82,12 +67,10 @@ module PactBroker
         end
 
         def result_message
-          if output == "text"
-            message = "Recorded undeployment of #{pacticipant_name} version #{version_number} from #{environment_name} in #{pact_broker_name}."
-          elsif output == "json"
+          if output_json?
             undeployment_entities.last.response.raw_body
           else
-            ""
+            green("Recorded undeployment of #{pacticipant_name} version #{version_number} from #{environment_name} in #{pact_broker_name}.")
           end
         end
 

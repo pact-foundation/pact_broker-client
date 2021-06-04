@@ -1,5 +1,5 @@
 require 'service_providers/pact_helper'
-require 'pact_broker/client/versions/record_deployment'
+require 'pact_broker/client/deployments/record_deployment'
 
 deployment_feature_on = ENV.fetch('PACT_BROKER_FEATURES', '').include?("deployments")
 
@@ -27,7 +27,7 @@ RSpec.describe "recording a deployment", pact: true, skip: !deployment_feature_o
   end
   let(:pact_broker_client_options) { { pact_broker_base_url: broker_base_url } }
 
-  subject { PactBroker::Client::Versions::RecordDeployment.call(params, options, pact_broker_client_options) }
+  subject { PactBroker::Client::Deployments::RecordDeployment.call(params, options, pact_broker_client_options) }
 
   def mock_index
     pact_broker

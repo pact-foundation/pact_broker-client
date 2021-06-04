@@ -1,8 +1,8 @@
-require 'pact_broker/client/versions/record_deployment'
+require 'pact_broker/client/deployments/record_deployment'
 
 module PactBroker
   module Client
-    class Versions
+    module Deployments
       describe RecordDeployment do
         describe ".call" do
           let(:broker_base_url) { "http://broker" }

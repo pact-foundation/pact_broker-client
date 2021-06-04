@@ -2,7 +2,7 @@ require 'pact_broker/client/base_command'
 
 module PactBroker
   module Client
-    class Versions
+    module Deployments
       class RecordDeployment < PactBroker::Client::BaseCommand
 
         NOT_SUPPORTED_MESSAGE = "This version of the Pact Broker does not support recording deployments. Please upgrade to version 2.80.0 or later."
