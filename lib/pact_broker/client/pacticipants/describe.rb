@@ -21,7 +21,7 @@ module PactBroker
             pacticipant_entity.response.raw_body
           else
             properties = pacticipant_entity.response.body.except("_links", "_embedded")
-            if pacticipant_entity._embedded["labels"] && pacticipant_entity._embedded["labels"].any?
+            if pacticipant_entity._embedded && pacticipant_entity._embedded["labels"] && pacticipant_entity._embedded["labels"].any?
               properties["labels"] = pacticipant_entity._embedded["labels"]
             end
             PactBroker::Client::DescribeTextFormatter.call(properties)
