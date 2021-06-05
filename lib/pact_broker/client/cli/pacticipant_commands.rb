@@ -27,6 +27,15 @@ module PactBroker
               execute_pacticipant_command(params_from_options(PACTICIPANT_PARAM_NAMES), 'List')
             end
 
+            desc 'describe-pacticipant', "Describe a pacticipant"
+            method_option :name, type: :string, required: true, desc: "Pacticipant name"
+            output_option_json_or_text
+            shared_authentication_options
+            verbose_option
+            def describe_pacticipant
+              execute_pacticipant_command({ name: options.name }, 'Describe')
+            end
+
             no_commands do
               def execute_pacticipant_command(params, command_class_name)
                 require 'pact_broker/client/pacticipants'
