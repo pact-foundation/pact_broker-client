@@ -165,14 +165,17 @@ module PactBroker
           false
         end
 
-        def assert_success!(messages = {})
+        def error_message(messages = {})
           default_message = "Error making request to #{@href} status=#{response ? response.status: nil} #{response ? response.raw_body : ''}".strip
           message = if response && messages[response.status]
             (messages[response.status] || "") + " (#{default_message})"
           else
             default_message
           end
-          raise ErrorResponseReturned.new(message, self)
+        end
+
+        def assert_success!(messages = {})
+          raise ErrorResponseReturned.new(error_message(messages), self)
         end
       end
     end
