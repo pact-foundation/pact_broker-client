@@ -30,7 +30,7 @@ module PactBroker
           if json_output?
             response_entity.response.raw_body
           else
-            green(message = "Pacticipant \"#{params[:name]}\" #{action}")
+            green(message = "Pacticipant \"#{params[:name]}\" #{action} in #{pact_broker_name}")
           end
         end
 
