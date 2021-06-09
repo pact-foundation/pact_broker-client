@@ -1,3 +1,16 @@
+<a name="v1.44.0"></a>
+### v1.44.0 (2021-06-09)
+
+#### Features
+
+* add record-undeployment (feature toggled off)	 ([951d334](/../../commit/951d334))
+* add describe-environment command	 ([cd11ebb](/../../commit/cd11ebb))
+* add record-release (feature toggled off)	 ([e32e4e5](/../../commit/e32e4e5))
+
+#### Bug Fixes
+
+* hardcode file requires Fixes: https://github.com/pact-foundation/pact_broker-client/issues/88	 ([581f2fd](/../../commit/581f2fd))
+
 <a name="v1.43.0"></a>
 ### v1.43.0 (2021-06-03)
 
