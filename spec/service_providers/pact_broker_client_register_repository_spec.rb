@@ -14,7 +14,7 @@ module PactBroker::Client
             with(
                 method: :patch,
                 path: '/pacticipants/Pricing%20Service',
-                headers: patch_request_headers,
+                headers: old_patch_request_headers,
                 body: {repository_url: repository_url} ).
               will_respond_with(
                 status: 201,
@@ -33,7 +33,7 @@ module PactBroker::Client
             with(
               method: :patch,
               path: '/pacticipants/Pricing%20Service',
-              headers: patch_request_headers,
+              headers: old_patch_request_headers,
               body: { repository_url: repository_url }).
             will_respond_with(
               status: 200,

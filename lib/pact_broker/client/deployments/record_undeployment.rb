@@ -4,10 +4,7 @@ module PactBroker
   module Client
     module Deployments
       class RecordUndeployment < PactBroker::Client::BaseCommand
-
-
-
-        def initialize(params, pact_broker_base_url, pact_broker_client_options)
+        def initialize(params, options, pact_broker_client_options)
           super
           @pacticipant_name = params.fetch(:pacticipant_name)
           @environment_name = params.fetch(:environment_name)
@@ -21,12 +18,11 @@ module PactBroker
             check_pacticipant_exists!
             PactBroker::Client::CommandResult.new(false, deployed_version_not_found_error_message)
           else
-            PactBroker::Client::CommandResult.new(undeployed_versions_resources.all?(:success?), result_message)
+            PactBroker::Client::CommandResult.new(undeployed_versions_resources.all?(&:success?), result_message)
           end
         end
 
-        attr_reader :pacticipant_name, :version_number, :environment_name, :target, :output
-        attr_reader :deployed_version_resource, :undeployment_entities
+        attr_reader :pacticipant_name, :environment_name, :target
 
         def currently_deployed_versions_link
           environment_resource._link("pb:currently-deployed-versions") or raise PactBroker::Client::Error.new(not_supported_message)
@@ -37,7 +33,7 @@ module PactBroker
         end
 
         def undeployed_versions_resources
-          @undeployed_versions_resources ||= currently_deployed_versions_resource.embedded_entities("deployedVersions").collect do | entity |
+          @undeployed_versions_resources ||= currently_deployed_versions_resource.embedded_entities!("deployedVersions").collect do | entity |
             entity._link!("self").patch(currentlyDeployed: false)
           end
         end
@@ -76,13 +72,12 @@ module PactBroker
         end
 
         def success_result_text_message(undeployed_versions_resource)
-          version_number = undeployed_versions_resource.embedded_entity{ | embedded_entity| embedded_entity['version'] }.number
-          message = "Recorded #{action} of #{pacticipant_name} version #{version_number} from #{environment_name} environment"
-          if target
-            message + " (target #{target})"
-          else
-            message
-          end
+          version = undeployed_versions_resource.embedded_entity{ | embedded_entity| embedded_entity && embedded_entity['version'] }
+          message = "Recorded #{action} of #{pacticipant_name}"
+          message = "#{message} version #{version.number}" if (version && version.number)
+          message = "#{message} from #{environment_name} environment"
+          message = "#{message} (target #{target})" if target
+          message
         end
 
         def deployed_version_not_found_error_message
@@ -93,15 +88,6 @@ module PactBroker
             { error: message }.to_json
           else
             red(message)
-          end
-        end
-
-
-        def deployed_version_not_found_message
-          if (env_names = deployed_version_links.names).any?
-            "#{pacticipant_name} version #{version_number} is not currently deployed to #{environment_name}. It is currently deployed to: #{env_names.join(", ")}"
-          else
-            "#{pacticipant_name} version #{version_number} is not currently deployed to any environment."
           end
         end
 
