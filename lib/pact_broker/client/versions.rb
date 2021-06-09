@@ -1,8 +1,5 @@
-require_relative 'base_client'
-
-Dir.glob(File.join(__FILE__.gsub(".rb", "/**/*.rb"))).sort.each do | path |
-  require path
-end
+require 'pact_broker/client/base_client'
+require 'pact_broker/client/versions/describe'
 
 # Old code
 require 'pact_broker/client/pacts'

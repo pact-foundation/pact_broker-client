@@ -1,3 +1,4 @@
-Dir.glob(File.join(__FILE__.gsub(".rb", "/**/*.rb"))).sort.each do | path |
-  require path
-end
+require 'pact_broker/client/deployments/record_deployment'
+require 'pact_broker/client/deployments/record_release'
+require 'pact_broker/client/deployments/record_undeployment'
+
