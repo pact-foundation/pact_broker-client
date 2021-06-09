@@ -15,8 +15,7 @@ module PactBroker
 
         def do_call
           if undeployed_versions_resources.empty?
-            check_pacticipant_exists!
-            PactBroker::Client::CommandResult.new(false, deployed_version_not_found_error_message)
+            PactBroker::Client::CommandResult.new(false, error_result_message)
           else
             PactBroker::Client::CommandResult.new(undeployed_versions_resources.all?(&:success?), result_message)
           end
@@ -28,12 +27,18 @@ module PactBroker
           environment_resource._link("pb:currently-deployed-versions") or raise PactBroker::Client::Error.new(not_supported_message)
         end
 
-        def currently_deployed_versions_resource
-          @deployed_version_links ||= currently_deployed_versions_link.get!(pacticipant: pacticipant_name, target: target)
+        def currently_deployed_version_entities_for_pacticipant
+          @deployed_version_links ||= currently_deployed_versions_link.get!(pacticipant: pacticipant_name).embedded_entities!("deployedVersions")
+        end
+
+        def currently_deployed_version_entities_for_pacticipant_and_target
+          currently_deployed_version_entities_for_pacticipant.select do | entity |
+            entity.target == target
+          end
         end
 
         def undeployed_versions_resources
-          @undeployed_versions_resources ||= currently_deployed_versions_resource.embedded_entities!("deployedVersions").collect do | entity |
+          @undeployed_versions_resources ||= currently_deployed_version_entities_for_pacticipant_and_target.collect do | entity |
             entity._link!("self").patch(currentlyDeployed: false)
           end
         end
@@ -49,12 +54,6 @@ module PactBroker
             ._links("pb:environments")
             .find!(environment_name, "No environment found with name '#{environment_name}'")
             .get!
-        end
-
-        def check_pacticipant_exists!
-          if index_resource._link!("pb:pacticipant").expand(pacticipant: pacticipant_name).get.does_not_exist?
-            raise PactBroker::Client::Error.new("No pacticipant with name '#{pacticipant_name}' found")
-          end
         end
 
         def result_message
@@ -80,19 +79,41 @@ module PactBroker
           message
         end
 
-        def deployed_version_not_found_error_message
-          target_bit = target ? " with target '#{target}'" : ""
-          message = "#{pacticipant_name} is not currently deployed to #{environment_name}#{target_bit}. Cannot record undeployment."
-
+        def error_result_message
           if json_output?
-            { error: message }.to_json
+            { error: { message: error_text }  }.to_json
           else
-            red(message)
+            red(error_text)
+          end
+        end
+
+        def error_text
+          if pacticipant_does_not_exist?
+            "No pacticipant with name '#{pacticipant_name}' found"
+          else
+            if currently_deployed_version_entities_for_pacticipant.any?
+              target_does_not_match_message
+            else
+              "#{pacticipant_name} is not currently deployed to #{environment_name} environment. Cannot record undeployment."
+            end
+          end
+        end
+
+        def target_does_not_match_message
+          potential_targets = currently_deployed_version_entities_for_pacticipant.collect(&:target).collect { |target| target || "<no target>"}
+          if target
+            "#{pacticipant_name} is not currently deployed to target '#{target}' in #{environment_name} environment. Please specify one of the following targets to record the undeployment from: #{potential_targets.join(", ")}"
+          else
+            "Please specify one of the following targets to record the undeployment from: #{potential_targets.join(", ")}"
           end
         end
 
         def not_supported_message
           "This version of the Pact Broker does not support recording undeployments. Please upgrade to version 2.80.0 or later."
+        end
+
+        def pacticipant_does_not_exist?
+          index_resource._link("pb:pacticipant") && index_resource._link("pb:pacticipant").expand(pacticipant: pacticipant_name).get.does_not_exist?
         end
 
         def check_if_command_supported

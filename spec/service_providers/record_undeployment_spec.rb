@@ -92,7 +92,7 @@ RSpec.describe "recording an undeployment", pact: true, skip: !deployment_featur
       .with(
         method: "GET",
         path: currently_deployed_versions_placeholder_path,
-        query: { pacticipant: pacticipant_name, target: target },
+        query: { pacticipant: pacticipant_name },
         headers: get_request_headers
       )
       .will_respond_with(
@@ -102,6 +102,7 @@ RSpec.describe "recording an undeployment", pact: true, skip: !deployment_featur
           _embedded: {
             deployedVersions: [
               {
+                target: target,
                 _links: {
                   self: {
                     href: Pact.term(pact_broker.mock_service_base_url + deployed_version_placeholder_path, /^http/)
@@ -136,7 +137,7 @@ RSpec.describe "recording an undeployment", pact: true, skip: !deployment_featur
       "currentlyDeployed" => false,
       "_embedded" => {
         "version" => {
-          "number" => "2"
+          "number" => Pact.like("2")
         }
       }
     }
@@ -158,7 +159,7 @@ RSpec.describe "recording an undeployment", pact: true, skip: !deployment_featur
       let(:output) { "json" }
 
       it "returns the JSON payload" do
-        expect(JSON.parse(subject.message)).to eq [deployed_version_hash]
+        expect(JSON.parse(subject.message)).to eq [Pact::Reification.from_term(deployed_version_hash)]
       end
     end
   end
