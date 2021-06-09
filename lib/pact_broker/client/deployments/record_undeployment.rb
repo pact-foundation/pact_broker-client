@@ -81,7 +81,7 @@ module PactBroker
 
         def error_result_message
           if json_output?
-            { error: { message: error_text }  }.to_json
+            error_message_as_json(error_text)
           else
             red(error_text)
           end

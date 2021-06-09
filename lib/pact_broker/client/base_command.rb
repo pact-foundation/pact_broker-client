@@ -65,6 +65,9 @@ module PactBroker
         { error: error_hash }.to_json
       end
 
+      def error_message_as_json(message)
+        { error: { message: message } }.to_json
+      end
 
       def text_error_message(e, include_backtrace)
         maybe_backtrace = (include_backtrace ? "\n" + e.backtrace.join("\n") : "")

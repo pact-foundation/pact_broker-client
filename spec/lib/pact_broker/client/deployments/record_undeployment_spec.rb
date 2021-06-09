@@ -61,7 +61,7 @@ module PactBroker
                   target: "customer-1",
                   _links: {
                     self: {
-                      href: deployed_version_url
+                      href: deployed_version_url_1
                     }
                   }
                 },
@@ -69,7 +69,7 @@ module PactBroker
                   target: returned_target_2,
                   _links: {
                     self: {
-                      href: deployed_version_url
+                      href: deployed_version_url_2
                     }
                   }
                 }
@@ -92,7 +92,8 @@ module PactBroker
         let(:environments_url) { "#{webmock_base_url}/environments" }
         let(:test_environment_url) { "#{webmock_base_url}/environments/1234" }
         let(:currently_deployed_versions_url) { "#{webmock_base_url}/currently-deployed-versions" }
-        let(:deployed_version_url) { "#{webmock_base_url}/deployed-version" }
+        let(:deployed_version_url_1) { "#{webmock_base_url}/deployed-version-1" }
+        let(:deployed_version_url_2) { "#{webmock_base_url}/deployed-version-2" }
         let(:pacticipant_url) { "#{webmock_base_url}/pacticipant" }
 
         let(:webmock_base_url) { "http://broker" }
@@ -113,8 +114,12 @@ module PactBroker
           stub_request(:get, currently_deployed_versions_url + "?pacticipant=Foo").to_return(status: 200, body: deployed_versions_hash.to_json, headers: { "Content-Type" => "application/hal+json" }  )
         end
 
-        let!(:deployed_version_patch_request) do
-          stub_request(:patch, deployed_version_url).with(body: { currentlyDeployed: false}.to_json).to_return(status: 200, body: deployed_version_hash.to_json, headers: { "Content-Type" => "application/hal+json" })
+        let!(:deployed_version_patch_request_1) do
+          stub_request(:patch, deployed_version_url_1).with(body: { currentlyDeployed: false}.to_json).to_return(status: 200, body: deployed_version_hash.to_json, headers: { "Content-Type" => "application/hal+json" })
+        end
+
+        let!(:deployed_version_patch_request_2) do
+          stub_request(:patch, deployed_version_url_2).with(body: { currentlyDeployed: false}.to_json).to_return(status: 200, body: deployed_version_hash.to_json, headers: { "Content-Type" => "application/hal+json" })
         end
 
         let!(:pacticipant_request) do
@@ -124,10 +129,6 @@ module PactBroker
         let(:pacticipant_request_status) { 200 }
 
         subject { RecordUndeployment.call(params, options, pact_broker_client_options) }
-
-        it "" do
-          puts subject.message
-        end
 
         its(:success) { is_expected.to eq true }
         its(:message) { is_expected.to include "Recorded undeployment of Foo version 2 from test environment (target customer-1) in the Pact Broker" }
@@ -146,6 +147,18 @@ module PactBroker
         context "when output is json" do
           let(:output) { "json" }
           its(:message) { is_expected.to eq [deployed_version_hash].to_json }
+        end
+
+        context "when there is an error returned from one of the deployed version updates (there should only ever be one deployed version, but testing just for the sake of it)" do
+          let!(:deployed_version_patch_request_2) do
+            stub_request(:patch, deployed_version_url_2).to_return(status: 400, body: { errors: { foo: ["some error"]}}.to_json, headers: { "Content-Type" => "application/hal+json" })
+          end
+
+          let(:returned_target_2) { "customer-1" }
+
+          its(:success) { is_expected.to be false }
+          its(:message) { is_expected.to include "Recorded undeployment of Foo version 2" }
+          its(:message) { is_expected.to include "some error" }
         end
 
         context "when there is no currently-deployed-versions relation in the environment resource" do
