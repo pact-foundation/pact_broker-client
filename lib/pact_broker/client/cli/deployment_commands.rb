@@ -2,11 +2,15 @@ module PactBroker
   module Client
     module CLI
       module DeploymentCommands
-        HELP_URL = "https://docs.pact.io/pact_broker/recording_deployments_and_releases/"
+        RECORD_DEPLOYMENT_HELP_URL = "https://docs.pact.io/go/record-deployment"
+        RECORD_UNDEPLOYMENT_HELP_URL = "https://docs.pact.io/go/record-undeployment"
+        RECORD_RELEASE_HELP_URL = "https://docs.pact.io/go/record-release"
+        RECORD_SUPPORT_ENDED_HELP_URL = "https://docs.pact.io/go/record-support-ended"
+
 
         def self.included(thor)
           thor.class_eval do
-            desc "record-deployment", "Record deployment of a pacticipant version to an environment. See #{HELP_URL} for more information."
+            desc "record-deployment", "Record deployment of a pacticipant version to an environment. See #{RECORD_DEPLOYMENT_HELP_URL} for more information."
             method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that was deployed."
             method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number that was deployed."
             method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was deployed to."
@@ -25,7 +29,7 @@ module PactBroker
             end
 
             desc "record-undeployment", "Record undeployment of a pacticipant from an environment."
-            long_desc "Note that use of this command is not required if you are deploying over a previous version, as record-deployment will handle that scenario for you. This command is only required if you are permanently removing an application instance from an environment."
+            long_desc "Note that use of this command is only required if you are permanently removing an application instance from an environment. It is not required if you are deploying over a previous version, as record-deployment will automatically mark the previously deployed version as undeployed for you. See #{RECORD_UNDEPLOYMENT_HELP_URL} for more information."
             method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that was undeployed."
             method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was undeployed from."
             method_option :target, default: nil, required: false, desc: "Optional. The target that the application is being undeployed from - a logical identifer required to differentiate deployments when there are multiple instances of the same application in an environment."
@@ -41,7 +45,7 @@ module PactBroker
               execute_deployment_command(params, "RecordUndeployment")
             end
 
-            desc "record-release", "Record release of a pacticipant version to an environment. See See #{HELP_URL} for more information."
+            desc "record-release", "Record release of a pacticipant version to an environment. See See #{RECORD_RELEASE_HELP_URL} for more information."
             method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that was released."
             method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number that was released."
             method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was released to."
@@ -57,7 +61,7 @@ module PactBroker
               execute_deployment_command(params, "RecordRelease")
             end
 
-            desc "record-support-ended", "Record the end of support for a pacticipant version in an environment."
+            desc "record-support-ended", "Record the end of support for a pacticipant version in an environment. See #{RECORD_SUPPORT_ENDED_HELP_URL} for more information."
             method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant."
             method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number for which support is ended."
             method_option :environment, required: true, desc: "The name of the environment in which the support is ended."
