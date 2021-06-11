@@ -24,7 +24,7 @@ module PactBroker
               execute_deployment_command(params, "RecordDeployment")
             end
 
-            desc "record-undeployment", "Record undeployment of a pacticipant version from an environment."
+            desc "record-undeployment", "Record undeployment of a pacticipant from an environment."
             long_desc "Note that use of this command is not required if you are deploying over a previous version, as record-deployment will handle that scenario for you. This command is only required if you are permanently removing an application instance from an environment."
             method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that was undeployed."
             method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was undeployed from."
@@ -55,6 +55,22 @@ module PactBroker
                 environment_name: options.environment
               }
               execute_deployment_command(params, "RecordRelease")
+            end
+
+            desc "record-support-ended", "Record the end of support for a pacticipant version in an environment."
+            method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant."
+            method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number for which support is ended."
+            method_option :environment, required: true, desc: "The name of the environment in which the support is ended."
+            output_option_json_or_text
+            shared_authentication_options
+
+            def record_support_ended
+              params = {
+                pacticipant_name: options.pacticipant,
+                version_number: options.version,
+                environment_name: options.environment
+              }
+              execute_deployment_command(params, "RecordSupportEnded")
             end
 
             no_commands do

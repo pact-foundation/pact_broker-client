@@ -207,10 +207,10 @@ module PactBroker
           its(:message) { is_expected.to include "Foo is not currently deployed to test environment. Cannot record undeployment." }
 
           context "when the pacticipant does not exist" do
-            let(:pacticipant_request_status) { 200 }
+            let(:pacticipant_request_status) { 404 }
 
             its(:success) { is_expected.to be false }
-            its(:message) { is_expected.to include "Foo is not currently deployed to test environment. Cannot record undeployment." }
+            its(:message) { is_expected.to include "No pacticipant with name 'Foo' found" }
           end
         end
       end

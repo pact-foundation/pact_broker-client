@@ -89,7 +89,7 @@ module PactBroker
 
         def error_text
           if pacticipant_does_not_exist?
-            "No pacticipant with name '#{pacticipant_name}' found"
+            "No pacticipant with name '#{pacticipant_name}' found."
           else
             if currently_deployed_version_entities_for_pacticipant.any?
               target_does_not_match_message
