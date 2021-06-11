@@ -113,10 +113,7 @@ RSpec.describe "recording a release", pact: true, skip: !deployment_feature_on d
       )
       .will_respond_with(
         status: 201,
-        headers: pact_broker_response_headers,
-        body: {
-          target: target
-        }
+        headers: pact_broker_response_headers
       )
   end
 
