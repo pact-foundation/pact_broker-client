@@ -95,6 +95,18 @@ module PactBroker
           end
         end
 
+        context "when PACT_BROKER_CAN_I_DEPLOY_DRY_RUN=true" do
+          before do
+            allow(ENV).to receive(:[]).and_call_original
+            allow(ENV).to receive(:[]).with("PACT_BROKER_CAN_I_DEPLOY_DRY_RUN").and_return("true")
+          end
+
+          it "invokes the CanIDeploy service with dry_run set to true" do
+            expect(CanIDeploy).to receive(:call).with(anything, anything, anything, hash_including(dry_run: true), anything)
+            invoke_can_i_deploy
+          end
+        end
+
         context "when successful" do
           it "prints the message to stdout" do
             expect($stdout).to receive(:puts).with(message)

@@ -84,7 +84,8 @@ Options:
                 # The pacticipant version. Must be entered after the --pacticipant that it relates to.
       [--ignore=IGNORE]                    
                 # The pacticipant name to ignore. Use once for each pacticipant being ignored. 
-                A specific version can be ignored by also specifying a --version after the pacticipant name option.
+                A specific version can be ignored by also specifying a --version after the 
+                pacticipant name option.
   -l, [--latest=[TAG]]                     
                 # Use the latest pacticipant version. Optionally specify a TAG to use the 
                 latest version with the specified tag.
@@ -103,6 +104,9 @@ Options:
                 # The time between retries in seconds. Use in conjuction with --retry-while-unknown
                                            
                 # Default: 10
+      [--dry-run], [--no-dry-run]          
+                # When enabled, always exits process with a success code. Can also be enabled by setting
+                the environment variable PACT_BROKER_CAN_I_DEPLOY_DRY_RUN=true.
   -b, --broker-base-url=BROKER_BASE_URL    
                 # The base URL of the Pact Broker
   -u, [--broker-username=BROKER_USERNAME]  
@@ -113,14 +117,6 @@ Options:
                 # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]          
                 # Verbose output. Default: false
-
-Description:
-  Returns exit code 0 or 1, indicating whether or not the specified application (pacticipant) versions are
-  compatible (ie. safe to deploy). Prints out the relevant pact/verification details, indicating any
-  missing or failed verification results.
-
-  The environment variables PACT_BROKER_BASE_URL, PACT_BROKER_USERNAME and PACT_BROKER_PASSWORD may be used
-  instead of their respective command line options.
 ```
 
 Returns exit code 0 or 1, indicating whether or not the specified application (pacticipant) versions are compatible (ie. safe to deploy). Prints out the relevant pact/verification details, indicating any missing or failed verification results.

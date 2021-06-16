@@ -70,10 +70,14 @@ module PactBroker
 
       def computer_says(success)
         if success
-          Term::ANSIColor.green('Computer says yes \o/ ')
+          if dry_run?
+            "Computer says yes \\o/ (and maybe you don't need to enable dry run)"
+          else
+            Term::ANSIColor.green('Computer says yes \o/ ')
+          end
         else
           if dry_run?
-            "Computer says no ¯\_(ツ)_/¯ (but you're ignoring this with --dry-run)"
+            "Computer says no ¯\\_(ツ)_/¯ (but you're ignoring this by enabling dry run)"
           else
             Term::ANSIColor.red("Computer says no ¯\_(ツ)_/¯")
           end
