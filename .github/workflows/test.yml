@@ -21,3 +21,24 @@ jobs:
           ruby-version: ${{ matrix.ruby_version }}
       - run: "bundle install"
       - run: "bundle exec rake"
+  pact:
+    runs-on: "ubuntu-latest"
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        feature: ["", "publish_contracts", "deployments"]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.7"
+      - run: "bundle install"
+      - run: |
+          rm -rf spec/pacts/*
+          bundle exec rspec spec/service_providers/
+          bundle exec rake pact:publish:pactflow
+        env:
+          PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_PACT_OSS_TOKEN }}
+          PACT_BROKER_FEATURES: ${{ matrix.feature }}
+          TEST_FEATURE: ${{ matrix.feature }}

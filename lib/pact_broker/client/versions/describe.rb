@@ -1,9 +1,11 @@
+# Need Versions class to extend BaseClient until we can remove the old Versions code
+require 'pact_broker/client/base_client'
 require 'pact_broker/client/pact_broker_client'
 require 'pact_broker/client/versions/formatter'
 
 module PactBroker
   module Client
-    class Versions
+    class Versions < BaseClient
       class Describe
 
         class Result

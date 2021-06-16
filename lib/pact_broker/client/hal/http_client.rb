@@ -18,7 +18,7 @@ module PactBroker
         end
 
         def get href, params = {}, headers = {}
-          query = params.collect{ |(key, value)| "#{CGI::escape(key.to_s)}=#{CGI::escape(value)}" }.join("&")
+          query = params.collect{ |(key, value)| "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}" }.join("&")
           uri = URI(href)
           uri.query = query
           perform_request(create_request(uri, 'Get', nil, headers), uri)
@@ -39,9 +39,15 @@ module PactBroker
           perform_request(create_request(uri, 'Patch', body, headers), uri)
         end
 
+        def delete href, body = nil, headers = {}
+          uri = URI(href)
+          perform_request(create_request(uri, 'Delete', body, headers), uri)
+        end
+
         def create_request uri, http_method, body = nil, headers = {}
           request = Net::HTTP.const_get(http_method).new(uri.request_uri)
-          request['Content-Type'] = "application/json" if ['Post', 'Put', 'Patch'].include?(http_method)
+          request['Content-Type'] ||= "application/json" if ['Post', 'Put'].include?(http_method)
+          request['Content-Type'] ||= "application/merge-patch+json" if ['Patch'].include?(http_method)
           request['Accept'] = "application/hal+json"
           headers.each do | key, value |
             request[key] = value

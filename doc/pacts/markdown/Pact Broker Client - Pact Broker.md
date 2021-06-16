@@ -30,8 +30,6 @@
 
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:pacticipant-version_relation_exists_in_the_index_resource) given the pb:pacticipant-version relation exists in the index resource
 
-* [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:publish-contracts_relations_exists_in_the_index_resource) given the pb:publish-contracts relations exists in the index resource
-
 * [A request for the index resource with the webhook relation](#a_request_for_the_index_resource_with_the_webhook_relation)
 
 * [A request for the list of the latest pacts from all consumers for the Pricing Service'](#a_request_for_the_list_of_the_latest_pacts_from_all_consumers_for_the_Pricing_Service&#39;_given_a_latest_pact_between_Condor_and_the_Pricing_Service_exists) given a latest pact between Condor and the Pricing Service exists
@@ -66,6 +64,8 @@
 
 * [A request to create a webhook with every possible event type](#a_request_to_create_a_webhook_with_every_possible_event_type_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker) given the 'Pricing Service' and 'Condor' already exist in the pact-broker
 
+* [A request to determine if Bar can be deployed with all Foo tagged prod, ignoring the verification for Foo version 3.4.5](#a_request_to_determine_if_Bar_can_be_deployed_with_all_Foo_tagged_prod,_ignoring_the_verification_for_Foo_version_3.4.5_given_provider_Bar_version_4.5.6_has_a_successful_verification_for_Foo_version_1.2.3_tagged_prod_and_a_failed_verification_for_version_3.4.5_tagged_prod) given provider Bar version 4.5.6 has a successful verification for Foo version 1.2.3 tagged prod and a failed verification for version 3.4.5 tagged prod
+
 * [A request to get the Pricing Service](#a_request_to_get_the_Pricing_Service_given_the_&#39;Pricing_Service&#39;_already_exists_in_the_pact-broker) given the 'Pricing Service' already exists in the pact-broker
 
 * [A request to get the Pricing Service](#a_request_to_get_the_Pricing_Service_given_the_&#39;Pricing_Service&#39;_does_not_exist_in_the_pact-broker) given the 'Pricing Service' does not exist in the pact-broker
@@ -83,8 +83,6 @@
 * [A request to publish a pact with method patch](#a_request_to_publish_a_pact_with_method_patch_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker,_and_Condor_already_has_a_pact_published_for_version_1.3.0) given the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0
 
 * [A request to publish a pact with method put](#a_request_to_publish_a_pact_with_method_put_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker,_and_Condor_already_has_a_pact_published_for_version_1.3.0) given the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0
-
-* [A request to publish contracts](#a_request_to_publish_contracts)
 
 * [A request to register the repository URL of a pacticipant](#a_request_to_register_the_repository_URL_of_a_pacticipant_given_the_&#39;Pricing_Service&#39;_already_exists_in_the_pact-broker) given the 'Pricing Service' already exists in the pact-broker
 
@@ -678,33 +676,6 @@ Pact Broker will respond with:
     "_links": {
       "pb:pacticipant-version": {
         "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-INDEX-PB-PACTICIPANT-VERSION-{pacticipant}-{version}"
-      }
-    }
-  }
-}
-```
-<a name="a_request_for_the_index_resource_given_the_pb:publish-contracts_relations_exists_in_the_index_resource"></a>
-Given **the pb:publish-contracts relations exists in the index resource**, upon receiving **a request for the index resource** from Pact Broker Client, with
-```json
-{
-  "method": "GET",
-  "path": "/",
-  "headers": {
-    "Accept": "application/hal+json"
-  }
-}
-```
-Pact Broker will respond with:
-```json
-{
-  "status": 200,
-  "headers": {
-    "Content-Type": "application/hal+json;charset=utf-8"
-  },
-  "body": {
-    "_links": {
-      "pb:publish-contracts": {
-        "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-PUBLISH-CONTRACTS"
       }
     }
   }
@@ -1454,6 +1425,83 @@ Pact Broker will respond with:
   }
 }
 ```
+<a name="a_request_to_determine_if_Bar_can_be_deployed_with_all_Foo_tagged_prod,_ignoring_the_verification_for_Foo_version_3.4.5_given_provider_Bar_version_4.5.6_has_a_successful_verification_for_Foo_version_1.2.3_tagged_prod_and_a_failed_verification_for_version_3.4.5_tagged_prod"></a>
+Given **provider Bar version 4.5.6 has a successful verification for Foo version 1.2.3 tagged prod and a failed verification for version 3.4.5 tagged prod**, upon receiving **a request to determine if Bar can be deployed with all Foo tagged prod, ignoring the verification for Foo version 3.4.5** from Pact Broker Client, with
+```json
+{
+  "method": "get",
+  "path": "/matrix",
+  "query": "q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Bversion%5D=4.5.6&q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Btag%5D=prod&latestby=cvpv&ignore%5B%5D%5Bpacticipant%5D=Foo&ignore%5B%5D%5Bversion%5D=3.4.5"
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "summary": {
+      "deployable": true,
+      "ignored": 1
+    },
+    "notices": [
+      {
+        "text": "some notice",
+        "type": "info"
+      }
+    ],
+    "matrix": [
+      {
+        "consumer": {
+          "name": "Foo",
+          "version": {
+            "number": "1.2.3"
+          }
+        },
+        "provider": {
+          "name": "Bar",
+          "version": {
+            "number": "4.5.6"
+          }
+        },
+        "verificationResult": {
+          "success": true,
+          "_links": {
+            "self": {
+              "href": "http://result"
+            }
+          }
+        }
+      },
+      {
+        "consumer": {
+          "name": "Foo",
+          "version": {
+            "number": "3.4.5"
+          }
+        },
+        "provider": {
+          "name": "Bar",
+          "version": {
+            "number": "4.5.6"
+          }
+        },
+        "verificationResult": {
+          "success": false,
+          "_links": {
+            "self": {
+              "href": "http://result"
+            }
+          }
+        },
+        "ignored": true
+      }
+    ]
+  }
+}
+```
 <a name="a_request_to_get_the_Pricing_Service_given_the_&#39;Pricing_Service&#39;_already_exists_in_the_pact-broker"></a>
 Given **the 'Pricing Service' already exists in the pact-broker**, upon receiving **a request to get the Pricing Service** from Pact Broker Client, with
 ```json
@@ -1802,75 +1850,6 @@ Pact Broker will respond with:
       "pb:latest-pact-version": {
         "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest"
       }
-    }
-  }
-}
-```
-<a name="a_request_to_publish_contracts"></a>
-Upon receiving **a request to publish contracts** from Pact Broker Client, with
-```json
-{
-  "method": "POST",
-  "path": "/HAL-REL-PLACEHOLDER-PB-PUBLISH-CONTRACTS",
-  "headers": {
-    "Content-Type": "application/json",
-    "Accept": "application/hal+json"
-  },
-  "body": {
-    "pacticipantName": "Foo",
-    "pacticipantVersionNumber": "5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
-    "branch": "main",
-    "tags": [
-      "dev"
-    ],
-    "buildUrl": "http://build",
-    "contracts": [
-      {
-        "consumerName": "Foo",
-        "providerName": "Bar",
-        "specification": "pact",
-        "contentType": "application/json",
-        "content": "eyJjb25zdW1lciI6eyJuYW1lIjoiRm9vIn0sInByb3ZpZGVyIjp7Im5hbWUiOiJCYXIifSwiaW50ZXJhY3Rpb25zIjpbeyJkZXNjcmlwdGlvbiI6ImFuIGV4YW1wbGUgcmVxdWVzdCIsInByb3ZpZGVyU3RhdGUiOiJhIHByb3ZpZGVyIHN0YXRlIiwicmVxdWVzdCI6eyJtZXRob2QiOiJHRVQiLCJwYXRoIjoiLyIsImhlYWRlcnMiOnt9fSwicmVzcG9uc2UiOnsic3RhdHVzIjoyMDAsImhlYWRlcnMiOnsiQ29udGVudC1UeXBlIjoiYXBwbGljYXRpb24vaGFsK2pzb24ifX19XSwibWV0YWRhdGEiOnsicGFjdFNwZWNpZmljYXRpb24iOnsidmVyc2lvbiI6IjIuMC4wIn19fQ==",
-        "writeMode": "overwrite"
-      }
-    ]
-  }
-}
-```
-Pact Broker will respond with:
-```json
-{
-  "status": 200,
-  "headers": {
-    "Content-Type": "application/hal+json;charset=utf-8"
-  },
-  "body": {
-    "_embedded": {
-      "pacticipant": {
-        "name": "Foo"
-      },
-      "version": {
-        "number": "5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
-        "buildUrl": "http://build"
-      }
-    },
-    "logs": [
-      {
-        "level": "info",
-        "message": "some message"
-      }
-    ],
-    "_links": {
-      "pb:pacticipant-version-tags": [
-        {
-          "name": "dev"
-        }
-      ],
-      "pb:contracts": [
-        {
-          "href": "http://some-pact"
-        }
-      ]
     }
   }
 }

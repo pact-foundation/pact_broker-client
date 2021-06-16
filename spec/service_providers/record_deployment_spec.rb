@@ -1,7 +1,9 @@
 require 'service_providers/pact_helper'
-require 'pact_broker/client/versions/record_deployment'
+require 'pact_broker/client/deployments/record_deployment'
 
-RSpec.describe "recording a deployment", pact: true, skip: true do
+deployment_feature_on = ENV.fetch('PACT_BROKER_FEATURES', '').include?("deployments")
+
+RSpec.describe "recording a deployment", pact: true, skip: !deployment_feature_on do
   include_context "pact broker"
   include PactBrokerPactHelperMethods
 
@@ -15,13 +17,17 @@ RSpec.describe "recording a deployment", pact: true, skip: true do
       pacticipant_name: pacticipant_name,
       version_number: version_number,
       environment_name: environment_name,
-      target: target,
+      target: target
+    }
+  end
+  let(:options) do
+    {
       output: output
     }
   end
-  let(:pact_broker_client_options) { {} }
+  let(:pact_broker_client_options) { { pact_broker_base_url: broker_base_url } }
 
-  subject { PactBroker::Client::Versions::RecordDeployment.call(params, broker_base_url, pact_broker_client_options) }
+  subject { PactBroker::Client::Deployments::RecordDeployment.call(params, options, pact_broker_client_options) }
 
   def mock_index
     pact_broker
@@ -101,18 +107,6 @@ RSpec.describe "recording a deployment", pact: true, skip: true do
       )
   end
 
-  def mock_pacticipant_version_not_found
-    pact_broker
-      .given("version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo does not exist")
-      .upon_receiving("a request for a pacticipant version")
-      .with(
-        method: "GET",
-        path: "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-Foo-5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
-        headers: get_request_headers
-      )
-      .will_respond_with(status: 404)
-  end
-
   def mock_environments
     pact_broker
       .given("an environment with name test exists")
@@ -168,7 +162,7 @@ RSpec.describe "recording a deployment", pact: true, skip: true do
 
     it "returns a success message" do
       expect(subject.success).to be true
-      expect(subject.message).to eq "Recorded deployment of Foo version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 to test in the Pact Broker. Marked previous deployed version as undeployed."
+      expect(subject.message).to include "Recorded deployment of Foo version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 to test environment (target blue) in the Pact Broker."
     end
 
     context "when the output is json" do
@@ -177,18 +171,6 @@ RSpec.describe "recording a deployment", pact: true, skip: true do
       it "returns the JSON payload" do
         expect(JSON.parse(subject.message)).to eq "target" => target
       end
-    end
-  end
-
-  context "when the specified version does not exist" do
-    before do
-      mock_index
-      mock_pacticipant_version_not_found
-    end
-
-    it "returns an error response" do
-      expect(subject.success).to be false
-      expect(subject.message).to include "Foo version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 not found"
     end
   end
 
@@ -204,14 +186,14 @@ RSpec.describe "recording a deployment", pact: true, skip: true do
 
       it "returns an error response" do
         expect(subject.success).to be false
-        expect(subject.message).to eq "No environment found with name 'foo'. Available options: test"
+        expect(subject.message).to include "No environment found"
       end
     end
 
     context "when the specified environment does exist" do
       it "returns an error response" do
         expect(subject.success).to be false
-        expect(subject.message).to eq "Environment 'test' is not an available option for recording a deployment of Foo. Available options: prod, dev"
+        expect(subject.message).to include "not an available option"
       end
     end
   end

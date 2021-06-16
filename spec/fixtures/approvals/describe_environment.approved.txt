@@ -1,0 +1,7 @@
+Name: existing name
+Display Name: existing display name
+Production: true
+Contacts:
+- Name: Someone
+  Details:
+    Email Address: foo@bar.com

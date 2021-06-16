@@ -8,7 +8,15 @@ module PactBroker
   module Client
     module Hal
       class RelationNotFoundError < ::PactBroker::Client::Error; end
-      class ErrorResponseReturned < ::PactBroker::Client::Error; end
+      class EmbeddedEntityNotFoundError < ::PactBroker::Client::Error; end
+      class ErrorResponseReturned < ::PactBroker::Client::Error
+        attr_reader :entity
+
+        def initialize(message, entity)
+          super(message)
+          @entity = entity
+        end
+      end
 
       class Entity
         def initialize(href, data, http_client, response = nil)
@@ -92,7 +100,17 @@ module PactBroker
 
         def embedded_entity
           embedded_ent = yield @data["_embedded"]
-          Entity.new(embedded_ent["_links"]["self"]["href"], embedded_ent, @client, response)
+          if embedded_ent
+            Entity.new(self_href(embedded_ent), embedded_ent, @client, response)
+          end
+        end
+
+        def embedded_entities!(key)
+          embedded_ents = (@data["_embedded"] && @data["_embedded"][key])
+          raise EmbeddedEntityNotFoundError.new("Could not find embedded entity with key '#{key}' in resource at #{@href}") unless embedded_ents
+          embedded_ents.collect do | embedded_ent |
+            Entity.new(self_href(embedded_ent), embedded_ent, @client, response)
+          end
         end
 
         def embedded_entities(key = nil)
@@ -102,7 +120,7 @@ module PactBroker
             yield @data["_embedded"]
           end
           embedded_ents.collect do | embedded_ent |
-            Entity.new(embedded_ent["_links"]["self"]["href"], embedded_ent, @client, response)
+            Entity.new(self_href(embedded_ent), embedded_ent, @client, response)
           end
         end
 
@@ -139,6 +157,10 @@ module PactBroker
         def assert_success!(_ignored = nil)
           self
         end
+
+        def self_href(entity_hash)
+          entity_hash["_links"] && entity_hash["_links"]["self"] && entity_hash["_links"]["self"]["href"]
+        end
       end
 
       class ErrorEntity < Entity
@@ -158,14 +180,17 @@ module PactBroker
           false
         end
 
-        def assert_success!(messages = {})
-          default_message = "Error retrieving #{@href} status=#{response ? response.status: nil} #{response ? response.raw_body : ''}".strip
+        def error_message(messages = {})
+          default_message = "Error making request to #{@href} status=#{response ? response.status: nil} #{response ? response.raw_body : ''}".strip
           message = if response && messages[response.status]
             (messages[response.status] || "") + " (#{default_message})"
           else
             default_message
           end
-          raise ErrorResponseReturned.new(message)
+        end
+
+        def assert_success!(messages = {})
+          raise ErrorResponseReturned.new(error_message(messages), self)
         end
       end
     end

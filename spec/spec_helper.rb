@@ -1,6 +1,5 @@
 require 'webmock/rspec'
-
-ENV['PACT_BROKER_FEATURES'] = 'deployments publish_contracts ignore'
+require 'rspec/its'
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
@@ -24,6 +23,19 @@ RSpec.configure do | config |
 
   config.filter_run_excluding skip_windows: is_windows, skip_ci: is_ci
   config.example_status_persistence_file_path = "./spec/examples.txt"
+
+  def capture(stream)
+    begin
+      stream = stream.to_s
+      eval "$#{stream} = StringIO.new"
+      yield
+      result = eval("$#{stream}").string
+    ensure
+      eval("$#{stream} = #{stream.upcase}")
+    end
+
+    result
+  end
 end
 
 module Pact

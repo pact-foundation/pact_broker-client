@@ -17,9 +17,7 @@ module PactBroker
       end
 
       def index_resource
-        @index_resource ||= Retry.while_error do
-          index_entry_point.get!
-        end
+        @index_resource ||= index_entry_point.get!
       end
 
       def is_pactflow?

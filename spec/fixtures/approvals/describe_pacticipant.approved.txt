@@ -1,0 +1,2 @@
+Name: Pricing Service
+Repository Url: git@git.realestate.com.au:business-systems/pricing-service

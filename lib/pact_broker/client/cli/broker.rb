@@ -2,6 +2,9 @@ require 'pact_broker/client/cli/custom_thor'
 require 'pact_broker/client/hash_refinements'
 require 'thor/error'
 require 'term/ansicolor'
+require 'pact_broker/client/cli/environment_commands'
+require 'pact_broker/client/cli/deployment_commands'
+require 'pact_broker/client/cli/pacticipant_commands'
 
 module PactBroker
   module Client
@@ -14,16 +17,19 @@ module PactBroker
 
       class Broker < CustomThor
         using PactBroker::Client::HashRefinements
+        if ENV.fetch("PACT_BROKER_FEATURES", "").include?("deployments")
+          include PactBroker::Client::CLI::EnvironmentCommands
+          include PactBroker::Client::CLI::DeploymentCommands
+        end
+        include PactBroker::Client::CLI::PacticipantCommands
+
 
         desc 'can-i-deploy', ''
         long_desc File.read(File.join(__dir__, 'can_i_deploy_long_desc.txt'))
 
         method_option :pacticipant, required: true, aliases: "-a", desc: "The pacticipant name. Use once for each pacticipant being checked."
         method_option :version, required: false, aliases: "-e", desc: "The pacticipant version. Must be entered after the --pacticipant that it relates to."
-
-        if ENV.fetch("PACT_BROKER_FEATURES", "").include?("ignore")
-          method_option :ignore, required: false, desc: "The pacticipant name to ignore. Use once for each pacticipant being ignored. A specific version can be ignored by also specifying a --version."
-        end
+        method_option :ignore, required: false, desc: "The pacticipant name to ignore. Use once for each pacticipant being ignored. A specific version can be ignored by also specifying a --version after the pacticipant name option."
         method_option :latest, required: false, aliases: "-l", banner: '[TAG]', desc: "Use the latest pacticipant version. Optionally specify a TAG to use the latest version with the specified tag."
         method_option :to, required: false, banner: 'TAG', desc: "This is too hard to explain in a short sentence. Look at the examples.", default: nil
         method_option :to_environment, required: false, banner: 'ENVIRONMENT', desc: "The environment into which the pacticipant(s) are to be deployed", default: nil, hide: true
@@ -72,7 +78,7 @@ module PactBroker
         method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Default: false"
         method_option :build_url, desc: "The build URL that created the pact"
         method_option :merge, type: :boolean, default: false, require: false, desc: "If a pact already exists for this consumer version and provider, merge the contents. Useful when running Pact tests concurrently on different build nodes."
-        method_option :output, aliases: "-o", desc: "json or text", default: 'text'
+        output_option_json_or_text
         shared_authentication_options
 
         def publish(*pact_files)
@@ -169,83 +175,14 @@ module PactBroker
           puts SecureRandom.uuid
         end
 
-        desc 'create-or-update-pacticipant', 'Create or update pacticipant by name'
-        method_option :name, type: :string, required: true, desc: "Pacticipant name"
-        method_option :repository_url, type: :string, required: false, desc: "The repository URL of the pacticipant"
-        shared_authentication_options
-        verbose_option
-        def create_or_update_pacticipant(*required_but_ignored)
-          raise ::Thor::RequiredArgumentMissingError, "Pacticipant name cannot be blank" if options.name.strip.size == 0
-          require 'pact_broker/client/pacticipants/create'
-          result = PactBroker::Client::Pacticipants2::Create.call({ name: options.name, repository_url: options.repository_url }, options.broker_base_url, pact_broker_client_options)
-          $stdout.puts result.message
-          exit(1) unless result.success
-        end
-
         desc 'list-latest-pact-versions', 'List the latest pact for each integration'
         shared_authentication_options
-        method_option :output, aliases: "-o", desc: "json or table", default: 'table'
+        output_option_json_or_table
         def list_latest_pact_versions(*required_but_ignored)
           require 'pact_broker/client/pacts/list_latest_versions'
           result = PactBroker::Client::Pacts::ListLatestVersions.call(options.broker_base_url, options.output, pact_broker_client_options)
           $stdout.puts result.message
           exit(1) unless result.success
-        end
-
-        if ENV.fetch("PACT_BROKER_FEATURES", "").include?("deployments")
-
-          ignored_and_hidden_potential_options_from_environment_variables
-          desc "record-deployment", "Record deployment of a pacticipant version to an environment. See https://docs.pact.io/go/record_deployment for more information."
-          method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that was deployed."
-          method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number that was deployed."
-          method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was deployed to."
-          method_option :target, default: nil, required: false, desc: "Optional. The target of the deployment - a logical identifer required to differentiate deployments when there are multiple instances of the same application in an environment."
-          method_option :output, aliases: "-o", desc: "json or text", default: 'text'
-          shared_authentication_options
-
-          def record_deployment
-            require 'pact_broker/client/versions/record_deployment'
-            params = {
-              pacticipant_name: options.pacticipant,
-              version_number: options.version,
-              environment_name: options.environment,
-              target: options.target,
-              output: options.output
-            }
-            result = PactBroker::Client::Versions::RecordDeployment.call(
-              params,
-              options.broker_base_url,
-              pact_broker_client_options
-            )
-            $stdout.puts result.message
-            exit(1) unless result.success
-          end
-
-          ignored_and_hidden_potential_options_from_environment_variables
-          desc "record-undeployment", "Record undeployment of (or the end of support for) a pacticipant version from an environment"
-          method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that was deployed."
-          method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number that was deployed."
-          method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was deployed to."
-          method_option :output, aliases: "-o", desc: "json or text", default: 'text'
-          shared_authentication_options
-
-          def record_undeployment
-            require 'pact_broker/client/versions/record_undeployment'
-            params = {
-              pacticipant_name: options.pacticipant,
-              version_number: options.version,
-              environment_name: options.environment,
-              output: options.output
-            }
-            result = PactBroker::Client::Versions::RecordUndeployment.call(
-              params,
-              options.broker_base_url,
-              pact_broker_client_options
-            )
-            $stdout.puts result.message
-            exit(1) unless result.success
-          end
-
         end
 
         ignored_and_hidden_potential_options_from_environment_variables
@@ -359,7 +296,7 @@ module PactBroker
           end
 
           def pact_broker_client_options
-            client_options = { verbose: options.verbose }
+            client_options = { verbose: options.verbose, pact_broker_base_url: options.broker_base_url }
             client_options[:token] = options.broker_token || ENV['PACT_BROKER_TOKEN']
             if options.broker_username || ENV['PACT_BROKER_USERNAME']
               client_options[:basic_auth] = {

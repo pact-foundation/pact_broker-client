@@ -66,7 +66,7 @@ module PactBroker
           it "calls PactBroker::Client::Webhooks::Create with pact broker details" do
             expect(PactBroker::Client::Webhooks::Create).to receive(:call) do | _, broker_base_url, pact_broker_client_options |
               expect(broker_base_url).to eq "http://broker"
-              expect(pact_broker_client_options).to eq(basic_auth: { username: "username", password: "password"}, verbose: true)
+              expect(pact_broker_client_options).to eq(pact_broker_base_url: 'http://broker', basic_auth: { username: "username", password: "password"}, verbose: true)
               command_result
             end
             subject
@@ -92,7 +92,7 @@ module PactBroker
 
             it "calls Webhooks::Create without basic auth" do
               expect(PactBroker::Client::Webhooks::Create).to receive(:call) do | _, _, pact_broker_client_options |
-                expect(pact_broker_client_options).to eq(verbose: true)
+                expect(pact_broker_client_options).to eq(verbose: true, pact_broker_base_url: 'http://broker')
                 command_result
               end
               subject
@@ -110,7 +110,7 @@ module PactBroker
             it "calls Webhooks::Create without basic auth" do
 
               expect(PactBroker::Client::Webhooks::Create).to receive(:call) do | _, _, pact_broker_client_options |
-                expect(pact_broker_client_options).to eq(verbose: true, token: "token")
+                expect(pact_broker_client_options).to eq(verbose: true, token: "token", pact_broker_base_url: 'http://broker')
                 command_result
               end
               subject

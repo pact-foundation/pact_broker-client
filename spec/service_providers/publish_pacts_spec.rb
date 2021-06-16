@@ -1,7 +1,9 @@
 require 'pact_broker/client/publish_pacts'
 require 'service_providers/pact_helper'
 
-RSpec.describe "publishing contracts", pact: true do
+publish_contracts_feature_on = ENV.fetch('PACT_BROKER_FEATURES', '').include?("publish_contracts")
+
+RSpec.describe "publishing contracts", pact: true, skip: !publish_contracts_feature_on do
   before do
     allow_any_instance_of(PactBroker::Client::Hal::HttpClient).to receive(:sleep)
     allow_any_instance_of(PactBroker::Client::Hal::HttpClient).to receive(:default_max_tries).and_return(1)
@@ -42,7 +44,8 @@ RSpec.describe "publishing contracts", pact: true do
           specification: "pact",
           contentType: "application/json",
           content: expected_content,
-          writeMode: "overwrite"
+          writeMode: "overwrite",
+          onConflict: "overwrite"
         }
       ]
     }

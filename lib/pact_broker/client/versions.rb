@@ -1,4 +1,7 @@
-require_relative 'base_client'
+require 'pact_broker/client/base_client'
+require 'pact_broker/client/versions/describe'
+
+# Old code
 require 'pact_broker/client/pacts'
 
 module PactBroker

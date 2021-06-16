@@ -2,6 +2,7 @@ require 'term/ansicolor'
 require 'pact_broker/client/hal_client_methods'
 require 'base64'
 require 'pact_broker/client/publish_pacts_the_old_way'
+require 'pact_broker/client/colorize_notices'
 
 module PactBroker
   module Client
@@ -71,7 +72,9 @@ module PactBroker
       def text_message
         response_entities.flat_map do | response_entity |
           if response_entity.success?
-            if response_entity.logs
+            if response_entity.notices
+              PactBroker::Client::ColorizeNotices.call(response_entity.notices.collect{ |n| OpenStruct.new(n) } )
+            elsif response_entity.logs
               response_entity.logs.collect do | log |
                 colorized_message(log)
               end
@@ -112,7 +115,8 @@ module PactBroker
             specification: "pact",
             contentType: "application/json",
             content: Base64.strict_encode64(pact_hash.to_json),
-            writeMode: write_mode
+            writeMode: write_mode,
+            onConflict: write_mode
           }
         end
       end
