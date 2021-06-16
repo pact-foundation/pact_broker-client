@@ -33,9 +33,9 @@ module PactBroker
       def call
         create_result(fetch_matrix_with_retries)
       rescue PactBroker::Client::Error => e
-        Result.new(false, Term::ANSIColor.red(e.message))
+        Result.new(dry_run_or_false, for_dry_run(Term::ANSIColor.red(e.message)))
       rescue StandardError => e
-        Result.new(false, "Error retrieving matrix. #{e.class} - #{e.message}\n#{e.backtrace.join("\n")}")
+        Result.new(dry_run_or_false, for_dry_run(Term::ANSIColor.red("Error retrieving matrix. #{e.class} - #{e.message}") + "\n#{e.backtrace.join("\n")}"))
       end
 
       private
@@ -46,14 +46,15 @@ module PactBroker
         if matrix.deployable?
           Result.new(true, success_message(matrix))
         else
-          Result.new(false, failure_message(matrix))
+          Result.new(dry_run_or_false, failure_message(matrix))
         end
       end
 
       def success_message(matrix)
         message = format_matrix(matrix)
         if format != 'json'
-          message = warning(matrix) + Term::ANSIColor.green('Computer says yes \o/ ') + message + "\n\n" + notice_or_reason(matrix, :green)
+          message = warning(matrix) + computer_says(true) + message + "\n\n" + notice_or_reason(matrix, :green)
+          message = for_dry_run(message)
         end
         message
       end
@@ -61,9 +62,26 @@ module PactBroker
       def failure_message(matrix)
         message = format_matrix(matrix)
         if format != 'json'
-          message = warning(matrix) + Term::ANSIColor.red('Computer says no ¯\_(ツ)_/¯ ') + message + "\n\n" + notice_or_reason(matrix, :red)
+          message = warning(matrix) + computer_says(false) + message + "\n\n" + notice_or_reason(matrix, :red)
+          message = for_dry_run(message)
         end
         message
+      end
+
+      def computer_says(success)
+        if success
+          if dry_run?
+            "Computer says yes \\o/ (and maybe you don't need to enable dry run)"
+          else
+            Term::ANSIColor.green('Computer says yes \o/ ')
+          end
+        else
+          if dry_run?
+            "Computer says no ¯\\_(ツ)_/¯ (but you're ignoring this by enabling dry run)"
+          else
+            Term::ANSIColor.red("Computer says no ¯\_(ツ)_/¯")
+          end
+        end
       end
 
       def notice_or_reason(matrix, reason_color)
@@ -112,6 +130,23 @@ module PactBroker
 
       def retry_while_unknown?
         options[:retry_while_unknown] > 0
+      end
+
+      def dry_run?
+        options[:dry_run]
+      end
+
+      def dry_run_or_false
+        dry_run? || false
+      end
+
+      def for_dry_run(lines)
+        if dry_run?
+          prefix = Term::ANSIColor.yellow("[dry-run] ")
+          lines.split("\n").collect { |line| prefix + Term::ANSIColor.uncolor(line) }.join("\n") + "\n" + prefix + "\n" + prefix + Term::ANSIColor.green("Dry run enabled - ignoring any failures")
+        else
+          lines
+        end
       end
 
       def retry_options

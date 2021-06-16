@@ -37,6 +37,7 @@ module PactBroker
         method_option :retry_interval, banner: 'SECONDS', type: :numeric, default: 10, required: false, desc: "The time between retries in seconds. Use in conjuction with --retry-while-unknown"
         # Allow limit to be set manually until https://github.com/pact-foundation/pact_broker-client/issues/53 is fixed
         method_option :limit, hide: true
+        method_option :dry_run, type: :boolean, default: false, desc: "When dry-run is enabled, always exit process with a success code. Can also be enabled by setting the environment variable PACT_BROKER_CAN_I_DEPLOY_DRY_RUN=true."
         shared_authentication_options
 
         def can_i_deploy(*ignored_but_necessary)
@@ -51,7 +52,8 @@ module PactBroker
             []
           end
           validate_can_i_deploy_selectors(selectors)
-          can_i_deploy_options = { output: options.output, retry_while_unknown: options.retry_while_unknown, retry_interval: options.retry_interval }
+          dry_run = options.dry_run || ENV["PACT_BROKER_CAN_I_DEPLOY_DRY_RUN"] == "true"
+          can_i_deploy_options = { output: options.output, retry_while_unknown: options.retry_while_unknown, retry_interval: options.retry_interval, dry_run: dry_run }
           result = CanIDeploy.call(options.broker_base_url, selectors, { to_tag: options.to, to_environment: options.to_environment, limit: options.limit, ignore_selectors: ignore_selectors }, can_i_deploy_options, pact_broker_client_options)
           $stdout.puts result.message
           $stdout.flush

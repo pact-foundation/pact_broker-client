@@ -25,7 +25,8 @@ module PactBroker
             verbose: 'verbose',
             retry_while_unknown: 1,
             retry_interval: 2,
-            limit: 1000
+            limit: 1000,
+            dry_run: false
           }
         end
 
@@ -37,7 +38,7 @@ module PactBroker
         end
 
         it "invokes the CanIDeploy service" do
-          expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, { to_tag: nil, to_environment: nil, limit: 1000, ignore_selectors: []}, {output: 'table', retry_while_unknown: 1, retry_interval: 2}, { pact_broker_base_url: 'http://pact-broker', verbose: 'verbose' })
+          expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, { to_tag: nil, to_environment: nil, limit: 1000, ignore_selectors: []}, {output: 'table', retry_while_unknown: 1, retry_interval: 2, dry_run: false}, { pact_broker_base_url: 'http://pact-broker', verbose: 'verbose' })
           invoke_can_i_deploy
         end
 
@@ -90,6 +91,18 @@ module PactBroker
 
           it "invokes the CanIDeploy service with the basic auth credentials" do
             expect(CanIDeploy).to receive(:call).with(anything, anything, anything, anything, {pact_broker_base_url: 'http://pact-broker', token: "some token", verbose: 'verbose'})
+            invoke_can_i_deploy
+          end
+        end
+
+        context "when PACT_BROKER_CAN_I_DEPLOY_DRY_RUN=true" do
+          before do
+            allow(ENV).to receive(:[]).and_call_original
+            allow(ENV).to receive(:[]).with("PACT_BROKER_CAN_I_DEPLOY_DRY_RUN").and_return("true")
+          end
+
+          it "invokes the CanIDeploy service with dry_run set to true" do
+            expect(CanIDeploy).to receive(:call).with(anything, anything, anything, hash_including(dry_run: true), anything)
             invoke_can_i_deploy
           end
         end

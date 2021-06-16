@@ -1,0 +1,7 @@
+[33m[dry-run] [0mComputer says yes \o/ (and maybe you don't need to enable dry run)
+[33m[dry-run] [0m
+[33m[dry-run] [0mtext matrix
+[33m[dry-run] [0m
+[33m[dry-run] [0msome reason
+[33m[dry-run] [0m
+[33m[dry-run] [0m[32mDry run enabled - ignoring any failures[0m
