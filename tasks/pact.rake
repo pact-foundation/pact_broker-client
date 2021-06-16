@@ -18,18 +18,19 @@ PactBroker::Client::PublicationTask.new(:remote) do | task |
 end
 
 PactBroker::Client::PublicationTask.new(:pactflow) do | task |
-  version = ENV['GITHUB_SHA']
-  branch = ENV['GITHUB_REF'] ? ENV['GITHUB_REF'].gsub("refs/heads/", "") : nil
-  tags = branch ? [branch] : []
+  version = ENV.fetch('GITHUB_SHA')
+  branch = ENV.fetch('GITHUB_REF').gsub("refs/heads/", "")
+  feature = ENV.fetch('TEST_FEATURE', '')
+  tag = branch
 
-  if ENV.fetch('TEST_FEATURE', '') != ''
-    version = "#{version}+#{ENV['TEST_FEATURE']}"
-    tags = "#{branch}+#{ENV['TEST_FEATURE']}"
+  if feature != ''
+    version = "#{version}+#{feature}"
+    tag = "#{tag}+#{feature}"
   end
 
   require 'pact_broker/client/version'
   task.auto_detect_version_properties = false
-  task.tags = tags
+  task.tags = [tag]
   task.branch = nil
   task.consumer_version = version
   task.pact_broker_base_url = "https://pact-oss.pactflow.io"
