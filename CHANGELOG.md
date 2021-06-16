@@ -1,3 +1,16 @@
+<a name="v1.45.0"></a>
+### v1.45.0 (2021-06-16)
+
+#### Features
+
+* **can-i-deploy**
+  * allow dry-run to be enabled by setting ACT_BROKER_CAN_I_DEPLOY_DRY_RUN=true	 ([0562436](/../../commit/0562436))
+  * add --dry-run option	 ([9d90c79](/../../commit/9d90c79))
+
+* add record-support-ended (feature toggled off)	 ([8f6b593](/../../commit/8f6b593))
+* update record-undeployment (feature toggled off)	 ([0c0dd15](/../../commit/0c0dd15))
+* update record-undeployment (feature toggled off)	 ([93046d5](/../../commit/93046d5))
+
 <a name="v1.44.0"></a>
 ### v1.44.0 (2021-06-09)
 
