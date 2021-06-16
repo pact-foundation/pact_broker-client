@@ -19,11 +19,12 @@ end
 
 PactBroker::Client::PublicationTask.new(:pactflow) do | task |
   version = ENV['GITHUB_SHA']
-  tags = ENV['GITHUB_REF'] ? [ENV['GITHUB_REF'].gsub("refs/heads/", "")] : []
+  branch = ENV['GITHUB_REF'] ? ENV['GITHUB_REF'].gsub("refs/heads/", "") : nil
+  tags = branch ? [branch] : []
 
   if ENV.fetch('TEST_FEATURE', '') != ''
     version = "#{version}+#{ENV['TEST_FEATURE']}"
-    tags = ENV['TEST_FEATURE']
+    tags = "#{branch}+#{ENV['TEST_FEATURE']}"
   end
 
   require 'pact_broker/client/version'
