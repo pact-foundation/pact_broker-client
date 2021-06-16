@@ -8,6 +8,7 @@ module PactBroker
       let(:version_selectors) { [{ pacticipant: "Foo", version: "1" }] }
       let(:matrix_options) { { } }
       let(:pact_broker_client_options) { { foo: 'bar' } }
+      let(:dry_run) { false }
       let(:matrix_client) { instance_double('PactBroker::Client::Matrix') }
       let(:matrix) do
         instance_double('Matrix::Resource',
@@ -23,7 +24,7 @@ module PactBroker
       let(:any_unknown) { unknown_count > 0 }
       let(:supports_unknown_count) { true }
       let(:retry_while_unknown) { 0 }
-      let(:options) { { output: 'text', retry_while_unknown: retry_while_unknown, retry_interval: 5 } }
+      let(:options) { { output: 'text', retry_while_unknown: retry_while_unknown, retry_interval: 5, dry_run: dry_run } }
       let(:notices) { nil }
       let(:supports_ignore) { true }
       let(:deployable) { true }
@@ -69,6 +70,14 @@ module PactBroker
             expect(subject.message).to include "some notice"
           end
         end
+
+        context "when dry_run is enabled" do
+          let(:dry_run) { true }
+
+          it "prefixes each line with [dry-run]" do
+            Approvals.verify(subject.message, :name => "can_i_deploy_success_dry_run", format: :txt)
+          end
+        end
       end
 
       context "when the versions are not deployable" do
@@ -92,6 +101,18 @@ module PactBroker
           it "returns the notices instead of the reason" do
             expect(subject.message).to_not include "some reason"
             expect(subject.message).to include "some notice"
+          end
+        end
+
+        context "when dry_run is enabled" do
+          let(:dry_run) { true }
+
+          it "returns a success response" do
+            expect(subject.success).to be true
+          end
+
+          it "prefixes each line with [dry-run]" do
+            Approvals.verify(subject.message, :name => "can_i_deploy_failure_dry_run", format: :txt)
           end
         end
       end
@@ -135,6 +156,19 @@ module PactBroker
           it "returns a failure message" do
             expect(subject.message).to match /does not provide a count/
           end
+
+          context "when dry_run is enabled" do
+            let(:dry_run) { true }
+
+            it "returns a success response" do
+              expect(subject.success).to be true
+            end
+
+            it "returns a failure message" do
+              expect(subject.message).to include "[dry-run]"
+              expect(subject.message).to match /does not provide a count/
+            end
+          end
         end
       end
 
@@ -169,6 +203,19 @@ module PactBroker
         it "returns a failure message" do
           expect(subject.message).to include "error text"
         end
+
+        context "when dry_run is enabled" do
+          let(:dry_run) { true }
+
+          it "returns a success response" do
+            expect(subject.success).to be true
+          end
+
+          it "returns a failure message" do
+            expect(subject.message).to include "[dry-run]"
+            expect(subject.message).to match /error text/
+          end
+        end
       end
 
       context "when a StandardError is raised" do
@@ -183,7 +230,20 @@ module PactBroker
         end
 
         it "returns a failure message and backtrace" do
-          expect(subject.message).to include "Error retrieving matrix. StandardError - error text\n"
+          expect(subject.message).to include "Error retrieving matrix. StandardError - error text"
+        end
+
+        context "when dry_run is enabled" do
+          let(:dry_run) { true }
+
+          it "returns a success response" do
+            expect(subject.success).to be true
+          end
+
+          it "returns a failure message" do
+            expect(subject.message).to include "[dry-run]"
+            expect(subject.message).to match /error text/
+          end
         end
       end
     end

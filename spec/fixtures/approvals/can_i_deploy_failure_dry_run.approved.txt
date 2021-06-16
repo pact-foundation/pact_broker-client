@@ -1,0 +1,7 @@
+[33m[dry-run] [0mComputer says no ¯_(ツ)_/¯ (but you're ignoring this with --dry-run)
+[33m[dry-run] [0m
+[33m[dry-run] [0mtext matrix
+[33m[dry-run] [0m
+[33m[dry-run] [0msome reason
+[33m[dry-run] [0m
+[33m[dry-run] [0m[32mDry run enabled - ignoring any failures[0m
