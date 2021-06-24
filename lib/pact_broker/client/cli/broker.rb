@@ -4,13 +4,13 @@ require 'thor/error'
 require 'pact_broker/client/cli/environment_commands'
 require 'pact_broker/client/cli/deployment_commands'
 require 'pact_broker/client/cli/pacticipant_commands'
+require 'pact_broker/client/cli/webhook_commands'
 
 module PactBroker
   module Client
     module CLI
       # Thor::Error will have its backtrace hidden
       class PactPublicationError < ::Thor::Error; end
-      class WebhookCreationError < ::Thor::Error; end
       class AuthError < ::Thor::Error; end
       class VersionCreationError < ::Thor::Error; end
 
@@ -21,6 +21,7 @@ module PactBroker
           include PactBroker::Client::CLI::DeploymentCommands
         end
         include PactBroker::Client::CLI::PacticipantCommands
+        include PactBroker::Client::CLI::WebhookCommands
 
 
         desc 'can-i-deploy', ''
@@ -131,31 +132,7 @@ module PactBroker
           exit(1) unless result.success
         end
 
-        shared_options_for_webhook_commands
 
-        desc 'create-webhook URL', 'Creates a webhook using the same switches as a curl request.'
-        long_desc File.read(File.join(File.dirname(__FILE__), 'create_webhook_long_desc.txt'))
-        def create_webhook webhook_url
-          run_webhook_commands webhook_url
-        end
-
-        shared_options_for_webhook_commands
-        method_option :uuid, type: :string, required: true, desc: "Specify the uuid for the webhook"
-
-        desc 'create-or-update-webhook URL', 'Creates or updates a webhook with a provided uuid and using the same switches as a curl request.'
-        long_desc File.read(File.join(File.dirname(__FILE__), 'create_or_update_webhook_long_desc.txt'))
-        def create_or_update_webhook webhook_url
-          run_webhook_commands webhook_url
-        end
-
-        desc 'test-webhook', 'Test the execution of a webhook'
-        method_option :uuid, type: :string, required: true, desc: "Specify the uuid for the webhook"
-        shared_authentication_options
-        def test_webhook
-          require 'pact_broker/client/webhooks/test'
-          result = PactBroker::Client::Webhooks::Test.call(options, pact_broker_client_options)
-          $stdout.puts result.message
-        end
 
         ignored_and_hidden_potential_options_from_environment_variables
         desc 'generate-uuid', 'Generate a UUID for use when calling create-or-update-webhook'
@@ -296,64 +273,6 @@ module PactBroker
             end
 
             client_options.compact
-          end
-
-          def parse_webhook_events
-            events = []
-            events << 'contract_content_changed' if options.contract_content_changed
-            events << 'contract_published' if options.contract_published
-            events << 'provider_verification_published' if options.provider_verification_published
-            events << 'provider_verification_succeeded' if options.provider_verification_succeeded
-            events << 'provider_verification_failed' if options.provider_verification_failed
-            events
-          end
-
-          def parse_webhook_options(webhook_url)
-            events = parse_webhook_events
-
-            if events.size == 0
-              raise WebhookCreationError.new("You must specify at least one of --contract-content-changed, --contract-published, --provider-verification-published, --provider-verification-succeeded or --provider-verification-failed")
-            end
-
-            username = options.user ? options.user.split(":", 2).first : nil
-            password = options.user ? options.user.split(":", 2).last : nil
-
-            headers = (options.header || []).each_with_object({}) { | header, headers | headers[header.split(":", 2).first.strip] = header.split(":", 2).last.strip }
-
-            body = options.data
-            if body && body.start_with?("@")
-              filepath = body[1..-1]
-              begin
-                body = File.read(filepath)
-              rescue StandardError => e
-                raise WebhookCreationError.new("Couldn't read data from file \"#{filepath}\" due to #{e.class} #{e.message}")
-              end
-            end
-
-            {
-              uuid: options.uuid,
-              description: options.description,
-              http_method: options.request,
-              url: webhook_url,
-              headers: headers,
-              username: username,
-              password: password,
-              body: body,
-              consumer: options.consumer,
-              provider: options.provider,
-              events: events
-            }
-          end
-
-          def run_webhook_commands webhook_url
-            require 'pact_broker/client/webhooks/create'
-
-            validate_credentials
-            result = PactBroker::Client::Webhooks::Create.call(parse_webhook_options(webhook_url), options.broker_base_url, pact_broker_client_options)
-            $stdout.puts result.message
-            exit(1) unless result.success
-          rescue PactBroker::Client::Error => e
-            raise WebhookCreationError, "#{e.class} - #{e.message}"
           end
         end
       end

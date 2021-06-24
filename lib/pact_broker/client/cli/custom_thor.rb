@@ -91,22 +91,6 @@ module PactBroker
             method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
           end
 
-          def self.shared_options_for_webhook_commands
-            method_option :request, banner: "METHOD", aliases: "-X", desc: "Webhook HTTP method", required: true
-            method_option :header, aliases: "-H", type: :array, desc: "Webhook Header"
-            method_option :data, aliases: "-d", desc: "Webhook payload (file or string)"
-            method_option :user, aliases: "-u", desc: "Webhook basic auth username and password eg. username:password"
-            method_option :consumer, desc: "Consumer name"
-            method_option :provider, desc: "Provider name"
-            method_option :description, desc: "Wwebhook description"
-            method_option :contract_content_changed, type: :boolean, desc: "Trigger this webhook when the pact content changes"
-            method_option :contract_published, type: :boolean, desc: "Trigger this webhook when a pact is published"
-            method_option :provider_verification_published, type: :boolean, desc: "Trigger this webhook when a provider verification result is published"
-            method_option :provider_verification_failed, type: :boolean, desc: "Trigger this webhook when a failed provider verification result is published"
-            method_option :provider_verification_succeeded, type: :boolean, desc: "Trigger this webhook when a successful provider verification result is published"
-            shared_authentication_options
-          end
-
           def self.verbose_option
             method_option :verbose, aliases: "-v", type: :boolean, default: false, required: false, desc: "Verbose output. Default: false"
           end

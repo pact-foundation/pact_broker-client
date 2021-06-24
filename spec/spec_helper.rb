@@ -15,6 +15,7 @@ RSpec.configure do | config |
     ENV.delete('PACT_BROKER_BASE_URL')
     ENV.delete('PACT_BROKER_USERNAME')
     ENV.delete('PACT_BROKER_PASSWORD')
+    ENV.delete('PACT_BROKER_TOKEN')
   end
 
   config.after(:all) do
