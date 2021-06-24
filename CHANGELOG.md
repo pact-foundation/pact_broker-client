@@ -1,3 +1,10 @@
+<a name="v1.46.0"></a>
+### v1.46.0 (2021-06-24)
+
+#### Features
+
+* support specifying team UUID when creating a webhook in Pactflow	 ([c4201e1](/../../commit/c4201e1))
+
 <a name="v1.45.0"></a>
 ### v1.45.0 (2021-06-16)
 
