@@ -78,44 +78,44 @@ Usage:
   pact-broker can-i-deploy -a, --pacticipant=PACTICIPANT -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-  -a, --pacticipant=PACTICIPANT            
+  -a, --pacticipant=PACTICIPANT
                 # The pacticipant name. Use once for each pacticipant being checked.
-  -e, [--version=VERSION]                  
+  -e, [--version=VERSION]
                 # The pacticipant version. Must be entered after the --pacticipant that it relates to.
-      [--ignore=IGNORE]                    
-                # The pacticipant name to ignore. Use once for each pacticipant being ignored. 
-                A specific version can be ignored by also specifying a --version after the 
+      [--ignore=IGNORE]
+                # The pacticipant name to ignore. Use once for each pacticipant being ignored.
+                A specific version can be ignored by also specifying a --version after the
                 pacticipant name option.
-  -l, [--latest=[TAG]]                     
-                # Use the latest pacticipant version. Optionally specify a TAG to use the 
+  -l, [--latest=[TAG]]
+                # Use the latest pacticipant version. Optionally specify a TAG to use the
                 latest version with the specified tag.
-      [--to=TAG]                           
+      [--to=TAG]
                 # This is too hard to explain in a short sentence. Look at the examples.
-  -o, [--output=OUTPUT]                    
+  -o, [--output=OUTPUT]
                 # json or table
-                                           
+
                 # Default: table
-      [--retry-while-unknown=TIMES]        
-                # The number of times to retry while there is an unknown verification result 
+      [--retry-while-unknown=TIMES]
+                # The number of times to retry while there is an unknown verification result
                 (ie. the provider verification is likely still running)
-                                           
+
                 # Default: 0
-      [--retry-interval=SECONDS]           
+      [--retry-interval=SECONDS]
                 # The time between retries in seconds. Use in conjuction with --retry-while-unknown
-                                           
+
                 # Default: 10
-      [--dry-run], [--no-dry-run]          
+      [--dry-run], [--no-dry-run]
                 # When enabled, always exits process with a success code. Can also be enabled by setting
                 the environment variable PACT_BROKER_CAN_I_DEPLOY_DRY_RUN=true.
-  -b, --broker-base-url=BROKER_BASE_URL    
+  -b, --broker-base-url=BROKER_BASE_URL
                 # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]  
+  -u, [--broker-username=BROKER_USERNAME]
                 # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]  
+  -p, [--broker-password=BROKER_PASSWORD]
                 # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]        
+  -k, [--broker-token=BROKER_TOKEN]
                 # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]          
+  -v, [--verbose], [--no-verbose]
                 # Verbose output. Default: false
 ```
 
@@ -235,27 +235,19 @@ Usage:
 
 Options:
   -X, --request=METHOD
-            # HTTP method
+            # Webhook HTTP method
   -H, [--header=one two three]
-            # Header
+            # Webhook Header
   -d, [--data=DATA]
-            # Data
+            # Webhook payload (file or string)
   -u, [--user=USER]
-            # Basic auth username and password eg. username:password
+            # Webhook basic auth username and password eg. username:password
       [--consumer=CONSUMER]
             # Consumer name
       [--provider=PROVIDER]
             # Provider name
-  -b, --broker-base-url=BROKER_BASE_URL
-            # The base URL of the Pact Broker
-      [--broker-username=BROKER_USERNAME]
-            # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]
-            # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]
-            # Pact Broker bearer token
       [--description=DESCRIPTION]
-            # The description of the webhook
+            # Webhook description
       [--contract-content-changed], [--no-contract-content-changed]
             # Trigger this webhook when the pact content changes
       [--contract-published], [--no-contract-published]
@@ -266,6 +258,16 @@ Options:
             # Trigger this webhook when a failed provider verification result is published
       [--provider-verification-succeeded], [--no-provider-verification-succeeded]
             # Trigger this webhook when a successful provider verification result is published
+      [--team-uuid=UUID]
+            # UUID of the Pactflow team to which the webhook should be assigned (Pactflow only)
+  -b, --broker-base-url=BROKER_BASE_URL
+            # The base URL of the Pact Broker
+  -u, [--broker-username=BROKER_USERNAME]
+            # Pact Broker basic auth username
+  -p, [--broker-password=BROKER_PASSWORD]
+            # Pact Broker basic auth password
+  -k, [--broker-token=BROKER_TOKEN]
+            # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
             # Verbose output. Default: false
 
@@ -283,27 +285,19 @@ Usage:
 
 Options:
   -X, --request=METHOD
-            # HTTP method
+            # Webhook HTTP method
   -H, [--header=one two three]
-            # Header
+            # Webhook Header
   -d, [--data=DATA]
-            # Data
+            # Webhook payload (file or string)
   -u, [--user=USER]
-            # Basic auth username and password eg. username:password
+            # Webhook basic auth username and password eg. username:password
       [--consumer=CONSUMER]
             # Consumer name
       [--provider=PROVIDER]
             # Provider name
-  -b, --broker-base-url=BROKER_BASE_URL
-            # The base URL of the Pact Broker
-      [--broker-username=BROKER_USERNAME]
-            # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]
-            # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]
-            # Pact Broker bearer token
       [--description=DESCRIPTION]
-            # The description of the webhook
+            # Webhook description
       [--contract-content-changed], [--no-contract-content-changed]
             # Trigger this webhook when the pact content changes
       [--contract-published], [--no-contract-published]
@@ -314,6 +308,16 @@ Options:
             # Trigger this webhook when a failed provider verification result is published
       [--provider-verification-succeeded], [--no-provider-verification-succeeded]
             # Trigger this webhook when a successful provider verification result is published
+      [--team-uuid=UUID]
+            # UUID of the Pactflow team to which the webhook should be assigned (Pactflow only)
+  -b, --broker-base-url=BROKER_BASE_URL
+            # The base URL of the Pact Broker
+  -u, [--broker-username=BROKER_USERNAME]
+            # Pact Broker basic auth username
+  -p, [--broker-password=BROKER_PASSWORD]
+            # Pact Broker basic auth password
+  -k, [--broker-token=BROKER_TOKEN]
+            # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
             # Verbose output. Default: false
       --uuid=UUID

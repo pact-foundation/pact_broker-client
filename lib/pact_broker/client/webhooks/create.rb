@@ -3,6 +3,7 @@ require 'pact_broker/client/hal'
 require 'ostruct'
 require 'json'
 require 'pact_broker/client/command_result'
+require "pact_broker/client/backports"
 
 module PactBroker
   module Client
@@ -61,16 +62,17 @@ module PactBroker
 
         def request_body
           webhook_request_body = JSON.parse(params.body) rescue params.body
+          request_params = {
+            url: params.url,
+            method: params.http_method,
+            headers: params.headers,
+            body: webhook_request_body,
+            username: params.username,
+            password: params.password
+          }.compact
           {
             events: params.events.collect{ | event | { "name" => event }},
-            request: {
-              url: params.url,
-              method: params.http_method,
-              headers: params.headers,
-              body: webhook_request_body,
-              username: params.username,
-              password: params.password
-            }
+            request: request_params
           }.tap { |req| req[:description] = params.description if params.description }
         end
 
@@ -83,6 +85,10 @@ module PactBroker
 
           if params.provider
             body[:provider] = { name: params.provider }
+          end
+
+          if params.team_uuid
+            body[:teamUuid] = params.team_uuid
           end
 
           body

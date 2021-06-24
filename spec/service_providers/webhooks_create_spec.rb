@@ -134,7 +134,7 @@ RSpec.describe "creating a webhook", pact: true do
   context "when an invalid webhook is submitted" do
     before do
       params[:url] = nil
-      request_body["request"]["url"] = nil
+      request_body["request"].delete("url")
 
       pact_broker
         .given("the 'Pricing Service' and 'Condor' already exist in the pact-broker")

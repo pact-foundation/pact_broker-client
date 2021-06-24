@@ -2264,7 +2264,6 @@ Given **the 'Pricing Service' and 'Condor' already exist in the pact-broker**, u
       }
     ],
     "request": {
-      "url": null,
       "method": "POST",
       "headers": {
         "Foo": "bar",

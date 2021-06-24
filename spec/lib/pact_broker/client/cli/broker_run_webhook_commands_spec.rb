@@ -33,7 +33,8 @@ module PactBroker
               broker_username: "username",
               broker_password: "password",
               contract_content_changed: true,
-              verbose: true
+              verbose: true,
+              team_uuid: "1234"
             }
           end
 
@@ -49,7 +50,8 @@ module PactBroker
               body: "data",
               consumer: "consumer",
               provider: "provider",
-              events: ["contract_content_changed"]
+              events: ["contract_content_changed"],
+              team_uuid: "1234"
             }.tap { |it| Pact::Fixture.add_fixture(:create_webhook_params, it) }
           end
 

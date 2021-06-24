@@ -1,0 +1,94 @@
+### A pact between Pact Broker Client and Pactflow
+
+#### Requests from Pact Broker Client to Pactflow
+
+* [A request for the index resource](#a_request_for_the_index_resource)
+
+* [A request to create a webhook for a team](#a_request_to_create_a_webhook_for_a_team_given_a_team_with_UUID_2abbc12a-427d-432a-a521-c870af1739d9_exists) given a team with UUID 2abbc12a-427d-432a-a521-c870af1739d9 exists
+
+#### Interactions
+
+<a name="a_request_for_the_index_resource"></a>
+Upon receiving **a request for the index resource** from Pact Broker Client, with
+```json
+{
+  "method": "get",
+  "path": "/",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+Pactflow will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "pb:webhooks": {
+        "href": "http://localhost:1235/HAL-REL-PLACEHOLDER-PB-WEBHOOKS"
+      },
+      "pb:pacticipants": {
+        "href": "http://localhost:1235/HAL-REL-PLACEHOLDER-PB-PACTICIPANTS"
+      },
+      "pb:pacticipant": {
+        "href": "http://localhost:1235/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-{pacticipant}"
+      }
+    }
+  }
+}
+```
+<a name="a_request_to_create_a_webhook_for_a_team_given_a_team_with_UUID_2abbc12a-427d-432a-a521-c870af1739d9_exists"></a>
+Given **a team with UUID 2abbc12a-427d-432a-a521-c870af1739d9 exists**, upon receiving **a request to create a webhook for a team** from Pact Broker Client, with
+```json
+{
+  "method": "post",
+  "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/hal+json"
+  },
+  "body": {
+    "description": "a webhook",
+    "events": [
+      {
+        "name": "contract_content_changed"
+      }
+    ],
+    "request": {
+      "url": "https://webhook",
+      "method": "POST",
+      "headers": {
+        "Foo": "bar",
+        "Bar": "foo"
+      },
+      "body": {
+        "some": "body"
+      }
+    },
+    "teamUuid": "2abbc12a-427d-432a-a521-c870af1739d9"
+  }
+}
+```
+Pactflow will respond with:
+```json
+{
+  "status": 201,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "description": "a webhook",
+    "teamUuid": "2abbc12a-427d-432a-a521-c870af1739d9",
+    "_links": {
+      "self": {
+        "href": "http://localhost:1234/some-url",
+        "title": "A title"
+      }
+    }
+  }
+}
+```

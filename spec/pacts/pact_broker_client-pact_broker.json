@@ -1846,7 +1846,6 @@
             }
           ],
           "request": {
-            "url": null,
             "method": "POST",
             "headers": {
               "Foo": "bar",

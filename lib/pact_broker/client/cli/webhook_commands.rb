@@ -16,12 +16,13 @@ module PactBroker
                 method_option :user, aliases: "-u", desc: "Webhook basic auth username and password eg. username:password"
                 method_option :consumer, desc: "Consumer name"
                 method_option :provider, desc: "Provider name"
-                method_option :description, desc: "Wwebhook description"
+                method_option :description, desc: "Webhook description"
                 method_option :contract_content_changed, type: :boolean, desc: "Trigger this webhook when the pact content changes"
                 method_option :contract_published, type: :boolean, desc: "Trigger this webhook when a pact is published"
                 method_option :provider_verification_published, type: :boolean, desc: "Trigger this webhook when a provider verification result is published"
                 method_option :provider_verification_failed, type: :boolean, desc: "Trigger this webhook when a failed provider verification result is published"
                 method_option :provider_verification_succeeded, type: :boolean, desc: "Trigger this webhook when a successful provider verification result is published"
+                method_option :team_uuid, banner: "UUID", desc: "UUID of the Pactflow team to which the webhook should be assigned (Pactflow only)"
                 shared_authentication_options
               end
             end
@@ -97,7 +98,8 @@ module PactBroker
                   body: body,
                   consumer: options.consumer,
                   provider: options.provider,
-                  events: events
+                  events: events,
+                  team_uuid: options.team_uuid
                 }
               end
 

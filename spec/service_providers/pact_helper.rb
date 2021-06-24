@@ -8,7 +8,6 @@ Pact.configure do | config |
 end
 
 Pact.service_consumer 'Pact Broker Client' do
-
   has_pact_with "Pact Broker" do
     mock_service :pact_broker do
       port 1234
@@ -16,6 +15,12 @@ Pact.service_consumer 'Pact Broker Client' do
     end
   end
 
+  has_pact_with "Pactflow" do
+    mock_service :pactflow do
+      port 1235
+      pact_specification_version "2.0"
+    end
+  end
 end
 
 module PactBrokerPactHelperMethods
@@ -30,22 +35,22 @@ module PactBrokerPactHelperMethods
     path
   end
 
-  def placeholder_url(relation, params = [])
-    "#{pact_broker.mock_service_base_url}#{placeholder_path(relation, params)}"
+  def placeholder_url(relation, params = [], mock_service = pact_broker)
+    "#{mock_service.mock_service_base_url}#{placeholder_path(relation, params)}"
   end
 
-  def placeholder_url_term(relation, params = [])
+  def placeholder_url_term(relation, params = [], mock_service = pact_broker)
     regexp = "http:\/\/.*"
     if params.any?
       joined_params_for_regexp = params.collect{ |param| "{#{param}}"}.join(".*")
       regexp = "#{regexp}#{joined_params_for_regexp}"
     end
 
-    Pact.term(placeholder_url(relation, params), /#{regexp}/)
+    Pact.term(placeholder_url(relation, params, mock_service), /#{regexp}/)
   end
 
-  def mock_pact_broker_index(context)
-    pact_broker
+  def mock_pact_broker_index(context, mock_service = pact_broker)
+    mock_service
       .upon_receiving("a request for the index resource")
       .with(
           method: :get,
@@ -57,13 +62,13 @@ module PactBrokerPactHelperMethods
           body: {
             _links: {
               :'pb:webhooks' => {
-                href: placeholder_url_term('pb:webhooks')
+                href: placeholder_url_term('pb:webhooks', [], mock_service)
               },
               :'pb:pacticipants' => {
-                href: placeholder_url_term('pb:pacticipants')
+                href: placeholder_url_term('pb:pacticipants', [], mock_service)
               },
               :'pb:pacticipant' => {
-                href: placeholder_url_term('pb:pacticipant', ['pacticipant'])
+                href: placeholder_url_term('pb:pacticipant', ['pacticipant'], mock_service)
               }
             }
           }
