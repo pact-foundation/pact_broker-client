@@ -46,7 +46,7 @@ module PactBroker
         let(:environment_hash) do
           {
             _links: {
-              :'pb:currently-deployed-versions' => {
+              :'pb:currently-deployed-deployed-versions' => {
                 href: currently_deployed_versions_url
               }
             }

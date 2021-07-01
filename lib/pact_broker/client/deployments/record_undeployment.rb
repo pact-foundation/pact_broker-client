@@ -24,7 +24,7 @@ module PactBroker
         attr_reader :pacticipant_name, :environment_name, :target
 
         def currently_deployed_versions_link
-          environment_resource._link("pb:currently-deployed-versions") or raise PactBroker::Client::Error.new(not_supported_message)
+          environment_resource._link("pb:currently-deployed-deployed-versions", "pb:currently-deployed-versions") or raise PactBroker::Client::Error.new(not_supported_message)
         end
 
         def currently_deployed_version_entities_for_pacticipant

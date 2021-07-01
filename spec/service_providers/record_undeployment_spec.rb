@@ -77,7 +77,7 @@ RSpec.describe "recording an undeployment", pact: true, skip: !deployment_featur
         headers: pact_broker_response_headers,
         body: {
           _links: {
-            :'pb:currently-deployed-versions' => {
+            :'pb:currently-deployed-deployed-versions' => {
               href: Pact.term( pact_broker.mock_service_base_url + currently_deployed_versions_placeholder_path, /^http.*/)
             }
           }

@@ -46,7 +46,7 @@ module PactBroker
         let(:environment_hash) do
           {
             _links: {
-              :'pb:currently-supported-versions' => {
+              :'pb:currently-supported-released-versions' => {
                 href: currently_supported_versions_url
               }
             }
