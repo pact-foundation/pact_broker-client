@@ -16,13 +16,11 @@ module PactBroker
 
       class Broker < CustomThor
         using PactBroker::Client::HashRefinements
-        if ENV.fetch("PACT_BROKER_FEATURES", "").include?("deployments")
-          include PactBroker::Client::CLI::EnvironmentCommands
-          include PactBroker::Client::CLI::DeploymentCommands
-        end
+
+        include PactBroker::Client::CLI::EnvironmentCommands
+        include PactBroker::Client::CLI::DeploymentCommands
         include PactBroker::Client::CLI::PacticipantCommands
         include PactBroker::Client::CLI::WebhookCommands
-
 
         desc 'can-i-deploy', ''
         long_desc File.read(File.join(__dir__, 'can_i_deploy_long_desc.txt'))

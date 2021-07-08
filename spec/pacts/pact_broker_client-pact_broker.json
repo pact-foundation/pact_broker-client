@@ -1639,6 +1639,323 @@
       }
     },
     {
+      "description": "a request for the index resource",
+      "providerState": "the pb:pacticipant-version and pb:environments relations exist in the index resource",
+      "request": {
+        "method": "GET",
+        "path": "/",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pb:pacticipant-version": {
+              "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-{pacticipant}-{version}"
+            },
+            "pb:environments": {
+              "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:pacticipant-version.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*{pacticipant}.*{version}"
+          },
+          "$.body._links.pb:environments.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request for a pacticipant version",
+      "providerState": "version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for deployment",
+      "request": {
+        "method": "GET",
+        "path": "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-Foo-5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pb:record-deployment": [
+              {
+                "name": "test",
+                "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-RECORD-DEPLOYMENT-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST"
+              }
+            ]
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:record-deployment[0].href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to record a deployment",
+      "providerState": "version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for deployment",
+      "request": {
+        "method": "POST",
+        "path": "/HAL-REL-PLACEHOLDER-PB-RECORD-DEPLOYMENT-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "target": "blue"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "target": "blue"
+        }
+      }
+    },
+    {
+      "description": "a request for a pacticipant version",
+      "providerState": "version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with 2 environments that aren't test available for deployment",
+      "request": {
+        "method": "GET",
+        "path": "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-Foo-5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pb:record-deployment": [
+              {
+                "name": "prod",
+                "href": "href"
+              },
+              {
+                "name": "dev",
+                "href": "href"
+              }
+            ]
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:record-deployment[0]": {
+            "match": "type"
+          },
+          "$.body._links.pb:record-deployment[1]": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request for the environments",
+      "providerState": "an environment with name test exists",
+      "request": {
+        "method": "GET",
+        "path": "/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pb:environments": [
+              {
+                "name": "test",
+                "href": "href"
+              }
+            ]
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:environments[0].href": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request for a pacticipant version",
+      "providerState": "version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for release",
+      "request": {
+        "method": "GET",
+        "path": "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-Foo-5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pb:record-release": [
+              {
+                "name": "test",
+                "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-RECORD-RELEASE-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST"
+              }
+            ]
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:record-release[0].href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to record a release",
+      "providerState": "version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for deployment",
+      "request": {
+        "method": "POST",
+        "path": "/HAL-REL-PLACEHOLDER-PB-RECORD-RELEASE-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        }
+      }
+    },
+    {
+      "description": "a request for an environment",
+      "providerState": "an environment with name test and UUID 16926ef3-590f-4e3f-838e-719717aa88c9 exists",
+      "request": {
+        "method": "GET",
+        "path": "/HAL-REL-PLACEHOLDER-PB-ENVIRONMENT-16926ef3-590f-4e3f-838e-719717aa88c9",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pb:currently-deployed-deployed-versions": {
+              "href": "http://localhost:1234/PLACEHOLDER-ENVIRONMENT-CURRENTLY-DEPLOYED-16926ef3-590f-4e3f-838e-719717aa88c9"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:currently-deployed-deployed-versions.href": {
+            "match": "regex",
+            "regex": "^http.*"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to list the versions deployed to an environment for a pacticipant name and target",
+      "providerState": "an version is deployed to environment with UUID 16926ef3-590f-4e3f-838e-719717aa88c9 with target customer-1",
+      "request": {
+        "method": "GET",
+        "path": "/PLACEHOLDER-ENVIRONMENT-CURRENTLY-DEPLOYED-16926ef3-590f-4e3f-838e-719717aa88c9",
+        "query": "pacticipant=Foo",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_embedded": {
+            "deployedVersions": [
+              {
+                "target": "customer-1",
+                "_links": {
+                  "self": {
+                    "href": "http://localhost:1234/PLACEHOLDER-DEPLOYED-VERSION-ff3adecf-cfc5-4653-a4e3-f1861092f8e0"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "matchingRules": {
+          "$.body._embedded.deployedVersions[0]._links.self.href": {
+            "match": "regex",
+            "regex": "^http"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to mark a deployed version as not currently deploye",
+      "providerState": "a currently deployed version exists",
+      "request": {
+        "method": "PATCH",
+        "path": "/PLACEHOLDER-DEPLOYED-VERSION-ff3adecf-cfc5-4653-a4e3-f1861092f8e0",
+        "headers": {
+          "Content-Type": "application/merge-patch+json"
+        },
+        "body": {
+          "currentlyDeployed": false
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "currentlyDeployed": false,
+          "_embedded": {
+            "version": {
+              "number": "2"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._embedded.version.number": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
       "description": "a request to create a webhook with a JSON body for a consumer and provider",
       "providerState": "the 'Pricing Service' and 'Condor' already exist in the pact-broker",
       "request": {
