@@ -42,3 +42,15 @@ jobs:
           PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_PACT_OSS_TOKEN }}
           PACT_BROKER_FEATURES: ${{ matrix.feature }}
           TEST_FEATURE: ${{ matrix.feature }}
+  can-i-deploy:
+    needs: pact
+    - run: |
+        docker run --rm \
+         -e PACT_BROKER_BASE_URL=https://pact-oss.pactflow.io \
+         -e PACT_BROKER_TOKEN \
+          pactfoundation/pact-cli:latest \
+          broker can-i-deploy \
+          --pacticipant "Pact Broker Client" --version ${GITHUB_SHA} \
+          --pacticipant "Pact Broker" --latest master
+      env:
+        PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_PACT_OSS_TOKEN }}
