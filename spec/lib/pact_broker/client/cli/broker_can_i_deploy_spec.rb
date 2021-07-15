@@ -38,7 +38,7 @@ module PactBroker
         end
 
         it "invokes the CanIDeploy service" do
-          expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, { to_tag: nil, to_environment: nil, limit: 1000, ignore_selectors: []}, {output: 'table', retry_while_unknown: 1, retry_interval: 2, dry_run: false}, { pact_broker_base_url: 'http://pact-broker', verbose: 'verbose' })
+          expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, { to_tag: nil, to_environment: nil, limit: 1000, ignore_selectors: []}, {output: 'table', retry_while_unknown: 1, retry_interval: 2, dry_run: false, verbose: "verbose"}, { pact_broker_base_url: 'http://pact-broker', verbose: 'verbose' })
           invoke_can_i_deploy
         end
 

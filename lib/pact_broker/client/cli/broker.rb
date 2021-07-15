@@ -129,16 +129,6 @@ module PactBroker
             true
           end
 
-          def can_i_deploy_exit_status
-            exit_code_string = ENV.fetch('PACT_BROKER_CAN_I_DEPLOY_EXIT_CODE_BETA', '')
-            if exit_code_string =~ /^\d+$/
-              $stderr.puts "Exiting can-i-deploy with configured exit code #{exit_code_string}"
-              exit_code_string.to_i
-            else
-              1
-            end
-          end
-
           def validate_credentials
             if options.broker_username && options.broker_token
               raise AuthError, "You cannot provide both a username/password and a bearer token. If your Pact Broker uses a bearer token, please remove the username and password configuration."
@@ -151,10 +141,6 @@ module PactBroker
             end
           end
 
-          def validate_can_i_deploy_selectors selectors
-            pacticipants_without_versions = selectors.select{ |s| s[:version].nil? && s[:latest].nil? && s[:tag].nil? }.collect{ |s| s[:pacticipant] }
-            raise ::Thor::RequiredArgumentMissingError, "The version must be specified using `--version VERSION`, `--latest`, `--latest TAG`, or `--all TAG` for pacticipant #{pacticipants_without_versions.join(", ")}" if pacticipants_without_versions.any?
-          end
 
           def publish_pacts pact_files
             require 'pact_broker/client/publish_pacts'
