@@ -1,3 +1,11 @@
+<a name="v1.47.0"></a>
+### v1.47.0 (2021-07-09)
+
+#### Features
+
+* enabled deployment, release and environment commands without a feature toggle	 ([bd64caa](/../../commit/bd64caa))
+* update relations used for currently deploy/currently supported versions	 ([6f6ca2f](/../../commit/6f6ca2f))
+
 <a name="v1.46.0"></a>
 ### v1.46.0 (2021-06-24)
 
