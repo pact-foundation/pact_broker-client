@@ -17,7 +17,9 @@ module PactBroker
 
       def create_result(matrix)
         matrix_and_notices = format_matrix(matrix) + "\n\n" + remove_warnings(Term::ANSIColor.uncolor(notice_or_reason(matrix, :white)))
-        if matrix.any_unknown?
+        # If the specified version numbers do not exist, then all the counts come back 0. Can't just check for unknown to be 0.
+        # This command needs to handle "I screwed up the query"
+        if matrix.no_results?
           Result.new(true, matrix_and_notices + "\n\nVerification is required.")
         else
           Result.new(false, matrix_and_notices + "\n\nNo verification is required.")

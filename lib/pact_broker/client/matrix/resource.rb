@@ -30,6 +30,10 @@ module PactBroker
           end
         end
 
+        def no_results?
+          self[:summary][:success] == 0 && self[:summary][:failed] == 0
+        end
+
         def supports_unknown_count?
           !!(self[:summary] && Integer === self[:summary][:unknown] )
         end
