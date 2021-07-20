@@ -1,3 +1,11 @@
+<a name="v1.47.1"></a>
+### v1.47.1 (2021-07-20)
+
+#### Bug Fixes
+
+* **verification-required**
+  * require a verification when either of the specified versions does not exist	 ([031d232](/../../commit/031d232))
+
 <a name="v1.47.0"></a>
 ### v1.47.0 (2021-07-09)
 
