@@ -1,3 +1,11 @@
+<a name="v1.48.0"></a>
+### v1.48.0 (2021-08-04)
+
+#### Features
+
+* **can-i-deploy**
+  * remove feature toggle for --ignore option	 ([6e7edd8](/../../commit/6e7edd8))
+
 <a name="v1.47.1"></a>
 ### v1.47.1 (2021-07-20)
 
