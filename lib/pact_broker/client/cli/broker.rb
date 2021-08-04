@@ -31,7 +31,9 @@ module PactBroker
         method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for consumer version. Can be specified multiple times."
         method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Default: false"
         method_option :build_url, desc: "The build URL that created the pact"
+        method_option :on_conflict, desc: "If a pact already exists for this consumer version and provider with different content, specify what action should be taken. Options are  "
         method_option :merge, type: :boolean, default: false, require: false, desc: "If a pact already exists for this consumer version and provider, merge the contents. Useful when running Pact tests concurrently on different build nodes."
+
         output_option_json_or_text
         shared_authentication_options
 
