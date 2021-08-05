@@ -28,11 +28,7 @@ module PactBroker
 
               validate_credentials
               selectors = VersionSelectorOptionsParser.call(ARGV).select { |s| !s[:ignore] }
-              ignore_selectors = if ENV.fetch("PACT_BROKER_FEATURES", "").include?("ignore")
-                VersionSelectorOptionsParser.call(ARGV).select { |s| s[:ignore] }
-              else
-                []
-              end
+              ignore_selectors = VersionSelectorOptionsParser.call(ARGV).select { |s| s[:ignore] }
               validate_can_i_deploy_selectors(selectors)
               dry_run = options.dry_run || ENV["PACT_BROKER_CAN_I_DEPLOY_DRY_RUN"] == "true"
               can_i_deploy_options = { output: options.output, retry_while_unknown: options.retry_while_unknown, retry_interval: options.retry_interval, dry_run: dry_run, verbose: options.verbose }
