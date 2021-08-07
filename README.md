@@ -1,6 +1,6 @@
 # Pact Broker Client
 
-A client for the Pact Broker. Publishes and retrieves pacts, verification results, pacticipants, pacticipant versions and tags. The functionality is available via a CLI, or via Ruby Rake tasks. You can also use the [Pact CLI Docker image](https://hub.docker.com/r/pactfoundation/pact-cli).
+A client for the [Pact Broker](https://docs.pact.io/pact_broker/). Publishes and retrieves pacts, verification results, pacticipants, pacticipant versions and tags. The functionality is available via a CLI, or via Ruby Rake tasks. You can also use the [Pact CLI Docker image](https://hub.docker.com/r/pactfoundation/pact-cli).
 
 ![Build status](https://github.com/pact-foundation/pact_broker-client/workflows/Test/badge.svg)
 
@@ -10,7 +10,15 @@ A client for the Pact Broker. Publishes and retrieves pacts, verification result
 
 ## Installation
 
-### CLI
+### Docker
+
+The Pact Broker CLI is packaged with the other Ruby command line tools in the [pactfoundation/pact-cli](https://hub.docker.com/r/pactfoundation/pact-cli) Docker image.
+
+```
+docker pull pactfoundation/pact-cli:latest
+```
+
+### Standalone executable
 
 Download the latest [pact-ruby-standalone][pact-ruby-standalone] package. You do not need Ruby to run the CLI, as the Ruby runtime is packaged with the executable using Travelling Ruby.
 
@@ -30,7 +38,7 @@ Pact Broker authentication can be performed either using basic auth or a bearer 
 
 Basic auth parameters can be specified using the `$PACT_BROKER_USERNAME` and `$PACT_BROKER_PASSWORD` environment variables, or the `-u` or `--broker-username` and `-p` or `--broker-password` parameters.
 
-Authentication using a bearer token can be specified using the environment variable `$PACT_BROKER_TOKEN` or the `-k` or `--broker-token` parameters. This authentication system is used by [Pactflow](pactflow.io).
+Authentication using a bearer token can be specified using the environment variable `$PACT_BROKER_TOKEN` or the `-k` or `--broker-token` parameters. This bearer token authentication is used by [Pactflow](https://pactflow.io) and is not available in the [OSS Pact Broker](https://docs.pact.io/pact_broker/), which only supports basic auth.
 
 ### Pacts
 
