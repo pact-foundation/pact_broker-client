@@ -38,7 +38,7 @@ module PactBroker
               execute_environment_command(params_from_options([:uuid]), "DescribeEnvironment")
             end
 
-            desc "list-environments", "List environment"
+            desc "list-environments", "List environments"
             method_option :output, aliases: "-o", desc: "json or text", default: 'text'
             shared_authentication_options
             def list_environments
