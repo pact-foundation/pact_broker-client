@@ -10,9 +10,9 @@ module PactBroker
           def call version_number
             return unless version_number
 
-            return replace_all_git_sha(version_number) if [SEMVER_REGEX, SHA1_REGEX].all?{|r| r.match?(version_number) }
+            return replace_all_git_sha(version_number) if [SEMVER_REGEX, SHA1_REGEX].all?{|r| regex_match?(r, version_number) }
 
-            return replace_all_git_sha(version_number) if Regexp.new("\\A#{SHA1_REGEX.source}\\z").match?(version_number)
+            return replace_all_git_sha(version_number) if regex_match?(Regexp.new("\\A#{SHA1_REGEX.source}\\z"), version_number)
 
             # Trim to some meaningful value in case we couldn't match anything, just not to mess with the output
             return version_number[0...60] + '...' if version_number.length > 60
@@ -21,6 +21,11 @@ module PactBroker
           end
 
           private
+
+          # To support ruby2.2
+          def regex_match?(regex, value)
+            !regex.match(value).nil?
+          end
 
           def replace_all_git_sha(version)
             version.gsub(SHA1_REGEX) { |val| val[0...7] + '...' }
