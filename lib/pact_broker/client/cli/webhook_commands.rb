@@ -22,6 +22,9 @@ module PactBroker
                 method_option :provider_verification_published, type: :boolean, desc: "Trigger this webhook when a provider verification result is published"
                 method_option :provider_verification_failed, type: :boolean, desc: "Trigger this webhook when a failed provider verification result is published"
                 method_option :provider_verification_succeeded, type: :boolean, desc: "Trigger this webhook when a successful provider verification result is published"
+                if ENV.fetch("PACT_BROKER_FEATURES", "").include?("contract_requiring_verification_published")
+                  method_option :contract_requiring_verification_published, type: :boolean, desc: "Trigger this webhook when a contract is published that requires verification"
+                end
                 method_option :team_uuid, banner: "UUID", desc: "UUID of the Pactflow team to which the webhook should be assigned (Pactflow only)"
                 shared_authentication_options
               end
@@ -62,12 +65,14 @@ module PactBroker
                 events << 'provider_verification_published' if options.provider_verification_published
                 events << 'provider_verification_succeeded' if options.provider_verification_succeeded
                 events << 'provider_verification_failed' if options.provider_verification_failed
+                events << 'contract_requiring_verification_published' if options.contract_requiring_verification_published
                 events
               end
 
               def parse_webhook_options(webhook_url)
                 events = parse_webhook_events
 
+                # TODO update for contract_requiring_verification_published when released
                 if events.size == 0
                   raise WebhookCreationError.new("You must specify at least one of --contract-content-changed, --contract-published, --provider-verification-published, --provider-verification-succeeded or --provider-verification-failed")
                 end
