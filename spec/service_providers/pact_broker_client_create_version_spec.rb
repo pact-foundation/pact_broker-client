@@ -60,7 +60,6 @@ describe PactBroker::Client::Versions, pact: true do
             headers: pact_broker_response_headers,
             body: {
               number: number,
-              branch: branch,
               buildUrl: build_url,
               _links: {
                 self: {

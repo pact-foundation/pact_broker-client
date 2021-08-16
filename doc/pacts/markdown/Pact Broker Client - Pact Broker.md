@@ -1159,7 +1159,6 @@ Pact Broker will respond with:
   },
   "body": {
     "number": "26f353580936ad3b9baddb17b00e84f33c69e7cb",
-    "branch": "main",
     "buildUrl": "http://my-ci/builds/1",
     "_links": {
       "self": {
@@ -1194,7 +1193,6 @@ Pact Broker will respond with:
   },
   "body": {
     "number": "26f353580936ad3b9baddb17b00e84f33c69e7cb",
-    "branch": "main",
     "buildUrl": "http://my-ci/builds/1",
     "_links": {
       "self": {
