@@ -1,3 +1,11 @@
+<a name="v1.50.0"></a>
+### v1.50.0 (2021-08-16)
+
+#### Features
+
+* add support for creating webhooks with event contract_requiring_verification_published (feature toggled off)	 ([4d4bc4b](/../../commit/4d4bc4b))
+* trim long versions on can-i-deploy formatting (#91)	 ([86d21e1](/../../commit/86d21e1))
+
 <a name="v1.49.0"></a>
 ### v1.49.0 (2021-08-05)
 
