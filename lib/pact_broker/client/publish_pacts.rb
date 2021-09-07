@@ -115,9 +115,8 @@ module PactBroker
             specification: "pact",
             contentType: "application/json",
             content: Base64.strict_encode64(pact_hash.to_json),
-            writeMode: write_mode,
-            onConflict: write_mode
-          }
+            onConflict: on_conflict
+          }.compact
         end
       end
 
@@ -137,8 +136,8 @@ module PactBroker
         pact_files.collect(&:consumer_name).uniq
       end
 
-      def write_mode
-        options[:merge] ? "merge" : "overwrite"
+      def on_conflict
+        options[:merge] ? "merge" : nil
       end
 
       def validate
