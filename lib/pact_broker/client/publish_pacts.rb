@@ -28,7 +28,7 @@ module PactBroker
 
       def call
         validate
-        if ENV.fetch("PACT_BROKER_FEATURES", "").include?("publish_contracts") && index_resource.can?("pb:publish-contracts")
+        if index_resource.can?("pb:publish-contracts")
           publish_pacts
           PactBroker::Client::CommandResult.new(success?, message)
         else
