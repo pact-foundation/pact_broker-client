@@ -1,3 +1,10 @@
+<a name="v1.51.0"></a>
+### v1.51.0 (2021-09-22)
+
+#### Features
+
+* enable use of the new 'all in one' contracts publishing endpoint without a feature toggle	 ([6850ace](/../../commit/6850ace))
+
 <a name="v1.50.0"></a>
 ### v1.50.0 (2021-08-16)
 
