@@ -1,3 +1,10 @@
+<a name="v1.51.1"></a>
+### v1.51.1 (2021-09-22)
+
+#### Bug Fixes
+
+* remove deprecated method of handling branches	 ([6d26487](/../../commit/6d26487))
+
 <a name="v1.51.0"></a>
 ### v1.51.0 (2021-09-22)
 
