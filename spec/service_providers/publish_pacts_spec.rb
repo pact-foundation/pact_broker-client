@@ -25,7 +25,7 @@ RSpec.describe "publishing contracts", pact: true do
   end
   let(:pact_file_path_1) { "spec/fixtures/foo-bar.json" }
   let(:pact_file_paths) { [pact_file_path_1] }
-  let(:options) { {} }
+  let(:options) { { merge: true } }
   let(:pact_broker_client_options) { {} }
   let(:expected_content) { Base64.strict_encode64(JSON.parse(File.read(pact_file_path_1)).to_json) }
   let(:request_body) do
@@ -42,8 +42,7 @@ RSpec.describe "publishing contracts", pact: true do
           specification: "pact",
           contentType: "application/json",
           content: expected_content,
-          writeMode: "overwrite",
-          onConflict: "overwrite"
+          onConflict: "merge"
         }
       ]
     }
