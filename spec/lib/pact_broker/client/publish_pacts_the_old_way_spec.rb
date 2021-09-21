@@ -263,80 +263,9 @@ module PactBroker
         context "when the broker does not support creation of a version with a branch but a branch is specified" do
           let(:branch) { "main" }
 
-          context "when version_required is true" do
-            let(:version_required) { true }
-
-            it "raises an error" do
-              expect { subject.call }.to raise_error PactBroker::Client::Error
-            end
-          end
-        end
-
-        context "when the broker supports creation of a version with a branch" do
-          before do
-            allow(version_link).to receive(:expand).and_return(version_link)
-            allow(version_resource).to receive(:assert_success!).and_return(version_resource)
-            allow(version_resource).to receive_message_chain(:response, :status).and_return(version_creation_response_status)
-          end
-          let(:can_create_version) { true }
-          let(:version_link) { instance_double("PactBroker::Client::Hal::Link", put: version_resource) }
-          let(:version_resource) { instance_double("PactBroker::Client::Hal::Entity") }
-          let(:version_creation_response_status) { 201 }
-
-          before do
-            allow(index_resource).to receive(:_link).and_return(version_link)
-          end
-
-          context "when there is a branch, build_url or tags specified" do
-            let(:tags) { ["dev"] }
-            let(:branch) { ["main"] }
-            let(:build_url) { "build_url" }
-
-            it "creates a version with the branch, build_url and tags" do
-              expect(index_resource).to receive(:_link)
-              expect(version_link).to receive(:expand).with(pacticipant: "Consumer", version: "1.2.3")
-              expect(version_link).to receive(:put).with(branch: branch, buildUrl: build_url)
-              subject.call
-            end
-
-            context "when there is a branch but no tags" do
-              let(:tags) { [] }
-
-              it "does not set the tags, as this would overwrite the existing ones - not sure about this implementation" do
-                expect(version_link).to receive(:put).with(branch: branch, buildUrl: build_url)
-                subject.call
-              end
-            end
-
-            context "when the version response status is 201" do
-              it "puts a message indicating the version was created" do
-                expect($stdout).to receive(:puts).with(/Created/)
-                subject.call
-              end
-            end
-
-            context "when the version response status is 200" do
-              let(:version_creation_response_status) { 200 }
-
-              it "puts a message indicating the version was replaced" do
-                expect($stdout).to receive(:puts).with(/Replaced/)
-                subject.call
-              end
-            end
-          end
-
-          context "when there is no branch, tags or build_url specified" do
-            before do
-              allow(Retry).to receive(:while_error) { |&block| block.call }
-            end
-            let(:tags) { [] }
-            let(:branch) { nil }
-            let(:build_url) { nil }
-
-            it "does not create a version resource" do
-              expect(index_resource).to_not receive(:_link)
-              subject.call
-            end
+          it "logs a warning" do
+            expect($stdout).to receive(:puts).with(/WARN: This version/)
+            subject.call
           end
         end
       end
