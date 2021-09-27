@@ -1,3 +1,11 @@
+<a name="v1.51.2"></a>
+### v1.51.2 (2021-09-27)
+
+#### Bug Fixes
+
+* **deps**
+  * lock httparty to 0.18.1	 ([1ab2d9c](/../../commit/1ab2d9c))
+
 <a name="v1.51.1"></a>
 ### v1.51.1 (2021-09-22)
 
