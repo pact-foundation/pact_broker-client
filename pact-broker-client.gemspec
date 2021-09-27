@@ -21,7 +21,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.license       = 'MIT'
 
-  gem.add_runtime_dependency 'httparty', '~>0.18'
+  gem.add_runtime_dependency 'httparty', '~>0.18.1' # https://github.com/jnunemaker/httparty/issues/733
   gem.add_runtime_dependency 'term-ansicolor', '~> 1.7'
   gem.add_runtime_dependency 'table_print', '~> 1.5'
   gem.add_runtime_dependency 'thor', '>= 0.20', '< 2.0'
