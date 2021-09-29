@@ -28,7 +28,7 @@ module PactBroker
 
       def call
         validate
-        if index_resource.can?("pb:publish-contracts")
+        if !force_use_old_api? && index_resource.can?("pb:publish-contracts")
           publish_pacts
           PactBroker::Client::CommandResult.new(success?, message)
         else
@@ -39,6 +39,10 @@ module PactBroker
       private
 
       attr_reader :pact_broker_base_url, :pact_file_paths, :consumer_version_params, :consumer_version_number, :branch, :tags, :build_url, :options, :pact_broker_client_options, :response_entities
+
+      def force_use_old_api?
+        ENV.fetch("PACT_BROKER_FEATURES", "").include?("publish_pacts_using_old_api")
+      end
 
       def request_body_for(consumer_name)
         {
