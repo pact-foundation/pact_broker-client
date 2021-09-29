@@ -2129,6 +2129,7 @@ Given **version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exis
     "Accept": "application/hal+json"
   },
   "body": {
+    "applicationInstance": "blue",
     "target": "blue"
   }
 }

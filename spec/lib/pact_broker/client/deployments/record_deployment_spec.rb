@@ -61,14 +61,14 @@ module PactBroker
               to_return(status: 200, body: record_deployment_body_hash.to_json , headers: {})
           end
 
-          let(:target) { "blue" }
+          let(:application_instance) { "blue" }
 
           let(:params) do
             {
               pacticipant_name: "Foo",
               version_number: "1",
               environment_name: "test",
-              target: target
+              application_instance: application_instance
             }
           end
 
@@ -186,13 +186,13 @@ module PactBroker
             end
 
             it "indicates the API was Pactflow" do
-              expect(subject.message).to include "Recorded deployment of Foo version 1 to test environment (target blue) in Pactflow"
+              expect(subject.message).to include "Recorded deployment of Foo version 1 to test environment (application instance blue) in Pactflow"
             end
 
-            context "when target is nil" do
-              let(:target) { nil }
+            context "when application_instance is nil" do
+              let(:application_instance) { nil }
 
-              it "does not include the target in the result message" do
+              it "does not include the application_instance in the result message" do
                 expect(subject.message).to include "Recorded deployment of Foo version 1 to test environment in"
               end
             end

@@ -8,7 +8,7 @@ module PactBroker
           super
           @pacticipant_name = params.fetch(:pacticipant_name)
           @environment_name = params.fetch(:environment_name)
-          @target = params.fetch(:target)
+          @application_instance = params.fetch(:application_instance)
         end
 
         private
@@ -21,7 +21,7 @@ module PactBroker
           end
         end
 
-        attr_reader :pacticipant_name, :environment_name, :target
+        attr_reader :pacticipant_name, :environment_name, :application_instance
 
         def currently_deployed_versions_link
           environment_resource._link("pb:currently-deployed-deployed-versions", "pb:currently-deployed-versions") or raise PactBroker::Client::Error.new(not_supported_message)
@@ -31,14 +31,19 @@ module PactBroker
           @deployed_version_links ||= currently_deployed_versions_link.get!(pacticipant: pacticipant_name).embedded_entities!("deployedVersions")
         end
 
-        def currently_deployed_version_entities_for_pacticipant_and_target
+        def currently_deployed_version_entities_for_pacticipant_and_instance
           currently_deployed_version_entities_for_pacticipant.select do | entity |
-            entity.target == target
+            if application_instance
+              entity.applicationInstance == application_instance || entity.target == application_instance
+            else
+              entity.applicationInstance == nil && entity.target == nil
+            end
+
           end
         end
 
         def undeployed_versions_resources
-          @undeployed_versions_resources ||= currently_deployed_version_entities_for_pacticipant_and_target.collect do | entity |
+          @undeployed_versions_resources ||= currently_deployed_version_entities_for_pacticipant_and_instance.collect do | entity |
             entity._link!("self").patch(currentlyDeployed: false)
           end
         end
@@ -75,7 +80,7 @@ module PactBroker
           message = "Recorded #{action} of #{pacticipant_name}"
           message = "#{message} version #{version.number}" if (version && version.number)
           message = "#{message} from #{environment_name} environment"
-          message = "#{message} (target #{target})" if target
+          message = "#{message} (application instance #{application_instance})" if application_instance
           message
         end
 
@@ -92,19 +97,22 @@ module PactBroker
             "No pacticipant with name '#{pacticipant_name}' found."
           else
             if currently_deployed_version_entities_for_pacticipant.any?
-              target_does_not_match_message
+              application_instance_does_not_match_message
             else
               "#{pacticipant_name} is not currently deployed to #{environment_name} environment. Cannot record undeployment."
             end
           end
         end
 
-        def target_does_not_match_message
-          potential_targets = currently_deployed_version_entities_for_pacticipant.collect(&:target).collect { |target| target || "<no target>"}
-          if target
-            "#{pacticipant_name} is not currently deployed to target '#{target}' in #{environment_name} environment. Please specify one of the following targets to record the undeployment from: #{potential_targets.join(", ")}"
+        def application_instance_does_not_match_message
+          potential_application_instances = currently_deployed_version_entities_for_pacticipant.collect{|e| e.applicationInstance || e.target }
+
+          if application_instance
+            omit_text = potential_application_instances.include?(nil) ? "omit the application instance to undeploy from the anonymous instance" : nil
+            specify_text = potential_application_instances.compact.any? ? "specify one of the following application instances to record the undeployment from: #{potential_application_instances.compact.join(", ")}" : nil
+            "#{pacticipant_name} is not currently deployed to application instance '#{application_instance}' in #{environment_name} environment. Please #{[omit_text, specify_text].compact.join(" or ")}."
           else
-            "Please specify one of the following targets to record the undeployment from: #{potential_targets.join(", ")}"
+            "Please specify one of the following application instances to record the undeployment from: #{potential_application_instances.compact.join(", ")}"
           end
         end
 

@@ -8,12 +8,12 @@ RSpec.describe "recording an undeployment", pact: true do
   let(:pacticipant_name) { "Foo" }
   let(:environment_name) { "test" }
   let(:output) { "text" }
-  let(:target) { "customer-1" }
+  let(:application_instance) { "customer-1" }
   let(:params) do
     {
       pacticipant_name: pacticipant_name,
       environment_name: environment_name,
-      target: target
+      application_instance: application_instance
     }
   end
   let(:options) do
@@ -100,7 +100,7 @@ RSpec.describe "recording an undeployment", pact: true do
           _embedded: {
             deployedVersions: [
               {
-                target: target,
+                target: application_instance,
                 _links: {
                   self: {
                     href: Pact.term(pact_broker.mock_service_base_url + deployed_version_placeholder_path, /^http/)
@@ -150,7 +150,7 @@ RSpec.describe "recording an undeployment", pact: true do
 
     it "returns a success message" do
       expect(subject.success).to be true
-      expect(subject.message).to include "Recorded undeployment of Foo version 2 from test environment (target customer-1) in the Pact Broker"
+      expect(subject.message).to include "Recorded undeployment of Foo version 2 from test environment (application instance customer-1) in the Pact Broker"
     end
 
     context "when the output is json" do

@@ -7,11 +7,11 @@ module PactBroker
         let(:params) do
           {
             pacticipant_name: "Foo",
-            target: target,
+            application_instance: application_instance,
             environment_name: "test"
           }
         end
-        let(:target) { "customer-1" }
+        let(:application_instance) { "customer-1" }
         let(:output) { "text" }
         let(:options) { { output: output, verbose: true } }
         let(:pact_broker_base_url) { "http://broker" }
@@ -131,7 +131,7 @@ module PactBroker
         subject { RecordUndeployment.call(params, options, pact_broker_client_options) }
 
         its(:success) { is_expected.to eq true }
-        its(:message) { is_expected.to include "Recorded undeployment of Foo version 2 from test environment (target customer-1) in the Pact Broker" }
+        its(:message) { is_expected.to include "Recorded undeployment of Foo version 2 from test environment (application instance customer-1) in the Pact Broker" }
 
         context "when there is no pb:environments relation in the index" do
           let(:index_body_hash) do
@@ -173,8 +173,8 @@ module PactBroker
         end
 
         context "when a target is provided and there is no deployed version with a matching target" do
-          let(:target) { "wrong" }
-          let(:expected_message) { "Foo is not currently deployed to target 'wrong' in test environment. Please specify one of the following targets to record the undeployment from: customer-1, <no target>" }
+          let(:application_instance) { "wrong" }
+          let(:expected_message) { "Foo is not currently deployed to application instance 'wrong' in test environment. Please omit the application instance to undeploy from the anonymous instance or specify one of the following application instances to record the undeployment from: customer-1." }
 
           its(:success) { is_expected.to be false }
           its(:message) { is_expected.to include expected_message }
@@ -186,12 +186,20 @@ module PactBroker
           end
         end
 
+        context "when a target is provided and there is no deployed version with a matching target and all the application instances are set" do
+          let(:application_instance) { "wrong" }
+          let(:returned_target_2) { "customer-2" }
+          let(:expected_message) { "Foo is not currently deployed to application instance 'wrong' in test environment. Please specify one of the following application instances to record the undeployment from: customer-1, customer-2." }
+
+          its(:message) { is_expected.to include expected_message }
+        end
+
         context "when a target is not provided and there is no deployed verison without a target" do
-          let(:target) { nil }
+          let(:application_instance) { nil }
           let(:returned_target_2) { "customer-2" }
 
           its(:success) { is_expected.to be false }
-          its(:message) { is_expected.to include "Please specify one of the following targets to record the undeployment from: customer-1, customer-2" }
+          its(:message) { is_expected.to include "Please specify one of the following application instances to record the undeployment from: customer-1, customer-2" }
         end
 
         context "when there are no deployed versions for the pacticipant" do

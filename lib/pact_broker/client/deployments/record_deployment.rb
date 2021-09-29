@@ -6,12 +6,12 @@ module PactBroker
       class RecordDeployment < PactBroker::Client::Deployments::RecordRelease
         def initialize(params, options, pact_broker_client_options)
           super
-          @target = params.fetch(:target)
+          @application_instance = params.fetch(:application_instance)
         end
 
         private
 
-        attr_reader :target
+        attr_reader :application_instance
 
         def action
           "deployment"
@@ -22,12 +22,13 @@ module PactBroker
         end
 
         def record_action_request_body
-          { target: target }.compact
+          # for backwards compatibility with old broker
+          { applicationInstance: application_instance, target: application_instance }.compact
         end
 
         def result_text_message
-          if target
-            "#{super} (target #{target})"
+          if application_instance
+            "#{super} (application instance #{application_instance})"
           else
             super
           end

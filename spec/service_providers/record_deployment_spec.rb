@@ -9,13 +9,13 @@ RSpec.describe "recording a deployment", pact: true do
   let(:version_number) { "5556b8149bf8bac76bc30f50a8a2dd4c22c85f30" }
   let(:environment_name) { "test" }
   let(:output) { "text" }
-  let(:target) { "blue" }
+  let(:application_instance) { "blue" }
   let(:params) do
     {
       pacticipant_name: pacticipant_name,
       version_number: version_number,
       environment_name: environment_name,
-      target: target
+      application_instance: application_instance
     }
   end
   let(:options) do
@@ -139,14 +139,15 @@ RSpec.describe "recording a deployment", pact: true do
         path: "/HAL-REL-PLACEHOLDER-PB-RECORD-DEPLOYMENT-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST",
         headers: post_request_headers,
         body: {
-          target: target
+          applicationInstance: application_instance,
+          target: application_instance
         }
       )
       .will_respond_with(
         status: 201,
         headers: pact_broker_response_headers,
         body: {
-          target: target
+          target: application_instance
         }
       )
   end
@@ -160,14 +161,14 @@ RSpec.describe "recording a deployment", pact: true do
 
     it "returns a success message" do
       expect(subject.success).to be true
-      expect(subject.message).to include "Recorded deployment of Foo version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 to test environment (target blue) in the Pact Broker."
+      expect(subject.message).to include "Recorded deployment of Foo version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 to test environment (application instance blue) in the Pact Broker."
     end
 
     context "when the output is json" do
       let(:output) { "json" }
 
       it "returns the JSON payload" do
-        expect(JSON.parse(subject.message)).to eq "target" => target
+        expect(JSON.parse(subject.message)).to eq "target" => application_instance
       end
     end
   end

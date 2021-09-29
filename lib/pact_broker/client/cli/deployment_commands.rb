@@ -14,16 +14,18 @@ module PactBroker
             method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that was deployed."
             method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number that was deployed."
             method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was deployed to."
-            method_option :target, default: nil, required: false, desc: "Optional. The target of the deployment - a logical identifer required to differentiate deployments when there are multiple instances of the same application in an environment."
+            method_option :application_instance, default: nil, required: false, desc: "Optional. The application instance to which the deployment has occurred - a logical identifer required to differentiate deployments when there are multiple instances of the same application in an environment. This field was called 'target' in a beta release."
+            method_option :target, hidden: true, default: nil, required: false, desc: "Renamed to application_instance"
             output_option_json_or_text
             shared_authentication_options
 
             def record_deployment
+              $stderr.puts("WARN: target has been renamed to application-instance") if options.target
               params = {
                 pacticipant_name: options.pacticipant,
                 version_number: options.version,
                 environment_name: options.environment,
-                target: options.target
+                application_instance: options.application_instance || options.target
               }
               execute_deployment_command(params, "RecordDeployment")
             end
@@ -32,15 +34,17 @@ module PactBroker
             long_desc "Note that use of this command is only required if you are permanently removing an application instance from an environment. It is not required if you are deploying over a previous version, as record-deployment will automatically mark the previously deployed version as undeployed for you. See #{RECORD_UNDEPLOYMENT_HELP_URL} for more information."
             method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that was undeployed."
             method_option :environment, required: true, desc: "The name of the environment that the pacticipant version was undeployed from."
+            method_option :application_instance, default: nil, required: false, desc: "Optional. The application instance from which the application is being undeployed - a logical identifer required to differentiate deployments when there are multiple instances of the same application in an environment. This field was called 'target' in a beta release."
             method_option :target, default: nil, required: false, desc: "Optional. The target that the application is being undeployed from - a logical identifer required to differentiate deployments when there are multiple instances of the same application in an environment."
             output_option_json_or_text
             shared_authentication_options
 
             def record_undeployment
+              $stderr.puts("WARN: target has been renamed to application-instance") if options.target
               params = {
                 pacticipant_name: options.pacticipant,
                 environment_name: options.environment,
-                target: options.target
+                application_instance: options.application_instance || options.target
               }
               execute_deployment_command(params, "RecordUndeployment")
             end
