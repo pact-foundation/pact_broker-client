@@ -1,3 +1,10 @@
+<a name="v1.52.0"></a>
+### v1.52.0 (2021-09-29)
+
+#### Features
+
+* rename target to application-instance for record-deployment and record-undeployment (backwards compatible)	 ([53d23eb](/../../commit/53d23eb))
+
 <a name="v1.51.2"></a>
 ### v1.51.2 (2021-09-27)
 
