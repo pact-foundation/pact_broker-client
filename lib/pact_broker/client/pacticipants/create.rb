@@ -38,7 +38,8 @@ module PactBroker
           {
             name: params[:name],
             repositoryUrl: params[:repository_url],
-            displayName: params[:display_name]
+            displayName: params[:display_name],
+            mainBranch: params[:main_branch]
           }.compact
         end
       end

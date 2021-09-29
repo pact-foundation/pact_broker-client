@@ -2,13 +2,14 @@ module PactBroker
   module Client
     module CLI
       module PacticipantCommands
-        PACTICIPANT_PARAM_NAMES = [:name, :display_name, :repository_url]
+        PACTICIPANT_PARAM_NAMES = [:name, :display_name, :main_branch, :repository_url]
 
         def self.included(thor)
           thor.class_eval do
             desc 'create-or-update-pacticipant', 'Create or update pacticipant by name'
             method_option :name, type: :string, required: true, desc: "Pacticipant name"
             method_option :display_name, type: :string, desc: "Display name"
+            method_option :main_branch, type: :string, required: false, desc: "The main development branch of the pacticipant repository"
             method_option :repository_url, type: :string, required: false, desc: "The repository URL of the pacticipant"
             output_option_json_or_text
             shared_authentication_options

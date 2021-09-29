@@ -517,6 +517,8 @@ Options:
               # Pacticipant name
       [--display-name=DISPLAY_NAME]        
               # Display name
+      [--main-branch=MAIN_BRANCH]          
+              # The main development branch of the pacticipant repository
       [--repository-url=REPOSITORY_URL]    
               # The repository URL of the pacticipant
   -o, [--output=OUTPUT]                    
