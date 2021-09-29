@@ -16,7 +16,6 @@ bundle exec bin/pact-broker record-undeployment --pacticipant Foo --environment 
 bundle exec bin/pact-broker record-release --pacticipant Foo --version 2 --environment test
 bundle exec bin/pact-broker record-support-ended --pacticipant Foo --version 2 --environment test
 
-
 bundle exec bin/pact-broker record-deployment --pacticipant Foo --version 2 --environment test
 bundle exec bin/pact-broker record-deployment --pacticipant Foo --version 2 --environment test --application-instance customer-1
 bundle exec bin/pact-broker record-deployment --pacticipant Foo --version 2 --environment test --application-instance customer-1

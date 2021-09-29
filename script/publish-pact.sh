@@ -1,5 +1,6 @@
 export PACT_BROKER_BASE_URL="http://localhost:9292"
 export PACT_BROKER_TOKEN="localhost"
+#export PACT_BROKER_FEATURES=publish_pacts_using_old_api
 
 # bundle exec bin/pact-broker create-or-update-webhook http://localhost:9393 \
 #   --uuid d40f38c3-aaa3-47f5-9161-95c07bc16b14 \
