@@ -2,6 +2,7 @@ require 'pact_broker/client/retry'
 require 'pact_broker/client/hal/authorization_header_redactor'
 require 'net/http'
 require 'json'
+require 'openssl'
 
 module PactBroker
   module Client
@@ -62,13 +63,19 @@ module PactBroker
         def perform_request request, uri
           response = until_truthy_or_max_times(condition: ->(resp) { resp.code.to_i < 500 }) do
             http = Net::HTTP.new(uri.host, uri.port, :ENV)
-            http.set_debug_output(output_stream) if verbose
+            http.set_debug_output(output_stream) if verbose?
             http.use_ssl = (uri.scheme == 'https')
             # Need to manually set the ca_file and ca_path for the pact-ruby-standalone.
             # The env vars seem to be picked up automatically in later Ruby versions.
             # See https://github.com/pact-foundation/pact-ruby-standalone/issues/57
             http.ca_file = ENV['SSL_CERT_FILE'] if ENV['SSL_CERT_FILE'] && ENV['SSL_CERT_FILE'] != ''
             http.ca_path = ENV['SSL_CERT_DIR'] if ENV['SSL_CERT_DIR'] && ENV['SSL_CERT_DIR'] != ''
+            if disable_ssl_verification?
+              if verbose?
+                $stdout.puts("SSL verification is disabled")
+              end
+              http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+            end
             http.start do |http|
               http.request request
             end
@@ -113,6 +120,14 @@ module PactBroker
 
         def output_stream
           AuthorizationHeaderRedactor.new($stdout)
+        end
+
+        def verbose?
+          verbose || ENV["VERBOSE"] == "true"
+        end
+
+        def disable_ssl_verification?
+          ENV['PACT_DISABLE_SSL_VERIFICATION'] == 'true' || ENV['PACT_BROKER_DISABLE_SSL_VERIFICATION'] == 'true'
         end
 
         class Response < SimpleDelegator

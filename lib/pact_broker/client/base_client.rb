@@ -54,6 +54,8 @@ module PactBroker
         self.class.headers('Authorization' => "Bearer #{client_options[:token]}") if client_options[:token]
         self.class.ssl_ca_file(ENV['SSL_CERT_FILE']) if ENV['SSL_CERT_FILE'] && ENV['SSL_CERT_FILE'] != ''
         self.class.ssl_ca_path(ENV['SSL_CERT_DIR']) if ENV['SSL_CERT_DIR'] && ENV['SSL_CERT_DIR'] != ''
+        @default_options = {}
+        @default_options[:verify] = false if (ENV['PACT_DISABLE_SSL_VERIFICATION'] == 'true' || ENV['PACT_BROKER_DISABLE_SSL_VERIFICATION'] == 'true')
       end
 
       def default_request_headers
@@ -102,15 +104,15 @@ module PactBroker
       end
 
       def patch url, options
-        self.class.patch(url, options.merge(body: options[:body].to_json))
+        self.class.patch(url, @default_options.merge(options.merge(body: options[:body].to_json)))
       end
 
-      def put url, *args
-        self.class.put(url, *args)
+      def put url, options = {}, &block
+        self.class.put(url, @default_options.merge(options), &block)
       end
 
-      def get url, *args
-        self.class.get(url, *args)
+      def get url, options = {}, &block
+        self.class.get(url, @default_options.merge(options), &block)
       end
 
       def url_for_relation relation_name, params
