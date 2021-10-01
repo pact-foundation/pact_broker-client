@@ -1,3 +1,11 @@
+<a name="v1.54.0"></a>
+### v1.54.0 (2021-10-01)
+
+#### Features
+
+* disable SSL verification for HAL client and HTTParty client when environment variable PACT_DISABLE_SSL_VERIFICATION=true	 ([470aafa](/../../commit/470aafa))
+* support setting the --main-branch for a pacticipant	 ([1f18e70](/../../commit/1f18e70))
+
 <a name="v1.53.0"></a>
 ### v1.53.0 (2021-09-29)
 
