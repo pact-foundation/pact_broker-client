@@ -37,7 +37,7 @@ jobs:
       - run: |
           rm -rf spec/pacts/*
           bundle exec rspec spec/service_providers/
-          bundle exec rake pact:publish:pactflow
+          VERBOSE=true bundle exec rake pact:publish:pactflow
         env:
           PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_PACT_OSS_TOKEN }}
           PACT_BROKER_FEATURES: ${{ matrix.feature }}
