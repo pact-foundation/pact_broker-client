@@ -1,4 +1,5 @@
-require 'pact_broker/client/tasks'
+require "pact_broker/client/tasks"
+require "pact_broker/client/git"
 
 PactBroker::Client::PublicationTask.new(:localhost) do | task |
   require 'pact_broker/client/version'
@@ -35,4 +36,5 @@ PactBroker::Client::PublicationTask.new(:pactflow) do | task |
   task.consumer_version = version
   task.pact_broker_base_url = "https://pact-oss.pactflow.io"
   task.pact_broker_token = ENV['PACT_BROKER_TOKEN']
+  task.build_url = PactBroker::Client::Git.build_url
 end
