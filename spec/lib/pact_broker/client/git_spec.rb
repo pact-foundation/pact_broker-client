@@ -136,6 +136,7 @@ module PactBroker
 
         context "when BUILDKITE_BUILD_URL is set" do
           before do
+            allow(ENV).to receive(:[]).and_return(nil)
             allow(ENV).to receive(:[]).with("BUILDKITE_BUILD_URL").and_return("http://build")
           end
 
@@ -144,6 +145,7 @@ module PactBroker
 
         context "when the Github Actions env vars are set" do
           before do
+            allow(ENV).to receive(:[]).and_return(nil)
             allow(ENV).to receive(:[]).with("GITHUB_SERVER_URL").and_return("https://github.com")
             allow(ENV).to receive(:[]).with("GITHUB_REPOSITORY").and_return("org/repo")
             allow(ENV).to receive(:[]).with("GITHUB_RUN_ID").and_return("1")
