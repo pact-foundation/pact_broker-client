@@ -25,9 +25,8 @@ module PactBroker
       using PactBroker::Client::HashRefinements
 
       COMMAND = 'git rev-parse --abbrev-ref HEAD'.freeze
-      BRANCH_ENV_VAR_NAMES = %w{BUILDKITE_BRANCH CIRCLE_BRANCH TRAVIS_BRANCH GIT_BRANCH GIT_LOCAL_BRANCH APPVEYOR_REPO_BRANCH CI_COMMIT_REF_NAME BITBUCKET_BRANCH}.freeze
-      COMMIT_ENV_VAR_NAMES = %w{BUILDKITE_COMMIT CIRCLE_SHA1 TRAVIS_COMMIT GIT_COMMIT APPVEYOR_REPO_COMMIT CI_COMMIT_ID BITBUCKET_COMMIT}
-
+      BRANCH_ENV_VAR_NAMES = %w{GITHUB_REF BUILDKITE_BRANCH CIRCLE_BRANCH TRAVIS_BRANCH GIT_BRANCH GIT_LOCAL_BRANCH APPVEYOR_REPO_BRANCH CI_COMMIT_REF_NAME BITBUCKET_BRANCH}.freeze
+      COMMIT_ENV_VAR_NAMES = %w{GITHUB_SHA BUILDKITE_COMMIT CIRCLE_SHA1 TRAVIS_COMMIT GIT_COMMIT APPVEYOR_REPO_COMMIT CI_COMMIT_ID BITBUCKET_COMMIT}
       BUILD_URL_ENV_VAR_NAMES = %w{BUILDKITE_BUILD_URL CIRCLE_BUILD_URL TRAVIS_BUILD_WEB_URL BUILD_URL }
 
       def self.commit
@@ -38,6 +37,10 @@ module PactBroker
         find_branch_from_known_env_vars || find_branch_from_env_var_ending_with_branch || branch_from_git_command(options[:raise_error])
       end
 
+      def self.build_url
+        github_build_url || BUILD_URL_ENV_VAR_NAMES.collect{ | name | value_from_env_var(name) }.compact.first
+      end
+
       # private
 
       def self.find_commit_from_env_vars
@@ -45,7 +48,8 @@ module PactBroker
       end
 
       def self.find_branch_from_known_env_vars
-        BRANCH_ENV_VAR_NAMES.collect { |env_var_name| value_from_env_var(env_var_name) }.compact.first
+        val = BRANCH_ENV_VAR_NAMES.collect { |env_var_name| value_from_env_var(env_var_name) }.compact.first
+        val.gsub(%r{^refs/heads/}, "") if val
       end
 
       def self.find_branch_from_env_var_ending_with_branch
@@ -102,6 +106,13 @@ module PactBroker
           raise PactBroker::Client::Error, "Could not determine current git branch using command `#{COMMAND}`. #{e.class} #{e.message}"
         else
           return []
+        end
+      end
+
+      def self.github_build_url
+        parts = %w{GITHUB_SERVER_URL GITHUB_REPOSITORY GITHUB_RUN_ID}.collect{ | name | value_from_env_var(name) }
+        if parts.all?
+          [parts[0], parts[1], "actions", "runs", parts[2]].join("/")
         end
       end
     end

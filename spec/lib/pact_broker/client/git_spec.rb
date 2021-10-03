@@ -35,6 +35,16 @@ module PactBroker
           end
         end
 
+        context "when the branch starts with refs/heads/" do
+          before do
+            allow(ENV).to receive(:[]).with("GITHUB_REF").and_return("refs/heads/feature-x")
+          end
+
+          it "trims off the refs/heads/" do
+            expect(subject).to eq "feature-x"
+          end
+        end
+
         context "when there is one environment variable ending with _BRANCH" do
           before do
             allow(ENV).to receive(:keys).and_return(%w{FOO_BRANCH BAR_BRANCH BLAH})
@@ -106,6 +116,40 @@ module PactBroker
           end
 
           include_examples "when raise_error is false"
+        end
+      end
+
+      describe ".build_url" do
+        before do
+          allow(ENV).to receive(:[]).and_call_original
+        end
+
+        subject { Git.build_url }
+
+        context "when nothing is set" do
+          before do
+            allow(ENV).to receive(:[]).and_return(nil)
+          end
+
+          it { is_expected.to eq nil }
+        end
+
+        context "when BUILDKITE_BUILD_URL is set" do
+          before do
+            allow(ENV).to receive(:[]).with("BUILDKITE_BUILD_URL").and_return("http://build")
+          end
+
+          it { is_expected.to eq "http://build" }
+        end
+
+        context "when the Github Actions env vars are set" do
+          before do
+            allow(ENV).to receive(:[]).with("GITHUB_SERVER_URL").and_return("https://github.com")
+            allow(ENV).to receive(:[]).with("GITHUB_REPOSITORY").and_return("org/repo")
+            allow(ENV).to receive(:[]).with("GITHUB_RUN_ID").and_return("1")
+          end
+
+          it { is_expected.to eq "https://github.com/org/repo/actions/runs/1" }
         end
       end
     end
