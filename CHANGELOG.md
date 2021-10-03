@@ -1,3 +1,10 @@
+<a name="v1.55.0"></a>
+### v1.55.0 (2021-10-03)
+
+#### Features
+
+* support Github Actions environment variables for --tag-with-git-branch	 ([2b8dac5](/../../commit/2b8dac5))
+
 <a name="v1.54.0"></a>
 ### v1.54.0 (2021-10-01)
 
