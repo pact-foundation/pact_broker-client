@@ -64,9 +64,13 @@
 
 * [A request to create a webhook with a JSON body for a consumer and provider](#a_request_to_create_a_webhook_with_a_JSON_body_for_a_consumer_and_provider_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker) given the 'Pricing Service' and 'Condor' already exist in the pact-broker
 
+* [A request to create a webhook with a JSON body for a consumer specified by a label](#a_request_to_create_a_webhook_with_a_JSON_body_for_a_consumer_specified_by_a_label)
+
 * [A request to create a webhook with a JSON body for a consumer that does not exist](#a_request_to_create_a_webhook_with_a_JSON_body_for_a_consumer_that_does_not_exist)
 
 * [A request to create a webhook with a JSON body for a provider](#a_request_to_create_a_webhook_with_a_JSON_body_for_a_provider_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker) given the 'Pricing Service' and 'Condor' already exist in the pact-broker
+
+* [A request to create a webhook with a JSON body for a provider specified by a label](#a_request_to_create_a_webhook_with_a_JSON_body_for_a_provider_specified_by_a_label)
 
 * [A request to create a webhook with a non-JSON body for a consumer and provider](#a_request_to_create_a_webhook_with_a_non-JSON_body_for_a_consumer_and_provider_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker) given the 'Pricing Service' and 'Condor' already exist in the pact-broker
 
@@ -1089,6 +1093,16 @@ Pact Broker will respond with:
   },
   "body": {
     "description": "a webhook",
+    "request": {
+      "body": {
+        "some": "body"
+      }
+    },
+    "events": [
+      {
+        "name": "contract_content_changed"
+      }
+    ],
     "_links": {
       "self": {
         "href": "http://localhost:1234/some-url",
@@ -1222,6 +1236,16 @@ Pact Broker will respond with:
   },
   "body": {
     "description": "a webhook",
+    "request": {
+      "body": {
+        "some": "body"
+      }
+    },
+    "events": [
+      {
+        "name": "contract_content_changed"
+      }
+    ],
     "_links": {
       "self": {
         "href": "http://localhost:1234/some-url",
@@ -1276,6 +1300,16 @@ Pact Broker will respond with:
   },
   "body": {
     "description": "a webhook",
+    "request": {
+      "body": {
+        "some": "body"
+      }
+    },
+    "events": [
+      {
+        "name": "contract_content_changed"
+      }
+    ],
     "_links": {
       "self": {
         "href": "http://localhost:1234/some-url",
@@ -1327,6 +1361,80 @@ Pact Broker will respond with:
   },
   "body": {
     "description": "a webhook",
+    "request": {
+      "body": {
+        "some": "body"
+      }
+    },
+    "events": [
+      {
+        "name": "contract_content_changed"
+      }
+    ],
+    "_links": {
+      "self": {
+        "href": "http://localhost:1234/some-url",
+        "title": "A title"
+      }
+    }
+  }
+}
+```
+<a name="a_request_to_create_a_webhook_with_a_JSON_body_for_a_consumer_specified_by_a_label"></a>
+Upon receiving **a request to create a webhook with a JSON body for a consumer specified by a label** from Pact Broker Client, with
+```json
+{
+  "method": "post",
+  "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/hal+json"
+  },
+  "body": {
+    "description": "a webhook",
+    "events": [
+      {
+        "name": "contract_content_changed"
+      }
+    ],
+    "request": {
+      "url": "https://webhook",
+      "method": "POST",
+      "headers": {
+        "Foo": "bar",
+        "Bar": "foo"
+      },
+      "body": {
+        "some": "body"
+      },
+      "username": "username",
+      "password": "password"
+    },
+    "consumer": {
+      "label": "consumer_label"
+    }
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 201,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "description": "a webhook",
+    "request": {
+      "body": {
+        "some": "body"
+      }
+    },
+    "events": [
+      {
+        "name": "contract_content_changed"
+      }
+    ],
     "_links": {
       "self": {
         "href": "http://localhost:1234/some-url",
@@ -1433,6 +1541,80 @@ Pact Broker will respond with:
   },
   "body": {
     "description": "a webhook",
+    "request": {
+      "body": {
+        "some": "body"
+      }
+    },
+    "events": [
+      {
+        "name": "contract_content_changed"
+      }
+    ],
+    "_links": {
+      "self": {
+        "href": "http://localhost:1234/some-url",
+        "title": "A title"
+      }
+    }
+  }
+}
+```
+<a name="a_request_to_create_a_webhook_with_a_JSON_body_for_a_provider_specified_by_a_label"></a>
+Upon receiving **a request to create a webhook with a JSON body for a provider specified by a label** from Pact Broker Client, with
+```json
+{
+  "method": "post",
+  "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/hal+json"
+  },
+  "body": {
+    "description": "a webhook",
+    "events": [
+      {
+        "name": "contract_content_changed"
+      }
+    ],
+    "request": {
+      "url": "https://webhook",
+      "method": "POST",
+      "headers": {
+        "Foo": "bar",
+        "Bar": "foo"
+      },
+      "body": {
+        "some": "body"
+      },
+      "username": "username",
+      "password": "password"
+    },
+    "provider": {
+      "label": "provider_label"
+    }
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 201,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "description": "a webhook",
+    "request": {
+      "body": {
+        "some": "body"
+      }
+    },
+    "events": [
+      {
+        "name": "contract_content_changed"
+      }
+    ],
     "_links": {
       "self": {
         "href": "http://localhost:1234/some-url",
@@ -1482,6 +1664,14 @@ Pact Broker will respond with:
   },
   "body": {
     "description": "a webhook",
+    "request": {
+      "body": "<xml></xml>"
+    },
+    "events": [
+      {
+        "name": "contract_content_changed"
+      }
+    ],
     "_links": {
       "self": {
         "href": "http://localhost:1234/some-url",
@@ -1545,6 +1735,28 @@ Pact Broker will respond with:
   },
   "body": {
     "description": "a webhook",
+    "request": {
+      "body": {
+        "some": "body"
+      }
+    },
+    "events": [
+      {
+        "name": "contract_content_changed"
+      },
+      {
+        "name": "contract_published"
+      },
+      {
+        "name": "provider_verification_published"
+      },
+      {
+        "name": "provider_verification_succeeded"
+      },
+      {
+        "name": "provider_verification_failed"
+      }
+    ],
     "_links": {
       "self": {
         "href": "http://localhost:1234/some-url",
@@ -2550,6 +2762,16 @@ Pact Broker will respond with:
   },
   "body": {
     "description": "a webhook",
+    "request": {
+      "body": {
+        "some": "body"
+      }
+    },
+    "events": [
+      {
+        "name": "contract_content_changed"
+      }
+    ],
     "_links": {
       "self": {
         "href": "http://localhost:1234/some-url",

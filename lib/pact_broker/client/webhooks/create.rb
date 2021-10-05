@@ -81,10 +81,14 @@ module PactBroker
 
           if params.consumer
             body[:consumer] = { name: params.consumer }
+          elsif params.consumer_label
+            body[:consumer] = { label: params.consumer_label }
           end
 
           if params.provider
             body[:provider] = { name: params.provider }
+          elsif params.provider_label
+            body[:provider] = { label: params.provider_label }
           end
 
           if params.team_uuid

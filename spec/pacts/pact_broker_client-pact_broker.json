@@ -1995,6 +1995,16 @@
         },
         "body": {
           "description": "a webhook",
+          "request": {
+            "body": {
+              "some": "body"
+            }
+          },
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
           "_links": {
             "self": {
               "href": "http://localhost:1234/some-url",
@@ -2067,6 +2077,28 @@
         },
         "body": {
           "description": "a webhook",
+          "request": {
+            "body": {
+              "some": "body"
+            }
+          },
+          "events": [
+            {
+              "name": "contract_content_changed"
+            },
+            {
+              "name": "contract_published"
+            },
+            {
+              "name": "provider_verification_published"
+            },
+            {
+              "name": "provider_verification_succeeded"
+            },
+            {
+              "name": "provider_verification_failed"
+            }
+          ],
           "_links": {
             "self": {
               "href": "http://localhost:1234/some-url",
@@ -2125,6 +2157,14 @@
         },
         "body": {
           "description": "a webhook",
+          "request": {
+            "body": "<xml></xml>"
+          },
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
           "_links": {
             "self": {
               "href": "http://localhost:1234/some-url",
@@ -2323,6 +2363,88 @@
         },
         "body": {
           "description": "a webhook",
+          "request": {
+            "body": {
+              "some": "body"
+            }
+          },
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/some-url",
+              "title": "A title"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body.description": {
+            "match": "type"
+          },
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          },
+          "$.body._links.self.title": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to create a webhook with a JSON body for a consumer specified by a label",
+      "request": {
+        "method": "post",
+        "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "description": "a webhook",
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
+          "request": {
+            "url": "https://webhook",
+            "method": "POST",
+            "headers": {
+              "Foo": "bar",
+              "Bar": "foo"
+            },
+            "body": {
+              "some": "body"
+            },
+            "username": "username",
+            "password": "password"
+          },
+          "consumer": {
+            "label": "consumer_label"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "description": "a webhook",
+          "request": {
+            "body": {
+              "some": "body"
+            }
+          },
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
           "_links": {
             "self": {
               "href": "http://localhost:1234/some-url",
@@ -2442,6 +2564,88 @@
         },
         "body": {
           "description": "a webhook",
+          "request": {
+            "body": {
+              "some": "body"
+            }
+          },
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/some-url",
+              "title": "A title"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body.description": {
+            "match": "type"
+          },
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*"
+          },
+          "$.body._links.self.title": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to create a webhook with a JSON body for a provider specified by a label",
+      "request": {
+        "method": "post",
+        "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "description": "a webhook",
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
+          "request": {
+            "url": "https://webhook",
+            "method": "POST",
+            "headers": {
+              "Foo": "bar",
+              "Bar": "foo"
+            },
+            "body": {
+              "some": "body"
+            },
+            "username": "username",
+            "password": "password"
+          },
+          "provider": {
+            "label": "provider_label"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "description": "a webhook",
+          "request": {
+            "body": {
+              "some": "body"
+            }
+          },
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
           "_links": {
             "self": {
               "href": "http://localhost:1234/some-url",
@@ -2501,6 +2705,16 @@
         },
         "body": {
           "description": "a webhook",
+          "request": {
+            "body": {
+              "some": "body"
+            }
+          },
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
           "_links": {
             "self": {
               "href": "http://localhost:1234/some-url",
@@ -2597,6 +2811,16 @@
         },
         "body": {
           "description": "a webhook",
+          "request": {
+            "body": {
+              "some": "body"
+            }
+          },
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
           "_links": {
             "self": {
               "href": "http://localhost:1234/some-url",
@@ -2663,6 +2887,16 @@
         },
         "body": {
           "description": "a webhook",
+          "request": {
+            "body": {
+              "some": "body"
+            }
+          },
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
           "_links": {
             "self": {
               "href": "http://localhost:1234/some-url",

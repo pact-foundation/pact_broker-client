@@ -54,6 +54,14 @@ RSpec.describe "creating a webhook", pact: true do
       headers: pact_broker_response_headers,
       body: {
         description: Pact.like("a webhook"),
+        request: {
+          body: {
+            some: "body"
+          }
+        },
+        events: [
+          name: "contract_content_changed"
+        ],
         _links: {
           self: {
             href: Pact.term('http://localhost:1234/some-url', %r{http://.*}),
@@ -92,6 +100,7 @@ RSpec.describe "creating a webhook", pact: true do
     before do
       params.merge!(events: event_names)
       request_body.merge!("events" => event_names.map{ |event_name| { "name" => event_name } })
+      success_response[:body].merge!(events: event_names.map{ |event_name| { "name" => event_name } })
 
       pact_broker
         .given("the 'Pricing Service' and 'Condor' already exist in the pact-broker")
@@ -112,6 +121,7 @@ RSpec.describe "creating a webhook", pact: true do
   context "when a valid webhook with an XML body is submitted" do
     before do
       request_body["request"]["body"] = body
+      success_response[:body][:request][:body] = body
 
       pact_broker
         .given("the 'Pricing Service' and 'Condor' already exist in the pact-broker")
@@ -207,6 +217,30 @@ RSpec.describe "creating a webhook", pact: true do
     end
   end
 
+  context "when consumer is specified using a label" do
+    before do
+      params.delete(:consumer)
+      params.delete(:provider)
+      params.merge!(consumer_label: "consumer_label")
+      request_body["consumer"] = { "label" => "consumer_label" }
+      mock_pact_broker_index(self)
+
+      pact_broker
+        .upon_receiving("a request to create a webhook with a JSON body for a consumer specified by a label")
+        .with(
+          method: :post,
+          path: placeholder_path('pb:webhooks'),
+          headers: post_request_headers,
+          body: request_body)
+        .will_respond_with(success_response)
+    end
+
+    it "returns a CommandResult with success = true" do
+      expect(subject.success).to be true
+      expect(subject.message).to eq "Webhook \"a webhook\" created"
+    end
+  end
+
   context "when only a consumer is specified and it does not exist" do
     before do
       params.delete(:provider)
@@ -254,6 +288,30 @@ RSpec.describe "creating a webhook", pact: true do
 
     it "returns a CommandResult with success = true" do
       expect(subject.success).to be true
+    end
+  end
+
+  context "when provider is specified using a label" do
+    before do
+      params.delete(:consumer)
+      params.delete(:provider)
+      params.merge!(provider_label: "provider_label")
+      request_body["provider"] = { "label" => "provider_label" }
+      mock_pact_broker_index(self)
+
+      pact_broker
+        .upon_receiving("a request to create a webhook with a JSON body for a provider specified by a label")
+        .with(
+          method: :post,
+          path: placeholder_path('pb:webhooks'),
+          headers: post_request_headers,
+          body: request_body)
+        .will_respond_with(success_response)
+    end
+
+    it "returns a CommandResult with success = true" do
+      expect(subject.success).to be true
+      expect(subject.message).to eq "Webhook \"a webhook\" created"
     end
   end
 
