@@ -49,7 +49,9 @@ module PactBroker
               password: "password",
               body: "data",
               consumer: "consumer",
+              consumer_label: nil,
               provider: "provider",
+              provider_label: nil,
               events: ["contract_content_changed"],
               team_uuid: "1234"
             }.tap { |it| Pact::Fixture.add_fixture(:create_webhook_params, it) }
@@ -222,6 +224,59 @@ module PactBroker
               it "raises a WebhookCreationError which does not show an ugly stack trace" do
                 expect { subject }.to raise_error(WebhookCreationError, /foo/)
               end
+            end
+
+          end
+
+          context "when both consumer name and label options are specified" do
+            before do
+              options_hash[:consumer_label] = "consumer_label"
+              broker.options = OpenStruct.new(options_hash)
+            end
+
+            it "raises a WebhookCreationError" do
+              expect { subject }.to raise_error(
+                WebhookCreationError,
+                "Consumer name (--consumer) and label (--consumer_label) options are mutually exclusive"
+              )
+            end
+          end
+
+          context "when both provider name and label options are specified" do
+            before do
+              options_hash[:provider_label] = "provider_label"
+              broker.options = OpenStruct.new(options_hash)
+            end
+
+            it "raises a WebhookCreationError" do
+              expect { subject }.to raise_error(
+                WebhookCreationError,
+                "Provider name (--provider) and label (--provider_label) options are mutually exclusive"
+              )
+            end
+          end
+
+          context "when participant labels are specified" do
+            before do
+              options_hash.delete(:consumer)
+              options_hash.delete(:provider)
+              options_hash.merge!(consumer_label: 'consumer_label', provider_label: 'provider_label')
+              expected_params.merge!(
+                consumer: nil,
+                consumer_label: 'consumer_label',
+                provider: nil,
+                provider_label: 'provider_label'
+              )
+
+              broker.options = OpenStruct.new(options_hash)
+            end
+
+            it "calls PactBroker::Client::Webhooks::Create with participant labels in params" do
+              expect(PactBroker::Client::Webhooks::Create).to receive(:call) do | params, _, _ |
+                expect(params).to eq expected_params
+                command_result
+              end
+              subject
             end
           end
         end

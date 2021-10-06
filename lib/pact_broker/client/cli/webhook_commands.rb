@@ -15,7 +15,9 @@ module PactBroker
                 method_option :data, aliases: "-d", desc: "Webhook payload (file or string)"
                 method_option :user, aliases: "-u", desc: "Webhook basic auth username and password eg. username:password"
                 method_option :consumer, desc: "Consumer name"
+                method_option :consumer_label, desc: "Consumer label, mutually exclusive with consumer name"
                 method_option :provider, desc: "Provider name"
+                method_option :provider_label, desc: "Provider label, mutually exclusive with provider name"
                 method_option :description, desc: "Webhook description"
                 method_option :contract_content_changed, type: :boolean, desc: "Trigger this webhook when the pact content changes"
                 method_option :contract_published, type: :boolean, desc: "Trigger this webhook when a pact is published"
@@ -70,6 +72,7 @@ module PactBroker
               end
 
               def parse_webhook_options(webhook_url)
+                validate_mutual_exclusiveness_of_participant_name_and_label_options
                 events = parse_webhook_events
 
                 # TODO update for contract_requiring_verification_published when released
@@ -102,7 +105,9 @@ module PactBroker
                   password: password,
                   body: body,
                   consumer: options.consumer,
+                  consumer_label: options.consumer_label,
                   provider: options.provider,
+                  provider_label: options.provider_label,
                   events: events,
                   team_uuid: options.team_uuid
                 }
@@ -117,6 +122,16 @@ module PactBroker
                 exit(1) unless result.success
               rescue PactBroker::Client::Error => e
                 raise WebhookCreationError, "#{e.class} - #{e.message}"
+              end
+
+              def validate_mutual_exclusiveness_of_participant_name_and_label_options
+                if options.consumer && options.consumer_label
+                  raise WebhookCreationError.new("Consumer name (--consumer) and label (--consumer_label) options are mutually exclusive")
+                end
+
+                if options.provider && options.provider_label
+                  raise WebhookCreationError.new("Provider name (--provider) and label (--provider_label) options are mutually exclusive")
+                end
               end
             end
           end
