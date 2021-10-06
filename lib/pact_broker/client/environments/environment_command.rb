@@ -39,7 +39,7 @@ module PactBroker
           @existing_environment_params ||= existing_environment_resource!
             .response
             .body
-            .except("uuid", "_links", "createdAt", "updatedAt")
+            .except("uuid", "_links", "_embedded", "createdAt", "updatedAt")
         end
 
         def contacts
