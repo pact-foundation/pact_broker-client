@@ -1,3 +1,10 @@
+<a name="v1.56.0"></a>
+### v1.56.0 (2021-10-06)
+
+#### Features
+
+* add pacticipant label options to webhook create/update commands (#96)	 ([710293f](/../../commit/710293f))
+
 <a name="v1.55.0"></a>
 ### v1.55.0 (2021-10-03)
 
