@@ -5,6 +5,10 @@ require 'pact_broker/client/hal/http_client'
 module PactBroker::Client
   module Hal
     describe Link do
+      before do
+        allow(response).to receive(:header).with("Content-Type").and_return(content_type)
+      end
+
       let(:http_client) do
         instance_double('PactBroker::Client::Hal::HttpClient', post: response)
       end
@@ -32,6 +36,8 @@ module PactBroker::Client
           'some' => 'body'
         }
       end
+
+      let(:content_type) { nil }
 
       subject { Link.new(attrs, http_client) }
 
@@ -66,6 +72,15 @@ module PactBroker::Client
           it "creates an ErrorEntity" do
             expect(PactBroker::Client::Hal::ErrorEntity).to receive(:new).with("http://foo/{bar}", response_body.to_json, http_client, response)
             do_run
+          end
+
+          context "when a JSON error is returned" do
+            let(:content_type) { "application/json" }
+
+            it "parses the response body" do
+              expect(PactBroker::Client::Hal::ErrorEntity).to receive(:new).with("http://foo/{bar}", response_body, http_client, response)
+              do_run
+            end
           end
         end
       end

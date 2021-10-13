@@ -86,11 +86,16 @@ module PactBroker
         private
 
         def wrap_response(href, http_response)
-          require 'pact_broker/client/hal/entity' # avoid circular reference
+          require "pact_broker/client/hal/entity" # avoid circular reference
           if http_response.success?
             Entity.new(href, http_response.body, @http_client, http_response)
           else
-            ErrorEntity.new(href, http_response.raw_body, @http_client, http_response)
+            body =  begin
+                      http_response.header("Content-Type") && http_response.header("Content-Type").include?("json") ? http_response.body : http_response.raw_body
+                    rescue
+                      http_response.raw_body
+                    end
+            ErrorEntity.new(href, body, @http_client, http_response)
           end
         end
 

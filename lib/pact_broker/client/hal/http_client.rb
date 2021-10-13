@@ -144,6 +144,10 @@ module PactBroker
             __getobj__().to_hash
           end
 
+          def header(name)
+            __getobj__()[name]
+          end
+
           def raw_body
             __getobj__().body
           end

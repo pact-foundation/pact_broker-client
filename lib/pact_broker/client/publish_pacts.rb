@@ -86,7 +86,11 @@ module PactBroker
               "Successfully published pacts"
             end
           else
-            ::Term::ANSIColor.red(response_entity.response.body.to_s)
+            if response_entity.notices
+              PactBroker::Client::ColorizeNotices.call(response_entity.notices.collect{ |n| OpenStruct.new(n) } )
+            else
+              ::Term::ANSIColor.red(response_entity.response.raw_body)
+            end
           end
         end.join("\n")
       end

@@ -141,9 +141,9 @@ module PactBroker
         end
 
         def method_missing(method_name, *args, &block)
-          if @data.key?(method_name.to_s)
+          if @data.respond_to?(:key?) && @data.key?(method_name.to_s)
             @data[method_name.to_s]
-          elsif @links.key?(method_name)
+          elsif @links.respond_to?(:key?) && @links.key?(method_name)
             Link.new(@links[method_name], @client).run(*args)
           else
             nil
