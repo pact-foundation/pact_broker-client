@@ -5,6 +5,7 @@ module PactBroker
     module Environments
       class EnvironmentCommand < PactBroker::Client::BaseCommand
         NOT_SUPPORTED_MESSAGE = "This version of the Pact Broker does not support environments. Please upgrade to version 2.80.0 or later."
+        PACTFLOW_NOT_SUPPORTED_MESSAGE = "This version of Pactflow does not support environments or you do not have the required permission to read them. Please upgrade to the latest version if using Pactflow On-Premises and ensure the user has the environment read permission."
 
         private
 
@@ -57,7 +58,11 @@ module PactBroker
 
         def check_if_command_supported
           unless index_resource.can?("pb:environments")
-            raise PactBroker::Client::Error.new(NOT_SUPPORTED_MESSAGE)
+            if is_pactflow?
+              raise PactBroker::Client::Error.new(PACTFLOW_NOT_SUPPORTED_MESSAGE)
+            else
+              raise PactBroker::Client::Error.new(NOT_SUPPORTED_MESSAGE)
+            end
           end
         end
       end

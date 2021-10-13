@@ -44,8 +44,9 @@ module PactBroker
           let(:record_deployment_body_hash) do
             { "some" => "response" }
           end
+          let(:index_headers) { { "Content-Type" => "application/hal+json" } }
           let!(:index_request) do
-            stub_request(:get, broker_base_url).to_return(status: 200, body: index_body_hash.to_json, headers: { "Content-Type" => "application/hal+json" }  )
+            stub_request(:get, broker_base_url).to_return(status: 200, body: index_body_hash.to_json, headers: index_headers  )
           end
           let!(:version_request) do
             stub_request(:get, broker_base_url + "/pacticipants/Foo/versions/1").to_return(status: 200, body: version_body_hash.to_json, headers: { "Content-Type" => "application/hal+json" }  )
@@ -89,9 +90,19 @@ module PactBroker
                 "_links" => {}
               }
             end
+
             it "returns an error response" do
               expect(subject.success).to be false
               expect(subject.message).to include "does not support"
+            end
+
+            context "when the server is Pactflow" do
+              let(:index_headers) { { "Content-Type" => "application/hal+json", "Pactflow-Something" => "foo" } }
+
+              it "returns an error response" do
+                expect(subject.message).to include "permission"
+                expect(subject.message).to include "does not support"
+              end
             end
           end
 
