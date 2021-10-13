@@ -174,7 +174,7 @@ module PactBroker
 
         context "when a target is provided and there is no deployed version with a matching target" do
           let(:application_instance) { "wrong" }
-          let(:expected_message) { "Foo is not currently deployed to application instance 'wrong' in test environment. Please omit the application instance to undeploy from the anonymous instance or specify one of the following application instances to record the undeployment from: customer-1." }
+          let(:expected_message) { "Foo is not currently deployed to application instance 'wrong' in test environment. Please omit the application instance or specify one of the following application instances to record the undeployment from: customer-1." }
 
           its(:success) { is_expected.to be false }
           its(:message) { is_expected.to include expected_message }

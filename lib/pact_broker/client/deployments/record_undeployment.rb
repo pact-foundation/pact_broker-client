@@ -108,7 +108,7 @@ module PactBroker
           potential_application_instances = currently_deployed_version_entities_for_pacticipant.collect{|e| e.applicationInstance || e.target }
 
           if application_instance
-            omit_text = potential_application_instances.include?(nil) ? "omit the application instance to undeploy from the anonymous instance" : nil
+            omit_text = potential_application_instances.include?(nil) ? "omit the application instance" : nil
             specify_text = potential_application_instances.compact.any? ? "specify one of the following application instances to record the undeployment from: #{potential_application_instances.compact.join(", ")}" : nil
             "#{pacticipant_name} is not currently deployed to application instance '#{application_instance}' in #{environment_name} environment. Please #{[omit_text, specify_text].compact.join(" or ")}."
           else
