@@ -1,3 +1,12 @@
+<a name="v1.57.0"></a>
+### v1.57.0 (2021-11-05)
+
+#### Features
+
+* support the --branch option in the version selectors for can-i-deploy	 ([dba8ec4](/../../commit/dba8ec4))
+* show more helpful error message if pb:environments not available for pactflow	 ([1bf38e3](/../../commit/1bf38e3))
+* print out notices if returned from publish pacts request	 ([86caf7e](/../../commit/86caf7e))
+
 <a name="v1.56.0"></a>
 ### v1.56.0 (2021-10-06)
 
