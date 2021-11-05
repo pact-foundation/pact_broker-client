@@ -31,6 +31,10 @@ module PactBroker
               when "--latest", "-l"
                 selectors << { pacticipant: nil } if selectors.empty?
                 selectors.last[:tag] = word
+              when "--branch"
+                selectors << { pacticipant: nil } if selectors.empty?
+                selectors.last[:branch] = word
+                selectors.last[:latest] = true
               when "--all"
                 selectors << { pacticipant: nil } if selectors.empty?
                 selectors.last[:tag] = word

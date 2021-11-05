@@ -13,6 +13,7 @@ module PactBroker
             method_option :ignore, required: false, desc: "The pacticipant name to ignore. Use once for each pacticipant being ignored. A specific version can be ignored by also specifying a --version after the pacticipant name option."
             method_option :latest, required: false, aliases: "-l", banner: "[TAG]", desc: "Use the latest pacticipant version. Optionally specify a TAG to use the latest version with the specified tag."
             method_option :to_environment, required: false, banner: "ENVIRONMENT", desc: "The environment into which the pacticipant(s) are to be deployed", default: nil
+            method_option :branch, required: false, desc: "The branch of the version for which you want to check the verification results", default: nil
             method_option :to, required: false, banner: "TAG", desc: "The tag that represents the branch or environment of the integrated applications for which you want to check the verification result status.", default: nil
             method_option :output, aliases: "-o", desc: "json or table", default: "table"
             method_option :retry_while_unknown, banner: "TIMES", type: :numeric, default: 0, required: false, desc: "The number of times to retry while there is an unknown verification result (ie. the provider verification is likely still running)"
@@ -77,8 +78,8 @@ module PactBroker
               end
 
               def validate_can_i_deploy_selectors selectors
-                pacticipants_without_versions = selectors.select{ |s| s[:version].nil? && s[:latest].nil? && s[:tag].nil? }.collect{ |s| s[:pacticipant] }
-                raise ::Thor::RequiredArgumentMissingError, "The version must be specified using `--version VERSION`, `--latest`, `--latest TAG`, or `--all TAG` for pacticipant #{pacticipants_without_versions.join(", ")}" if pacticipants_without_versions.any?
+                pacticipants_without_versions = selectors.select{ |s| s[:version].nil? && s[:latest].nil? && s[:tag].nil? && s[:branch].nil? }.collect{ |s| s[:pacticipant] }
+                raise ::Thor::RequiredArgumentMissingError, "The version must be specified using `--version VERSION`, `--branch BRANCH` `--latest`, `--latest TAG`, or `--all TAG` for pacticipant #{pacticipants_without_versions.join(", ")}" if pacticipants_without_versions.any?
               end
             end
           end
