@@ -20,7 +20,6 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby_version }}
       - run: "bundle install"
-        continue-on-error: true
       - if: failure()
         run: cat /opt/hostedtoolcache/Ruby/2.2.10/x64/lib/ruby/gems/2.2.0/extensions/x86_64-linux/2.2.0/approvals-0.0.25/gem_make.out && exit 1
       - run: "bundle exec rake"
