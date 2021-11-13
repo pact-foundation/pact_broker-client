@@ -1,3 +1,10 @@
+<a name="v1.58.0"></a>
+### v1.58.0 (2021-11-13)
+
+#### Features
+
+* remove feature toggle for creating contract_requiring_verification_published webhooks	 ([6eff6d1](/../../commit/6eff6d1))
+
 <a name="v1.57.0"></a>
 ### v1.57.0 (2021-11-05)
 
