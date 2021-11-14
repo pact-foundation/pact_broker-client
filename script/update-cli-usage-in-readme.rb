@@ -137,8 +137,12 @@ def reformat_docs(generated_thor_docs)
     else
       lines
     end
-    # line
-  end.flatten.join("\n").gsub("/go/", "/").gsub(File.basename(__FILE__), "pact-broker")
+  end
+    .flatten
+    .collect { | line | line.gsub(/\s+$/, "") }
+    .join("\n")
+    .gsub("/go/", "/")
+    .gsub(File.basename(__FILE__), "pact-broker")
 end
 
 def update_readme(usage_docs)
