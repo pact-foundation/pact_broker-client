@@ -52,37 +52,37 @@ Usage:
   pact-broker publish PACT_DIRS_OR_FILES ... -a, --consumer-app-version=CONSUMER_APP_VERSION -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-  -a, --consumer-app-version=CONSUMER_APP_VERSION                                
+  -a, --consumer-app-version=CONSUMER_APP_VERSION
               # The consumer application version
-  -h, [--branch=BRANCH]                                                          
+  -h, [--branch=BRANCH]
               # Repository branch of the consumer version
-      [--auto-detect-version-properties], [--no-auto-detect-version-properties]  
+      [--auto-detect-version-properties], [--no-auto-detect-version-properties]
               # Automatically detect the repository branch from known CI
                 environment variables or git CLI.
-  -t, [--tag=TAG]                                                                
+  -t, [--tag=TAG]
               # Tag name for consumer version. Can be specified multiple
                 times.
-  -g, [--tag-with-git-branch], [--no-tag-with-git-branch]                        
+  -g, [--tag-with-git-branch], [--no-tag-with-git-branch]
               # Tag consumer version with the name of the current git branch.
                 Default: false
-      [--build-url=BUILD_URL]                                                    
+      [--build-url=BUILD_URL]
               # The build URL that created the pact
-      [--merge], [--no-merge]                                                    
+      [--merge], [--no-merge]
               # If a pact already exists for this consumer version and
                 provider, merge the contents. Useful when running Pact tests
                 concurrently on different build nodes.
-  -o, [--output=OUTPUT]                                                          
+  -o, [--output=OUTPUT]
               # json or text
               # Default: text
-  -b, --broker-base-url=BROKER_BASE_URL                                          
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]                                        
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]                                        
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]                                              
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]                                                
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -95,17 +95,17 @@ Usage:
   pact-broker list-latest-pact-versions -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-  -b, --broker-base-url=BROKER_BASE_URL    
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]  
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]  
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]        
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]          
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
-  -o, [--output=OUTPUT]                    
+  -o, [--output=OUTPUT]
               # json or table
               # Default: table
 ```
@@ -121,31 +121,31 @@ Usage:
   pact-broker create-environment --name=NAME -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-      --name=NAME                                      
+      --name=NAME
               # The uniquely identifying name of the environment as used in
                 deployment code
-      [--display-name=DISPLAY_NAME]                    
+      [--display-name=DISPLAY_NAME]
               # The display name of the environment
-      [--production], [--no-production]                
+      [--production], [--no-production]
               # Whether or not this environment is a production environment.
                 Default: false
-      [--contact-name=CONTACT_NAME]                    
+      [--contact-name=CONTACT_NAME]
               # The name of the team/person responsible for this environment
-      [--contact-email-address=CONTACT_EMAIL_ADDRESS]  
+      [--contact-email-address=CONTACT_EMAIL_ADDRESS]
               # The email address of the team/person responsible for this
                 environment
-  -o, [--output=OUTPUT]                                
+  -o, [--output=OUTPUT]
               # json or text
               # Default: text
-  -b, --broker-base-url=BROKER_BASE_URL                
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]              
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]              
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]                    
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]                      
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -158,33 +158,33 @@ Usage:
   pact-broker update-environment --uuid=UUID -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-      --uuid=UUID                                      
+      --uuid=UUID
               # The UUID of the environment to update
-      [--name=NAME]                                    
+      [--name=NAME]
               # The uniquely identifying name of the environment as used in
                 deployment code
-      [--display-name=DISPLAY_NAME]                    
+      [--display-name=DISPLAY_NAME]
               # The display name of the environment
-      [--production], [--no-production]                
+      [--production], [--no-production]
               # Whether or not this environment is a production environment.
                 Default: false
-      [--contact-name=CONTACT_NAME]                    
+      [--contact-name=CONTACT_NAME]
               # The name of the team/person responsible for this environment
-      [--contact-email-address=CONTACT_EMAIL_ADDRESS]  
+      [--contact-email-address=CONTACT_EMAIL_ADDRESS]
               # The email address of the team/person responsible for this
                 environment
-  -o, [--output=OUTPUT]                                
+  -o, [--output=OUTPUT]
               # json or text
               # Default: text
-  -b, --broker-base-url=BROKER_BASE_URL                
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]              
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]              
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]                    
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]                      
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -197,20 +197,20 @@ Usage:
   pact-broker describe-environment --uuid=UUID -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-      --uuid=UUID                          
+      --uuid=UUID
               # The UUID of the environment to describe
-  -o, [--output=OUTPUT]                    
+  -o, [--output=OUTPUT]
               # json or text
               # Default: text
-  -b, --broker-base-url=BROKER_BASE_URL    
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]  
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]  
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]        
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]          
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -223,20 +223,20 @@ Usage:
   pact-broker delete-environment --uuid=UUID -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-      --uuid=UUID                          
+      --uuid=UUID
               # The UUID of the environment to delete
-  -o, [--output=OUTPUT]                    
+  -o, [--output=OUTPUT]
               # json or text
               # Default: text
-  -b, --broker-base-url=BROKER_BASE_URL    
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]  
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]  
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]        
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]          
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -249,18 +249,18 @@ Usage:
   pact-broker list-environments -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-  -o, [--output=OUTPUT]                    
+  -o, [--output=OUTPUT]
               # json or text
               # Default: text
-  -b, --broker-base-url=BROKER_BASE_URL    
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]  
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]  
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]        
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]          
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -275,33 +275,33 @@ Usage:
   pact-broker record-deployment --environment=ENVIRONMENT -a, --pacticipant=PACTICIPANT -b, --broker-base-url=BROKER_BASE_URL -e, --version=VERSION
 
 Options:
-  -a, --pacticipant=PACTICIPANT                      
+  -a, --pacticipant=PACTICIPANT
               # The name of the pacticipant that was deployed.
-  -e, --version=VERSION                              
+  -e, --version=VERSION
               # The pacticipant version number that was deployed.
-      --environment=ENVIRONMENT                      
+      --environment=ENVIRONMENT
               # The name of the environment that the pacticipant version was
                 deployed to.
-      [--application-instance=APPLICATION_INSTANCE]  
+      [--application-instance=APPLICATION_INSTANCE]
               # Optional. The application instance to which the deployment has
                 occurred - a logical identifer required to differentiate
                 deployments when there are multiple instances of the same
                 application in an environment. This field was called 'target'
                 in a beta release.
-      [--target=TARGET]                              
+      [--target=TARGET]
               # Renamed to application_instance
-  -o, [--output=OUTPUT]                              
+  -o, [--output=OUTPUT]
               # json or text
               # Default: text
-  -b, --broker-base-url=BROKER_BASE_URL              
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]            
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]            
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]                  
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]                    
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -314,34 +314,34 @@ Usage:
   pact-broker record-undeployment --environment=ENVIRONMENT -a, --pacticipant=PACTICIPANT -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-  -a, --pacticipant=PACTICIPANT                      
+  -a, --pacticipant=PACTICIPANT
               # The name of the pacticipant that was undeployed.
-      --environment=ENVIRONMENT                      
+      --environment=ENVIRONMENT
               # The name of the environment that the pacticipant version was
                 undeployed from.
-      [--application-instance=APPLICATION_INSTANCE]  
+      [--application-instance=APPLICATION_INSTANCE]
               # Optional. The application instance from which the application
                 is being undeployed - a logical identifer required to
                 differentiate deployments when there are multiple instances of
                 the same application in an environment. This field was called
                 'target' in a beta release.
-      [--target=TARGET]                              
+      [--target=TARGET]
               # Optional. The target that the application is being undeployed
                 from - a logical identifer required to differentiate
                 deployments when there are multiple instances of the same
                 application in an environment.
-  -o, [--output=OUTPUT]                              
+  -o, [--output=OUTPUT]
               # json or text
               # Default: text
-  -b, --broker-base-url=BROKER_BASE_URL              
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]            
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]            
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]                  
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]                    
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -359,25 +359,25 @@ Usage:
   pact-broker record-release --environment=ENVIRONMENT -a, --pacticipant=PACTICIPANT -b, --broker-base-url=BROKER_BASE_URL -e, --version=VERSION
 
 Options:
-  -a, --pacticipant=PACTICIPANT            
+  -a, --pacticipant=PACTICIPANT
               # The name of the pacticipant that was released.
-  -e, --version=VERSION                    
+  -e, --version=VERSION
               # The pacticipant version number that was released.
-      --environment=ENVIRONMENT            
+      --environment=ENVIRONMENT
               # The name of the environment that the pacticipant version was
                 released to.
-  -o, [--output=OUTPUT]                    
+  -o, [--output=OUTPUT]
               # json or text
               # Default: text
-  -b, --broker-base-url=BROKER_BASE_URL    
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]  
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]  
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]        
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]          
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -390,24 +390,24 @@ Usage:
   pact-broker record-support-ended --environment=ENVIRONMENT -a, --pacticipant=PACTICIPANT -b, --broker-base-url=BROKER_BASE_URL -e, --version=VERSION
 
 Options:
-  -a, --pacticipant=PACTICIPANT            
+  -a, --pacticipant=PACTICIPANT
               # The name of the pacticipant.
-  -e, --version=VERSION                    
+  -e, --version=VERSION
               # The pacticipant version number for which support is ended.
-      --environment=ENVIRONMENT            
+      --environment=ENVIRONMENT
               # The name of the environment in which the support is ended.
-  -o, [--output=OUTPUT]                    
+  -o, [--output=OUTPUT]
               # json or text
               # Default: text
-  -b, --broker-base-url=BROKER_BASE_URL    
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]  
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]  
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]        
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]          
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -422,51 +422,54 @@ Usage:
   pact-broker can-i-deploy -a, --pacticipant=PACTICIPANT -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-  -a, --pacticipant=PACTICIPANT            
+  -a, --pacticipant=PACTICIPANT
               # The pacticipant name. Use once for each pacticipant being
                 checked.
-  -e, [--version=VERSION]                  
+  -e, [--version=VERSION]
               # The pacticipant version. Must be entered after the
                 --pacticipant that it relates to.
-      [--ignore=IGNORE]                    
+      [--ignore=IGNORE]
               # The pacticipant name to ignore. Use once for each pacticipant
                 being ignored. A specific version can be ignored by also
                 specifying a --version after the pacticipant name option.
-  -l, [--latest=[TAG]]                     
+  -l, [--latest=[TAG]]
               # Use the latest pacticipant version. Optionally specify a TAG
                 to use the latest version with the specified tag.
-      [--to-environment=ENVIRONMENT]       
+      [--to-environment=ENVIRONMENT]
               # The environment into which the pacticipant(s) are to be
                 deployed
-      [--to=TAG]                           
+      [--branch=BRANCH]
+              # The branch of the version for which you want to check the
+                verification results
+      [--to=TAG]
               # The tag that represents the branch or environment of the
                 integrated applications for which you want to check the
                 verification result status.
-  -o, [--output=OUTPUT]                    
+  -o, [--output=OUTPUT]
               # json or table
               # Default: table
-      [--retry-while-unknown=TIMES]        
+      [--retry-while-unknown=TIMES]
               # The number of times to retry while there is an unknown
                 verification result (ie. the provider verification is likely
                 still running)
               # Default: 0
-      [--retry-interval=SECONDS]           
+      [--retry-interval=SECONDS]
               # The time between retries in seconds. Use in conjuction with
                 --retry-while-unknown
               # Default: 10
-      [--dry-run], [--no-dry-run]          
+      [--dry-run], [--no-dry-run]
               # When dry-run is enabled, always exit process with a success
                 code. Can also be enabled by setting the environment variable
                 PACT_BROKER_CAN_I_DEPLOY_DRY_RUN=true.
-  -b, --broker-base-url=BROKER_BASE_URL    
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]  
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]  
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]        
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]          
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -513,26 +516,26 @@ Usage:
   pact-broker create-or-update-pacticipant --name=NAME -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-      --name=NAME                          
+      --name=NAME
               # Pacticipant name
-      [--display-name=DISPLAY_NAME]        
+      [--display-name=DISPLAY_NAME]
               # Display name
-      [--main-branch=MAIN_BRANCH]          
+      [--main-branch=MAIN_BRANCH]
               # The main development branch of the pacticipant repository
-      [--repository-url=REPOSITORY_URL]    
+      [--repository-url=REPOSITORY_URL]
               # The repository URL of the pacticipant
-  -o, [--output=OUTPUT]                    
+  -o, [--output=OUTPUT]
               # json or text
               # Default: text
-  -b, --broker-base-url=BROKER_BASE_URL    
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]  
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]  
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]        
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]          
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -545,20 +548,20 @@ Usage:
   pact-broker describe-pacticipant --name=NAME -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-      --name=NAME                          
+      --name=NAME
               # Pacticipant name
-  -o, [--output=OUTPUT]                    
+  -o, [--output=OUTPUT]
               # json or text
               # Default: text
-  -b, --broker-base-url=BROKER_BASE_URL    
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]  
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]  
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]        
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]          
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -571,18 +574,18 @@ Usage:
   pact-broker list-pacticipants -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-  -o, [--output=OUTPUT]                    
+  -o, [--output=OUTPUT]
               # json or text
               # Default: text
-  -b, --broker-base-url=BROKER_BASE_URL    
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]  
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]  
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]        
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]          
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -597,49 +600,52 @@ Usage:
   pact-broker create-webhook URL -X, --request=METHOD -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-  -X, --request=METHOD                                                             
+  -X, --request=METHOD
               # Webhook HTTP method
-  -H, [--header=one two three]                                                     
+  -H, [--header=one two three]
               # Webhook Header
-  -d, [--data=DATA]                                                                
+  -d, [--data=DATA]
               # Webhook payload (file or string)
-  -u, [--user=USER]                                                                
+  -u, [--user=USER]
               # Webhook basic auth username and password eg. username:password
-      [--consumer=CONSUMER]                                                        
+      [--consumer=CONSUMER]
               # Consumer name
-      [--consumer-label=CONSUMER_LABEL]                                                        
-              # Consumer label
-      [--provider=PROVIDER]                                                        
+      [--consumer-label=CONSUMER_LABEL]
+              # Consumer label, mutually exclusive with consumer name
+      [--provider=PROVIDER]
               # Provider name
-      [--provider-label=PROVIDER_LABEL]                                                        
-              # Provider label
-      [--description=DESCRIPTION]                                                  
+      [--provider-label=PROVIDER_LABEL]
+              # Provider label, mutually exclusive with provider name
+      [--description=DESCRIPTION]
               # Webhook description
-      [--contract-content-changed], [--no-contract-content-changed]                
+      [--contract-content-changed], [--no-contract-content-changed]
               # Trigger this webhook when the pact content changes
-      [--contract-published], [--no-contract-published]                            
+      [--contract-published], [--no-contract-published]
               # Trigger this webhook when a pact is published
-      [--provider-verification-published], [--no-provider-verification-published]  
+      [--provider-verification-published], [--no-provider-verification-published]
               # Trigger this webhook when a provider verification result is
                 published
-      [--provider-verification-failed], [--no-provider-verification-failed]        
+      [--provider-verification-failed], [--no-provider-verification-failed]
               # Trigger this webhook when a failed provider verification
                 result is published
-      [--provider-verification-succeeded], [--no-provider-verification-succeeded]  
+      [--provider-verification-succeeded], [--no-provider-verification-succeeded]
               # Trigger this webhook when a successful provider verification
                 result is published
-      [--team-uuid=UUID]                                                           
+      [--contract-requiring-verification-published], [--no-contract-requiring-verification-published]
+              # Trigger this webhook when a contract is published that
+                requires verification
+      [--team-uuid=UUID]
               # UUID of the Pactflow team to which the webhook should be
                 assigned (Pactflow only)
-  -b, --broker-base-url=BROKER_BASE_URL                                            
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]                                          
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]                                          
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]                                                
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]                                                  
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -657,51 +663,54 @@ Usage:
   pact-broker create-or-update-webhook URL --uuid=UUID -X, --request=METHOD -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-  -X, --request=METHOD                                                             
+  -X, --request=METHOD
               # Webhook HTTP method
-  -H, [--header=one two three]                                                     
+  -H, [--header=one two three]
               # Webhook Header
-  -d, [--data=DATA]                                                                
+  -d, [--data=DATA]
               # Webhook payload (file or string)
-  -u, [--user=USER]                                                                
+  -u, [--user=USER]
               # Webhook basic auth username and password eg. username:password
-      [--consumer=CONSUMER]                                                        
+      [--consumer=CONSUMER]
               # Consumer name
-      [--consumer-label=CONSUMER_LABEL]                                                        
-              # Consumer label
-      [--provider=PROVIDER]                                                        
+      [--consumer-label=CONSUMER_LABEL]
+              # Consumer label, mutually exclusive with consumer name
+      [--provider=PROVIDER]
               # Provider name
-      [--provider-label=PROVIDER_LABEL]                                                        
-              # Provider label
-      [--description=DESCRIPTION]                                                  
+      [--provider-label=PROVIDER_LABEL]
+              # Provider label, mutually exclusive with provider name
+      [--description=DESCRIPTION]
               # Webhook description
-      [--contract-content-changed], [--no-contract-content-changed]                
+      [--contract-content-changed], [--no-contract-content-changed]
               # Trigger this webhook when the pact content changes
-      [--contract-published], [--no-contract-published]                            
+      [--contract-published], [--no-contract-published]
               # Trigger this webhook when a pact is published
-      [--provider-verification-published], [--no-provider-verification-published]  
+      [--provider-verification-published], [--no-provider-verification-published]
               # Trigger this webhook when a provider verification result is
                 published
-      [--provider-verification-failed], [--no-provider-verification-failed]        
+      [--provider-verification-failed], [--no-provider-verification-failed]
               # Trigger this webhook when a failed provider verification
                 result is published
-      [--provider-verification-succeeded], [--no-provider-verification-succeeded]  
+      [--provider-verification-succeeded], [--no-provider-verification-succeeded]
               # Trigger this webhook when a successful provider verification
                 result is published
-      [--team-uuid=UUID]                                                           
+      [--contract-requiring-verification-published], [--no-contract-requiring-verification-published]
+              # Trigger this webhook when a contract is published that
+                requires verification
+      [--team-uuid=UUID]
               # UUID of the Pactflow team to which the webhook should be
                 assigned (Pactflow only)
-  -b, --broker-base-url=BROKER_BASE_URL                                            
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]                                          
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]                                          
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]                                                
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]                                                  
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
-      --uuid=UUID                                                                  
+      --uuid=UUID
               # Specify the uuid for the webhook
 ```
 
@@ -720,17 +729,17 @@ Usage:
   pact-broker test-webhook --uuid=UUID -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-      --uuid=UUID                          
+      --uuid=UUID
               # Specify the uuid for the webhook
-  -b, --broker-base-url=BROKER_BASE_URL    
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]  
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]  
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]        
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]          
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -745,28 +754,28 @@ Usage:
   pact-broker create-version-tag -a, --pacticipant=PACTICIPANT -b, --broker-base-url=BROKER_BASE_URL -e, --version=VERSION
 
 Options:
-  -a, --pacticipant=PACTICIPANT                            
+  -a, --pacticipant=PACTICIPANT
               # The pacticipant name
-  -e, --version=VERSION                                    
+  -e, --version=VERSION
               # The pacticipant version
-  -t, [--tag=TAG]                                          
+  -t, [--tag=TAG]
               # Tag name for pacticipant version. Can be specified multiple
                 times.
-      [--auto-create-version], [--no-auto-create-version]  
+      [--auto-create-version], [--no-auto-create-version]
               # Automatically create the pacticipant version if it does not
                 exist. Default: false
-  -g, [--tag-with-git-branch], [--no-tag-with-git-branch]  
+  -g, [--tag-with-git-branch], [--no-tag-with-git-branch]
               # Tag pacticipant version with the name of the current git
                 branch. Default: false
-  -b, --broker-base-url=BROKER_BASE_URL                    
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]                  
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]                  
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]                        
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]                          
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
@@ -781,25 +790,25 @@ Usage:
   pact-broker describe-version -a, --pacticipant=PACTICIPANT -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-  -a, --pacticipant=PACTICIPANT            
+  -a, --pacticipant=PACTICIPANT
               # The name of the pacticipant that the version belongs to.
-  -e, [--version=VERSION]                  
+  -e, [--version=VERSION]
               # The pacticipant version number.
-  -l, [--latest=[TAG]]                     
+  -l, [--latest=[TAG]]
               # Describe the latest pacticipant version. Optionally specify a
                 TAG to describe the latest version with the specified tag.
-  -o, [--output=OUTPUT]                    
+  -o, [--output=OUTPUT]
               # json or table or id
               # Default: table
-  -b, --broker-base-url=BROKER_BASE_URL    
+  -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
-  -u, [--broker-username=BROKER_USERNAME]  
+  -u, [--broker-username=BROKER_USERNAME]
               # Pact Broker basic auth username
-  -p, [--broker-password=BROKER_PASSWORD]  
+  -p, [--broker-password=BROKER_PASSWORD]
               # Pact Broker basic auth password
-  -k, [--broker-token=BROKER_TOKEN]        
+  -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]          
+  -v, [--verbose], [--no-verbose]
               # Verbose output. Default: false
 ```
 
