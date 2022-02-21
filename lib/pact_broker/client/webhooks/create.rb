@@ -50,7 +50,7 @@ module PactBroker
               return error_result(CREATING_WEBHOOK_WITH_UUID_NOT_SUPPORTED)
             end
           else
-            webhook_entity = index_entity._link("pb:webhooks").post(request_body_with_optional_consumer_and_provider)
+            webhook_entity = index_entity._link!("pb:webhooks").post(request_body_with_optional_consumer_and_provider)
           end
 
           if webhook_entity.response.status == 405

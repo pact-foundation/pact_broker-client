@@ -91,11 +91,11 @@ module PactBroker
         end
 
         def _link!(key)
-          _link(key) or raise RelationNotFoundError.new("Could not find relation '#{key}' in resource at #{@href}")
+          _link(key) or raise RelationNotFoundError.new(relation_not_found_error_message(key, @href))
         end
 
         def _links!(key)
-          _links(key) or raise RelationNotFoundError.new("Could not find relation '#{key}' in resource at #{@href}")
+          _links(key) or raise RelationNotFoundError.new(relation_not_found_error_message(key, @href))
         end
 
         def embedded_entity
@@ -160,6 +160,10 @@ module PactBroker
 
         def self_href(entity_hash)
           entity_hash["_links"] && entity_hash["_links"]["self"] && entity_hash["_links"]["self"]["href"]
+        end
+
+        def relation_not_found_error_message(key, href)
+          "Could not find relation '#{key}' in resource at #{href}. The most likely reason for this is that you are on an old version of the Pact Broker and you need to upgrade, or you are using Pactflow and you don't have the permissions required for this action."
         end
       end
 

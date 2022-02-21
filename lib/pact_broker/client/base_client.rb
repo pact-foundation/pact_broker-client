@@ -125,7 +125,7 @@ module PactBroker
             end
             url
           else
-            raise PactBroker::Client::RelationNotFound.new("Could not find relation #{relation_name} in index resource. Try upgrading your Pact Broker as the feature you require may not exist in your version.")
+            raise PactBroker::Client::RelationNotFound.new("Could not find relation #{relation_name} in index resource. Try upgrading your Pact Broker as the feature you require may not exist in your version. If you are using Pactflow, you may not have the permissions required for this action.")
           end
         end
       end

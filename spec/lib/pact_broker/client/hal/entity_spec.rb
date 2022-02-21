@@ -112,7 +112,7 @@ module PactBroker::Client
 
         context 'when the key does not exist' do
           it 'raises an error' do
-            expect { subject._link!('foo') }.to raise_error RelationNotFoundError, "Could not find relation 'foo' in resource at http://pact"
+            expect { subject._link!('foo') }.to raise_error RelationNotFoundError, /Could not find relation 'foo' in resource at http:\/\/pact/
           end
         end
       end
