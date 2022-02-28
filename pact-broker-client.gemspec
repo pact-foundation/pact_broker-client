@@ -8,10 +8,10 @@ Gem::Specification.new do |gem|
   gem.name          = "pact_broker-client"
   gem.version       = PactBroker::Client::VERSION
   gem.authors       = ["Beth Skurrie"]
-  gem.email         = ["bskurrie@dius.com.au"]
-  gem.description   = %q{Client for the Pact Broker. Publish, retrieve and query pacts and verification results.}
+  gem.email         = ["beth@bethesque.com"]
+  gem.description   = %q{Client for the Pact Broker. Publish, retrieve and query pacts and verification results. Manage webhooks and environments.}
   gem.summary       = %q{See description}
-  gem.homepage      = "https://github.com/bethesque/pact_broker-client.git"
+  gem.homepage      = "https://github.com/pact-foundation/pact_broker-client.git"
 
   gem.required_ruby_version = '>= 2.0'
 
