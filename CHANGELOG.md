@@ -1,3 +1,13 @@
+<a name="v1.59.0"></a>
+### v1.59.0 (2022-03-11)
+
+#### Features
+
+* use the feature branch name in GITHUB_HEAD_REF for github pull request builds (#103)	 ([7f94d4a](/../../commit/7f94d4a))
+
+* **webhooks**
+  * show better error message when the pb:webhooks relation doesn't exist when trying to create a webhook	 ([c787300](/../../commit/c787300))
+
 <a name="v1.58.0"></a>
 ### v1.58.0 (2021-11-13)
 
