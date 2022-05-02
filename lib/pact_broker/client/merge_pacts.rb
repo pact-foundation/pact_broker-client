@@ -18,28 +18,39 @@ module PactBroker
       def merge original, additional
         new_pact = JSON.parse(original.to_json, symbolize_names: true)
 
-        additional[:interactions].each do |new_interaction|
-          # check to see if this interaction matches an existing interaction
-          overwrite_index = original[:interactions].find_index do |original_interaction|
-            same_description_and_state?(original_interaction, new_interaction)
-          end
-
-          # overwrite existing interaction if a match is found, otherwise appends the new interaction
-          if overwrite_index
-            if new_interaction == original[:interactions][overwrite_index]
-              new_pact[:interactions][overwrite_index] = new_interaction
-            else
-              raise PactMergeError, almost_duplicate_message(original[:interactions][overwrite_index], new_interaction)
-            end
-          else
-            new_pact[:interactions] << new_interaction
-          end
-        end
+        merge_interactions_or_messages(new_pact, original, additional, :interactions)
+        merge_interactions_or_messages(new_pact, original, additional, :messages)
 
         new_pact
       end
 
       private
+
+      def merge_interactions_or_messages(new_pact, original, additional, key)
+        return unless additional[key] || original[key]
+
+        additional_messages_or_interactions = additional[key] || []
+        original_messages_or_interactions = original[key] || []
+        new_pact[key] ||= []
+
+        additional_messages_or_interactions.each do |new_interaction|
+          # check to see if this interaction matches an existing interaction
+          overwrite_index = original_messages_or_interactions.find_index do |original_interaction|
+            same_description_and_state?(original_interaction, new_interaction)
+          end
+
+          # overwrite existing interaction if a match is found, otherwise appends the new interaction
+          if overwrite_index
+            if new_interaction == original_messages_or_interactions[overwrite_index]
+              new_pact[key][overwrite_index] = new_interaction
+            else
+              raise PactMergeError, almost_duplicate_message(original_messages_or_interactions[overwrite_index], new_interaction)
+            end
+          else
+            new_pact[key] << new_interaction
+          end
+        end
+      end
 
       def almost_duplicate_message(original, new_interaction)
         "Two interactions have been found with same description (#{new_interaction[:description].inspect}) and provider state (#{new_interaction[:providerState].inspect}) but a different request or response. " +
