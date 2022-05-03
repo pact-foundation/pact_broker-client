@@ -1,3 +1,10 @@
+<a name="v1.60.0"></a>
+### v1.60.0 (2022-05-03)
+
+#### Features
+
+* support merging message pacts when publishing	 ([732b22d](/../../commit/732b22d))
+
 <a name="v1.59.0"></a>
 ### v1.59.0 (2022-03-11)
 
