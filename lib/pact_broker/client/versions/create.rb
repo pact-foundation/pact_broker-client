@@ -1,8 +1,9 @@
+require "pact_broker/client/base_client"
 require "pact_broker/client/base_command"
 
 module PactBroker
   module Client
-    class Versions
+    class Versions < BaseClient # need to retire the old base client code
       class Create < PactBroker::Client::BaseCommand
 
         def do_call

@@ -4,6 +4,33 @@ module PactBroker
       module VersionCommands
         def self.included(thor)
           thor.class_eval do
+            method_option :pacticipant, required: true, aliases: "-a", desc: "The name of the pacticipant that the version belongs to."
+            method_option :version, required: false, aliases: "-e", desc: "The pacticipant version number."
+            method_option :latest, required: false, aliases: "-l", banner: '[TAG]', desc: "Describe the latest pacticipant version. Optionally specify a TAG to describe the latest version with the specified tag."
+            method_option :output, aliases: "-o", desc: "json or table or id", default: 'table'
+            shared_authentication_options
+
+            desc 'describe-version', 'Describes a pacticipant version. If no version or tag is specified, the latest version is described.'
+            def describe_version
+              require 'pact_broker/client/versions/describe'
+
+              validate_credentials
+              latest = !options.latest.nil? || (options.latest.nil? && options.version.nil?)
+              params = {
+                pacticipant: options.pacticipant,
+                version: options.version,
+                latest: latest,
+                tag: options.latest != "latest" ? options.latest : nil
+              }
+              opts = {
+                output: options.output
+              }
+              result = PactBroker::Client::Versions::Describe.call(params, opts, options.broker_base_url, pact_broker_client_options)
+              $stdout.puts result.message
+              exit(1) unless result.success
+            end
+
+
             desc "create-or-update-version", "Create or update pacticipant version by version number"
             method_option :pacticipant, required: true, aliases: "-a", desc: "The pacticipant name"
             method_option :version, required: true, aliases: "-e", desc: "The pacticipant version number"
