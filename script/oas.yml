@@ -1,0 +1,49 @@
+openapi: 3.0.0
+info:
+  title: Sample API
+  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
+  version: 0.1.9
+servers:
+  - url: https://test.pactflow.io
+    description: Prod
+  - url: https://test.test.pactflow.io
+    description: Test
+paths:
+  /admin/teams/{uuid}:
+    get:
+      summary: Returns a team
+      parameters:
+        - name: uuid
+          in: path
+          description: The UUID of the team to return
+          required: true
+          example: 85ad09f5-e014-4e0f-a146-4377fa64b5ef
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A JSON team
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  name:
+                    type: string
+                    example: Team Awesome
+                  uuid:
+                    type: string
+                    example: 85ad09f5-e014-4e0f-a146-4377fa64b5ef
+                  numberOfMembers:
+                    type: integer
+                    example: 4
+                  _links:
+                    type: object
+                    properties:
+                      self:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: http://test.pactflow.io/admin/teams/85ad09f5-e014-4e0f-a146-4377fa64b5ef
