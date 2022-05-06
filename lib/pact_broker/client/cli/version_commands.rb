@@ -26,6 +26,28 @@ module PactBroker
               execute_version_command(params, "Create")
             end
 
+            desc 'create-version-tag', 'Add a tag to a pacticipant version'
+            method_option :pacticipant, required: true, aliases: "-a", desc: "The pacticipant name"
+            method_option :version, required: true, aliases: "-e", desc: "The pacticipant version"
+            method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for pacticipant version. Can be specified multiple times."
+            method_option :auto_create_version, type: :boolean, default: false, desc: "Automatically create the pacticipant version if it does not exist. Default: false"
+            method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag pacticipant version with the name of the current git branch. Default: false"
+            shared_authentication_options
+
+            def create_version_tag
+              require 'pact_broker/client/create_tag'
+
+              validate_credentials
+              PactBroker::Client::CreateTag.call(
+                options.broker_base_url,
+                options.pacticipant,
+                options.version,
+                tags,
+                options.auto_create_version,
+                pact_broker_client_options)
+            rescue PactBroker::Client::Error => e
+              raise VersionCreationError.new(e.message)
+            end
 
             no_commands do
               def execute_version_command(params, command_class_name)
