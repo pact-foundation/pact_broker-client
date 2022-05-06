@@ -4,6 +4,7 @@ require 'thor/error'
 require 'pact_broker/client/cli/environment_commands'
 require 'pact_broker/client/cli/deployment_commands'
 require 'pact_broker/client/cli/pacticipant_commands'
+require 'pact_broker/client/cli/version_commands'
 require 'pact_broker/client/cli/webhook_commands'
 require "pact_broker/client/cli/matrix_commands"
 
@@ -22,6 +23,7 @@ module PactBroker
         include PactBroker::Client::CLI::DeploymentCommands
         include PactBroker::Client::CLI::MatrixCommands
         include PactBroker::Client::CLI::PacticipantCommands
+        include PactBroker::Client::CLI::VersionCommands
         include PactBroker::Client::CLI::WebhookCommands
 
         desc 'publish PACT_DIRS_OR_FILES ...', "Publish pacts to a Pact Broker."

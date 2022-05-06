@@ -58,7 +58,7 @@ def generate_thor_docs
       ["Pacticipants", %w[create-or-update-pacticipant describe-pacticipant list-pacticipants]],
       ["Webhooks", %w[create-webhook create-or-update-webhook test-webhook]],
       ["Tags", %w[create-version-tag]],
-      ["Versions", %w[describe-version]],
+      ["Versions", %w[describe-version create-or-update-version]],
       ["Miscellaneous", %w[generate-uuid]]
     ]
 

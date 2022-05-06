@@ -1,5 +1,6 @@
 require 'pact_broker/client/base_client'
 require 'pact_broker/client/versions/describe'
+require 'pact_broker/client/versions/create'
 
 # Old code
 require 'pact_broker/client/pacts'
