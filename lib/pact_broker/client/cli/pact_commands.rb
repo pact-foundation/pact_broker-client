@@ -1,7 +1,14 @@
+require "pact_broker/client/hash_refinements"
+
 module PactBroker
   module Client
     module CLI
+      # Thor::Error will have its backtrace hidden
+      class PactPublicationError < ::Thor::Error; end
+
       module PactCommands
+        using PactBroker::Client::HashRefinements
+
         def self.included(thor)
           thor.class_eval do
             desc 'publish PACT_DIRS_OR_FILES ...', "Publish pacts to a Pact Broker."

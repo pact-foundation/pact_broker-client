@@ -1,6 +1,8 @@
 module PactBroker
   module Client
     module CLI
+      class VersionCreationError < ::Thor::Error; end
+
       module VersionCommands
         def self.included(thor)
           thor.class_eval do

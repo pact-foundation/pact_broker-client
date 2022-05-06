@@ -1,14 +1,18 @@
 require 'thor'
+require 'pact_broker/client/hash_refinements'
 
 module PactBroker
   module Client
     module CLI
+      class AuthError < ::Thor::Error; end
+
       ##
       # Custom Thor task allows the following:
       #
       # `--option 1 --option 2` to be interpreted as `--option 1 2` (the standard Thor format for multiple value options)
       #
       class CustomThor < ::Thor
+        using PactBroker::Client::HashRefinements
 
         no_commands do
           def self.start given_args = ARGV, config = {}

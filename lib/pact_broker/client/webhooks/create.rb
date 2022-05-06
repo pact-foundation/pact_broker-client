@@ -4,11 +4,14 @@ require 'ostruct'
 require 'json'
 require 'pact_broker/client/command_result'
 require "pact_broker/client/backports"
+require "pact_broker/client/hash_refinements"
 
 module PactBroker
   module Client
     module Webhooks
       class Create
+        using PactBroker::Client::HashRefinements
+
         WEBHOOKS_WITH_OPTIONAL_PACTICICPANTS_NOT_SUPPORTED = "This version of the Pact Broker requires that both consumer and provider are specified for a webhook. Please upgrade your broker to >= 2.22.0 to create a webhook with optional consumer and provider."
         CREATING_WEBHOOK_WITH_UUID_NOT_SUPPORTED = "This version of the Pact Broker does not support creating webhooks with a specified UUID. Please upgrade your broker to >= 2.49.0 or use the create-webhook command."
 

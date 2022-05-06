@@ -1,10 +1,13 @@
 require 'uri'
 require 'delegate'
+require 'pact_broker/client/hash_refinements'
 
 module PactBroker
   module Client
     module Hal
       class Links
+        using PactBroker::Client::HashRefinements
+
         def initialize(href, key, links)
           @href = href
           @key = key

@@ -1,9 +1,12 @@
 require 'pact_broker/client/base_command'
+require 'pact_broker/client/hash_refinements'
 
 module PactBroker
   module Client
     module Deployments
       class RecordUndeployment < PactBroker::Client::BaseCommand
+        using PactBroker::Client::HashRefinements
+
         def initialize(params, options, pact_broker_client_options)
           super
           @pacticipant_name = params.fetch(:pacticipant_name)

@@ -3,6 +3,7 @@ require 'pact_broker/client/hal_client_methods'
 require 'base64'
 require 'pact_broker/client/publish_pacts_the_old_way'
 require 'pact_broker/client/colorize_notices'
+require 'pact_broker/client/hash_refinements'
 
 module PactBroker
   module Client

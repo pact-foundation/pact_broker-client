@@ -1,9 +1,12 @@
 require 'pact_broker/client/base_command'
+require 'pact_broker/client/hash_refinements'
 
 module PactBroker
   module Client
     module Environments
       class EnvironmentCommand < PactBroker::Client::BaseCommand
+        using PactBroker::Client::HashRefinements
+
         NOT_SUPPORTED_MESSAGE = "This version of the Pact Broker does not support environments. Please upgrade to version 2.80.0 or later."
         PACTFLOW_NOT_SUPPORTED_MESSAGE = "This version of Pactflow does not support environments or you do not have the required permission to read them. Please upgrade to the latest version if using Pactflow On-Premises and ensure the user has the environment read permission."
 

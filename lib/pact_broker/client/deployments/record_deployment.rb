@@ -1,9 +1,12 @@
 require 'pact_broker/client/deployments/record_release'
+require "pact_broker/client/hash_refinements"
 
 module PactBroker
   module Client
     module Deployments
       class RecordDeployment < PactBroker::Client::Deployments::RecordRelease
+        using PactBroker::Client::HashRefinements
+
         def initialize(params, options, pact_broker_client_options)
           super
           @application_instance = params.fetch(:application_instance)
