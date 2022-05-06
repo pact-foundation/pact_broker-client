@@ -106,6 +106,25 @@ module PactBroker
           def params_from_options(keys)
             keys.each_with_object({}) { | key, p | p[key] = options[key] }
           end
+
+          def pact_broker_client_options
+            client_options = { verbose: options.verbose, pact_broker_base_url: options.broker_base_url }
+            client_options[:token] = options.broker_token || ENV['PACT_BROKER_TOKEN']
+            if options.broker_username || ENV['PACT_BROKER_USERNAME']
+              client_options[:basic_auth] = {
+                  username: options.broker_username || ENV['PACT_BROKER_USERNAME'],
+                  password: options.broker_password || ENV['PACT_BROKER_PASSWORD']
+                }.compact
+            end
+
+            client_options.compact
+          end
+
+          def validate_credentials
+            if options.broker_username && options.broker_token
+              raise AuthError, "You cannot provide both a username/password and a bearer token. If your Pact Broker uses a bearer token, please remove the username and password configuration."
+            end
+          end
         end
       end
     end
