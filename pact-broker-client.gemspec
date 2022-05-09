@@ -33,6 +33,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'conventional-changelog', '~>1.3'
   gem.add_development_dependency 'pact', '~> 1.16'
   gem.add_development_dependency 'pact-support', '~> 1.16'
-  gem.add_development_dependency 'approvals', '0.0.25'
+  gem.add_development_dependency 'approvals', '0.0.25' 
   gem.add_development_dependency 'rspec-its', '~> 1.3'
 end
