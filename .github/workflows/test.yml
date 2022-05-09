@@ -36,7 +36,6 @@ jobs:
         with:
           ruby-version: "2.7"
       - run: "bundle install"
-      - run: gem install approvals -v '0.0.24' --source 'https://rubygems.org/'
       - run: |
           rm -rf spec/pacts/*
           bundle exec rspec spec/service_providers/
