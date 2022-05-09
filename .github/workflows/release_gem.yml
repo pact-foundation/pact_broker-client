@@ -14,7 +14,6 @@ jobs:
     - uses: actions/setup-ruby@v1
       with:
         ruby-version: '2.6'
-    - run: gem install approvals -v '0.0.24' --source 'https://rubygems.org/'
     - run: |
         gem install bundler -v 2.1
         bundle install
