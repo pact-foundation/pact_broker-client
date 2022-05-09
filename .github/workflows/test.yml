@@ -19,7 +19,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby_version }}
-      - run: gem install approvals -v '0.0.25' --source 'https://rubygems.org/'
+      - run: gem install approvals -v '0.0.24' --source 'https://rubygems.org/'
       - run: "bundle install"
       - if: failure()
         run: cat /opt/hostedtoolcache/Ruby/2.2.10/x64/lib/ruby/gems/2.2.0/extensions/x86_64-linux/2.2.0/approvals-0.0.25/gem_make.out && exit 1
@@ -37,7 +37,7 @@ jobs:
         with:
           ruby-version: "2.7"
       - run: "bundle install"
-      - run: gem install approvals -v '0.0.25' --source 'https://rubygems.org/'
+      - run: gem install approvals -v '0.0.24' --source 'https://rubygems.org/'
       - run: |
           rm -rf spec/pacts/*
           bundle exec rspec spec/service_providers/
