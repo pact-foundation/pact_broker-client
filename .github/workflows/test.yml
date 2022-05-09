@@ -19,9 +19,9 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby_version }}
-      - if: ${{ matrix.ruby_version == "2.2" }}
+      - if: ${{ matrix.ruby_version == '2.2' }}
         run: gem install approvals -v '0.0.23' --source 'https://rubygems.org/'
-      - if: ${{ matrix.ruby_version == "2.7" }}
+      - if: ${{ matrix.ruby_version == '2.7' }}
         run: gem install approvals -v '0.0.24' --source 'https://rubygems.org/'
       - run: "bundle install"
       - if: failure()
