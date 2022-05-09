@@ -48,8 +48,8 @@ module PactBroker
               params = {
                 pacticipant_name: options.pacticipant.strip,
                 version_number: options.version.strip,
-                branch_name: options.branch&.strip,
-                tags: options.tag&.collect(&:strip)
+                branch_name: options.branch && options.branch.strip,
+                tags: options.tag && options.tag.collect(&:strip)
               }
 
               execute_version_command(params, "Create")
