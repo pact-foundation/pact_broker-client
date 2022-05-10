@@ -8,6 +8,10 @@ module PactBroker
         PactBroker::Client::Hal::EntryPoint.new(pact_broker_base_url, create_http_client(pact_broker_client_options))
       end
 
+      def create_entry_point(entry_point, pact_broker_client_options)
+        PactBroker::Client::Hal::EntryPoint.new(entry_point, create_http_client(pact_broker_client_options))
+      end
+
       def create_http_client(pact_broker_client_options)
         PactBroker::Client::Hal::HttpClient.new(pact_broker_client_options.merge(pact_broker_client_options[:basic_auth] || {}))
       end
