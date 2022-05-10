@@ -1,3 +1,10 @@
+<a name="v1.63.0"></a>
+### v1.63.0 (2022-05-10)
+
+#### Features
+
+* add --verification-exit-code to publish-provider-contract command	 ([d35d908](/../../commit/d35d908))
+
 <a name="v1.62.1"></a>
 ### v1.62.1 (2022-05-10)
 
