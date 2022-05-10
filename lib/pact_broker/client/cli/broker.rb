@@ -34,12 +34,6 @@ module PactBroker
           require "pact_broker/client/version"
           $stdout.puts PactBroker::Client::VERSION
         end
-
-        no_commands do
-          def self.exit_on_failure?
-            true
-          end
-        end
       end
     end
   end

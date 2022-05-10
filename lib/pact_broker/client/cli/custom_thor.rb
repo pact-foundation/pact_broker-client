@@ -15,6 +15,10 @@ module PactBroker
         using PactBroker::Client::HashRefinements
 
         no_commands do
+          def self.exit_on_failure?
+            true
+          end
+
           def self.start given_args = ARGV, config = {}
             super(massage_args(given_args))
           end
