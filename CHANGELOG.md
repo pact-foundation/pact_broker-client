@@ -1,3 +1,18 @@
+<a name="v1.61.1"></a>
+### v1.61.1 (2022-05-09)
+
+#### Bug Fixes
+
+* Aushm use ruby 2.2 syntax (#110)	 ([b006ad7](/../../commit/b006ad7))
+
+<a name="v1.61.0"></a>
+### v1.61.0 (2022-05-06)
+
+#### Features
+
+* **create-or-update-version**
+  * support creating or updating a pacticipant version with a branch and/or tags	 ([e38e728](/../../commit/e38e728))
+
 <a name="v1.60.0"></a>
 ### v1.60.0 (2022-05-03)
 
