@@ -1,3 +1,10 @@
+<a name="v1.62.1"></a>
+### v1.62.1 (2022-05-10)
+
+#### Bug Fixes
+
+* set exit on failure to true for new pactflow command	 ([429dfbd](/../../commit/429dfbd))
+
 <a name="v1.62.0"></a>
 ### v1.62.0 (2022-05-10)
 
