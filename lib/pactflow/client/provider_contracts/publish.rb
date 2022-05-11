@@ -58,10 +58,10 @@ module Pactflow
                                         }.compact
 
           body_params = {
-                    content: encode_content(contract[:content]),
-                    contractType: contract[:specification],
-                    contentType: contract[:content_type],
-                  }.compact
+                          content: encode_content(contract[:content]),
+                          contractType: contract[:specification],
+                          contentType: contract[:content_type],
+                        }.compact
 
           if verification_results_params.any?
             body_params[:verificationResults] = verification_results_params
