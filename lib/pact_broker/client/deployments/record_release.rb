@@ -64,7 +64,11 @@ module PactBroker
           if environment_exists?
             "Environment '#{environment_name}' is not an available option for recording a deployment of #{pacticipant_name}."
           else
-            "No environment found with name '#{environment_name}'."
+            if is_pactflow?
+              "Environment '#{environment_name}' is not an available option for recording a deployment of #{pacticipant_name}. The environment may not exist, or you may not have the required permissions or team associations to view it."
+            else
+              "No environment found with name '#{environment_name}'."
+            end
           end
         end
 

@@ -164,6 +164,15 @@ module PactBroker
                 expect(subject.success).to be false
                 expect(subject.message).to include "No environment found with name 'test'. Available options: prod"
               end
+
+              context "when the server is Pactflow" do
+                let(:index_headers) { { "Content-Type" => "application/hal+json", "X-Pactflow-Sha" => "123" } }
+
+                it "returns a customised message" do
+                  expect(subject.message).to include "Environment 'test' is not an available option for recording a deployment of Foo"
+                  expect(subject.message).to include "permissions"
+                end
+              end
             end
 
             context "when the environment does exist" do
