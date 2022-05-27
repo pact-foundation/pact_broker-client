@@ -1,3 +1,11 @@
+<a name="v1.64.0"></a>
+### v1.64.0 (2022-05-27)
+
+#### Features
+
+* remove feature flag for publish-provider-contract	 ([146a2d8](/../../commit/146a2d8))
+* add pactflow specific message for environment not found when recording a release/deployment	 ([6667cbb](/../../commit/6667cbb))
+
 <a name="v1.63.0"></a>
 ### v1.63.0 (2022-05-10)
 
