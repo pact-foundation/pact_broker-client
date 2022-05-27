@@ -1,5 +1,4 @@
 export PACT_BROKER_BASE_URL=${PACT_BROKER_BASE_URL:-"http://localhost:9292"}
-export PACTFLOW_FEATURES=publish-provider-contract
 bundle exec bin/pactflow publish-provider-contract  \
   script/oas.yml \
   --provider Foo \
