@@ -1,6 +1,6 @@
 # Pact Broker Client
 
-A client for the [Pact Broker](https://docs.pact.io/pact_broker/). Publishes and retrieves pacts, verification results, pacticipants, pacticipant versions and tags. The functionality is available via a CLI, or via Ruby Rake tasks. You can also use the [Pact CLI Docker image](https://hub.docker.com/r/pactfoundation/pact-cli).
+A client for the [Pact Broker](https://docs.pact.io/pact_broker/) and [Pactflow](https://pactflow.io/?utm_source=ossdocs&utm_campaign=pact_broker_client_readme). Publishes and retrieves pacts, pacticipants, pacticipant versions, environments, deployments and releases. Supports publishing provider contracts for Pactflow. The functionality is available via a CLI, or via Ruby Rake tasks. You can also use the [Pact CLI Docker image](https://hub.docker.com/r/pactfoundation/pact-cli).
 
 ![Build status](https://github.com/pact-foundation/pact_broker-client/workflows/Test/badge.svg)
 
@@ -31,6 +31,8 @@ Add `gem 'pact_broker-client'` to your Gemfile and run `bundle install`, or inst
 To connect to a Pact Broker that uses custom SSL cerificates, set the environment variable `$SSL_CERT_FILE` or `$SSL_CERT_DIR` to a path that contains the appropriate certificate. Read more at https://docs.pact.io/pact_broker/advanced_topics/using-tls#for-non-jvm
 
 ## Usage - CLI
+
+All commands prefixed with `pact-broker` can be used with the OSS Pact Broker and Pactflow. Commands prefixed with `pactflow` can only be used with Pactflow.
 
 The Pact Broker base URL can be specified either using the environment variable `$PACT_BROKER_BASE_URL` or the `-b` or `--broker-base-url` parameters.
 
@@ -460,7 +462,13 @@ Options:
       [--dry-run], [--no-dry-run]
               # When dry-run is enabled, always exit process with a success
                 code. Can also be enabled by setting the environment variable
-                PACT_BROKER_CAN_I_DEPLOY_DRY_RUN=true.
+                PACT_BROKER_CAN_I_DEPLOY_DRY_RUN=true. This mode is useful when
+                setting up your CI/CD pipeline for the first time, or in a
+                'break glass' situation where you need to knowingly deploy what
+                Pact considers a breaking change. For the second scenario, it
+                is recommended to use the environment variable and just set it
+                for the build required to deploy that particular version, so
+                you don't accidentally leave the dry run mode enabled.
   -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
   -u, [--broker-username=BROKER_USERNAME]
@@ -859,6 +867,64 @@ Options:
 ```
 
 Generate a UUID for use when calling create-or-update-webhook
+
+### Provider contracts
+
+#### publish-provider-contract
+
+```
+Usage:
+  pactflow publish-provider-contract CONTRACT_FILE ... --provider=PROVIDER -a, --provider-app-version=PROVIDER_APP_VERSION -b, --broker-base-url=BROKER_BASE_URL
+
+Options:
+      --provider=PROVIDER
+              # The provider name
+  -a, --provider-app-version=PROVIDER_APP_VERSION
+              # The provider application version
+  -h, [--branch=BRANCH]
+              # Repository branch of the provider version
+  -t, [--tag=TAG]
+              # Tag name for provider version. Can be specified multiple
+                times.
+      [--specification=SPECIFICATION]
+              # The contract specification
+              # Default: oas
+      [--content-type=CONTENT_TYPE]
+              # The content type. eg. application/yml
+      [--verification-success], [--no-verification-success]
+              # Whether or not the self verification passed successfully.
+      [--verification-exit-code=N]
+              # The exit code of the verification process. Can be used instead
+                of --verificaiton-success|--no-verification-success for a
+                simpler build script.
+      [--verification-results=VERIFICATION_RESULTS]
+              # The path to the file containing the output from the
+                verification process
+      [--verification-results-content-type=VERIFICATION_RESULTS_CONTENT_TYPE]
+              # The content type of the verification output eg. text/plain,
+                application/yaml
+      [--verification-results-format=VERIFICATION_RESULTS_FORMAT]
+              # The format of the verification output eg. junit, text
+      [--verifier=VERIFIER]
+              # The tool used to verify the provider contract
+      [--verifier-version=VERIFIER_VERSION]
+              # The version of the tool used to verify the provider contract
+  -o, [--output=OUTPUT]
+              # json or text
+              # Default: text
+  -b, --broker-base-url=BROKER_BASE_URL
+              # The base URL of the Pact Broker
+  -u, [--broker-username=BROKER_USERNAME]
+              # Pact Broker basic auth username
+  -p, [--broker-password=BROKER_PASSWORD]
+              # Pact Broker basic auth password
+  -k, [--broker-token=BROKER_TOKEN]
+              # Pact Broker bearer token
+  -v, [--verbose], [--no-verbose]
+              # Verbose output. Default: false
+```
+
+Publish provider contract to Pactflow
 
 <!-- end-autogenerated-docs -->
 
