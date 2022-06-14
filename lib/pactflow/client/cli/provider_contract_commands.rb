@@ -18,7 +18,7 @@ module Pactflow
             method_option :specification, default: "oas", desc: "The contract specification"
             method_option :content_type, desc: "The content type. eg. application/yml"
             method_option :verification_success, type: :boolean, desc: "Whether or not the self verification passed successfully."
-            method_option :verification_exit_code, type: :numeric, desc: "The exit code of the verification process. Can be used instead of --verificaiton-success|--no-verification-success for a simpler build script."
+            method_option :verification_exit_code, type: :numeric, desc: "The exit code of the verification process. Can be used instead of --verification-success|--no-verification-success for a simpler build script."
             method_option :verification_results, desc: "The path to the file containing the output from the verification process"
             method_option :verification_results_content_type, desc: "The content type of the verification output eg. text/plain, application/yaml"
             method_option :verification_results_format, desc: "The format of the verification output eg. junit, text"

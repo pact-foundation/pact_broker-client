@@ -895,7 +895,7 @@ Options:
               # Whether or not the self verification passed successfully.
       [--verification-exit-code=N]
               # The exit code of the verification process. Can be used instead
-                of --verificaiton-success|--no-verification-success for a
+                of --verification-success|--no-verification-success for a
                 simpler build script.
       [--verification-results=VERIFICATION_RESULTS]
               # The path to the file containing the output from the
