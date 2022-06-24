@@ -490,8 +490,8 @@ Description:
   support for environments, deployments and releases. For documentation on how to use can-i-deploy with tags, please see
   https://docs.pact.io/pact_broker/client_cli/can_i_deploy_usage_with_tags/
 
-  Before `can-i-deploy` can be used, the relevant environment resources must first be created in the Pact Broker using the `create-environment` command. The "test"
-  and "production" environments will have been seeded for you. You can check the existing environments by running `pact-broker list-environments`. See
+  Before `can-i-deploy` can be used, the relevant environment resources must first be created in the Pact Broker using the `create-environment` command. The
+  "test" and "production" environments will have been seeded for you. You can check the existing environments by running `pact-broker list-environments`. See
   https://docs.pact.io/pact_broker/client_cli/readme#environments for more information.
 
   $ pact-broker create-environment --name "uat" --display-name "UAT" --no-production
@@ -501,8 +501,8 @@ Description:
 
   $ pact-broker record-deployment --pacticipant Foo --version 173153ae0 --environment uat
 
-  Before an application is deployed or released to an environment, the can-i-deploy command must be run to check that the application version is safe to deploy with
-  the versions of each integrated application that are already in that environment.
+  Before an application is deployed or released to an environment, the can-i-deploy command must be run to check that the application version is safe to deploy
+  with the versions of each integrated application that are already in that environment.
 
   $ pact-broker can-i-deploy --pacticipant PACTICIPANT --version VERSION --to-environment ENVIRONMENT
 
@@ -510,8 +510,8 @@ Description:
 
   $ pact-broker can-i-deploy --pacticipant Foo --version 173153ae0 --to-environment test
 
-  Can-i-deploy can also be used to check if arbitrary versions have a successful verification. When asking "Can I deploy this application version with the latest version
-  from the main branch of another application" it functions as a "can I merge" check.
+  Can-i-deploy can also be used to check if arbitrary versions have a successful verification. When asking "Can I deploy this application version with the
+  latest version from the main branch of another application" it functions as a "can I merge" check.
 
   $ pact-broker can-i-deploy --pacticipant Foo 173153ae0 \ --pacticipant Bar --latest main
 
@@ -658,8 +658,8 @@ Options:
 ```
 
 Description:
-  Create a curl command that executes the request that you want your webhook to execute, then replace "curl" with "pact-broker create-webhook" and add the consumer,
-  provider, event types and broker details. Note that the URL must be the first parameter when executing create-webhook.
+  Create a curl command that executes the request that you want your webhook to execute, then replace "curl" with "pact-broker create-webhook" and add the
+  consumer, provider, event types and broker details. Note that the URL must be the first parameter when executing create-webhook.
 
   Note that the -u option from the curl command clashes with the -u option from the pact-broker CLI. When used in this command, the -u will be used as a curl
   option. Please use the --broker-username or environment variable for the Pact Broker username.
@@ -723,9 +723,9 @@ Options:
 ```
 
 Description:
-  Create a curl command that executes the request that you want your webhook to execute, then replace "curl" with "pact-broker create-or-update-webhook" and add the
-  consumer, provider, event types and broker details. Note that the URL must be the first parameter when executing create-or-update-webhook and a uuid must
-  also be provided. You can generate a valid UUID by using the `generate-uuid` command.
+  Create a curl command that executes the request that you want your webhook to execute, then replace "curl" with "pact-broker create-or-update-webhook" and
+  add the consumer, provider, event types and broker details. Note that the URL must be the first parameter when executing create-or-update-webhook and a uuid
+  must also be provided. You can generate a valid UUID by using the `generate-uuid` command.
 
   Note that the -u option from the curl command clashes with the -u option from the pact-broker CLI. When used in this command, the -u will be used as a curl
   option. Please use the --broker-username or environment variable for the Pact Broker username.
@@ -868,7 +868,7 @@ Options:
 
 Generate a UUID for use when calling create-or-update-webhook
 
-### Provider contracts
+### Provider contracts (Pactflow only)
 
 #### publish-provider-contract
 

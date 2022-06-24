@@ -14,9 +14,9 @@ module PactBroker
             desc 'publish PACT_DIRS_OR_FILES ...', "Publish pacts to a Pact Broker."
             method_option :consumer_app_version, required: true, aliases: "-a", desc: "The consumer application version"
             method_option :branch, aliases: "-h", desc: "Repository branch of the consumer version"
-            method_option :auto_detect_version_properties, hidden: true, type: :boolean, default: false, desc: "Automatically detect the repository branch from known CI environment variables or git CLI."
+            method_option :auto_detect_version_properties, type: :boolean, default: false, desc: "Automatically detect the repository branch from known CI environment variables or git CLI. Supports Buildkite, Circle CI, Travis CI, GitHub Actions, Jenkins, Hudson, AppVeyor, GitLab, CodeShip, Bitbucket and Azure DevOps."
             method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for consumer version. Can be specified multiple times."
-            method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Default: false"
+            method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Supports Buildkite, Circle CI, Travis CI, GitHub Actions, Jenkins, Hudson, AppVeyor, GitLab, CodeShip, Bitbucket and Azure DevOps. Default: false"
             method_option :build_url, desc: "The build URL that created the pact"
             method_option :merge, type: :boolean, default: false, require: false, desc: "If a pact already exists for this consumer version and provider, merge the contents. Useful when running Pact tests concurrently on different build nodes."
             output_option_json_or_text
