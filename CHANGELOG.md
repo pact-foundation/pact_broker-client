@@ -1,3 +1,10 @@
+<a name="v1.65.0"></a>
+### v1.65.0 (2022-06-24)
+
+#### Features
+
+* add support for automatically detecting the git commit and branch for Azure DevOps	 ([889f83f](/../../commit/889f83f))
+
 <a name="v1.64.0"></a>
 ### v1.64.0 (2022-05-27)
 
