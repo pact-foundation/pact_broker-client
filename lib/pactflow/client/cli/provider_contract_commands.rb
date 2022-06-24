@@ -1,10 +1,12 @@
 require "pact_broker/client/hash_refinements"
+require "pact_broker/client/string_refinements"
 
 module Pactflow
   module Client
     module CLI
       module ProviderContractCommands
         using PactBroker::Client::HashRefinements
+        using PactBroker::Client::StringRefinements
 
         def self.included(thor)
           thor.class_eval do
@@ -32,6 +34,7 @@ module Pactflow
             def publish_provider_contract(provider_contract_path)
               require "pactflow/client/provider_contracts/publish"
 
+              validate_pact_broker_url
               validate_publish_provider_contract_options(provider_contract_path)
               result = ::Pactflow::Client::ProviderContracts::Publish.call(
                           publish_provider_contract_command_params(provider_contract_path),
@@ -45,6 +48,12 @@ module Pactflow
             no_commands do
               def command_options
                 { verbose: options.verbose, output: options.output }
+              end
+
+              def validate_pact_broker_url
+                if pact_broker_client_options[:pact_broker_base_url].blank?
+                  raise Thor::Error, "No value provided for required option --broker-base-url or environment variable PACT_BROKER_BASE_URL"
+                end
               end
 
               def validate_publish_provider_contract_options(provider_contract_path)
