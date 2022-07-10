@@ -19,7 +19,7 @@ module PactBroker
         end
 
         def get href, params = {}, headers = {}
-          query = params.collect{ |(key, value)| "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}" }.join("&")
+          query = build_nested_query(params)
           uri = URI(href)
           uri.query = query
           perform_request(create_request(uri, 'Get', nil, headers), uri)
@@ -128,6 +128,29 @@ module PactBroker
 
         def disable_ssl_verification?
           ENV['PACT_DISABLE_SSL_VERIFICATION'] == 'true' || ENV['PACT_BROKER_DISABLE_SSL_VERIFICATION'] == 'true'
+        end
+
+        # From Rack lib/rack/utils.rb
+        def build_nested_query(value, prefix = nil)
+          case value
+          when Array
+            value.map { |v|
+              build_nested_query(v, "#{prefix}[]")
+            }.join("&")
+          when Hash
+            value.map { |k, v|
+              build_nested_query(v, prefix ? "#{prefix}[#{escape(k)}]" : escape(k))
+            }.delete_if(&:empty?).join('&')
+          when nil
+            prefix
+          else
+            raise ArgumentError, "value must be a Hash" if prefix.nil?
+            "#{prefix}=#{escape(value)}"
+          end
+        end
+
+        def escape(s)
+          URI.encode_www_form_component(s)
         end
 
         class Response < SimpleDelegator

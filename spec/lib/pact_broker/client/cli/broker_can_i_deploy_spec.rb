@@ -38,7 +38,7 @@ module PactBroker
         end
 
         it "invokes the CanIDeploy service" do
-          expect(CanIDeploy).to receive(:call).with('http://pact-broker', version_selectors, { to_tag: nil, to_environment: nil, limit: 1000, ignore_selectors: []}, {output: 'table', retry_while_unknown: 1, retry_interval: 2, dry_run: false, verbose: "verbose"}, { pact_broker_base_url: 'http://pact-broker', verbose: 'verbose' })
+          expect(CanIDeploy).to receive(:call).with(version_selectors, { to_tag: nil, to_environment: nil, limit: 1000, ignore_selectors: []}, {output: 'table', retry_while_unknown: 1, retry_interval: 2, dry_run: false, verbose: "verbose"}, { pact_broker_base_url: 'http://pact-broker', verbose: 'verbose' })
           invoke_can_i_deploy
         end
 
@@ -56,7 +56,7 @@ module PactBroker
           end
 
           it "passes the value as the matrix options" do
-            expect(CanIDeploy).to receive(:call).with(anything, anything, {to_tag: 'prod', to_environment: nil, limit: 1000, ignore_selectors: []}, anything, anything)
+            expect(CanIDeploy).to receive(:call).with(anything, {to_tag: 'prod', to_environment: nil, limit: 1000, ignore_selectors: []}, anything, anything)
             invoke_can_i_deploy
           end
         end
@@ -67,7 +67,7 @@ module PactBroker
           end
 
           it "passes the value as the matrix options" do
-            expect(CanIDeploy).to receive(:call).with(anything, anything, {to_tag: nil, to_environment: 'prod', limit: 1000, ignore_selectors: []}, anything, anything)
+            expect(CanIDeploy).to receive(:call).with(anything, {to_tag: nil, to_environment: 'prod', limit: 1000, ignore_selectors: []}, anything, anything)
             invoke_can_i_deploy
           end
         end
@@ -79,7 +79,7 @@ module PactBroker
           end
 
           it "invokes the CanIDeploy service with the basic auth credentials" do
-            expect(CanIDeploy).to receive(:call).with(anything, anything, anything, anything, { pact_broker_base_url: 'http://pact-broker', basic_auth: {username: "foo", password: "bar"}, verbose: 'verbose'})
+            expect(CanIDeploy).to receive(:call).with(anything, anything, anything, { pact_broker_base_url: 'http://pact-broker', basic_auth: {username: "foo", password: "bar"}, verbose: 'verbose'})
             invoke_can_i_deploy
           end
         end
@@ -90,7 +90,7 @@ module PactBroker
           end
 
           it "invokes the CanIDeploy service with the basic auth credentials" do
-            expect(CanIDeploy).to receive(:call).with(anything, anything, anything, anything, {pact_broker_base_url: 'http://pact-broker', token: "some token", verbose: 'verbose'})
+            expect(CanIDeploy).to receive(:call).with(anything, anything, anything, {pact_broker_base_url: 'http://pact-broker', token: "some token", verbose: 'verbose'})
             invoke_can_i_deploy
           end
         end
@@ -102,7 +102,7 @@ module PactBroker
           end
 
           it "invokes the CanIDeploy service with dry_run set to true" do
-            expect(CanIDeploy).to receive(:call).with(anything, anything, anything, hash_including(dry_run: true), anything)
+            expect(CanIDeploy).to receive(:call).with(anything, anything, hash_including(dry_run: true), anything)
             invoke_can_i_deploy
           end
         end

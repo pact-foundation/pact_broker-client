@@ -7,7 +7,7 @@ module PactBroker
       let(:pact_broker_base_url) { 'http://example.org' }
       let(:version_selectors) { [{ pacticipant: "Foo", version: "1" }] }
       let(:matrix_options) { { } }
-      let(:pact_broker_client_options) { { foo: 'bar' } }
+      let(:pact_broker_client_options) { { pact_broker_base_url: pact_broker_base_url, foo: 'bar' } }
       let(:dry_run) { false }
       let(:matrix_client) { instance_double('PactBroker::Client::Matrix') }
       let(:matrix) do
@@ -31,15 +31,14 @@ module PactBroker
 
 
       before do
-        allow_any_instance_of(PactBroker::Client::PactBrokerClient).to receive(:matrix).and_return(matrix_client)
-        allow(matrix_client).to receive(:get).and_return(matrix)
+        allow(PactBroker::Client::Matrix::Query).to receive(:call).and_return(matrix)
         allow(Matrix::Formatter).to receive(:call).and_return('text matrix')
       end
 
-      subject { CanIDeploy.call(pact_broker_base_url, version_selectors, matrix_options, options, pact_broker_client_options) }
+      subject { CanIDeploy.call(version_selectors, matrix_options, options, pact_broker_client_options) }
 
       it "retrieves the matrix from the pact broker" do
-        expect(matrix_client).to receive(:get).with(version_selectors, matrix_options)
+        expect(PactBroker::Client::Matrix::Query).to receive(:call).with({ selectors: version_selectors, matrix_options: matrix_options }, options, pact_broker_client_options)
         subject
       end
 
@@ -193,7 +192,7 @@ module PactBroker
 
       context "when a PactBroker::Client::Error is raised" do
         before do
-          allow(matrix_client).to receive(:get).and_raise(PactBroker::Client::Error.new('error text'))
+          allow(PactBroker::Client::Matrix::Query).to receive(:call).and_raise(PactBroker::Client::Error.new('error text'))
         end
 
         it "returns a failure response" do
@@ -222,7 +221,7 @@ module PactBroker
         before do
           allow(Retry).to receive(:while_error) { |&block| block.call }
           allow($stderr).to receive(:puts)
-          allow(matrix_client).to receive(:get).and_raise(StandardError.new('error text'))
+          allow(PactBroker::Client::Matrix::Query).to receive(:call).and_raise(StandardError.new('error text'))
         end
 
         it "returns a failure response" do

@@ -33,7 +33,7 @@ module PactBroker
               validate_can_i_deploy_selectors(selectors)
               dry_run = options.dry_run || ENV["PACT_BROKER_CAN_I_DEPLOY_DRY_RUN"] == "true"
               can_i_deploy_options = { output: options.output, retry_while_unknown: options.retry_while_unknown, retry_interval: options.retry_interval, dry_run: dry_run, verbose: options.verbose }
-              result = CanIDeploy.call(options.broker_base_url, selectors, { to_tag: options.to, to_environment: options.to_environment, limit: options.limit, ignore_selectors: ignore_selectors }, can_i_deploy_options, pact_broker_client_options)
+              result = CanIDeploy.call(selectors, { to_tag: options.to, to_environment: options.to_environment, limit: options.limit, ignore_selectors: ignore_selectors }, can_i_deploy_options, pact_broker_client_options)
               $stdout.puts result.message
               $stdout.flush
               exit(can_i_deploy_exit_status) unless result.success

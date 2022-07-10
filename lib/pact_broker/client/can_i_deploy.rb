@@ -4,6 +4,7 @@ require 'pact_broker/client/retry'
 require 'pact_broker/client/matrix/formatter'
 require 'term/ansicolor'
 require 'pact_broker/client/colorize_notices'
+require "pact_broker/client/matrix/query"
 
 module PactBroker
   module Client
@@ -18,12 +19,11 @@ module PactBroker
         end
       end
 
-      def self.call(pact_broker_base_url, version_selectors, matrix_options, options, pact_broker_client_options={})
-        new(pact_broker_base_url, version_selectors, matrix_options, options, pact_broker_client_options).call
+      def self.call(version_selectors, matrix_options, options, pact_broker_client_options={})
+        new(version_selectors, matrix_options, options, pact_broker_client_options).call
       end
 
-      def initialize(pact_broker_base_url, version_selectors, matrix_options, options, pact_broker_client_options)
-        @pact_broker_base_url = pact_broker_base_url
+      def initialize(version_selectors, matrix_options, options, pact_broker_client_options)
         @version_selectors = version_selectors
         @matrix_options = matrix_options
         @options = options
@@ -32,15 +32,13 @@ module PactBroker
 
       def call
         create_result(fetch_matrix_with_retries)
-      rescue PactBroker::Client::Error => e
-        Result.new(dry_run_or_false, for_dry_run(Term::ANSIColor.red(e.message)))
       rescue StandardError => e
         Result.new(dry_run_or_false, for_dry_run(Term::ANSIColor.red("Error retrieving matrix. #{e.class} - #{e.message}") + "\n#{e.backtrace.join("\n")}"))
       end
 
       private
 
-      attr_reader :pact_broker_base_url, :version_selectors, :matrix_options, :options, :pact_broker_client_options
+      attr_reader :version_selectors, :matrix_options, :options, :pact_broker_client_options
 
       def create_result(matrix)
         if matrix.deployable?
@@ -106,7 +104,7 @@ module PactBroker
       end
 
       def fetch_matrix
-        Retry.while_error { pact_broker_client.matrix.get(version_selectors, matrix_options) }
+        Retry.while_error { PactBroker::Client::Matrix::Query.call({ selectors: version_selectors, matrix_options: matrix_options }, options, pact_broker_client_options) }
       end
 
       def fetch_matrix_with_retries
@@ -122,10 +120,6 @@ module PactBroker
           end
         end
         matrix
-      end
-
-      def pact_broker_client
-        @pact_broker_client ||= PactBroker::Client::PactBrokerClient.new(base_url: pact_broker_base_url, client_options: pact_broker_client_options)
       end
 
       def retry_while_unknown?

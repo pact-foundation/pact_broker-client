@@ -1,5 +1,6 @@
 require_relative 'pact_helper'
 require 'pact_broker/client'
+require "pact_broker/client/matrix/query"
 
 module PactBroker::Client
   describe Matrix, :pact => true do
@@ -10,6 +11,9 @@ module PactBroker::Client
       let(:matrix_response_body) { Pact.like(matrix) }
       let(:matrix) { JSON.parse(File.read('spec/support/matrix.json')) }
       let(:selectors) { [{ pacticipant: "Foo", version: "1.2.3" }, { pacticipant: "Bar", version: "4.5.6" }] }
+      let(:options) { {} }
+
+      subject { PactBroker::Client::Matrix::Query.call({ selectors: selectors, options: options }, {}, { pact_broker_base_url: pact_broker.mock_service_base_url }) }
 
       context "when results are found" do
         before do
@@ -29,7 +33,7 @@ module PactBroker::Client
         end
 
         it 'returns the pact matrix' do
-          matrix = pact_broker_client.matrix.get(selectors)
+          matrix = subject
           expect(matrix[:matrix].size).to eq 1
         end
       end
@@ -54,7 +58,7 @@ module PactBroker::Client
         let(:selectors) { [{ pacticipant: "Foo Thing", version: "1.2.3" }, { pacticipant: "Bar", version: "4.5.6" }] }
 
         it 'incorrectly escapes the spaces but it still seems to work' do
-          matrix = pact_broker_client.matrix.get(selectors)
+          matrix = subject
           expect(matrix[:matrix].size).to eq 1
         end
       end
@@ -79,7 +83,7 @@ module PactBroker::Client
         let(:selectors) { [{ pacticipant: "Foo", version: "1.2.3" }] }
 
         it 'returns the row with the lastest verification for version 1.2.3' do
-          matrix = pact_broker_client.matrix.get(selectors)
+          matrix = subject
           expect(matrix[:matrix].size).to eq 1
         end
       end
@@ -108,7 +112,7 @@ module PactBroker::Client
         let(:selectors) { [{ pacticipant: "Foo", version: "1.2.3" }, { pacticipant: "Bar", version: "9.9.9" }] }
 
         it 'does not raise an error' do
-          pact_broker_client.matrix.get(selectors)
+          subject
         end
       end
 
@@ -134,8 +138,8 @@ module PactBroker::Client
 
         it 'raises an error' do
           expect {
-            pact_broker_client.matrix.get(selectors)
-          }.to raise_error PactBroker::Client::Error, "an error message"
+            subject
+          }.to raise_error PactBroker::Client::Hal::ErrorResponseReturned, /an error message/
         end
       end
 
@@ -161,7 +165,7 @@ module PactBroker::Client
         let(:selectors) { [{ pacticipant: "Foo" }, { pacticipant: "Bar" }] }
 
         it "returns multiple rows" do
-          matrix = pact_broker_client.matrix.get(selectors)
+          matrix = subject
           expect(matrix[:matrix].size).to eq 2
         end
       end

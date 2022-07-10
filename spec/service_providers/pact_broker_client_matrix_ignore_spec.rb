@@ -88,7 +88,7 @@ module PactBroker::Client
           )
       end
 
-      subject { PactBroker::Client::CanIDeploy.call(broker_base_url, selectors, matrix_options, options, {})}
+      subject { PactBroker::Client::CanIDeploy.call(selectors, matrix_options, options, { pact_broker_base_url: broker_base_url })}
 
       it 'returns the CLI output' do
         Approvals.verify(subject.message, :name => "can_i_deploy_ignore", format: :txt)
