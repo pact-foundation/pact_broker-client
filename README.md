@@ -134,7 +134,7 @@ Options:
               # The display name of the environment
       [--production], [--no-production]
               # Whether or not this environment is a production environment.
-                Default: false
+                This is currently informational only. Default: false
       [--contact-name=CONTACT_NAME]
               # The name of the team/person responsible for this environment
       [--contact-email-address=CONTACT_EMAIL_ADDRESS]
@@ -173,7 +173,7 @@ Options:
               # The display name of the environment
       [--production], [--no-production]
               # Whether or not this environment is a production environment.
-                Default: false
+                This is currently informational only. Default: false
       [--contact-name=CONTACT_NAME]
               # The name of the team/person responsible for this environment
       [--contact-email-address=CONTACT_EMAIL_ADDRESS]

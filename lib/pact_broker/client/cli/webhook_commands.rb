@@ -38,10 +38,9 @@ module PactBroker
               run_webhook_commands webhook_url
             end
 
+            desc 'create-or-update-webhook URL', 'Creates or updates a webhook with a provided uuid and using the same switches as a curl request.'
             shared_options_for_webhook_commands
             method_option :uuid, type: :string, required: true, desc: "Specify the uuid for the webhook"
-
-            desc 'create-or-update-webhook URL', 'Creates or updates a webhook with a provided uuid and using the same switches as a curl request.'
             long_desc File.read(File.join(File.dirname(__FILE__), 'create_or_update_webhook_long_desc.txt'))
             def create_or_update_webhook webhook_url
               run_webhook_commands webhook_url

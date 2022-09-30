@@ -9,7 +9,7 @@ module PactBroker
             def self.shared_environment_options(name_required: false)
               method_option :name, required: name_required, desc: "The uniquely identifying name of the environment as used in deployment code"
               method_option :display_name, desc: "The display name of the environment"
-              method_option :production, type: :boolean, default: false, desc: "Whether or not this environment is a production environment. Default: false"
+              method_option :production, type: :boolean, default: false, desc: "Whether or not this environment is a production environment. This is currently informational only. Default: false"
               method_option :contact_name, required: false, desc: "The name of the team/person responsible for this environment"
               method_option :contact_email_address, required: false, desc: "The email address of the team/person responsible for this environment"
               output_option_json_or_text
