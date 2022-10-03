@@ -43,6 +43,9 @@ module PactBroker
           if matrix_options[:to_tag]
             opts[:latest] = 'true'
             opts[:tag] = matrix_options[:to_tag]
+          elsif matrix_options[:with_main_branches]
+            opts[:latest] = 'true'
+            opts[:mainBranch] = 'true'
           elsif selectors.size == 1 && !matrix_options[:to_environment]
             opts[:latest] = 'true'
           end
@@ -59,10 +62,10 @@ module PactBroker
               hash[:latest] = 'true' if selector[:latest]
               hash[:tag] = selector[:tag] if selector[:tag]
               hash[:branch] = selector[:branch] if selector[:branch]
+              hash[:mainBranch] = 'true' if selector[:main_branch]
             end
           end
         end
-
 
         def result_message
           if json_output?

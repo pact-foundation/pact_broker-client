@@ -17,6 +17,10 @@ module PactBroker
             when "--latest", "-l"
               selectors << { pacticipant: nil } if selectors.empty?
               selectors.last[:latest] = true
+            when "--main-branch"
+              selectors << { pacticipant: nil } if selectors.empty?
+              selectors.last[:main_branch] = true
+              selectors.last[:latest] = true
             when /^\-/
               nil
             else
@@ -34,6 +38,10 @@ module PactBroker
               when "--branch"
                 selectors << { pacticipant: nil } if selectors.empty?
                 selectors.last[:branch] = word
+                selectors.last[:latest] = true
+              when "--main-branch"
+                selectors << { pacticipant: nil } if selectors.empty?
+                selectors.last[:main_branch] = true
                 selectors.last[:latest] = true
               when "--all"
                 selectors << { pacticipant: nil } if selectors.empty?
