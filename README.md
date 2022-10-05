@@ -440,7 +440,7 @@ Options:
       [--branch=BRANCH]
               # The branch of the version for which you want to check the
                 verification results.
-      [--main-branch=MAIN_BRANCH]
+      [--main-branch], [--no-main-branch]
               # Use the latest version of the configured main branch of the
                 pacticipant as the version for which you want to check the
                 verification results
