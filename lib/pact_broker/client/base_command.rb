@@ -90,6 +90,10 @@ module PactBroker
         ::Term::ANSIColor.green(text)
       end
 
+      def blue(text)
+        ::Term::ANSIColor.blue(text)
+      end
+
       def red(text)
         ::Term::ANSIColor.red(text)
       end
