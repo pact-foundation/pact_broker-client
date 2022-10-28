@@ -77,7 +77,7 @@ module PactBroker
           if dry_run?
             "Computer says no ¯\\_(ツ)_/¯ (but you're ignoring this by enabling dry run)"
           else
-            Term::ANSIColor.red("Computer says no ¯\_(ツ)_/¯")
+            Term::ANSIColor.red("Computer says no ¯\\_(ツ)_/¯")
           end
         end
       end
