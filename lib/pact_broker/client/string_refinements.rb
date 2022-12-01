@@ -5,6 +5,10 @@ module PactBroker
         def blank?
           true
         end
+
+        def not_blank?
+          false
+        end
       end
 
       refine String do

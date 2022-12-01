@@ -437,7 +437,10 @@ Options:
       [--ignore=IGNORE]
               # The pacticipant name to ignore. Use once for each pacticipant
                 being ignored. A specific version can be ignored by also
-                specifying a --version after the pacticipant name option.
+                specifying a --version after the pacticipant name option. The
+                environment variable PACT_BROKER_CAN_I_DEPLOY_IGNORE may also
+                be used to specify a pacticipant name to ignore, with commas to
+                separate multiple pacticipant names if necessary.
   -l, [--latest=[TAG]]
               # Use the latest pacticipant version. Optionally specify a TAG
                 to use the latest version with the specified tag.
