@@ -1,3 +1,20 @@
+<a name="v1.66.0"></a>
+### v1.66.0 (2022-12-01)
+
+#### Features
+
+* **can-i-deploy**
+  * support specifying --ignore using the environment variable PACT_BROKER_CAN_I_DEPLOY_IGNORE	 ([04a0894](/../../commit/04a0894))
+
+* refactor can-i-deploy to use HAL Client instead of HTTParty	 ([d21efe6](/../../commit/d21efe6))
+
+#### Bug Fixes
+
+* found the missing computer arm when computer says no (#120)	 ([7b8ea24](/../../commit/7b8ea24))
+
+* **publish-provider-contract**
+  * raise validation error when pact broker base URL is missing or blank	 ([2d719c3](/../../commit/2d719c3))
+
 <a name="v1.65.0"></a>
 ### v1.65.0 (2022-06-24)
 
