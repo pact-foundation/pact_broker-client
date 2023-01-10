@@ -1,3 +1,11 @@
+<a name="v1.66.1"></a>
+### v1.66.1 (2023-01-11)
+
+#### Bug Fixes
+
+* **deps**
+  * update httparty for https://github.com/jnunemaker/httparty/security/advisories/GHSA-5pq7-52mg-hr42	 ([08597c2](/../../commit/08597c2))
+
 <a name="v1.66.0"></a>
 ### v1.66.0 (2022-12-01)
 
