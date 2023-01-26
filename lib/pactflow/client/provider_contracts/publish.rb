@@ -23,7 +23,7 @@ module Pactflow
         def do_call
           create_branch_version_and_tags
           create_contract
-          PactBroker::Client::CommandResult.new(true, green("Successfully published provider contract for #{provider_name} version #{provider_version_number} to Pactflow"))
+          PactBroker::Client::CommandResult.new(true, green("Successfully published provider contract for #{provider_name} version #{provider_version_number} to PactFlow"))
         end
 
         def create_branch_version_and_tags

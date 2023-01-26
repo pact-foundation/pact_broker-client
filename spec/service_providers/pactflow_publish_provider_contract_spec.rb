@@ -2,7 +2,7 @@ require_relative "pact_helper"
 require "pactflow/client/provider_contracts/publish"
 require "yaml"
 
-RSpec.describe "publishing a provider contract to Pactflow", pact: true do
+RSpec.describe "publishing a provider contract to PactFlow", pact: true do
   before do
     # no point re-testing this
     allow(PactBroker::Client::Versions::Create).to receive(:call).and_return(double("result", success: true))

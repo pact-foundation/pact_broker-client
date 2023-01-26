@@ -29,7 +29,7 @@ module PactBroker
       end
 
       def pact_broker_name
-        is_pactflow? ? "Pactflow" : "the Pact Broker"
+        is_pactflow? ? "PactFlow" : "the Pact Broker"
       end
     end
   end

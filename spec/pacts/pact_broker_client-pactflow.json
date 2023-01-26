@@ -3,7 +3,7 @@
     "name": "Pact Broker Client"
   },
   "provider": {
-    "name": "Pactflow"
+    "name": "PactFlow"
   },
   "interactions": [
     {
