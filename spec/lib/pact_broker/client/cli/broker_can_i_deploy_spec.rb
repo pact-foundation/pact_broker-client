@@ -70,6 +70,16 @@ module PactBroker
             expect(CanIDeploy).to receive(:call).with(anything, {to_tag: nil, to_environment: 'prod', limit: 1000, ignore_selectors: []}, anything, anything)
             invoke_can_i_deploy
           end
+
+          context "when the environment is an empty string" do
+            before do
+              subject.options.to_environment = ' '
+            end
+
+            it "raises an error" do
+              expect { invoke_can_i_deploy }.to raise_error ::Thor::RequiredArgumentMissingError
+            end
+          end
         end
 
         context "with basic auth" do
