@@ -26,7 +26,7 @@ module Pactflow
         end
 
         def render_response(res)
-          if res.body && res.body['_links'] && res.body['_links']['pf:ui']['href']
+          if res.body && res._link('pf:ui')&.href
             ui_url = "\nView the uploaded contract at #{blue(res.body['_links']['pf:ui']['href'])}"
             PactBroker::Client::CommandResult.new(true,
                                                   green("Successfully published provider contract for #{provider_name} version #{provider_version_number} to Pactflow#{ui_url}#{next_steps}"))
