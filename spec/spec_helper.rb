@@ -1,6 +1,8 @@
 require 'webmock/rspec'
 require 'rspec/its'
 
+ENV["PACT_BROKER_CAN_I_DEPLOY_IGNORE"] = nil
+
 WebMock.disable_net_connect!(allow_localhost: true)
 
 require "./spec/support/shared_context.rb"

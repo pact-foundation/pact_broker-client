@@ -70,6 +70,16 @@ module PactBroker
             expect(CanIDeploy).to receive(:call).with(anything, {to_tag: nil, to_environment: 'prod', limit: 1000, ignore_selectors: []}, anything, anything)
             invoke_can_i_deploy
           end
+
+          context "when the environment is an empty string" do
+            before do
+              subject.options.to_environment = ' '
+            end
+
+            it "raises an error" do
+              expect { invoke_can_i_deploy }.to raise_error ::Thor::RequiredArgumentMissingError
+            end
+          end
         end
 
         context "with basic auth" do
@@ -103,6 +113,18 @@ module PactBroker
 
           it "invokes the CanIDeploy service with dry_run set to true" do
             expect(CanIDeploy).to receive(:call).with(anything, anything, hash_including(dry_run: true), anything)
+            invoke_can_i_deploy
+          end
+        end
+
+        context "when PACT_BROKER_CAN_I_DEPLOY_IGNORE=Some Service" do
+          before do
+            allow(ENV).to receive(:fetch).and_call_original
+            allow(ENV).to receive(:fetch).with("PACT_BROKER_CAN_I_DEPLOY_IGNORE", "").and_return("Some Service, Some Other Service")
+          end
+
+          it "invokes the CanIDeploy service with ignore selectors" do
+            expect(CanIDeploy).to receive(:call).with(anything, hash_including(ignore_selectors: [ { pacticipant: "Some Service" }, { pacticipant: "Some Other Service" } ]), anything, anything)
             invoke_can_i_deploy
           end
         end

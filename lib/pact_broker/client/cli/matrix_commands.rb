@@ -2,15 +2,15 @@ module PactBroker
   module Client
     module CLI
       module MatrixCommands
-
         def self.included(thor)
           thor.class_eval do
+
             desc "can-i-deploy", ""
             long_desc File.read(File.join(__dir__, "can_i_deploy_long_desc.txt"))
 
             method_option :pacticipant, required: true, aliases: "-a", desc: "The pacticipant name. Use once for each pacticipant being checked."
             method_option :version, required: false, aliases: "-e", desc: "The pacticipant version. Must be entered after the --pacticipant that it relates to."
-            method_option :ignore, required: false, desc: "The pacticipant name to ignore. Use once for each pacticipant being ignored. A specific version can be ignored by also specifying a --version after the pacticipant name option."
+            method_option :ignore, required: false, desc: "The pacticipant name to ignore. Use once for each pacticipant being ignored. A specific version can be ignored by also specifying a --version after the pacticipant name option. The environment variable PACT_BROKER_CAN_I_DEPLOY_IGNORE may also be used to specify a pacticipant name to ignore, with commas to separate multiple pacticipant names if necessary."
             method_option :latest, required: false, aliases: "-l", banner: "[TAG]", desc: "Use the latest pacticipant version. Optionally specify a TAG to use the latest version with the specified tag."
             method_option :to_environment, required: false, banner: "ENVIRONMENT", desc: "The environment into which the pacticipant(s) are to be deployed", default: nil
             method_option :branch, required: false, desc: "The branch of the version for which you want to check the verification results", default: nil
@@ -29,8 +29,9 @@ module PactBroker
 
               validate_credentials
               selectors = VersionSelectorOptionsParser.call(ARGV).select { |s| !s[:ignore] }
-              ignore_selectors = VersionSelectorOptionsParser.call(ARGV).select { |s| s[:ignore] }
+              ignore_selectors = VersionSelectorOptionsParser.call(ARGV).select { |s| s[:ignore] } + ignore_selectors_from_environment_variable
               validate_can_i_deploy_selectors(selectors)
+              validate_can_i_deploy_options
               dry_run = options.dry_run || ENV["PACT_BROKER_CAN_I_DEPLOY_DRY_RUN"] == "true"
               can_i_deploy_options = { output: options.output, retry_while_unknown: options.retry_while_unknown, retry_interval: options.retry_interval, dry_run: dry_run, verbose: options.verbose }
               result = CanIDeploy.call(selectors, { to_tag: options.to, to_environment: options.to_environment, limit: options.limit, ignore_selectors: ignore_selectors }, can_i_deploy_options, pact_broker_client_options)
@@ -80,6 +81,16 @@ module PactBroker
               def validate_can_i_deploy_selectors selectors
                 pacticipants_without_versions = selectors.select{ |s| s[:version].nil? && s[:latest].nil? && s[:tag].nil? && s[:branch].nil? }.collect{ |s| s[:pacticipant] }
                 raise ::Thor::RequiredArgumentMissingError, "The version must be specified using `--version VERSION`, `--branch BRANCH` `--latest`, `--latest TAG`, or `--all TAG` for pacticipant #{pacticipants_without_versions.join(", ")}" if pacticipants_without_versions.any?
+              end
+
+              def validate_can_i_deploy_options
+                if options[:to_environment] && options[:to_environment].blank?
+                  raise ::Thor::RequiredArgumentMissingError, "The environment name cannot be blank"
+                end
+              end
+
+              def ignore_selectors_from_environment_variable
+                ENV.fetch("PACT_BROKER_CAN_I_DEPLOY_IGNORE", "").split(",").collect(&:strip).collect{ |i| { pacticipant: i } }
               end
             end
           end
