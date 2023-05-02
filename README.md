@@ -522,7 +522,6 @@ Description:
 
   $ pact-broker can-i-deploy --pacticipant Foo 173153ae0 \ --pacticipant Bar --latest main
 
-<!-- This was manually outdented - TODO fix this in the script/update-cli-usage-in-readme.rb script -->
 ##### Polling
 
 If the verification process takes a long time and there are results missing when the can-i-deploy command runs in your CI/CD pipeline, you can configure the
