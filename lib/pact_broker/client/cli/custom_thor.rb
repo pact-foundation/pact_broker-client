@@ -16,7 +16,7 @@ module PactBroker
 
         no_commands do
           def initialize(args = [], options = {}, config = {})
-            super(args, options, config)
+            super
             postprocess_options
           end
 
