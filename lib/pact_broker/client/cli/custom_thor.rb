@@ -14,7 +14,7 @@ module PactBroker
       class CustomThor < ::Thor
         using PactBroker::Client::HashRefinements
 
-        def initialize(args = nil, options = nil, config = nil)
+        def initialize(args = [], options = {}, config = {})
           super(args, options, config)
           postprocess_options
         end
