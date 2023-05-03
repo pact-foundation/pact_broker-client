@@ -37,6 +37,44 @@
       }
     },
     {
+      "description": "a request to create a provider contract",
+      "providerState": "there is a pf:ui href in the response",
+      "request": {
+        "method": "put",
+        "path": "/contracts/provider/Bar/version/1",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "content": "LS0tCjpzb21lOiBjb250cmFjdAo=",
+          "contractType": "oas",
+          "contentType": "application/yaml",
+          "verificationResults": {
+            "success": true,
+            "content": "c29tZSByZXN1bHRz",
+            "contentType": "text/plain",
+            "format": "text",
+            "verifier": "my custom tool",
+            "verifierVersion": "1.0"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pf:ui": {
+              "href": "http://localhost:1235/contracts/bi-directional/provider/Bar/version/1/provider-contract"
+            }
+          }
+        }
+      }
+    },
+    {
       "description": "a request for the index resource",
       "request": {
         "method": "get",
