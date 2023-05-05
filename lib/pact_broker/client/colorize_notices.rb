@@ -11,20 +11,22 @@ module PactBroker
 
       def self.colorized_message(notice)
         color = color_for_type(notice.type)
-        uri_string = ::URI.extract(notice.text, %w(http https))
-        if color && uri_string.count >= 1
-          color_for_url(::Term::ANSIColor.color(color, notice.text || ''), uri_string)
+        uri_strings = ::URI.extract(notice.text, %w(http https))
+        if color && uri_strings.any?
+          color_for_url(::Term::ANSIColor.color(color, notice.text || ''), uri_strings)
         elsif color
           ::Term::ANSIColor.color(color, notice.text || '')
-        elsif uri_string.count >= 1
-          color_for_url(notice.text, uri_string)
+        elsif uri_strings.any?
+          color_for_url(notice.text, uri_strings)
         else
           notice.text
         end
       end
 
       def self.color_for_url(text, uris)
-        text.gsub!(uris.first, ::Term::ANSIColor.magenta(uris.first))
+        uris.inject(text) do | new_text, uri  |
+          new_text.gsub(uri, ::Term::ANSIColor.magenta(uri))
+        end
       end
 
       def self.color_for_type(type)

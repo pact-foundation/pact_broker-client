@@ -43,10 +43,10 @@ module Pactflow
           [
             { type: 'prompt', text: 'Next steps:' },
             { type: 'prompt',
-              text: '   Check your application is safe to deploy - https://docs.pact.io/can_i_deploy' },
+              text: '  * Check your application is safe to deploy - https://docs.pact.io/can_i_deploy' },
             { text: "       pact-broker can-i-deploy --pacticipant #{provider_name} --version #{provider_version_number} --to-environment <your environment name>" },
             { type: 'prompt',
-              text: '   Record deployment or release to specified environment (choose one) - https://docs.pact.io/go/record-deployment :' },
+              text: '  * Record deployment or release to specified environment (choose one) - https://docs.pact.io/go/record-deployment' },
             { text: "       pact-broker record-deployment --pacticipant #{provider_name} --version #{provider_version_number} --environment <your environment name>" },
             { text: "       pact-broker record-release --pacticipant #{provider_name} --version #{provider_version_number} --environment <your environment name>" }
           ]
