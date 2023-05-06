@@ -72,11 +72,19 @@ module PactBroker::Client::CLI
       end
     end
 
-    it "removes trailing slashes from the broker base url" do
+    it "removes trailing slashes from the broker base url when passed as an arg" do
       expect(Delegate).to receive(:call) do | options |
         expect(options.broker_base_url).to eq 'http://bar'
       end
       TestThor.start(%w{test_using_env_vars --broker-base-url http://bar/})
+    end
+
+    it "removes trailing slashes from the broker base url when passed as an env var" do
+      ENV['PACT_BROKER_BASE_URL'] = 'http://bar/'
+      expect(Delegate).to receive(:call) do | options |
+        expect(options.broker_base_url).to eq 'http://bar'
+      end
+      TestThor.start(%w{test_using_env_vars})
     end
 
     describe ".turn_muliple_tag_options_into_array" do
