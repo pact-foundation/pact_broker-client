@@ -1,5 +1,6 @@
 require "pact_broker/client/base_command"
 require "pact_broker/client/versions/create"
+require 'pact_broker/client/colorize_notices'
 require "base64"
 
 module Pactflow
@@ -22,8 +23,33 @@ module Pactflow
 
         def do_call
           create_branch_version_and_tags
-          create_contract
-          PactBroker::Client::CommandResult.new(true, green("Successfully published provider contract for #{provider_name} version #{provider_version_number} to PactFlow"))
+          render_response(create_contract)
+        end
+
+        def render_response(res)
+          notices = [
+            { type: 'success', text: "Successfully published provider contract for #{provider_name} version #{provider_version_number} to PactFlow"},
+          ]
+          if res.body && res.body['_links'] && res.body['_links']['pf:ui']['href']
+            notices.concat([{ text: "View the uploaded contract at #{res.body['_links']['pf:ui']['href']}" }])
+          end
+          notices.concat(next_steps)
+          PactBroker::Client::CommandResult.new(true, PactBroker::Client::ColorizeNotices.call(notices.collect do |n|
+                                                                                                 OpenStruct.new(n)
+                                                                                               end).join("\n"))
+        end
+
+        def next_steps
+          [
+            { type: 'prompt', text: 'Next steps:' },
+            { type: 'prompt',
+              text: '  * Check your application is safe to deploy - https://docs.pact.io/can_i_deploy' },
+            { text: "       pact-broker can-i-deploy --pacticipant #{provider_name} --version #{provider_version_number} --to-environment <your environment name>" },
+            { type: 'prompt',
+              text: '  * Record deployment or release to specified environment (choose one) - https://docs.pact.io/go/record-deployment' },
+            { text: "       pact-broker record-deployment --pacticipant #{provider_name} --version #{provider_version_number} --environment <your environment name>" },
+            { text: "       pact-broker record-release --pacticipant #{provider_name} --version #{provider_version_number} --environment <your environment name>" }
+          ]
         end
 
         def create_branch_version_and_tags
@@ -44,7 +70,7 @@ module Pactflow
         def create_contract
           contract_path = "#{pact_broker_base_url}/contracts/provider/{provider}/version/{version}"
           entrypoint = create_entry_point(contract_path, pact_broker_client_options)
-          entrypoint.expand(provider: provider_name, version: provider_version_number).put!(contract_params)
+          entrypoint.expand(provider: provider_name, version: provider_version_number).put!(contract_params).response
         end
 
         def contract_params
@@ -56,7 +82,7 @@ module Pactflow
                                           verifier: verification_results[:verifier],
                                           verifierVersion: verification_results[:verifier_version]
                                         }.compact
-
+                                        
           body_params = {
                           content: encode_content(contract[:content]),
                           contractType: contract[:specification],
@@ -66,7 +92,6 @@ module Pactflow
           if verification_results_params.any?
             body_params[:verificationResults] = verification_results_params
           end
-
           body_params
         end
 

@@ -522,6 +522,12 @@ Description:
 
   $ pact-broker can-i-deploy --pacticipant Foo 173153ae0 \ --pacticipant Bar --latest main
 
+##### Polling
+
+If the verification process takes a long time and there are results missing when the can-i-deploy command runs in your CI/CD pipeline, you can configure the
+command to poll and wait for the missing results to arrive. The arguments to specify are `--retry-while-unknown TIMES` and `--retry-interval SECONDS`, set to
+appropriate values for your pipeline.
+
 ### Pacticipants
 
 #### create-or-update-pacticipant

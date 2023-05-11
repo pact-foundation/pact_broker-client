@@ -6,6 +6,8 @@
 
 * [A request to create a provider contract](#a_request_to_create_a_provider_contract)
 
+* [A request to create a provider contract](#a_request_to_create_a_provider_contract_given_there_is_a_pf:ui_href_in_the_response) given there is a pf:ui href in the response
+
 * [A request to create a webhook for a team](#a_request_to_create_a_webhook_for_a_team_given_a_team_with_UUID_2abbc12a-427d-432a-a521-c870af1739d9_exists) given a team with UUID 2abbc12a-427d-432a-a521-c870af1739d9 exists
 
 #### Interactions
@@ -74,6 +76,47 @@ PactFlow will respond with:
   "status": 201,
   "headers": {
     "Content-Type": "application/hal+json;charset=utf-8"
+  }
+}
+```
+<a name="a_request_to_create_a_provider_contract_given_there_is_a_pf:ui_href_in_the_response"></a>
+Given **there is a pf:ui href in the response**, upon receiving **a request to create a provider contract** from Pact Broker Client, with
+```json
+{
+  "method": "put",
+  "path": "/contracts/provider/Bar/version/1",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/hal+json"
+  },
+  "body": {
+    "content": "LS0tCjpzb21lOiBjb250cmFjdAo=",
+    "contractType": "oas",
+    "contentType": "application/yaml",
+    "verificationResults": {
+      "success": true,
+      "content": "c29tZSByZXN1bHRz",
+      "contentType": "text/plain",
+      "format": "text",
+      "verifier": "my custom tool",
+      "verifierVersion": "1.0"
+    }
+  }
+}
+```
+Pactflow will respond with:
+```json
+{
+  "status": 201,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "pf:ui": {
+        "href": "http://localhost:1235/contracts/bi-directional/provider/Bar/version/1/provider-contract"
+      }
+    }
   }
 }
 ```

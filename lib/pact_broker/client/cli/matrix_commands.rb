@@ -31,6 +31,7 @@ module PactBroker
               selectors = VersionSelectorOptionsParser.call(ARGV).select { |s| !s[:ignore] }
               ignore_selectors = VersionSelectorOptionsParser.call(ARGV).select { |s| s[:ignore] } + ignore_selectors_from_environment_variable
               validate_can_i_deploy_selectors(selectors)
+              validate_can_i_deploy_options
               dry_run = options.dry_run || ENV["PACT_BROKER_CAN_I_DEPLOY_DRY_RUN"] == "true"
               can_i_deploy_options = { output: options.output, retry_while_unknown: options.retry_while_unknown, retry_interval: options.retry_interval, dry_run: dry_run, verbose: options.verbose }
               result = CanIDeploy.call(selectors, { to_tag: options.to, to_environment: options.to_environment, limit: options.limit, ignore_selectors: ignore_selectors }, can_i_deploy_options, pact_broker_client_options)
@@ -80,6 +81,12 @@ module PactBroker
               def validate_can_i_deploy_selectors selectors
                 pacticipants_without_versions = selectors.select{ |s| s[:version].nil? && s[:latest].nil? && s[:tag].nil? && s[:branch].nil? }.collect{ |s| s[:pacticipant] }
                 raise ::Thor::RequiredArgumentMissingError, "The version must be specified using `--version VERSION`, `--branch BRANCH` `--latest`, `--latest TAG`, or `--all TAG` for pacticipant #{pacticipants_without_versions.join(", ")}" if pacticipants_without_versions.any?
+              end
+
+              def validate_can_i_deploy_options
+                if options[:to_environment] && options[:to_environment].blank?
+                  raise ::Thor::RequiredArgumentMissingError, "The environment name cannot be blank"
+                end
               end
 
               def ignore_selectors_from_environment_variable
