@@ -1,6 +1,6 @@
-### A pact between Pact Broker Client and Pactflow
+### A pact between Pact Broker Client and PactFlow
 
-#### Requests from Pact Broker Client to Pactflow
+#### Requests from Pact Broker Client to PactFlow
 
 * [A request for the index resource](#a_request_for_the_index_resource)
 
@@ -23,7 +23,7 @@ Upon receiving **a request for the index resource** from Pact Broker Client, wit
   }
 }
 ```
-Pactflow will respond with:
+PactFlow will respond with:
 ```json
 {
   "status": 200,
@@ -70,7 +70,7 @@ Upon receiving **a request to create a provider contract** from Pact Broker Clie
   }
 }
 ```
-Pactflow will respond with:
+PactFlow will respond with:
 ```json
 {
   "status": 201,
@@ -152,7 +152,7 @@ Given **a team with UUID 2abbc12a-427d-432a-a521-c870af1739d9 exists**, upon rec
   }
 }
 ```
-Pactflow will respond with:
+PactFlow will respond with:
 ```json
 {
   "status": 201,

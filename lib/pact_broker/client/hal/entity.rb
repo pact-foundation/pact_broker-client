@@ -163,7 +163,7 @@ module PactBroker
         end
 
         def relation_not_found_error_message(key, href)
-          "Could not find relation '#{key}' in resource at #{href}. The most likely reason for this is that you are on an old version of the Pact Broker and you need to upgrade, or you are using Pactflow and you don't have the permissions required for this action."
+          "Could not find relation '#{key}' in resource at #{href}. The most likely reason for this is that you are on an old version of the Pact Broker and you need to upgrade, or you are using PactFlow and you don't have the permissions required for this action."
         end
       end
 

@@ -28,7 +28,7 @@ module Pactflow
 
         def render_response(res)
           notices = [
-            { type: 'success', text: "Successfully published provider contract for #{provider_name} version #{provider_version_number} to Pactflow"},
+            { type: 'success', text: "Successfully published provider contract for #{provider_name} version #{provider_version_number} to PactFlow"},
           ]
           if res.body && res.body['_links'] && res.body['_links']['pf:ui']['href']
             notices.concat([{ text: "View the uploaded contract at #{res.body['_links']['pf:ui']['href']}" }])

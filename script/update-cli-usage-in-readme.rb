@@ -22,7 +22,7 @@ PACT_BROKER_COMMAND_GROUPS = [
 ]
 
 PACTFLOW_COMMAND_GROUPS = [
-  [Pactflow::Client::CLI::Pactflow, "Provider contracts (Pactflow only)", %w[publish-provider-contract]]
+  [Pactflow::Client::CLI::Pactflow, "Provider contracts (PactFlow only)", %w[publish-provider-contract]]
 ]
 
 def print_wrapped(message, options = {})
