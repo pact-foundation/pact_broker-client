@@ -1,5 +1,6 @@
 require "pact_broker/client/base_command"
 require "pact_broker/client/versions/create"
+require 'pact_broker/client/colorize_notices'
 require "base64"
 
 module Pactflow
@@ -26,23 +27,29 @@ module Pactflow
         end
 
         def render_response(res)
+          notices = [
+            { type: 'success', text: "Successfully published provider contract for #{provider_name} version #{provider_version_number} to Pactflow"},
+          ]
           if res.body && res.body['_links'] && res.body['_links']['pf:ui']['href']
-            ui_url = "\nView the uploaded contract at #{blue(res.body['_links']['pf:ui']['href'])}"
-            PactBroker::Client::CommandResult.new(true,
-                                                  green("Successfully published provider contract for #{provider_name} version #{provider_version_number} to Pactflow#{ui_url}#{next_steps}"))
-          else
-            PactBroker::Client::CommandResult.new(true,
-                                                  green("Successfully published provider contract for #{provider_name} version #{provider_version_number} to Pactflow#{next_steps}"))
+            notices.concat([{ text: "View the uploaded contract at #{res.body['_links']['pf:ui']['href']}" }])
           end
+          notices.concat(next_steps)
+          PactBroker::Client::CommandResult.new(true, PactBroker::Client::ColorizeNotices.call(notices.collect do |n|
+                                                                                                 OpenStruct.new(n)
+                                                                                               end).join("\n"))
         end
 
         def next_steps
-          [green("\nNext steps:\n"),
-           "    #{green("Check your application is safe to deploy - #{blue('https://docs.pact.io/can_i_deploy')}:\n")}",
-           "        #{"pact-broker can-i-deploy --pacticipant #{provider_name} --version #{provider_version_number} --to-environment <your environment name>\n"}",
-           "    #{green("Record deployment or release to specified environment (choose one) - #{blue('https://docs.pact.io/go/record-deployment')}:\n")}",
-           "        #{"pact-broker record-deployment --pacticipant #{provider_name} --version #{provider_version_number} --environment <your environment name>"}\n",
-           "        #{"pact-broker record-release --pacticipant #{provider_name} --version #{provider_version_number} --environment <your environment name>"}"].join('')
+          [
+            { type: 'prompt', text: 'Next steps:' },
+            { type: 'prompt',
+              text: '  * Check your application is safe to deploy - https://docs.pact.io/can_i_deploy' },
+            { text: "       pact-broker can-i-deploy --pacticipant #{provider_name} --version #{provider_version_number} --to-environment <your environment name>" },
+            { type: 'prompt',
+              text: '  * Record deployment or release to specified environment (choose one) - https://docs.pact.io/go/record-deployment' },
+            { text: "       pact-broker record-deployment --pacticipant #{provider_name} --version #{provider_version_number} --environment <your environment name>" },
+            { text: "       pact-broker record-release --pacticipant #{provider_name} --version #{provider_version_number} --environment <your environment name>" }
+          ]
         end
 
         def create_branch_version_and_tags
