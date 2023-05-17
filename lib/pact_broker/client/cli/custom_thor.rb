@@ -15,6 +15,19 @@ module PactBroker
         using PactBroker::Client::HashRefinements
 
         no_commands do
+          def initialize(args = [], options = {}, config = {})
+            super
+            postprocess_options
+          end
+
+          def postprocess_options
+            new_options = {}
+            if options.include?("broker_base_url")
+              new_options["broker_base_url"] = options["broker_base_url"].chomp('/')
+            end
+            self.options = options.merge(new_options)
+          end
+
           def self.exit_on_failure?
             true
           end
