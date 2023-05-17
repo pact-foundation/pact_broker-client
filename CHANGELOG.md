@@ -1,3 +1,17 @@
+<a name="v1.67.0"></a>
+### v1.67.0 (2023-05-04)
+
+#### Features
+
+* colour first url in magenta for ease of reading	 ([90e8f51](/../../commit/90e8f51))
+* output provider contract link on publish (#118)	 ([132b024](/../../commit/132b024))
+* add helper text for Docker usage when pact file not found	 ([2aab2d5](/../../commit/2aab2d5))
+
+#### Bug Fixes
+
+* trim trailing slash from base url	 ([ccd6417](/../../commit/ccd6417))
+* do not allow an empty environment name to be used in the can-i-deploy command	 ([a3bfe8a](/../../commit/a3bfe8a))
+
 <a name="v1.66.1"></a>
 ### v1.66.1 (2023-01-11)
 
