@@ -15,19 +15,6 @@ module PactBroker
         using PactBroker::Client::HashRefinements
 
         no_commands do
-          def initialize(args = [], options = {}, config = {})
-            super
-            postprocess_options
-          end
-
-          def postprocess_options
-            new_options = {}
-            if options.include?("broker_base_url")
-              new_options["broker_base_url"] = options["broker_base_url"].chomp('/')
-            end
-            self.options = options.merge(new_options)
-          end
-
           def self.exit_on_failure?
             true
           end
@@ -129,7 +116,7 @@ module PactBroker
           end
 
           def pact_broker_client_options
-            client_options = { verbose: options.verbose, pact_broker_base_url: options.broker_base_url }
+            client_options = { verbose: options.verbose, pact_broker_base_url: options.broker_base_url&.chomp('/') }
             client_options[:token] = options.broker_token || ENV['PACT_BROKER_TOKEN']
             if options.broker_username || ENV['PACT_BROKER_USERNAME']
               client_options[:basic_auth] = {
