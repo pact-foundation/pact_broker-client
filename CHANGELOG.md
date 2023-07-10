@@ -1,3 +1,14 @@
+<a name="v1.68.0"></a>
+### v1.68.0 (2023-07-08)
+
+#### Features
+
+* support Cirrus CI environment	 ([7610f28](/../../commit/7610f28))
+
+#### Bug Fixes
+
+* pact-broker --help command failed with Could not find command "__broker_base_url" (#135)	 ([7edfd58](/../../commit/7edfd58))
+
 <a name="v1.67.0"></a>
 ### v1.67.0 (2023-05-04)
 
