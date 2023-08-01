@@ -22,7 +22,7 @@ PACT_BROKER_COMMAND_GROUPS = [
 ]
 
 PACTFLOW_COMMAND_GROUPS = [
-  [Pactflow::Client::CLI::Pactflow, "Provider contracts (Pactflow only)", %w[publish-provider-contract]]
+  [Pactflow::Client::CLI::Pactflow, "Provider contracts (PactFlow only)", %w[publish-provider-contract]]
 ]
 
 def print_wrapped(message, options = {})
@@ -86,12 +86,16 @@ STATES = {
     /^Usage:/ => :usage
   },
   usage: {
-    /^Options:/ => :options
+    /^Options:/ => :options,
   },
   options: {
     /^$/ => :after_options
   },
   after_options: {
+    /^Usage:/ => :usage,
+    /^  ##### / => :section_in_usage
+  },
+  section_in_usage: {
     /^Usage:/ => :usage
   }
 }
@@ -126,13 +130,14 @@ def reformat_docs(generated_thor_docs, command)
       @current_state = transitions[line_starts_with]
     end
 
-
     lines = if has_option_and_banner(line)
       option, banner = line.split("#", 2)
       [option] + format_banner("# " + banner)
     elsif has_only_banner(line)
       space, banner = line.split("#", 2)
       format_banner("#  " + banner)
+    elsif @current_state == :section_in_usage
+      [line.strip]
     else
       [line]
     end

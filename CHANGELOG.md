@@ -1,3 +1,53 @@
+<a name="v1.68.0"></a>
+### v1.68.0 (2023-07-08)
+
+#### Features
+
+* support Cirrus CI environment	 ([7610f28](/../../commit/7610f28))
+
+#### Bug Fixes
+
+* pact-broker --help command failed with Could not find command "__broker_base_url" (#135)	 ([7edfd58](/../../commit/7edfd58))
+
+<a name="v1.67.0"></a>
+### v1.67.0 (2023-05-04)
+
+#### Features
+
+* colour first url in magenta for ease of reading	 ([90e8f51](/../../commit/90e8f51))
+* output provider contract link on publish (#118)	 ([132b024](/../../commit/132b024))
+* add helper text for Docker usage when pact file not found	 ([2aab2d5](/../../commit/2aab2d5))
+
+#### Bug Fixes
+
+* trim trailing slash from base url	 ([ccd6417](/../../commit/ccd6417))
+* do not allow an empty environment name to be used in the can-i-deploy command	 ([a3bfe8a](/../../commit/a3bfe8a))
+
+<a name="v1.66.1"></a>
+### v1.66.1 (2023-01-11)
+
+#### Bug Fixes
+
+* **deps**
+  * update httparty for https://github.com/jnunemaker/httparty/security/advisories/GHSA-5pq7-52mg-hr42	 ([08597c2](/../../commit/08597c2))
+
+<a name="v1.66.0"></a>
+### v1.66.0 (2022-12-01)
+
+#### Features
+
+* **can-i-deploy**
+  * support specifying --ignore using the environment variable PACT_BROKER_CAN_I_DEPLOY_IGNORE	 ([04a0894](/../../commit/04a0894))
+
+* refactor can-i-deploy to use HAL Client instead of HTTParty	 ([d21efe6](/../../commit/d21efe6))
+
+#### Bug Fixes
+
+* found the missing computer arm when computer says no (#120)	 ([7b8ea24](/../../commit/7b8ea24))
+
+* **publish-provider-contract**
+  * raise validation error when pact broker base URL is missing or blank	 ([2d719c3](/../../commit/2d719c3))
+
 <a name="v1.65.0"></a>
 ### v1.65.0 (2022-06-24)
 
@@ -189,7 +239,7 @@
 
 #### Features
 
-* support specifying team UUID when creating a webhook in Pactflow	 ([c4201e1](/../../commit/c4201e1))
+* support specifying team UUID when creating a webhook in PactFlow	 ([c4201e1](/../../commit/c4201e1))
 
 <a name="v1.45.0"></a>
 ### v1.45.0 (2021-06-16)

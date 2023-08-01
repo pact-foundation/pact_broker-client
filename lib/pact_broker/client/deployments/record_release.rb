@@ -31,7 +31,7 @@ module PactBroker
 
         def not_supported_message
           if is_pactflow?
-            "This version of Pactflow does not support recording #{action}s, or you do not have the required permission to read environments. Please upgrade to the latest version if using Pactflow On-Premises, and ensure the user has the environment read permission."
+            "This version of PactFlow does not support recording #{action}s, or you do not have the required permission to read environments. Please upgrade to the latest version if using PactFlow On-Premises, and ensure the user has the environment read permission."
           else
             "This version of the Pact Broker does not support recording #{action}s. Please upgrade to version 2.80.0 or later."
           end

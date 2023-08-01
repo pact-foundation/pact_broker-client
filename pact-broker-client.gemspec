@@ -21,18 +21,18 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.license       = 'MIT'
 
-  gem.add_runtime_dependency 'httparty', '~>0.18.1' # https://github.com/jnunemaker/httparty/issues/733
+  gem.add_runtime_dependency 'httparty', ">= 0.21.0", "< 1.0.0"
   gem.add_runtime_dependency 'term-ansicolor', '~> 1.7'
   gem.add_runtime_dependency 'table_print', '~> 1.5'
   gem.add_runtime_dependency 'thor', '>= 0.20', '< 2.0'
   gem.add_runtime_dependency 'rake', '~> 13.0' #For FileList
   gem.add_runtime_dependency 'dig_rb', '~> 1.0'
 
-  gem.add_development_dependency 'fakefs', '~> 0.4'
+  gem.add_development_dependency 'fakefs', '~> 2.4'
   gem.add_development_dependency 'webmock', '~> 3.0'
   gem.add_development_dependency 'conventional-changelog', '~>1.3'
   gem.add_development_dependency 'pact', '~> 1.16'
   gem.add_development_dependency 'pact-support', '~> 1.16'
-  gem.add_development_dependency 'approvals', '0.0.18' 
+  gem.add_development_dependency 'approvals', '0.0.26' 
   gem.add_development_dependency 'rspec-its', '~> 1.3'
 end

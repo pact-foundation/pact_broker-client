@@ -96,7 +96,7 @@ module PactBroker
               expect(subject.message).to include "does not support"
             end
 
-            context "when the server is Pactflow" do
+            context "when the server is PactFlow" do
               let(:index_headers) { { "Content-Type" => "application/hal+json", "Pactflow-Something" => "foo" } }
 
               it "returns an error response" do
@@ -165,7 +165,7 @@ module PactBroker
                 expect(subject.message).to include "No environment found with name 'test'. Available options: prod"
               end
 
-              context "when the server is Pactflow" do
+              context "when the server is PactFlow" do
                 let(:index_headers) { { "Content-Type" => "application/hal+json", "X-Pactflow-Sha" => "123" } }
 
                 it "returns a customised message" do
@@ -191,7 +191,7 @@ module PactBroker
             end
           end
 
-          context "when the response headers contain Pactflow" do
+          context "when the response headers contain PactFlow" do
             before do
               allow_any_instance_of(RecordDeployment).to receive(:check_if_command_supported)
               allow_any_instance_of(RecordDeployment).to receive(:check_environment_exists)
@@ -205,8 +205,8 @@ module PactBroker
               double('PactBroker::Client::Hal::Entity', response: double('response', headers: response_headers) )
             end
 
-            it "indicates the API was Pactflow" do
-              expect(subject.message).to include "Recorded deployment of Foo version 1 to test environment (application instance blue) in Pactflow"
+            it "indicates the API was PactFlow" do
+              expect(subject.message).to include "Recorded deployment of Foo version 1 to test environment (application instance blue) in PactFlow"
             end
 
             context "when application_instance is nil" do

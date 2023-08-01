@@ -28,7 +28,7 @@ module PactBroker
           end
 
           def self.add_broker_config_from_environment_variables argv
-            return argv if argv[0] == 'help' || argv.empty?
+            return argv if argv[0] == '--help' || argv[0] == 'help' || argv.empty?
 
             add_option_from_environment_variable(argv, 'broker-base-url', 'b', 'PACT_BROKER_BASE_URL')
           end
@@ -116,7 +116,7 @@ module PactBroker
           end
 
           def pact_broker_client_options
-            client_options = { verbose: options.verbose, pact_broker_base_url: options.broker_base_url }
+            client_options = { verbose: options.verbose, pact_broker_base_url: options.broker_base_url&.chomp('/') }
             client_options[:token] = options.broker_token || ENV['PACT_BROKER_TOKEN']
             if options.broker_username || ENV['PACT_BROKER_USERNAME']
               client_options[:basic_auth] = {

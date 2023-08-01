@@ -28,6 +28,15 @@ module PactBroker::Client::CLI
     end
 
     desc '', ''
+    method_option :broker_base_url, required: true, aliases: "-b"
+    method_option :broker_username, aliases: "-u"
+    method_option :broker_password, aliases: "-p"
+    method_option :broker_token, aliases: "-k"
+    def test_pact_broker_client_options
+      Delegate.call(pact_broker_client_options)
+    end
+
+    desc '', ''
     ignored_and_hidden_potential_options_from_environment_variables
     def test_without_parameters
       Delegate.call(options)
@@ -70,6 +79,21 @@ module PactBroker::Client::CLI
         expect(Delegate).to receive(:call)
         TestThor.start(%w{test_without_parameters})
       end
+    end
+
+    it "removes trailing slashes from the broker base url when passed as an arg" do
+      expect(Delegate).to receive(:call) do | options |
+        expect(options[:pact_broker_base_url]).to eq 'http://bar'
+      end
+      TestThor.start(%w{test_pact_broker_client_options --broker-base-url http://bar/})
+    end
+
+    it "removes trailing slashes from the broker base url when passed as an env var" do
+      ENV['PACT_BROKER_BASE_URL'] = 'http://bar/'
+      expect(Delegate).to receive(:call) do | options |
+        expect(options[:pact_broker_base_url]).to eq 'http://bar'
+      end
+      TestThor.start(%w{test_pact_broker_client_options})
     end
 
     describe ".turn_muliple_tag_options_into_array" do

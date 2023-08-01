@@ -15,7 +15,7 @@ Pact.service_consumer 'Pact Broker Client' do
     end
   end
 
-  has_pact_with "Pactflow" do
+  has_pact_with "PactFlow" do
     mock_service :pactflow do
       port 1235
       pact_specification_version "2.0"

@@ -1,7 +1,7 @@
 require_relative 'pact_helper'
 require 'pact_broker/client/webhooks/create'
 
-RSpec.describe "creating a webhook in Pactflow", pact: true do
+RSpec.describe "creating a webhook in PactFlow", pact: true do
 
   include_context "pact broker"
   include PactBrokerPactHelperMethods

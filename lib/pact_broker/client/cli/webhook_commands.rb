@@ -25,7 +25,7 @@ module PactBroker
                 method_option :provider_verification_failed, type: :boolean, desc: "Trigger this webhook when a failed provider verification result is published"
                 method_option :provider_verification_succeeded, type: :boolean, desc: "Trigger this webhook when a successful provider verification result is published"
                 method_option :contract_requiring_verification_published, type: :boolean, desc: "Trigger this webhook when a contract is published that requires verification"
-                method_option :team_uuid, banner: "UUID", desc: "UUID of the Pactflow team to which the webhook should be assigned (Pactflow only)"
+                method_option :team_uuid, banner: "UUID", desc: "UUID of the PactFlow team to which the webhook should be assigned (PactFlow only)"
                 shared_authentication_options
               end
             end

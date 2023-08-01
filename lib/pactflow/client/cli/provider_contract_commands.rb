@@ -10,7 +10,7 @@ module Pactflow
 
         def self.included(thor)
           thor.class_eval do
-            desc 'publish-provider-contract CONTRACT_FILE ...', "Publish provider contract to Pactflow"
+            desc 'publish-provider-contract CONTRACT_FILE ...', "Publish provider contract to PactFlow"
             method_option :provider, required: true, desc: "The provider name"
             method_option :provider_app_version, required: true, aliases: "-a", desc: "The provider application version"
             method_option :branch, aliases: "-h", desc: "Repository branch of the provider version"

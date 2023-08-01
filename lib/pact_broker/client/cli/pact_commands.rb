@@ -93,7 +93,7 @@ module PactBroker
                   elsif path.start_with?("-")
                     raise Thor::Error.new("ERROR: pact-broker publish was called with invalid arguments #{[path]}")
                   else
-                    raise Thor::Error.new("Specified pact file '#{path}' does not exist. This sometimes indicates one of the arguments has been specified with the wrong name and has been incorrectly identified as a file path.")
+                    raise Thor::Error.new("Specified pact file '#{path}' does not exist. This sometimes indicates one of the arguments has been specified with the wrong name and has been incorrectly identified as a file path. If you are using Docker, check that you have mounted the pact file or directory into the container correctly using `-v`, and have specified the location of the pact file or directory in the *Docker container*, not the *host*.")
                   end
                 end
               end
