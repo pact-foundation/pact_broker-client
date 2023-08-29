@@ -9,18 +9,14 @@ module PactBroker
       class TextFormatter
         using PactBroker::Client::HashRefinements
 
-        Line = Struct.new(:consumer, :consumer_version, :provider, :provider_version, :success, :ref, :ignored) do
-          def <=>(other)
-            [consumer&.downcase, provider&.downcase ] <=> [other.consumer&.downcase, other.provider&.downcase]
-          end
-        end
+        Line = Struct.new(:consumer, :consumer_version, :provider, :provider_version, :success, :ref, :ignored)
 
         def self.call(matrix)
-          matrix_rows = matrix[:matrix]
+          matrix_rows = sort_matrix_rows(matrix[:matrix] || [])
           return "" if matrix_rows.size == 0
           data = prepare_data(matrix_rows)
           printer = TablePrint::Printer.new(data, tp_options(data))
-          printer.table_print + verification_result_urls_text(matrix)
+          printer.table_print + verification_result_urls_text(matrix_rows)
         end
 
         def self.prepare_data(matrix_rows)
@@ -39,7 +35,7 @@ module PactBroker
               has_verification_result_url ? verification_result_number : "",
               lookup(line, nil, :ignored)
             )
-          end.sort
+          end
         end
 
         def self.tp_options(data)
@@ -59,8 +55,8 @@ module PactBroker
           default
         end
 
-        def self.verification_results_urls_and_successes(matrix)
-          (matrix[:matrix] || []).collect do | row |
+        def self.verification_results_urls_and_successes(matrix_rows)
+          matrix_rows.collect do | row |
             url = row.dig(:verificationResult, :_links, :self, :href)
             if url
               success = row.dig(:verificationResult, :success)
@@ -71,8 +67,8 @@ module PactBroker
           end.compact
         end
 
-        def self.verification_result_urls_text(matrix)
-          text = self.verification_results_urls_and_successes(matrix).each_with_index.collect do |(url, success), i|
+        def self.verification_result_urls_text(matrix_rows)
+          text = self.verification_results_urls_and_successes(matrix_rows).each_with_index.collect do |(url, success), i|
             status = success ? 'success' : 'failure'
             "#{i+1}. #{url} (#{status})"
           end.join("\n")
@@ -86,6 +82,19 @@ module PactBroker
 
         def self.max_width(data, column, title)
           (data.collect{ |row| row.send(column) } + [title]).compact.collect(&:size).max
+        end
+
+        def self.sort_matrix_rows(matrix_rows)
+          matrix_rows&.sort { |row_1, row_2| sortable_attributes(row_1) <=> sortable_attributes(row_2) }
+        end
+
+        def self.sortable_attributes(matrix_row)
+          [
+            matrix_row.dig(:consumer, :name)&.downcase || "",
+            matrix_row.dig(:provider, :name)&.downcase || "",
+            matrix_row.dig(:consumer, :version, :number) || "",
+            matrix_row.dig(:provider, :version, :number) || ""
+          ]
         end
       end
     end

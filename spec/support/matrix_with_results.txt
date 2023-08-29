@@ -1,8 +1,8 @@
 CONSUMER | C.VERSION | PROVIDER | P.VERSION | SUCCESS? | RESULT#
 ---------|-----------|----------|-----------|----------|--------
+Foo      | 3         | Bar      | 5         | ???      |
 Foo      | 4         | Bar      | 5         | true     | 1
-Foo      | 4         | Bar      | 5         | ???      |
-Foo      | 4         | Bar      | 5         | false    | 2
+Foo      | 5         | Bar      | 5         | false    | 2
 
 VERIFICATION RESULTS
 --------------------

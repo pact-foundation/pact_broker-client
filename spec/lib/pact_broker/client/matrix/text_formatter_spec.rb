@@ -36,9 +36,18 @@ module PactBroker
           line_1 = line_creator.call
           line_2 = line_creator.call
           line_3 = line_creator.call
+
+          # ensure the data is as expected
+          expect(line_1.dig(:consumer, :version, :number)).to_not be nil
+          expect(line_1.dig(:provider, :version, :number)).to_not be nil
+
+          line_1[:consumer][:version][:number] = "4"
+          line_2[:consumer][:version][:number] = "3"
+          line_3[:consumer][:version][:number] = "5"
+
           line_2[:verificationResult] = nil
           line_3[:verificationResult][:success] = false
-          [line_1, line_2, line_3]
+          [line_1, line_2, line_3].shuffle
         end
 
         let(:matrix) { PactBroker::Client::Matrix::Resource.new(matrix: matrix_lines) }
