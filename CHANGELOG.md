@@ -1,3 +1,11 @@
+<a name="v1.70.0"></a>
+### v1.70.0 (2023-08-29)
+
+#### Features
+
+* sort can-i-deploy table by consumer name, then provider name	 ([83412e7](/../../commit/83412e7))
+* do not accept gzip responses when VERBOSE=true	 ([a72a529](/../../commit/a72a529))
+
 <a name="v1.69.0"></a>
 ### v1.69.0 (2023-08-29)
 
