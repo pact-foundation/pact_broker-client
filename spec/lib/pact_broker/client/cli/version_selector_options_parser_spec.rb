@@ -75,6 +75,12 @@ module PactBroker
           ],[
             ["--branch", "main"],
             [{ pacticipant: nil, branch: "main", latest: true }]
+          ],[
+            ["--pacticipant", "Foo", "--main-branch", "--pacticipant", "Bar", "--version", "1"],
+            [{ pacticipant: "Foo", main_branch: true, latest: true }, { pacticipant: "Bar", version: "1" }]
+          ],[
+            ["--main-branch"],
+            [{ pacticipant: nil, main_branch: true, latest: true }]
           ]
         ]
 

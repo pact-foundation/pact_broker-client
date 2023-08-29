@@ -444,16 +444,24 @@ Options:
   -l, [--latest=[TAG]]
               # Use the latest pacticipant version. Optionally specify a TAG
                 to use the latest version with the specified tag.
+      [--branch=BRANCH]
+              # The branch of the version for which you want to check the
+                verification results.
+      [--main-branch], [--no-main-branch]
+              # Use the latest version of the configured main branch of the
+                pacticipant as the version for which you want to check the
+                verification results
       [--to-environment=ENVIRONMENT]
               # The environment into which the pacticipant(s) are to be
                 deployed
-      [--branch=BRANCH]
-              # The branch of the version for which you want to check the
-                verification results
       [--to=TAG]
               # The tag that represents the branch or environment of the
                 integrated applications for which you want to check the
                 verification result status.
+      [--ignore=IGNORE]
+              # The pacticipant name to ignore. Use once for each pacticipant
+                being ignored. A specific version can be ignored by also
+                specifying a --version after the pacticipant name option.
   -o, [--output=OUTPUT]
               # json or table
               # Default: table
