@@ -50,6 +50,7 @@ module PactBroker
           request['Content-Type'] ||= "application/json" if ['Post', 'Put'].include?(http_method)
           request['Content-Type'] ||= "application/merge-patch+json" if ['Patch'].include?(http_method)
           request['Accept'] = "application/hal+json"
+          request['Accept-Encoding'] = nil if verbose?
           headers.each do | key, value |
             request[key] = value
           end
