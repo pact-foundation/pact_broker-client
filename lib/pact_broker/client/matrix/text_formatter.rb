@@ -9,7 +9,11 @@ module PactBroker
       class TextFormatter
         using PactBroker::Client::HashRefinements
 
-        Line = Struct.new(:consumer, :consumer_version, :provider, :provider_version, :success, :ref, :ignored)
+        Line = Struct.new(:consumer, :consumer_version, :provider, :provider_version, :success, :ref, :ignored) do
+          def <=>(other)
+            [consumer&.downcase, provider&.downcase ] <=> [other.consumer&.downcase, other.provider&.downcase]
+          end
+        end
 
         def self.call(matrix)
           matrix_rows = matrix[:matrix]
@@ -35,7 +39,7 @@ module PactBroker
               has_verification_result_url ? verification_result_number : "",
               lookup(line, nil, :ignored)
             )
-          end
+          end.sort
         end
 
         def self.tp_options(data)
