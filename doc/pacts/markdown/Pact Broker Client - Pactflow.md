@@ -114,7 +114,7 @@ PactFlow will respond with:
   "body": {
     "_links": {
       "pf:ui": {
-        "href": "http://localhost:1235/contracts/bi-directional/provider/Bar/version/1/provider-contract"
+        "href": "some-url"
       }
     }
   }

@@ -98,7 +98,7 @@ RSpec.describe "publishing a provider contract to PactFlow", pact: true do
         headers: pact_broker_response_headers,
         body: { "_links": {
           "pf:ui": {
-            "href": "#{pactflow.mock_service_base_url}/contracts/bi-directional/provider/Bar/version/1/provider-contract"
+            "href": Pact.like("some-url")
           }
         } }
       }
@@ -121,7 +121,7 @@ RSpec.describe "publishing a provider contract to PactFlow", pact: true do
       expect(subject.success).to be true
       expect(subject.message).to include "Successfully published provider contract for Bar version 1"
       expect(subject.message).to include "Next steps:"
-      expect(subject.message).to include success_response_with_pf_ui_url[:body][:_links][:'pf:ui'][:href]
+      expect(subject.message).to include "some-url"
     end
   end
 end
