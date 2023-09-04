@@ -37,7 +37,7 @@ RSpec.describe "publishing a provider contract to PactFlow", pact: true do
 
   let(:request_body) do
      {
-        "content" => "LS0tCjpzb21lOiBjb250cmFjdAo=",
+        "content" => "LS0tCnNvbWU6IGNvbnRyYWN0Cg==",
         "contractType" => "oas",
         "contentType" => "application/yaml",
         "verificationResults" => {

@@ -56,7 +56,7 @@ Upon receiving **a request to create a provider contract** from Pact Broker Clie
     "Accept": "application/hal+json"
   },
   "body": {
-    "content": "LS0tCjpzb21lOiBjb250cmFjdAo=",
+    "content": "LS0tCnNvbWU6IGNvbnRyYWN0Cg==",
     "contractType": "oas",
     "contentType": "application/yaml",
     "verificationResults": {
@@ -90,7 +90,7 @@ Given **there is a pf:ui href in the response**, upon receiving **a request to c
     "Accept": "application/hal+json"
   },
   "body": {
-    "content": "LS0tCjpzb21lOiBjb250cmFjdAo=",
+    "content": "LS0tCnNvbWU6IGNvbnRyYWN0Cg==",
     "contractType": "oas",
     "contentType": "application/yaml",
     "verificationResults": {
@@ -104,7 +104,7 @@ Given **there is a pf:ui href in the response**, upon receiving **a request to c
   }
 }
 ```
-Pactflow will respond with:
+PactFlow will respond with:
 ```json
 {
   "status": 201,

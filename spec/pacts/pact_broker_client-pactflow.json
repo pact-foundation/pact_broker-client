@@ -16,7 +16,7 @@
           "Accept": "application/hal+json"
         },
         "body": {
-          "content": "LS0tCjpzb21lOiBjb250cmFjdAo=",
+          "content": "LS0tCnNvbWU6IGNvbnRyYWN0Cg==",
           "contractType": "oas",
           "contentType": "application/yaml",
           "verificationResults": {
@@ -47,7 +47,7 @@
           "Accept": "application/hal+json"
         },
         "body": {
-          "content": "LS0tCjpzb21lOiBjb250cmFjdAo=",
+          "content": "LS0tCnNvbWU6IGNvbnRyYWN0Cg==",
           "contractType": "oas",
           "contentType": "application/yaml",
           "verificationResults": {
