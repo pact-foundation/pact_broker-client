@@ -26,7 +26,7 @@ module Pactflow
             method_option :verification_results_format, desc: "The format of the verification output eg. junit, text"
             method_option :verifier, desc: "The tool used to verify the provider contract"
             method_option :verifier_version, desc: "The version of the tool used to verify the provider contract"
-            #method_option :build_url, desc: "The build URL that created the pact"
+            method_option :build_url, desc: "The build URL that created the provider contract"
 
             output_option_json_or_text
             shared_authentication_options
@@ -70,6 +70,7 @@ module Pactflow
                   provider_version_number: options.provider_app_version.strip,
                   branch_name: options.branch && options.branch.strip,
                   tags: (options.tag && options.tag.collect(&:strip)) || [],
+                  build_url: options.build_url,
                   contract: {
                     content: File.read(provider_contract_path),
                     content_type: options.content_type,

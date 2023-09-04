@@ -4,11 +4,15 @@
 
 * [A request for the index resource](#a_request_for_the_index_resource)
 
+* [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:publish-provider-contract_relation_exists_in_the_index_resource) given the pb:publish-provider-contract relation exists in the index resource
+
 * [A request to create a provider contract](#a_request_to_create_a_provider_contract)
 
 * [A request to create a provider contract](#a_request_to_create_a_provider_contract_given_there_is_a_pf:ui_href_in_the_response) given there is a pf:ui href in the response
 
 * [A request to create a webhook for a team](#a_request_to_create_a_webhook_for_a_team_given_a_team_with_UUID_2abbc12a-427d-432a-a521-c870af1739d9_exists) given a team with UUID 2abbc12a-427d-432a-a521-c870af1739d9 exists
+
+* [A request to publish a provider contract](#a_request_to_publish_a_provider_contract)
 
 #### Interactions
 
@@ -45,6 +49,33 @@ PactFlow will respond with:
   }
 }
 ```
+<a name="a_request_for_the_index_resource_given_the_pb:publish-provider-contract_relation_exists_in_the_index_resource"></a>
+Given **the pb:publish-provider-contract relation exists in the index resource**, upon receiving **a request for the index resource** from Pact Broker Client, with
+```json
+{
+  "method": "GET",
+  "path": "/",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+PactFlow will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "pf:publish-provider-contract": {
+        "href": "http://localhost:1235/HAL-REL-PLACEHOLDER-PF-PUBLISH-PROVIDER-CONTRACT-{provider}"
+      }
+    }
+  }
+}
+```
 <a name="a_request_to_create_a_provider_contract"></a>
 Upon receiving **a request to create a provider contract** from Pact Broker Client, with
 ```json
@@ -56,7 +87,7 @@ Upon receiving **a request to create a provider contract** from Pact Broker Clie
     "Accept": "application/hal+json"
   },
   "body": {
-    "content": "LS0tCjpzb21lOiBjb250cmFjdAo=",
+    "content": "LS0tCnNvbWU6IGNvbnRyYWN0Cg==",
     "contractType": "oas",
     "contentType": "application/yaml",
     "verificationResults": {
@@ -90,7 +121,7 @@ Given **there is a pf:ui href in the response**, upon receiving **a request to c
     "Accept": "application/hal+json"
   },
   "body": {
-    "content": "LS0tCjpzb21lOiBjb250cmFjdAo=",
+    "content": "LS0tCnNvbWU6IGNvbnRyYWN0Cg==",
     "contractType": "oas",
     "contentType": "application/yaml",
     "verificationResults": {
@@ -104,7 +135,7 @@ Given **there is a pf:ui href in the response**, upon receiving **a request to c
   }
 }
 ```
-Pactflow will respond with:
+PactFlow will respond with:
 ```json
 {
   "status": 201,
@@ -114,7 +145,7 @@ Pactflow will respond with:
   "body": {
     "_links": {
       "pf:ui": {
-        "href": "http://localhost:1235/contracts/bi-directional/provider/Bar/version/1/provider-contract"
+        "href": "some-url"
       }
     }
   }
@@ -168,6 +199,56 @@ PactFlow will respond with:
         "title": "A title"
       }
     }
+  }
+}
+```
+<a name="a_request_to_publish_a_provider_contract"></a>
+Upon receiving **a request to publish a provider contract** from Pact Broker Client, with
+```json
+{
+  "method": "post",
+  "path": "/HAL-REL-PLACEHOLDER-PF-PUBLISH-PROVIDER-CONTRACT-Bar",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/hal+json"
+  },
+  "body": {
+    "pacticipantVersionNumber": "1",
+    "tags": [
+      "dev"
+    ],
+    "branch": "main",
+    "buildUrl": "http://build",
+    "contract": {
+      "content": "LS0tCnNvbWU6IGNvbnRyYWN0Cg==",
+      "contentType": "application/yaml",
+      "specification": "oas",
+      "verificationResults": {
+        "success": true,
+        "content": "c29tZSByZXN1bHRz",
+        "contentType": "text/plain",
+        "format": "text",
+        "verifier": "my custom tool",
+        "verifierVersion": "1.0"
+      }
+    }
+  }
+}
+```
+PactFlow will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "notices": [
+      {
+        "text": "some notice",
+        "type": "info"
+      }
+    ]
   }
 }
 ```
