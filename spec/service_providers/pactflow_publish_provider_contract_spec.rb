@@ -18,7 +18,7 @@ RSpec.describe "publishing a provider contract to PactFlow", pact: true do
       branch_name: "main",
       tags: ["dev"],
       contract: {
-        content: { some: "contract" }.to_yaml,
+        content: { "some" => "contract" }.to_yaml,
         content_type: "application/yaml",
         specification: "oas"
       },
