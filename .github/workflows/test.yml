@@ -38,6 +38,7 @@ jobs:
           VERBOSE=true bundle exec rake pact:publish:pactflow_pact_foundation
         env:
           PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_PACT_OSS_TOKEN }}
+          PACT_BROKER_TOKEN_PACT_FOUNDATION: ${{ secrets.PACT_BROKER_TOKEN_PACT_FOUNDATION }}
           PACT_BROKER_FEATURES: ${{ matrix.feature }}
           TEST_FEATURE: ${{ matrix.feature }}
   can-i-deploy:
