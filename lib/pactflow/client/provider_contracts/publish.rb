@@ -59,7 +59,7 @@ module Pactflow
                         }.compact
 
           if verification_results_params.any?
-            contract_params[:verificationResults] = verification_results_params
+            contract_params[:selfVerificationResults] = verification_results_params
           end
 
           {

@@ -223,7 +223,7 @@ Upon receiving **a request to publish a provider contract** from Pact Broker Cli
       "content": "LS0tCnNvbWU6IGNvbnRyYWN0Cg==",
       "contentType": "application/yaml",
       "specification": "oas",
-      "verificationResults": {
+      "selfVerificationResults": {
         "success": true,
         "content": "c29tZSByZXN1bHRz",
         "contentType": "text/plain",
@@ -248,7 +248,20 @@ PactFlow will respond with:
         "text": "some notice",
         "type": "info"
       }
-    ]
+    ],
+    "_embedded": {
+      "version": {
+        "number": "1"
+      }
+    },
+    "_links": {
+      "pb:pacticipant-version-tags": [
+        {
+        }
+      ],
+      "pb:branch-version": {
+      }
+    }
   }
 }
 ```

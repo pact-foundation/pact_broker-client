@@ -41,7 +41,7 @@ RSpec.describe "publishing a provider contract to PactFlow", pact: true do
         "content" => "LS0tCnNvbWU6IGNvbnRyYWN0Cg==",
         "contentType" => "application/yaml",
         "specification" => "oas",
-        "verificationResults" => {
+        "selfVerificationResults" => {
           "success" => true,
           "content" => "c29tZSByZXN1bHRz",
           "contentType" => "text/plain",
@@ -54,12 +54,30 @@ RSpec.describe "publishing a provider contract to PactFlow", pact: true do
   end
 
   let(:response_status) { 200 }
+
+  # Can't tell from the response if the buildUrl was correct, but it's not that important
+  # Add some assertions to the body to ensure we have called the endpoint correctly,
+  # not because we use the properties in the CLI output.
+  # There is unfortunately no good way to determine from the response whether or not
+  # we have correctly published the self verification results.
   let(:success_response) do
     {
       status: response_status,
       headers: pact_broker_response_headers,
       body: {
-        "notices" => Pact.each_like("text" => "some notice", "type" => "info")
+        "notices" => Pact.each_like("text" => "some notice", "type" => "info"),
+        "_embedded" => {
+          "version" => {
+            # This tells us we have set the version number correctly
+            "number" => "1"
+          }
+        },
+        "_links" => {
+          # The links tell us we have successfully created the tags, but we don't care about the contents
+          "pb:pacticipant-version-tags" => [{}],
+          # The link tells us we have successfully created the branch version, but we don't care about the contents
+          "pb:branch-version" => {},
+        }
       }
     }
   end
