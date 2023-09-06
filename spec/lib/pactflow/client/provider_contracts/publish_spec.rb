@@ -61,12 +61,22 @@ module Pactflow
         end
 
         let!(:index_request) do
-          stub_request(:get, "http://pactflow").to_return(status: index_status, body: index_body_hash.to_json, headers: { "Content-Type" => "application/hal+json" }  )
+          stub_request(:get, "http://pactflow")
+            .to_return(
+              status: index_status,
+              body: index_body_hash.to_json,
+              headers: { "Content-Type" => "application/hal+json" }
+            )
         end
         let(:index_status) { 200 }
 
         let!(:publish_request) do
-          stub_request(:post, "http://pactflow/some-publish/Bar").to_return(status: publish_status, body: post_response_body.to_json, headers: { "Content-Type" => "application/hal+json" }  )
+          stub_request(:post, "http://pactflow/some-publish/Bar")
+            .to_return(
+              status: publish_status,
+              body: post_response_body.to_json,
+              headers: { "Content-Type" => "application/hal+json" }
+            )
         end
         let(:publish_status) { 200 }
 
@@ -126,7 +136,6 @@ module Pactflow
             expect(subject.success).to be false
             expect(subject.message).to match(/some.*error/)
           end
-
         end
 
         context "when there is an error response from publishing" do
