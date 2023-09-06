@@ -434,7 +434,7 @@ Options:
   -e, [--version=VERSION]
               # The pacticipant version. Must be entered after the
                 --pacticipant that it relates to.
-      [--ignore=IGNORE]
+      [--ignore=PACTICIPANT]
               # The pacticipant name to ignore. Use once for each pacticipant
                 being ignored. A specific version can be ignored by also
                 specifying a --version after the pacticipant name option. The
@@ -458,10 +458,6 @@ Options:
               # The tag that represents the branch or environment of the
                 integrated applications for which you want to check the
                 verification result status.
-      [--ignore=IGNORE]
-              # The pacticipant name to ignore. Use once for each pacticipant
-                being ignored. A specific version can be ignored by also
-                specifying a --version after the pacticipant name option.
   -o, [--output=OUTPUT]
               # json or table
               # Default: table
@@ -505,8 +501,8 @@ Description:
   support for environments, deployments and releases. For documentation on how to use can-i-deploy with tags, please see
   https://docs.pact.io/pact_broker/client_cli/can_i_deploy_usage_with_tags/
 
-  Before `can-i-deploy` can be used, the relevant environment resources must first be created in the Pact Broker using the `create-environment` command. The "test"
-  and "production" environments will have been seeded for you. You can check the existing environments by running `pact-broker list-environments`. See
+  Before `can-i-deploy` can be used, the relevant environment resources must first be created in the Pact Broker using the `create-environment` command. The
+  "test" and "production" environments will have been seeded for you. You can check the existing environments by running `pact-broker list-environments`. See
   https://docs.pact.io/pact_broker/client_cli/readme#environments for more information.
 
   $ pact-broker create-environment --name "uat" --display-name "UAT" --no-production
@@ -516,8 +512,8 @@ Description:
 
   $ pact-broker record-deployment --pacticipant Foo --version 173153ae0 --environment uat
 
-  Before an application is deployed or released to an environment, the can-i-deploy command must be run to check that the application version is safe to deploy with
-  the versions of each integrated application that are already in that environment.
+  Before an application is deployed or released to an environment, the can-i-deploy command must be run to check that the application version is safe to deploy
+  with the versions of each integrated application that are already in that environment.
 
   $ pact-broker can-i-deploy --pacticipant PACTICIPANT --version VERSION --to-environment ENVIRONMENT
 
@@ -525,8 +521,8 @@ Description:
 
   $ pact-broker can-i-deploy --pacticipant Foo --version 173153ae0 --to-environment test
 
-  Can-i-deploy can also be used to check if arbitrary versions have a successful verification. When asking "Can I deploy this application version with the latest version
-  from the main branch of another application" it functions as a "can I merge" check.
+  Can-i-deploy can also be used to check if arbitrary versions have a successful verification. When asking "Can I deploy this application version with the
+  latest version from the main branch of another application" it functions as a "can I merge" check.
 
   $ pact-broker can-i-deploy --pacticipant Foo 173153ae0 \ --pacticipant Bar --latest main
 
@@ -535,6 +531,56 @@ Description:
 If the verification process takes a long time and there are results missing when the can-i-deploy command runs in your CI/CD pipeline, you can configure the
 command to poll and wait for the missing results to arrive. The arguments to specify are `--retry-while-unknown TIMES` and `--retry-interval SECONDS`, set to
 appropriate values for your pipeline.
+
+#### can-i-merge
+
+```
+Usage:
+  pact-broker can-i-merge -a, --pacticipant=PACTICIPANT -b, --broker-base-url=BROKER_BASE_URL
+
+Options:
+  -a, --pacticipant=PACTICIPANT
+              # The pacticipant name. Use once for each pacticipant being
+                checked.
+  -e, [--version=VERSION]
+              # The pacticipant version. Must be entered after the
+                --pacticipant that it relates to.
+  -o, [--output=OUTPUT]
+              # json or table
+              # Default: table
+      [--retry-while-unknown=TIMES]
+              # The number of times to retry while there is an unknown
+                verification result (ie. the provider verification is likely
+                still running)
+              # Default: 0
+      [--retry-interval=SECONDS]
+              # The time between retries in seconds. Use in conjuction with
+                --retry-while-unknown
+              # Default: 10
+      [--dry-run], [--no-dry-run]
+              # When dry-run is enabled, always exit process with a success
+                code. Can also be enabled by setting the environment variable
+                PACT_BROKER_CAN_I_MERGE_DRY_RUN=true. This mode is useful when
+                setting up your CI/CD pipeline for the first time, or in a
+                'break glass' situation where you need to knowingly deploy what
+                Pact considers a breaking change. For the second scenario, it
+                is recommended to use the environment variable and just set it
+                for the build required to deploy that particular version, so
+                you don't accidentally leave the dry run mode enabled.
+  -b, --broker-base-url=BROKER_BASE_URL
+              # The base URL of the Pact Broker
+  -u, [--broker-username=BROKER_USERNAME]
+              # Pact Broker basic auth username
+  -p, [--broker-password=BROKER_PASSWORD]
+              # Pact Broker basic auth password
+  -k, [--broker-token=BROKER_TOKEN]
+              # Pact Broker bearer token
+  -v, [--verbose], [--no-verbose]
+              # Verbose output. Default: false
+```
+
+Description:
+  Checks if the specified pacticipant version is compatible with the configured main branch of each of the pacticipants with which it is integrated.
 
 ### Pacticipants
 
@@ -679,8 +725,8 @@ Options:
 ```
 
 Description:
-  Create a curl command that executes the request that you want your webhook to execute, then replace "curl" with "pact-broker create-webhook" and add the consumer,
-  provider, event types and broker details. Note that the URL must be the first parameter when executing create-webhook.
+  Create a curl command that executes the request that you want your webhook to execute, then replace "curl" with "pact-broker create-webhook" and add the
+  consumer, provider, event types and broker details. Note that the URL must be the first parameter when executing create-webhook.
 
   Note that the -u option from the curl command clashes with the -u option from the pact-broker CLI. When used in this command, the -u will be used as a curl
   option. Please use the --broker-username or environment variable for the Pact Broker username.
@@ -744,9 +790,9 @@ Options:
 ```
 
 Description:
-  Create a curl command that executes the request that you want your webhook to execute, then replace "curl" with "pact-broker create-or-update-webhook" and add the
-  consumer, provider, event types and broker details. Note that the URL must be the first parameter when executing create-or-update-webhook and a uuid must
-  also be provided. You can generate a valid UUID by using the `generate-uuid` command.
+  Create a curl command that executes the request that you want your webhook to execute, then replace "curl" with "pact-broker create-or-update-webhook" and
+  add the consumer, provider, event types and broker details. Note that the URL must be the first parameter when executing create-or-update-webhook and a uuid
+  must also be provided. You can generate a valid UUID by using the `generate-uuid` command.
 
   Note that the -u option from the curl command clashes with the -u option from the pact-broker CLI. When used in this command, the -u will be used as a curl
   option. Please use the --broker-username or environment variable for the Pact Broker username.
@@ -930,6 +976,8 @@ Options:
               # The tool used to verify the provider contract
       [--verifier-version=VERIFIER_VERSION]
               # The version of the tool used to verify the provider contract
+      [--build-url=BUILD_URL]
+              # The build URL that created the provider contract
   -o, [--output=OUTPUT]
               # json or text
               # Default: text

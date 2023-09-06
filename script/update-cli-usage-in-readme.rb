@@ -13,7 +13,7 @@ PACT_BROKER_COMMAND_GROUPS = [
   [PactBroker::Client::CLI::Broker, "Environments", %w[create-environment update-environment describe-environment delete-environment list-environments]],
   [PactBroker::Client::CLI::Broker, "Deployments", %w[record-deployment record-undeployment]],
   [PactBroker::Client::CLI::Broker, "Releases", %w[record-release record-support-ended]],
-  [PactBroker::Client::CLI::Broker, "Matrix", %w[can-i-deploy]],
+  [PactBroker::Client::CLI::Broker, "Matrix", %w[can-i-deploy can-i-merge]],
   [PactBroker::Client::CLI::Broker, "Pacticipants", %w[create-or-update-pacticipant describe-pacticipant list-pacticipants]],
   [PactBroker::Client::CLI::Broker, "Webhooks", %w[create-webhook create-or-update-webhook test-webhook]],
   [PactBroker::Client::CLI::Broker, "Tags", %w[create-version-tag]],

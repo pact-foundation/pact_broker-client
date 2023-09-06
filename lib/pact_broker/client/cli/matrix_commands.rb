@@ -13,13 +13,12 @@ module PactBroker
 
             method_option :pacticipant, required: true, aliases: "-a", desc: "The pacticipant name. Use once for each pacticipant being checked."
             method_option :version, required: false, aliases: "-e", desc: "The pacticipant version. Must be entered after the --pacticipant that it relates to."
-            method_option :ignore, required: false, desc: "The pacticipant name to ignore. Use once for each pacticipant being ignored. A specific version can be ignored by also specifying a --version after the pacticipant name option. The environment variable PACT_BROKER_CAN_I_DEPLOY_IGNORE may also be used to specify a pacticipant name to ignore, with commas to separate multiple pacticipant names if necessary."
+            method_option :ignore, required: false, banner: "PACTICIPANT", desc: "The pacticipant name to ignore. Use once for each pacticipant being ignored. A specific version can be ignored by also specifying a --version after the pacticipant name option. The environment variable PACT_BROKER_CAN_I_DEPLOY_IGNORE may also be used to specify a pacticipant name to ignore, with commas to separate multiple pacticipant names if necessary."
             method_option :latest, required: false, aliases: "-l", banner: "[TAG]", desc: "Use the latest pacticipant version. Optionally specify a TAG to use the latest version with the specified tag."
             method_option :branch, required: false, desc: "The branch of the version for which you want to check the verification results.", default: nil
             method_option :main_branch, required: false, type: :boolean, desc: "Use the latest version of the configured main branch of the pacticipant as the version for which you want to check the verification results", default: false
             method_option :to_environment, required: false, banner: "ENVIRONMENT", desc: "The environment into which the pacticipant(s) are to be deployed", default: nil
             method_option :to, required: false, banner: "TAG", desc: "The tag that represents the branch or environment of the integrated applications for which you want to check the verification result status.", default: nil
-            method_option :ignore, required: false, desc: "The pacticipant name to ignore. Use once for each pacticipant being ignored. A specific version can be ignored by also specifying a --version after the pacticipant name option."
             method_option :output, aliases: "-o", desc: "json or table", default: "table"
             method_option :retry_while_unknown, banner: "TIMES", type: :numeric, default: 0, required: false, desc: "The number of times to retry while there is an unknown verification result (ie. the provider verification is likely still running)"
             method_option :retry_interval, banner: "SECONDS", type: :numeric, default: 10, required: false, desc: "The time between retries in seconds. Use in conjuction with --retry-while-unknown"
