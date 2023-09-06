@@ -1,7 +1,7 @@
 require "base64"
 require "pact_broker/client/base_command"
 require "pact_broker/client/colorize_notices"
-
+require "pactflow/client/provider_contracts/publish_the_old_way"
 
 module Pactflow
   module Client
@@ -26,16 +26,16 @@ module Pactflow
         attr_reader :provider_name, :provider_version_number, :branch_name, :tags, :build_url, :contract, :verification_results
 
         def do_call
-          if !force_use_old_api? && index_resource.can?(PUBLISH_RELATION)
+          if enabled? && index_resource.assert_success!.can?(PUBLISH_RELATION)
             publish_provider_contracts
             PactBroker::Client::CommandResult.new(success?, message)
           else
-            PublishPactsTheOldWay.call(pact_broker_base_url, pact_file_paths, consumer_version_params, options, pact_broker_client_options)
+            PublishTheOldWay.call(params, options, pact_broker_client_options)
           end
         end
 
-        def force_use_old_api?
-          ENV.fetch("PACT_BROKER_FEATURES", "").include?("publish_provider_contracts_using_old_api")
+        def enabled?
+          ENV.fetch("PACT_BROKER_FEATURES", "").include?("publish_provider_contracts_all_in_one")
         end
 
         def publish_provider_contracts
@@ -53,10 +53,10 @@ module Pactflow
                                         }.compact
 
           contract_params = {
-                          content: encode_content(contract[:content]),
-                          specification: contract[:specification],
-                          contentType: contract[:content_type]
-                        }.compact
+                              content: encode_content(contract[:content]),
+                              specification: contract[:specification],
+                              contentType: contract[:content_type]
+                            }.compact
 
           if verification_results_params.any?
             contract_params[:selfVerificationResults] = verification_results_params
@@ -88,15 +88,7 @@ module Pactflow
         end
 
         def text_message
-          if success?
-            if @response_entity.notices
-              PactBroker::Client::ColorizeNotices.call(@response_entity.notices.collect{ |n| OpenStruct.new(n) } )
-            else
-              "Successfully published provider contract for #{provider_name} version #{provider_version_number} to PactFlow"
-            end
-          else
-            ::Term::ANSIColor.red(@response_entity.response.raw_body)
-          end
+          PactBroker::Client::ColorizeNotices.call(@response_entity.notices.collect{ |n| OpenStruct.new(n) } )
         end
       end
     end

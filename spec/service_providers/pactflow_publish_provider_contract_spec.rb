@@ -3,6 +3,13 @@ require_relative "pact_helper"
 require "pactflow/client/provider_contracts/publish"
 
 RSpec.describe "publishing a provider contract to PactFlow", pact: true do
+  before do
+    allow_any_instance_of(PactBroker::Client::Hal::HttpClient).to receive(:sleep)
+    allow_any_instance_of(PactBroker::Client::Hal::HttpClient).to receive(:default_max_tries).and_return(1)
+    allow(ENV).to receive(:fetch).and_call_original
+    allow(ENV).to receive(:fetch).with("PACT_BROKER_FEATURES", "").and_return("publish_provider_contracts_all_in_one")
+  end
+
   include_context "pact broker"
   include PactBrokerPactHelperMethods
 
@@ -28,8 +35,6 @@ RSpec.describe "publishing a provider contract to PactFlow", pact: true do
       }
     }
   end
-
-  let(:body) { { some: "body" }.to_json }
 
   let(:request_body) do
      {
