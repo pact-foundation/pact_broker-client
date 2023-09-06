@@ -7,6 +7,103 @@
   },
   "interactions": [
     {
+      "description": "a request for the index resource",
+      "providerState": "the pb:publish-provider-contract relation exists in the index resource",
+      "request": {
+        "method": "GET",
+        "path": "/",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pf:publish-provider-contract": {
+              "href": "http://localhost:1235/HAL-REL-PLACEHOLDER-PF-PUBLISH-PROVIDER-CONTRACT-{provider}"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pf:publish-provider-contract.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*{provider}"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to publish a provider contract",
+      "request": {
+        "method": "post",
+        "path": "/HAL-REL-PLACEHOLDER-PF-PUBLISH-PROVIDER-CONTRACT-Bar",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/hal+json"
+        },
+        "body": {
+          "pacticipantVersionNumber": "1",
+          "tags": [
+            "dev"
+          ],
+          "branch": "main",
+          "buildUrl": "http://build",
+          "contract": {
+            "content": "LS0tCnNvbWU6IGNvbnRyYWN0Cg==",
+            "contentType": "application/yaml",
+            "specification": "oas",
+            "selfVerificationResults": {
+              "success": true,
+              "content": "c29tZSByZXN1bHRz",
+              "contentType": "text/plain",
+              "format": "text",
+              "verifier": "my custom tool",
+              "verifierVersion": "1.0"
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "notices": [
+            {
+              "text": "some notice",
+              "type": "info"
+            }
+          ],
+          "_embedded": {
+            "version": {
+              "number": "1"
+            }
+          },
+          "_links": {
+            "pb:pacticipant-version-tags": [
+              {
+              }
+            ],
+            "pb:branch-version": {
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body.notices": {
+            "min": 1
+          },
+          "$.body.notices[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
       "description": "a request to create a provider contract",
       "request": {
         "method": "put",

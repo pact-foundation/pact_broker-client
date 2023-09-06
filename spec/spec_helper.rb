@@ -33,6 +33,10 @@ RSpec.configure do | config |
       eval "$#{stream} = StringIO.new"
       yield
       result = eval("$#{stream}").string
+    rescue SystemExit => e
+      puts "CAUGHT SYSTEM EXIT"
+      puts e
+      puts e.backtrace
     ensure
       eval("$#{stream} = #{stream.upcase}")
     end

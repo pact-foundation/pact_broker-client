@@ -1,0 +1,81 @@
+{
+  "consumer": {
+    "name": "Foo"
+  },
+  "provider": {
+    "name": "Bar"
+  },
+  "interactions": [
+    {
+      "description": "a request to list the latest pacts",
+      "providerState": "a pact between Condor and the Pricing Service exists",
+      "request": {
+        "method": "get",
+        "path": "/pacts/latest",
+        "headers": {
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json"
+        },
+        "body": {
+          "_links": {
+            "self": {
+              "href": "http://example.org/pacts/latest"
+            }
+          },
+          "pacts": [
+            {
+              "_links": {
+                "self": [
+                  {
+                    "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest"
+                  },
+                  {
+                    "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0"
+                  }
+                ]
+              },
+              "_embedded": {
+                "consumer": {
+                  "name": "Condor",
+                  "_links": {
+                    "self": {
+                      "href": "http://example.org/pacticipants/Condor"
+                    }
+                  },
+                  "_embedded": {
+                    "version": {
+                      "number": "1.3.0"
+                    }
+                  }
+                },
+                "provider": {
+                  "_links": {
+                    "self": {
+                      "href": "http://example.org/pacticipants/Pricing%20Service"
+                    }
+                  },
+                  "name": "Pricing Service"
+                }
+              }
+            }
+          ]
+        },
+        "matchingRules": {
+          "$.headers.Content-Type": {
+            "match": "regex",
+            "regex": "application\\/hal\\+json"
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
