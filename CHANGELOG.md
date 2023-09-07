@@ -1,3 +1,10 @@
+<a name="v1.71.0"></a>
+### v1.71.0 (2023-09-07)
+
+#### Features
+
+* publish provider contracts using all in one endpoint (#141)	 ([a9f87a8](/../../commit/a9f87a8))
+
 <a name="v1.70.0"></a>
 ### v1.70.0 (2023-08-29)
 
