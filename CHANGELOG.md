@@ -1,3 +1,10 @@
+<a name="v1.72.0"></a>
+### v1.72.0 (2023-09-11)
+
+#### Features
+
+* enable publishing provider contracts using the 'all in one' endpoint	 ([398d58c](/../../commit/398d58c))
+
 <a name="v1.71.0"></a>
 ### v1.71.0 (2023-09-07)
 
