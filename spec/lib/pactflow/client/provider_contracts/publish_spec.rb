@@ -7,8 +7,6 @@ module Pactflow
         before do
           allow_any_instance_of(PactBroker::Client::Hal::HttpClient).to receive(:sleep)
           allow_any_instance_of(PactBroker::Client::Hal::HttpClient).to receive(:default_max_tries).and_return(1)
-          allow(ENV).to receive(:fetch).and_call_original
-          allow(ENV).to receive(:fetch).with("PACT_BROKER_FEATURES", "").and_return("publish_provider_contracts_all_in_one")
         end
 
         let(:command_params) do
@@ -99,9 +97,10 @@ module Pactflow
           end
         end
 
-        context "when the feature is not enabled" do
+        context "when the feature is disabled" do
           before do
-            allow(ENV).to receive(:fetch).with("PACT_BROKER_FEATURES", "").and_return("")
+            allow(ENV).to receive(:fetch).and_call_original
+            allow(ENV).to receive(:fetch).with("PACTFLOW_FEATURES", "").and_return("publish_provider_contracts_using_old_api")
           end
 
           it "publishes the provider contracts the old way" do

@@ -1,10 +1,6 @@
 require "pactflow/client/cli/pactflow"
 
 RSpec.describe "publish-provider-contract" do
-  before do
-    allow(ENV).to receive(:fetch).and_call_original
-    allow(ENV).to receive(:fetch).with("PACT_BROKER_FEATURES", "").and_return("publish_provider_contracts_all_in_one")
-  end
   let(:index_body_hash) do
     {
       _links: {

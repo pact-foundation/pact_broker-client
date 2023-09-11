@@ -26,7 +26,7 @@ module Pactflow
         attr_reader :provider_name, :provider_version_number, :branch_name, :tags, :build_url, :contract, :verification_results
 
         def do_call
-          if enabled? && index_resource.assert_success!.can?(PUBLISH_RELATION)
+          if !disabled? && index_resource.assert_success!.can?(PUBLISH_RELATION)
             publish_provider_contracts
             PactBroker::Client::CommandResult.new(success?, message)
           else
@@ -34,8 +34,8 @@ module Pactflow
           end
         end
 
-        def enabled?
-          ENV.fetch("PACT_BROKER_FEATURES", "").include?("publish_provider_contracts_all_in_one")
+        def disabled?
+          ENV.fetch("PACTFLOW_FEATURES", "").include?("publish_provider_contracts_using_old_api")
         end
 
         def publish_provider_contracts
