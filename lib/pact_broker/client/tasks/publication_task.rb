@@ -20,8 +20,8 @@ module PactBroker
     class PublicationTask < ::Rake::TaskLib
       using PactBroker::Client::HashRefinements
 
-      attr_accessor :pattern, :pact_broker_base_url, :consumer_version, :tag, :write_method, :tag_with_git_branch, :pact_broker_basic_auth, :pact_broker_token
-      attr_reader :auto_detect_version_properties, :branch, :build_url
+      attr_accessor :pattern, :pact_broker_base_url, :tag, :write_method, :tag_with_git_branch, :pact_broker_basic_auth, :pact_broker_token
+      attr_reader :auto_detect_version_properties, :branch, :consumer_version, :build_url
       alias_method :tags=, :tag=
       alias_method :tags, :tag
 
@@ -44,6 +44,14 @@ module PactBroker
         @branch = branch
       end
 
+      def consumer_version=(consumer_version)
+        if consumer_version.nil? && @auto_detect_version_properties
+          @consumer_version = PactBroker::Client::Git.commit(raise_error: true)
+        else
+          @consumer_version = consumer_version
+        end
+      end
+      
       def build_url= build_url
         @version_required = version_required || !!build_url
         @build_url = build_url
@@ -87,6 +95,7 @@ module PactBroker
           branch
         end
       end
+
     end
   end
 end

@@ -1,4 +1,5 @@
 require "pact_broker/client/hash_refinements"
+require 'pact_broker/client/string_refinements'
 
 module PactBroker
   module Client
@@ -8,13 +9,14 @@ module PactBroker
 
       module PactCommands
         using PactBroker::Client::HashRefinements
+        using PactBroker::Client::StringRefinements
 
         def self.included(thor)
           thor.class_eval do
             desc 'publish PACT_DIRS_OR_FILES ...', "Publish pacts to a Pact Broker."
-            method_option :consumer_app_version, required: true, aliases: "-a", desc: "The consumer application version"
+            method_option :consumer_app_version, aliases: "-a", desc: "The consumer application version"
             method_option :branch, aliases: "-h", desc: "Repository branch of the consumer version"
-            method_option :auto_detect_version_properties, type: :boolean, default: false, desc: "Automatically detect the repository branch from known CI environment variables or git CLI. Supports Buildkite, Circle CI, Travis CI, GitHub Actions, Jenkins, Hudson, AppVeyor, GitLab, CodeShip, Bitbucket and Azure DevOps."
+            method_option :auto_detect_version_properties, aliases: "-r", type: :boolean, default: false, desc: "Automatically detect the repository commit and branch from known CI environment variables or git CLI. Supports Buildkite, Circle CI, Travis CI, GitHub Actions, Jenkins, Hudson, AppVeyor, GitLab, CodeShip, Bitbucket and Azure DevOps."
             method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for consumer version. Can be specified multiple times."
             method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Supports Buildkite, Circle CI, Travis CI, GitHub Actions, Jenkins, Hudson, AppVeyor, GitLab, CodeShip, Bitbucket and Azure DevOps. Default: false"
             method_option :build_url, desc: "The build URL that created the pact"
@@ -56,7 +58,7 @@ module PactBroker
 
                 write_options = options[:merge] ? { write: :merge } : {}
                 consumer_version_params = {
-                  number: options.consumer_app_version,
+                  number: consumer_app_version,
                   branch: branch,
                   tags: tags,
                   build_url: options.build_url,
@@ -113,6 +115,15 @@ module PactBroker
                   PactBroker::Client::Git.branch(raise_error: explict_auto_detect_version_properties)
                 else
                   options.branch
+                end
+              end
+
+              def consumer_app_version
+                require 'pact_broker/client/git'
+                if options.consumer_app_version.blank? && options.auto_detect_version_properties
+                  PactBroker::Client::Git.commit(raise_error: true)
+                else
+                  options.consumer_app_version
                 end
               end
 

@@ -4,10 +4,11 @@ require 'pact_broker/client/git'
 
 module PactBroker::Client::CLI
   describe Broker do
-    describe ".broker" do
+    describe '.broker' do
       before do
         allow(PactBroker::Client::PublishPacts).to receive(:call).and_return(result)
-        allow(PactBroker::Client::Git).to receive(:branch).and_return("bar")
+        allow(PactBroker::Client::Git).to receive(:branch).and_return('bar')
+        allow(PactBroker::Client::Git).to receive(:commit).and_return('6.6.6')
         subject.options = OpenStruct.new(minimum_valid_options)
         allow($stdout).to receive(:puts)
       end
@@ -162,7 +163,7 @@ module PactBroker::Client::CLI
       context "with --auto-detect-version-properties on by default" do
         before do
           subject.options = OpenStruct.new(
-            minimum_valid_options.merge(auto_detect_version_properties: true)
+            minimum_valid_options.merge(auto_detect_version_properties: true, consumer_app_version: nil)
           )
           allow(subject).to receive(:explict_auto_detect_version_properties).and_return(false)
         end
@@ -182,13 +183,27 @@ module PactBroker::Client::CLI
           )
           invoke_broker
         end
-      end
+        it 'determines the git commit sha' do
+          expect(PactBroker::Client::Git).to receive(:commit).with(raise_error: true)
+          invoke_broker
+        end
 
+        it 'passes in the auto detected commit sha with version_required: false' do
+          expect(PactBroker::Client::PublishPacts).to receive(:call).with(
+            anything,
+            anything,
+            hash_including(number: '6.6.6', version_required: false),
+            anything,
+            anything
+          )
+          invoke_broker
+        end
+      end
 
       context "with --auto-detect-version-properties specified explicitly" do
         before do
           subject.options = OpenStruct.new(
-            minimum_valid_options.merge(auto_detect_version_properties: true)
+            minimum_valid_options.merge(auto_detect_version_properties: true, consumer_app_version: nil)
           )
           allow(subject).to receive(:explict_auto_detect_version_properties).and_return(true)
         end
@@ -203,6 +218,22 @@ module PactBroker::Client::CLI
             anything,
             anything,
             hash_including(branch: "bar", version_required: true),
+            anything,
+            anything
+          )
+          invoke_broker
+        end
+
+        it 'determines the commit sha' do
+          expect(PactBroker::Client::Git).to receive(:commit).with(raise_error: true)
+          invoke_broker
+        end
+
+        it 'passes in the auto detected commit sha option with version_required: true' do
+          expect(PactBroker::Client::PublishPacts).to receive(:call).with(
+            anything,
+            anything,
+            hash_including(number: '6.6.6', version_required: true),
             anything,
             anything
           )

@@ -2,7 +2,6 @@ require 'pact_broker/client/error'
 require 'pact_broker/client/hash_refinements'
 
 =begin
-
 BUILDKITE_BRANCH BUILDKITE_COMMIT https://buildkite.com/docs/pipelines/environment-variables
 CIRCLE_BRANCH CIRCLE_SHA1 https://circleci.com/docs/2.0/env-vars/
 TRAVIS_COMMIT TRAVIS_BRANCH - TRAVIS_PULL_REQUEST_BRANCH TRAVIS_PULL_REQUEST_SHA https://docs.travis-ci.com/user/environment-variables/
@@ -26,12 +25,13 @@ module PactBroker
       using PactBroker::Client::HashRefinements
 
       COMMAND = 'git rev-parse --abbrev-ref HEAD'.freeze
+      COMMIT_COMMAND = 'git rev-parse HEAD'.freeze
       BRANCH_ENV_VAR_NAMES = %w{GITHUB_HEAD_REF GITHUB_REF BUILDKITE_BRANCH CIRCLE_BRANCH TRAVIS_BRANCH GIT_BRANCH GIT_LOCAL_BRANCH APPVEYOR_REPO_BRANCH CI_COMMIT_REF_NAME BITBUCKET_BRANCH BUILD_SOURCEBRANCHNAME CIRRUS_BRANCH}.freeze
       COMMIT_ENV_VAR_NAMES = %w{GITHUB_SHA BUILDKITE_COMMIT CIRCLE_SHA1 TRAVIS_COMMIT GIT_COMMIT APPVEYOR_REPO_COMMIT CI_COMMIT_ID BITBUCKET_COMMIT BUILD_SOURCEVERSION CIRRUS_CHANGE_IN_REPO}
       BUILD_URL_ENV_VAR_NAMES = %w{BUILDKITE_BUILD_URL CIRCLE_BUILD_URL TRAVIS_BUILD_WEB_URL BUILD_URL }
 
-      def self.commit
-        find_commit_from_env_vars
+      def self.commit(options)
+        find_commit_from_env_vars || commit_from_git_command(options[:raise_error])
       end
 
       def self.branch(options)
@@ -79,6 +79,10 @@ module PactBroker
         branch_names.size == 1 ? branch_names[0] : nil
       end
 
+      def self.commit_from_git_command(raise_error)
+        execute_git_commit_command(raise_error)
+      end
+
       def self.validate_branch_names(branch_names)
         if branch_names.size == 0
           raise PactBroker::Client::Error, "Command `#{COMMAND}` didn't return anything that could be identified as the current branch."
@@ -91,6 +95,17 @@ module PactBroker
 
       def self.execute_git_command
         `#{COMMAND}`
+      end
+
+      def self.execute_git_commit_command(raise_error)
+        `#{COMMIT_COMMAND}`
+      rescue StandardError => e
+        if raise_error
+          raise PactBroker::Client::Error,
+                "Could not determine current git commit using command `#{COMMIT_COMMAND}`. #{e.class} #{e.message}"
+        else
+          return nil
+        end
       end
 
       def self.execute_and_parse_command(raise_error)

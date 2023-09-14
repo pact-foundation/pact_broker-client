@@ -19,6 +19,7 @@ module PactBroker::Client
       allow(PactBroker::Client::PublishPacts).to receive(:new).and_return(publish_pacts)
       allow(FileList).to receive(:[]).with(pattern).and_return(pact_file_list)
       allow(PactBroker::Client::Git).to receive(:branch).and_return('foo')
+      allow(PactBroker::Client::Git).to receive(:commit).and_return('6.6.6')
       allow($stdout).to receive(:puts)
     end
 

@@ -51,18 +51,18 @@ Authentication using a bearer token can be specified using the environment varia
 
 ```
 Usage:
-  pact-broker publish PACT_DIRS_OR_FILES ... -a, --consumer-app-version=CONSUMER_APP_VERSION -b, --broker-base-url=BROKER_BASE_URL
+  pact-broker publish PACT_DIRS_OR_FILES ... -b, --broker-base-url=BROKER_BASE_URL
 
 Options:
-  -a, --consumer-app-version=CONSUMER_APP_VERSION
+  -a, [--consumer-app-version=CONSUMER_APP_VERSION]
               # The consumer application version
   -h, [--branch=BRANCH]
               # Repository branch of the consumer version
-      [--auto-detect-version-properties], [--no-auto-detect-version-properties]
-              # Automatically detect the repository branch from known CI
-                environment variables or git CLI. Supports Buildkite, Circle
-                CI, Travis CI, GitHub Actions, Jenkins, Hudson, AppVeyor,
-                GitLab, CodeShip, Bitbucket and Azure DevOps.
+  -r, [--auto-detect-version-properties], [--no-auto-detect-version-properties]
+              # Automatically detect the repository commit and branch from
+                known CI environment variables or git CLI. Supports Buildkite,
+                Circle CI, Travis CI, GitHub Actions, Jenkins, Hudson,
+                AppVeyor, GitLab, CodeShip, Bitbucket and Azure DevOps.
   -t, [--tag=TAG]
               # Tag name for consumer version. Can be specified multiple
                 times.
