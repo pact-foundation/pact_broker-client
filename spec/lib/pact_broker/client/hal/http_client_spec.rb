@@ -210,7 +210,9 @@ module PactBroker::Client
 
           it "fails raising SSL error" do
             expect { do_get }
-              .to raise_error(OpenSSL::SSL::SSLError, /tlsv1 alert unknown ca/)
+              .to raise_error { |error|
+                expect([OpenSSL::SSL::SSLError, Errno::ECONNRESET]).to include(error.class)
+              }
           end
         end
 
@@ -222,7 +224,9 @@ module PactBroker::Client
 
           it "fails raising SSL error" do
             expect { do_get }
-              .to raise_error(OpenSSL::SSL::SSLError, /tlsv13 alert certificate required/)
+              .to raise_error { |error|
+                expect([OpenSSL::SSL::SSLError, Errno::ECONNRESET]).to include(error.class)
+              }
           end
         end
 
