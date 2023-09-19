@@ -1,4 +1,6 @@
 require 'pact_broker/client/hal/http_client'
+require "faraday"
+require "faraday/retry"
 
 module PactBroker::Client
   module Hal
@@ -155,6 +157,77 @@ module PactBroker::Client
           it "retries and raises the last exception" do
             expect { do_get }.to raise_error(Errno::ECONNREFUSED)
           end
+        end
+      end
+
+      describe "x509 certificate" do
+        FAKE_SERVER_URL = 'https://localhost:4444'
+        X509_CERT_FILE_PATH = './spec/fixtures/certificates/client_cert.pem'
+        X509_KEY_FILE_PATH = './spec/fixtures/certificates/key.pem'
+        UNSIGNED_X509_CERT_FILE_PATH = './spec/fixtures/certificates/unsigned_cert.pem'
+        UNSIGNED_X509_KEY_FILE_PATH = './spec/fixtures/certificates/unsigned_key.pem'
+
+        def wait_for_server_to_start
+          Faraday.new(
+            url: FAKE_SERVER_URL,
+            ssl: {
+              verify: false,
+              client_cert: OpenSSL::X509::Certificate.new(File.read(X509_CERT_FILE_PATH)),
+              client_key: OpenSSL::PKey::RSA.new(File.read(X509_KEY_FILE_PATH))
+            }
+          ) do |builder|
+            builder.request :retry, max: 20, interval: 0.5, exceptions: [StandardError]
+            builder.adapter :net_http
+          end.get
+        end
+
+        let(:do_get) { subject.get(FAKE_SERVER_URL) }
+
+        before(:all) do
+          @pipe = IO.popen("bundle exec ruby ./spec/support/ssl_server.rb")
+          ENV['SSL_CERT_FILE'] = "./spec/fixtures/certificates/ca_cert.pem"
+          ENV['SSL_CERT_DIR'] =  "./spec/fixtures/certificates/"
+
+          wait_for_server_to_start()
+        end
+
+        context "with valid x509 client certificates" do
+          before do
+            ENV['X509_CLIENT_CERT_FILE'] = X509_CERT_FILE_PATH
+            ENV['X509_CLIENT_KEY_FILE'] = X509_KEY_FILE_PATH
+          end
+
+          it "succeeds" do
+            expect(do_get.status).to eq 200
+          end
+        end
+
+        context "when invalid x509 certificates are set" do
+          before do
+            ENV['X509_CLIENT_CERT_FILE'] = UNSIGNED_X509_CERT_FILE_PATH
+            ENV['X509_CLIENT_KEY_FILE'] = UNSIGNED_X509_KEY_FILE_PATH
+          end
+
+          it "fails raising SSL error" do
+            expect { do_get }
+              .to raise_error(OpenSSL::SSL::SSLError, /tlsv1 alert unknown ca/)
+          end
+        end
+
+        context "when no x509 certificates are set" do
+          before do
+            ENV['X509_CLIENT_CERT_FILE'] = nil
+            ENV['X509_CLIENT_KEY_FILE'] = nil
+          end
+
+          it "fails raising SSL error" do
+            expect { do_get }
+              .to raise_error(OpenSSL::SSL::SSLError, /tlsv13 alert certificate required/)
+          end
+        end
+
+        after(:all) do
+          Process.kill "KILL", @pipe.pid
         end
       end
     end
