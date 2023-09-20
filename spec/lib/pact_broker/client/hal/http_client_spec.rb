@@ -186,7 +186,6 @@ module PactBroker::Client
         before(:all) do
           @pipe = IO.popen("bundle exec ruby ./spec/support/ssl_server.rb")
           ENV['SSL_CERT_FILE'] = "./spec/fixtures/certificates/ca_cert.pem"
-          ENV['SSL_CERT_DIR'] =  "./spec/fixtures/certificates/"
 
           wait_for_server_to_start()
         end
