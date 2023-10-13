@@ -52,6 +52,6 @@ jobs:
             pactfoundation/pact-cli:latest \
             broker can-i-deploy \
             --pacticipant "Pact Broker Client" --version ${GITHUB_SHA} \
-            --pacticipant "Pact Broker" --latest master
+            --pacticipant "Pact Broker" --branch master
         env:
           PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_PACT_OSS_TOKEN }}
