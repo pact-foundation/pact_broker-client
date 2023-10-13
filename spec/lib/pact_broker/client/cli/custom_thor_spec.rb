@@ -100,6 +100,18 @@ module PactBroker::Client::CLI
       TestThor.start(%w{test_pact_broker_client_options})
     end
 
+    describe "when someone copy pastes from Word and uses an em dash instead of a normal dash" do
+      before do
+        allow(TestThor).to receive(:exit_with_error_code)
+      end
+
+      it "exits with an error message" do
+        expect($stdout).to receive(:puts).with(/contains an em dash/)
+        expect(TestThor).to receive(:exit_with_error_code)
+        TestThor.start(["test_default", "\u2014\u2014bar"])
+      end
+    end
+
     describe ".handle_help" do
       context "when the last argument is --help or -h" do
         it "turns it into the form that Thor expects, which is a really odd one" do

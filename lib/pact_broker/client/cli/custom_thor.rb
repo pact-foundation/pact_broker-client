@@ -14,12 +14,20 @@ module PactBroker
       class CustomThor < ::Thor
         using PactBroker::Client::HashRefinements
 
+        EM_DASH = "\u2014"
+
         no_commands do
           def self.exit_on_failure?
             true
           end
 
+          # Provide a wrapper method that can be stubbed in tests
+          def self.exit_with_error_code
+            exit(1)
+          end
+
           def self.start given_args = ARGV, config = {}
+            check_for_mdash!(given_args)
             super(massage_args(given_args))
           end
 
@@ -49,6 +57,15 @@ module PactBroker
               argv[0..-3] + ["help", argv[-2]].compact
             else
               argv
+            end
+          end
+
+          def self.check_for_mdash!(argv)
+            if (word_with_mdash = argv.find{ |arg | arg.include?(EM_DASH) })
+              # Can't use the `raise Thor::Error` approach here (which is designed to show the error without a backtrace)
+              # because the exception is not handled within the Thor code, and will show an ugly backtrace.
+              $stdout.puts "The argument '#{word_with_mdash}' contains an em dash (the long dash you get in Microsoft Word when you type two short dashes in a row). Please replace it with a normal dash and try again."
+              exit_with_error_code
             end
           end
 
