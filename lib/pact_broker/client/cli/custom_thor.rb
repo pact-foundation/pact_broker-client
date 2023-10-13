@@ -24,7 +24,7 @@ module PactBroker
           end
 
           def self.massage_args argv
-            add_broker_config_from_environment_variables(turn_muliple_tag_options_into_array(argv))
+            add_broker_config_from_environment_variables(turn_muliple_tag_options_into_array(handle_help(argv)))
           end
 
           def self.add_broker_config_from_environment_variables argv
@@ -37,6 +37,16 @@ module PactBroker
             option_options = ["--#{long_name}", "--#{long_name.gsub('-','_')}", "-#{short_name}"]
             if (argv & option_options).empty? && ENV[environment_variable_name]
               argv + ["--#{long_name}", ENV[environment_variable_name]]
+            else
+              argv
+            end
+          end
+
+          # Thor expects help to be invoked by typing `help <command>`, which is very odd.
+          # Add support for `command --help|-h` by massaging the arguments into the format that Thor expects.
+          def self.handle_help(argv)
+            if argv.last == "--help" || argv.last == "-h"
+              argv[0..-3] + ["help", argv[-2]].compact
             else
               argv
             end

@@ -7,6 +7,10 @@ module PactBroker::Client::CLI
   end
 
   class TestThor < CustomThor
+    def self.exit_on_failure?
+      false
+    end
+
     desc 'ARGUMENT', 'This is the description'
     def test_default(argument)
       Delegate.call(argument: argument)
@@ -94,6 +98,17 @@ module PactBroker::Client::CLI
         expect(options[:pact_broker_base_url]).to eq 'http://bar'
       end
       TestThor.start(%w{test_pact_broker_client_options})
+    end
+
+    describe ".handle_help" do
+      context "when the last argument is --help or -h" do
+        it "turns it into the form that Thor expects, which is a really odd one" do
+          expect(TestThor.handle_help(["foo", "--help"])).to eq ["help", "foo"]
+          expect(TestThor.handle_help(["foo", "-h"])).to eq ["help", "foo"]
+          expect(TestThor.handle_help(["-h"])).to eq ["help"]
+          expect(TestThor.handle_help(["--help"])).to eq ["help"]
+        end
+      end
     end
 
     describe ".turn_muliple_tag_options_into_array" do
