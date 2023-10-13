@@ -1,20 +1,23 @@
 require 'thor'
+require 'pact_broker/client/cli/thor_unknown_options_monkey_patch'
 require 'pact_broker/client/hash_refinements'
 
 module PactBroker
   module Client
     module CLI
       class AuthError < ::Thor::Error; end
-
       ##
       # Custom Thor task allows the following:
       #
       # `--option 1 --option 2` to be interpreted as `--option 1 2` (the standard Thor format for multiple value options)
       #
+
       class CustomThor < ::Thor
         using PactBroker::Client::HashRefinements
 
         EM_DASH = "\u2014"
+
+        check_unknown_options!
 
         no_commands do
           def self.exit_on_failure?
