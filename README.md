@@ -680,7 +680,9 @@ Options:
   -H, [--header=one two three]
               # Webhook Header
   -d, [--data=DATA]
-              # Webhook payload (file or string)
+              # Webhook payload. Provide a JSON string (remember to escape
+                characters appropriately for the shell) or a file path prefixed
+                with the @ symbol, as per the curl usage for this flag.
   -u, [--user=USER]
               # Webhook basic auth username and password eg. username:password
       [--consumer=CONSUMER]
@@ -743,7 +745,9 @@ Options:
   -H, [--header=one two three]
               # Webhook Header
   -d, [--data=DATA]
-              # Webhook payload (file or string)
+              # Webhook payload. Provide a JSON string (remember to escape
+                characters appropriately for the shell) or a file path prefixed
+                with the @ symbol, as per the curl usage for this flag.
   -u, [--user=USER]
               # Webhook basic auth username and password eg. username:password
       [--consumer=CONSUMER]

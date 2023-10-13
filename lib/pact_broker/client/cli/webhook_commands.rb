@@ -12,7 +12,7 @@ module PactBroker
               def self.shared_options_for_webhook_commands
                 method_option :request, banner: "METHOD", aliases: "-X", desc: "Webhook HTTP method", required: true
                 method_option :header, aliases: "-H", type: :array, desc: "Webhook Header"
-                method_option :data, aliases: "-d", desc: "Webhook payload (file or string)"
+                method_option :data, aliases: "-d", desc: "Webhook payload. Provide a JSON string (remember to escape characters appropriately for the shell) or a file path prefixed with the @ symbol, as per the curl usage for this flag."
                 method_option :user, aliases: "-u", desc: "Webhook basic auth username and password eg. username:password"
                 method_option :consumer, desc: "Consumer name"
                 method_option :consumer_label, desc: "Consumer label, mutually exclusive with consumer name"
