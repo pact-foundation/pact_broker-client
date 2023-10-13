@@ -30,7 +30,7 @@ class Thor
         original_check_unknown!
       rescue UnknownArgumentError => e
         $stderr.puts(::Term::ANSIColor.yellow(e.message))
-        $stderr.puts(::Term::ANSIColor.yellow("This is a warning rather than an error so as not to break backwards compatibility. To raise an error for unknown arguments set PACT_BROKER_ERROR_ON_UNKNOWN_OPTION=true"))
+        $stderr.puts(::Term::ANSIColor.yellow("This is a warning rather than an error so as not to break backwards compatibility. To raise an error for unknown options set PACT_BROKER_ERROR_ON_UNKNOWN_OPTION=true"))
         $stderr.puts("\n")
       end
     end
