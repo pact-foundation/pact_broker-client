@@ -1,4 +1,11 @@
 #!/usr/bin/env ruby
+require "bundler/inline"
+
+gemfile do
+  source "https://rubygems.org"
+  gem "pact_broker-client", path: "."
+end
+
 require "stringio"
 require "pact_broker/client/cli/broker"
 require "pactflow/client/cli/pactflow"
