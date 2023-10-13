@@ -4,7 +4,7 @@ require "pact_broker/client/cli/broker"
 # This is not the ideal way to write a test, but I tried to write it with an in memory invocation,
 # and I couldn't get the capture to work, and it became super complicated.
 
-RSpec.describe "using unknown options" do
+RSpec.describe "using unknown options", skip_windows: true do
   let(:unknown_switches_text) { "Unknown switches" }
   let(:warning_text) { "This is a warning"}
   let(:command) { "bundle exec bin/pact-broker can-i-deploy --pacticipant Foo --foo --broker-base-url http://example.org" }
