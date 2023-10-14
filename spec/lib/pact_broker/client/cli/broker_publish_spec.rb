@@ -31,7 +31,7 @@ module PactBroker::Client::CLI
           expect(PactBroker::Client::PublishPacts).to receive(:call).with(
             "http://pact-broker",
             ["spec/support/cli_test_pacts/foo.json"],
-            { number: "1.2.3", tags: [], version_required: false },
+            { number: "1.2.3", tags: [] },
             {},
             { pact_broker_base_url: 'http://pact-broker' }
           )
@@ -152,7 +152,7 @@ module PactBroker::Client::CLI
           expect(PactBroker::Client::PublishPacts).to receive(:call).with(
             anything,
             anything,
-            hash_including(branch: "main", version_required: true),
+            hash_including(branch: "main"),
             anything,
             anything
           )
@@ -160,47 +160,7 @@ module PactBroker::Client::CLI
         end
       end
 
-      context "with --auto-detect-version-properties on by default" do
-        before do
-          subject.options = OpenStruct.new(
-            minimum_valid_options.merge(auto_detect_version_properties: true, consumer_app_version: nil)
-          )
-          allow(subject).to receive(:explict_auto_detect_version_properties).and_return(false)
-        end
-
-        it "determines the git branch name" do
-          expect(PactBroker::Client::Git).to receive(:branch).with(raise_error: false)
-          invoke_broker
-        end
-
-        it "passes in the auto detected branch option with version_required: false" do
-          expect(PactBroker::Client::PublishPacts).to receive(:call).with(
-            anything,
-            anything,
-            hash_including(branch: "bar", version_required: false),
-            anything,
-            anything
-          )
-          invoke_broker
-        end
-        it 'determines the git commit sha' do
-          expect(PactBroker::Client::Git).to receive(:commit).with(raise_error: true)
-          invoke_broker
-        end
-
-        it 'passes in the auto detected commit sha with version_required: false' do
-          expect(PactBroker::Client::PublishPacts).to receive(:call).with(
-            anything,
-            anything,
-            hash_including(number: '6.6.6', version_required: false),
-            anything,
-            anything
-          )
-          invoke_broker
-        end
-      end
-
-      context "with --auto-detect-version-properties specified explicitly" do
+      context "with --auto-detect-version-properties specified" do
         before do
           subject.options = OpenStruct.new(
             minimum_valid_options.merge(auto_detect_version_properties: true, consumer_app_version: nil)
@@ -213,11 +173,11 @@ module PactBroker::Client::CLI
           invoke_broker
         end
 
-        it "passes in the auto detected branch option with version_required: true" do
+        it "passes in the auto detected branch option" do
           expect(PactBroker::Client::PublishPacts).to receive(:call).with(
             anything,
             anything,
-            hash_including(branch: "bar", version_required: true),
+            hash_including(branch: "bar"),
             anything,
             anything
           )
@@ -233,7 +193,7 @@ module PactBroker::Client::CLI
           expect(PactBroker::Client::PublishPacts).to receive(:call).with(
             anything,
             anything,
-            hash_including(number: '6.6.6', version_required: true),
+            hash_including(number: '6.6.6'),
             anything,
             anything
           )
@@ -251,7 +211,7 @@ module PactBroker::Client::CLI
             expect(PactBroker::Client::PublishPacts).to receive(:call).with(
               anything,
               anything,
-              hash_including(branch: "specified-branch", version_required: true),
+              hash_including(branch: "specified-branch"),
               anything,
               anything
             )

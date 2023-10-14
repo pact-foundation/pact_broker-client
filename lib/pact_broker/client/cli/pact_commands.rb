@@ -61,8 +61,7 @@ module PactBroker
                   number: consumer_app_version,
                   branch: branch,
                   tags: tags,
-                  build_url: options.build_url,
-                  version_required: (!!options.branch || !!options.build_url || explict_auto_detect_version_properties)
+                  build_url: options.build_url
                 }.compact
 
                 PactBroker::Client::PublishPacts.call(

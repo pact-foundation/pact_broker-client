@@ -1,30 +1,41 @@
 require 'thor'
+require 'pact_broker/client/cli/thor_unknown_options_monkey_patch'
 require 'pact_broker/client/hash_refinements'
 
 module PactBroker
   module Client
     module CLI
       class AuthError < ::Thor::Error; end
-
       ##
       # Custom Thor task allows the following:
       #
       # `--option 1 --option 2` to be interpreted as `--option 1 2` (the standard Thor format for multiple value options)
       #
+
       class CustomThor < ::Thor
         using PactBroker::Client::HashRefinements
+
+        EM_DASH = "\u2014"
+
+        check_unknown_options!
 
         no_commands do
           def self.exit_on_failure?
             true
           end
 
+          # Provide a wrapper method that can be stubbed in tests
+          def self.exit_with_error_code
+            exit(1)
+          end
+
           def self.start given_args = ARGV, config = {}
+            check_for_mdash!(given_args)
             super(massage_args(given_args))
           end
 
           def self.massage_args argv
-            add_broker_config_from_environment_variables(turn_muliple_tag_options_into_array(argv))
+            add_broker_config_from_environment_variables(turn_muliple_tag_options_into_array(handle_help(argv)))
           end
 
           def self.add_broker_config_from_environment_variables argv
@@ -39,6 +50,25 @@ module PactBroker
               argv + ["--#{long_name}", ENV[environment_variable_name]]
             else
               argv
+            end
+          end
+
+          # Thor expects help to be invoked by typing `help <command>`, which is very odd.
+          # Add support for `command --help|-h` by massaging the arguments into the format that Thor expects.
+          def self.handle_help(argv)
+            if argv.last == "--help" || argv.last == "-h"
+              argv[0..-3] + ["help", argv[-2]].compact
+            else
+              argv
+            end
+          end
+
+          def self.check_for_mdash!(argv)
+            if (word_with_mdash = argv.find{ |arg | arg.include?(EM_DASH) })
+              # Can't use the `raise Thor::Error` approach here (which is designed to show the error without a backtrace)
+              # because the exception is not handled within the Thor code, and will show an ugly backtrace.
+              $stdout.puts "The argument '#{word_with_mdash}' contains an em dash (the long dash you get in Microsoft Word when you type two short dashes in a row). Please replace it with a normal dash and try again."
+              exit_with_error_code
             end
           end
 

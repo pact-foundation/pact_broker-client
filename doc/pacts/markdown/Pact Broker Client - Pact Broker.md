@@ -2305,8 +2305,7 @@ Pact Broker will respond with:
         "name": "Foo"
       },
       "version": {
-        "number": "5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
-        "buildUrl": "http://build"
+        "number": "5556b8149bf8bac76bc30f50a8a2dd4c22c85f30"
       }
     },
     "logs": [

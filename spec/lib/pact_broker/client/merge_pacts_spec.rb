@@ -166,6 +166,32 @@ module PactBroker
             expect(subject).to eq expected_merge
           end
         end
+
+        describe "with v3 pacts" do
+          let(:pact_hash_1) { JSON.parse(File.read("spec/fixtures/MyConsumer-MyProvider.json"), symbolize_names: true) }
+          let(:pact_hash_2) { JSON.parse(File.read("spec/fixtures/MyConsumer-MyProvider (1).json"), symbolize_names: true) }
+          let(:pact_hashes) { [pact_hash_1, pact_hash_2] }
+
+          subject { MergePacts.call(pact_hashes) }
+
+          context "when there are no conflicts and no duplicates" do
+            it "adds all the interactions to the merged file" do
+              expect(subject[:interactions].size).to eq 2
+            end
+          end
+
+          context "when there is a conflict" do
+            let(:pact_hash_2) do
+              hash = JSON.parse(File.read("spec/fixtures/MyConsumer-MyProvider.json"), symbolize_names: true)
+              hash[:interactions].first[:request][:path] = "/a-different-path"
+              hash
+            end
+
+            it "raises an error with a message that contains the provider states of the conflicting interactions" do
+              expect { subject }.to raise_error PactMergeError, /state 1/
+            end
+          end
+        end
       end
     end
   end

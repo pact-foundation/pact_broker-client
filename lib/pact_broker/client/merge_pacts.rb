@@ -53,14 +53,17 @@ module PactBroker
       end
 
       def almost_duplicate_message(original, new_interaction)
-        "Two interactions have been found with same description (#{new_interaction[:description].inspect}) and provider state (#{new_interaction[:providerState].inspect}) but a different request or response. " +
+        "Two interactions have been found with same description (#{new_interaction[:description].inspect}) and provider state (#{(new_interaction[:providerState] || new_interaction[:providerStates]).inspect}) but a different request or response. " +
           "Please use a different description or provider state, or hard-code any random data.\n\n" +
           original.to_json + "\n\n" + new_interaction.to_json
       end
 
       def same_description_and_state? original, additional
         original[:description] == additional[:description] &&
-          original[:providerState] == additional[:providerState]
+          (
+            (original[:providerState] && original[:providerState] == additional[:providerState]) ||
+              (original[:providerStates] && original[:providerStates] == additional[:providerStates])
+          )
       end
     end
   end

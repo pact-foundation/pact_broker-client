@@ -29,7 +29,7 @@ export PACT_BROKER_TOKEN=${PACT_BROKER_TOKEN:-"localhost"}
 #   --contract-published
 
 
-bundle exec bin/pact-broker publish scripts/foo-bar.json \
+bundle exec bin/pact-broker publish script/foo-bar.json \
   --consumer-app-version 1.2.26 \
     --auto-detect-version-properties \
     --build-url http://mybuild \

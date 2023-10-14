@@ -1,3 +1,13 @@
+<a name="v1.73.0"></a>
+### v1.73.0 (2023-10-13)
+
+#### Features
+
+* print warnings and allow error to be raised when unknown option is used	 ([5412121](/../../commit/5412121))
+* raise an error when an em dash is used instead of a normal dash	 ([0e8e773](/../../commit/0e8e773))
+* support --help and -h flags	 ([a6458ab](/../../commit/a6458ab))
+* handle x509 certs in HTTP Client (#142)	 ([c3aa8dc](/../../commit/c3aa8dc))
+
 <a name="v1.72.0"></a>
 ### v1.72.0 (2023-09-11)
 

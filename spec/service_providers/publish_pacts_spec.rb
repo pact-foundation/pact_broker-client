@@ -88,8 +88,7 @@ RSpec.describe "publishing contracts", pact: true do
                 name: pacticipant_name
               },
               version: {
-                number: version_number,
-                buildUrl: build_url
+                number: version_number
               }
             },
             logs: Pact.each_like(level: "info", message: "some message"),
