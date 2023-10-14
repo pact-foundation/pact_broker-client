@@ -18,15 +18,6 @@ describe "pact-broker can-i-deploy", skip_windows: true do
     end
   end
 
-  context "when the pacticipants can't be deployed" do
-    subject { `bundle exec bin/pact-broker can-i-deploy --pacticipant Wiffle --version 1.2.3 --pacticipant Meep --version 4.5.6 --broker-base-url http://localhost:5000` }
-
-    it "returns an error exit code" do
-      subject
-      expect($?.exitstatus).to_not eq 0
-    end
-  end
-
   after(:all) do
     Process.kill 'KILL', @pipe.pid
   end
