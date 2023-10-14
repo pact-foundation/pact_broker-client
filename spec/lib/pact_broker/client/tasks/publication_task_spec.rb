@@ -33,7 +33,7 @@ module PactBroker::Client
 
       context "when pacts are succesfully published" do
         it "invokes PublishPacts with the default values" do
-          expect(PactBroker::Client::PublishPacts).to receive(:new).with('http://pact-broker', pact_file_list, { number: '1.2.3', branch: "foo", tags: [], version_required: false}, {}, {}).and_return(publish_pacts)
+          expect(PactBroker::Client::PublishPacts).to receive(:new).with('http://pact-broker', pact_file_list, { number: '1.2.3', branch: "foo", tags: [] }, {}, {}).and_return(publish_pacts)
           expect(publish_pacts).to receive(:call).and_return(result)
           Rake::Task['pact:publish'].execute
         end
@@ -57,7 +57,7 @@ module PactBroker::Client
       end
 
       it "invokes PublishPacts with the write method set" do
-        expect(PactBroker::Client::PublishPacts).to receive(:new).with('http://pact-broker', pact_file_list, { number: "1.2.3", branch: "foo", tags: [], version_required: false }, {}, {write: :merge}).and_return(publish_pacts)
+        expect(PactBroker::Client::PublishPacts).to receive(:new).with('http://pact-broker', pact_file_list, { number: "1.2.3", branch: "foo", tags: [] }, {}, {write: :merge}).and_return(publish_pacts)
         expect(publish_pacts).to receive(:call).and_return(result)
         Rake::Task['pact:publish:merge'].execute
       end
@@ -184,7 +184,7 @@ module PactBroker::Client
         expect(PactBroker::Client::PublishPacts).to receive(:new).with(
           @pact_broker_base_url,
           pact_file_list,
-          { number: "1.2.3", tags: [@tag], branch: "foo", version_required: false},
+          { number: "1.2.3", tags: [@tag], branch: "foo" },
           {},
           { basic_auth: @pact_broker_basic_auth, token: @pact_broker_token }
         )

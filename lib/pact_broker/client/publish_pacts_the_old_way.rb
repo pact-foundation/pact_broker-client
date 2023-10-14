@@ -42,7 +42,7 @@ module PactBroker
 
       private
 
-      attr_reader :pact_broker_base_url, :pact_file_paths, :consumer_version_number, :branch, :tags, :build_url, :pact_broker_client_options, :version_required
+      attr_reader :pact_broker_base_url, :pact_file_paths, :consumer_version_number, :branch, :tags, :build_url, :pact_broker_client_options
 
       def pact_broker_client
         @pact_broker_client ||= PactBroker::Client::PactBrokerClient.new(base_url: pact_broker_base_url, client_options: pact_broker_client_options)

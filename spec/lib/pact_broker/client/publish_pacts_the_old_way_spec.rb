@@ -37,7 +37,6 @@ module PactBroker
       let(:tags) { nil }
       let(:branch) { nil }
       let(:build_url) { nil }
-      let(:version_required) { false }
       let(:pact_hash) { { consumer: { name: 'Consumer'}, provider: { name: 'Provider' }, interactions: [] } }
       let(:pact_hash_2) { {consumer: { name: 'Foo' }, provider: { name: 'Bar' }, interactions: [] } }
       let(:pacts_client) { instance_double("PactBroker::ClientSupport::Pacts")}
@@ -48,8 +47,7 @@ module PactBroker
           number: consumer_version,
           branch: branch,
           tags: tags,
-          build_url: build_url,
-          version_required: version_required
+          build_url: build_url
         }
       end
       let(:pact_broker_client_options) do

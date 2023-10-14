@@ -28,30 +28,24 @@ module PactBroker
       def initialize name = nil, &block
         @name = name
         @auto_detect_version_properties = nil
-        @version_required = false
         @pattern = 'spec/pacts/*.json'
         @pact_broker_base_url = 'http://pact-broker'
         rake_task &block
       end
 
       def auto_detect_version_properties= auto_detect_version_properties
-        @version_required = version_required || auto_detect_version_properties
         @auto_detect_version_properties = auto_detect_version_properties
       end
 
       def branch= branch
-        @version_required = version_required || !!branch
         @branch = branch
       end
 
       def build_url= build_url
-        @version_required = version_required || !!build_url
         @build_url = build_url
       end
 
       private
-
-      attr_reader :version_required
 
       def rake_task &block
         namespace :pact do
@@ -62,7 +56,7 @@ module PactBroker
             pact_broker_client_options = { write: write_method, token: pact_broker_token }
             pact_broker_client_options[:basic_auth] = pact_broker_basic_auth if pact_broker_basic_auth && pact_broker_basic_auth.any?
             pact_broker_client_options.compact!
-            consumer_version_params = { number: consumer_version, branch: the_branch, build_url: build_url, tags: all_tags, version_required: version_required }.compact
+            consumer_version_params = { number: consumer_version, branch: the_branch, build_url: build_url, tags: all_tags }.compact
             result = PactBroker::Client::PublishPacts.new(pact_broker_base_url, FileList[pattern], consumer_version_params, {}, pact_broker_client_options).call
             $stdout.puts result.message
             raise "One or more pacts failed to be published" unless result.success
