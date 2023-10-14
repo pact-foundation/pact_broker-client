@@ -1,6 +1,8 @@
 require 'rake/tasklib'
 require 'pact_broker/client/git'
 require 'pact_broker/client/hash_refinements'
+require 'pact_broker/client/string_refinements'
+require "pact_broker/client/error"
 
 =begin
 require pact_broker/client/tasks
@@ -19,6 +21,7 @@ module PactBroker
   module Client
     class PublicationTask < ::Rake::TaskLib
       using PactBroker::Client::HashRefinements
+      using PactBroker::Client::StringRefinements
 
       attr_accessor :pattern, :pact_broker_base_url, :tag, :build_url, :write_method, :tag_with_git_branch, :pact_broker_basic_auth, :pact_broker_token
       attr_reader :auto_detect_version_properties, :build_url
@@ -45,6 +48,7 @@ module PactBroker
           desc "Publish pacts to pact broker"
           task task_name do
             block.call(self)
+            validate!
             require 'pact_broker/client/publish_pacts'
             pact_broker_client_options = { write: write_method, token: pact_broker_token }
             pact_broker_client_options[:basic_auth] = pact_broker_basic_auth if pact_broker_basic_auth && pact_broker_basic_auth.any?
@@ -52,8 +56,14 @@ module PactBroker
             consumer_version_params = { number: consumer_version, branch: branch, build_url: build_url, tags: all_tags }.compact
             result = PactBroker::Client::PublishPacts.new(pact_broker_base_url, FileList[pattern], consumer_version_params, {}, pact_broker_client_options).call
             $stdout.puts result.message
-            raise "One or more pacts failed to be published" unless result.success
+            raise PactBroker::Client::Error.new("One or more pacts failed to be published") unless result.success
           end
+        end
+      end
+
+      def validate!
+        if consumer_version.blank?
+          raise PactBroker::Client::Error.new("A consumer version must be provided")
         end
       end
 

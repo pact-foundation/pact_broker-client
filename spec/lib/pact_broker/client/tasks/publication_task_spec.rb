@@ -205,6 +205,17 @@ module PactBroker::Client
       end
     end
 
+    describe "with no consumer version" do
+      before :all do
+        PactBroker::Client::PublicationTask.new(:no_consumer_version) do
+        end
+      end
+
+      it "raises an error" do
+        expect { Rake::Task['pact:publish:no_consumer_version'].execute }.to raise_error PactBroker::Client::Error, /consumer version/
+      end
+    end
+
     describe "timing of block execution" do
       before :all do
         PactBroker::Client::PublicationTask.new(:exception) do | task |
