@@ -1,3 +1,14 @@
+<a name="v1.74.0"></a>
+### v1.74.0 (2023-10-14)
+
+#### Features
+
+* auto detect commit sha, add shorthand -r flag (#119)	 ([1dac9f8](/../../commit/1dac9f8))
+
+#### Bug Fixes
+
+* support merging v3 pacts	 ([d1e01d0](/../../commit/d1e01d0))
+
 <a name="v1.73.0"></a>
 ### v1.73.0 (2023-10-13)
 
