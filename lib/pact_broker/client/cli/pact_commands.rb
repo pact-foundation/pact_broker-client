@@ -61,7 +61,7 @@ module PactBroker
                   number: consumer_app_version,
                   branch: branch,
                   tags: tags,
-                  build_url: options.build_url
+                  build_url: build_url
                 }.compact
 
                 PactBroker::Client::PublishPacts.call(
@@ -123,6 +123,14 @@ module PactBroker
                   PactBroker::Client::Git.commit(raise_error: true)
                 else
                   options.consumer_app_version
+                end
+              end
+
+              def build_url
+                if options.build_url.blank? && options.auto_detect_version_properties
+                  PactBroker::Client::Git.build_url
+                else
+                  options.build_url
                 end
               end
 

@@ -9,6 +9,7 @@ module PactBroker::Client::CLI
         allow(PactBroker::Client::PublishPacts).to receive(:call).and_return(result)
         allow(PactBroker::Client::Git).to receive(:branch).and_return('bar')
         allow(PactBroker::Client::Git).to receive(:commit).and_return('6.6.6')
+        allow(PactBroker::Client::Git).to receive(:build_url).and_return('build_url')
         subject.options = OpenStruct.new(minimum_valid_options)
         allow($stdout).to receive(:puts)
       end
@@ -189,11 +190,27 @@ module PactBroker::Client::CLI
           invoke_broker
         end
 
-        it 'passes in the auto detected commit sha option with version_required: true' do
+        it 'passes in the auto detected commit sha option' do
           expect(PactBroker::Client::PublishPacts).to receive(:call).with(
             anything,
             anything,
             hash_including(number: '6.6.6'),
+            anything,
+            anything
+          )
+          invoke_broker
+        end
+
+        it 'determines the build URL' do
+          expect(PactBroker::Client::Git).to receive(:build_url)
+          invoke_broker
+        end
+
+        it 'passes in the auto detected build URL' do
+          expect(PactBroker::Client::PublishPacts).to receive(:call).with(
+            anything,
+            anything,
+            hash_including(build_url: 'build_url'),
             anything,
             anything
           )
