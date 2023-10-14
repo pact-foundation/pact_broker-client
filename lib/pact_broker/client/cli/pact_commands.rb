@@ -16,7 +16,7 @@ module PactBroker
             desc 'publish PACT_DIRS_OR_FILES ...', "Publish pacts to a Pact Broker."
             method_option :consumer_app_version, aliases: "-a", desc: "The consumer application version"
             method_option :branch, aliases: "-h", desc: "Repository branch of the consumer version"
-            method_option :auto_detect_version_properties, aliases: "-r", type: :boolean, default: false, desc: "Automatically detect the repository commit and branch from known CI environment variables or git CLI. Supports Buildkite, Circle CI, Travis CI, GitHub Actions, Jenkins, Hudson, AppVeyor, GitLab, CodeShip, Bitbucket and Azure DevOps."
+            method_option :auto_detect_version_properties, aliases: "-r", type: :boolean, default: false, desc: "Automatically detect the repository commit, branch and build URL from known CI environment variables or git CLI. Supports Buildkite, Circle CI, Travis CI, GitHub Actions, Jenkins, Hudson, AppVeyor, GitLab, CodeShip, Bitbucket and Azure DevOps."
             method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for consumer version. Can be specified multiple times."
             method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Supports Buildkite, Circle CI, Travis CI, GitHub Actions, Jenkins, Hudson, AppVeyor, GitLab, CodeShip, Bitbucket and Azure DevOps. Default: false"
             method_option :build_url, desc: "The build URL that created the pact"

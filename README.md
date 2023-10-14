@@ -67,10 +67,10 @@ Options:
   -h, [--branch=BRANCH]
               # Repository branch of the consumer version
   -r, [--auto-detect-version-properties], [--no-auto-detect-version-properties]
-              # Automatically detect the repository commit and branch from
-                known CI environment variables or git CLI. Supports Buildkite,
-                Circle CI, Travis CI, GitHub Actions, Jenkins, Hudson,
-                AppVeyor, GitLab, CodeShip, Bitbucket and Azure DevOps.
+              # Automatically detect the repository commit, branch and build
+                URL from known CI environment variables or git CLI. Supports
+                Buildkite, Circle CI, Travis CI, GitHub Actions, Jenkins,
+                Hudson, AppVeyor, GitLab, CodeShip, Bitbucket and Azure DevOps.
   -t, [--tag=TAG]
               # Tag name for consumer version. Can be specified multiple
                 times.
