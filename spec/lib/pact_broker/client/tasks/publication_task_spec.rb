@@ -5,7 +5,6 @@ require 'pact_broker/client/command_result'
 
 module PactBroker::Client
   describe PublicationTask do
-
     before do
       @consumer_version = "1.2.3"
     end
@@ -20,6 +19,7 @@ module PactBroker::Client
       allow(FileList).to receive(:[]).with(pattern).and_return(pact_file_list)
       allow(PactBroker::Client::Git).to receive(:branch).and_return('foo')
       allow(PactBroker::Client::Git).to receive(:commit).and_return('6.6.6')
+      allow(PactBroker::Client::Git).to receive(:build_url).and_return("build_url")
       allow($stdout).to receive(:puts)
     end
 
@@ -88,81 +88,92 @@ module PactBroker::Client
     context "when auto_detect_version_properties is explicitly set to true" do
       before :all do
         PactBroker::Client::PublicationTask.new(:git_branch_auto_detect_true) do | task |
-          task.consumer_version = '1.2.3'
           task.auto_detect_version_properties = true
         end
       end
 
-      it "gets the git branch name" do
+      # Don't usually put 3 expects into the one it block, but if I separate them,
+      # only the first it block passes for some reason that I can't work out.
+      it "gets the commit, build_url and branch" do
+        expect(PactBroker::Client::Git).to receive(:commit).with(raise_error: true)
+        expect(PactBroker::Client::Git).to receive(:build_url)
         expect(PactBroker::Client::Git).to receive(:branch).with(raise_error: true)
         Rake::Task['pact:publish:git_branch_auto_detect_true'].execute
       end
 
-      it "invokes PublishPacts with the branch name" do
-        expect(PactBroker::Client::PublishPacts).to receive(:new).with(anything, anything, hash_including(branch: "foo"), anything, anything).and_return(publish_pacts)
+      it "invokes PublishPacts with the branch name and build URL" do
+        expect(PactBroker::Client::PublishPacts).to receive(:new).with(anything, anything, hash_including(number: "6.6.6", branch: "foo", build_url: "build_url"), anything, anything).and_return(publish_pacts)
         Rake::Task['pact:publish:git_branch_auto_detect_true'].execute
       end
     end
 
-    context "when auto_detect_version_properties is explicitly set to true and the branch is specified" do
+    context "when auto_detect_version_properties is explicitly set to true and the auto detectable attributes are specified" do
       before :all do
-        PactBroker::Client::PublicationTask.new(:git_branch_auto_detect_true_with_branch) do | task |
-          task.consumer_version = '1.2.3'
+        PactBroker::Client::PublicationTask.new(:auto_detect_true_with_attributes_specified) do | task |
           task.auto_detect_version_properties = true
-          task.branch = "main"
+          task.consumer_version = '1.2.3'
+          task.branch = "feat/foo"
+          task.consumer_version = "3"
+          task.build_url = "some_build"
         end
       end
 
-      it "does not get the branch name" do
+      it "does not get the commit, branch or build URL from Git" do
+        expect(PactBroker::Client::Git).to_not receive(:commit)
+        expect(PactBroker::Client::Git).to_not receive(:build_url)
         expect(PactBroker::Client::Git).to_not receive(:branch)
-        Rake::Task['pact:publish:git_branch_auto_detect_true_with_branch'].execute
+        Rake::Task['pact:publish:auto_detect_true_with_attributes_specified'].execute
       end
 
-      it "invokes PublishPacts with the specified branch name" do
-        expect(PactBroker::Client::PublishPacts).to receive(:new).with(anything, anything, hash_including(branch: "main"), anything, anything).and_return(publish_pacts)
-        Rake::Task['pact:publish:git_branch_auto_detect_true_with_branch'].execute
+      it "invokes PublishPacts with the specified attributes" do
+        expect(PactBroker::Client::PublishPacts).to receive(:new).with(anything, anything, hash_including(number: "3", branch: "feat/foo", build_url: "some_build"), anything, anything).and_return(publish_pacts)
+        Rake::Task['pact:publish:auto_detect_true_with_attributes_specified'].execute
       end
     end
 
     context "when auto_detect_version_properties is explicitly set to false" do
       before :all do
-        PactBroker::Client::PublicationTask.new(:git_branch_auto_detect_false) do | task |
-          task.consumer_version = '1.2.3'
+        PactBroker::Client::PublicationTask.new(:auto_detect_false) do | task |
           task.auto_detect_version_properties = false
+          task.consumer_version = '1.2.3'
+          task.branch = "feat/foo"
+          task.consumer_version = "3"
+          task.build_url = "some_build"
         end
       end
 
-      it "does not get the git branch name" do
+      it "does not get the commit, branch or build URL from Git" do
+        expect(PactBroker::Client::Git).to_not receive(:commit)
+        expect(PactBroker::Client::Git).to_not receive(:build_url)
         expect(PactBroker::Client::Git).to_not receive(:branch)
-        Rake::Task['pact:publish:git_branch_auto_detect_false'].execute
+        Rake::Task['pact:publish:auto_detect_false'].execute
       end
 
-      it "invokes PublishPacts without the branch name" do
-        expect(PactBroker::Client::PublishPacts).to receive(:new).with(anything, anything, hash_not_including(branch: "foo"), anything, anything).and_return(publish_pacts)
-        Rake::Task['pact:publish:git_branch_auto_detect_false'].execute
+      it "invokes PublishPacts with the specified attributes" do
+        expect(PactBroker::Client::PublishPacts).to receive(:new).with(anything, anything, hash_including(number: "3", branch: "feat/foo", build_url: "some_build"), anything, anything).and_return(publish_pacts)
+        Rake::Task['pact:publish:auto_detect_false'].execute
       end
     end
 
-    context "when auto_detect_version_properties is left as its default" do
+    context "when auto_detect_version_properties is left as its default and the branch is not specified" do
       before :all do
-        PactBroker::Client::PublicationTask.new(:git_branch_auto_detect_default) do | task |
+        PactBroker::Client::PublicationTask.new(:auto_detect_default) do | task |
           task.consumer_version = '1.2.3'
         end
       end
 
-      it "gets the git branch name" do
+      it "gets the git branch name but won't raise an error if it can't be determined" do
         expect(PactBroker::Client::Git).to receive(:branch).with(raise_error: false)
-        Rake::Task['pact:publish:git_branch_auto_detect_default'].execute
+        Rake::Task['pact:publish:auto_detect_default'].execute
       end
 
-      it "invokes PublishPacts with the branch name" do
+      it "invokes PublishPacts with the branch name if found" do
         expect(PactBroker::Client::PublishPacts).to receive(:new).with(anything, anything, hash_including(branch: "foo"),anything, anything).and_return(publish_pacts)
-        Rake::Task['pact:publish:git_branch_auto_detect_default'].execute
+        Rake::Task['pact:publish:auto_detect_default'].execute
       end
     end
 
     describe "custom task" do
-
       before :all do
         @pact_broker_base_url = "http://some-host"
         @pattern = "pact/*.json"

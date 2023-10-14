@@ -38,6 +38,8 @@ module PactBroker
         find_branch_from_known_env_vars || find_branch_from_env_var_ending_with_branch || branch_from_git_command(options[:raise_error])
       end
 
+      # This does not belong in the Git module.
+      # TODO move it.
       def self.build_url
         github_build_url || BUILD_URL_ENV_VAR_NAMES.collect{ | name | value_from_env_var(name) }.compact.first
       end
