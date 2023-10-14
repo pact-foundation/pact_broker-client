@@ -256,6 +256,16 @@ module PactBroker::Client::CLI
         end
       end
 
+      context "with no consumer_app_version" do
+        before do
+          subject.options.consumer_app_version = nil
+        end
+
+        it "raises an error" do
+          expect { invoke_broker }.to raise_error ::Thor::RequiredArgumentMissingError, /--consumer-app-version/
+        end
+      end
+
       context "with basic auth options specified" do
         before do
           subject.options = OpenStruct.new(

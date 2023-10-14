@@ -25,8 +25,10 @@ module PactBroker
             shared_authentication_options
 
             def publish(*pact_files)
-              require 'pact_broker/client/error'
+              require "pact_broker/client/error"
+              require "pact_broker/client/git"
               validate_credentials
+              validate_consumer_version
               validate_pact_files(pact_files)
               result = publish_pacts(pact_files)
               $stdout.puts result.message
@@ -52,6 +54,11 @@ module PactBroker
                 end
               end
 
+              def validate_consumer_version
+                if consumer_app_version.blank?
+                  raise ::Thor::RequiredArgumentMissingError, "No value provided for required option --consumer-app-version"
+                end
+              end
 
               def publish_pacts pact_files
                 require 'pact_broker/client/publish_pacts'
@@ -100,16 +107,12 @@ module PactBroker
               end
 
               def tags
-                require 'pact_broker/client/git'
-
                 t = [*options.tag]
                 t << PactBroker::Client::Git.branch(raise_error: true) if options.tag_with_git_branch
                 t.compact.uniq
               end
 
               def branch
-                require 'pact_broker/client/git'
-
                 if options.branch.nil? && options.auto_detect_version_properties
                   PactBroker::Client::Git.branch(raise_error: explict_auto_detect_version_properties)
                 else
@@ -118,12 +121,16 @@ module PactBroker
               end
 
               def consumer_app_version
-                require 'pact_broker/client/git'
-                if options.consumer_app_version.blank? && options.auto_detect_version_properties
-                  PactBroker::Client::Git.commit(raise_error: true)
+                if defined?(@consumer_app_version)
+                  @consumer_app_version
                 else
-                  options.consumer_app_version
+                  @consumer_app_version = if options.consumer_app_version.blank? && options.auto_detect_version_properties
+                                            PactBroker::Client::Git.commit(raise_error: true)
+                                          else
+                                            options.consumer_app_version
+                                          end
                 end
+
               end
 
               def build_url
