@@ -1,4 +1,5 @@
 # assumes you've set PACT_BROKER_BASE_URL, PACT_BROKER_USERNAME and PACT_BROKER_PASSWORD already
+# Must be executed from root directory of project.
 
 bundle exec bin/pact-broker publish $(dirname "$0")/pact.json
 bundle exec bin/pact-broker publish $(dirname "$0")/pact.json --auto-detect-version-properties
