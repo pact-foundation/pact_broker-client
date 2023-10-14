@@ -166,7 +166,6 @@ module PactBroker::Client::CLI
           subject.options = OpenStruct.new(
             minimum_valid_options.merge(auto_detect_version_properties: true, consumer_app_version: nil)
           )
-          allow(subject).to receive(:explict_auto_detect_version_properties).and_return(true)
         end
 
         it "determines the git branch name" do

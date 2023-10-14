@@ -114,7 +114,7 @@ module PactBroker
 
               def branch
                 if options.branch.nil? && options.auto_detect_version_properties
-                  PactBroker::Client::Git.branch(raise_error: explict_auto_detect_version_properties)
+                  PactBroker::Client::Git.branch(raise_error: true)
                 else
                   options.branch
                 end
@@ -139,10 +139,6 @@ module PactBroker
                 else
                   options.build_url
                 end
-              end
-
-              def explict_auto_detect_version_properties
-                @explict_auto_detect_version_properties ||= ARGV.include?("--auto-detect-version-properties")
               end
             end
           end
