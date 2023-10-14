@@ -59,3 +59,82 @@ PactBroker::Client::PublicationTask.new(:pactflow_pact_foundation) do | task |
   task.pact_broker_token = ENV["PACT_BROKER_TOKEN_PACT_FOUNDATION"]
   task.build_url = PactBroker::Client::Git.build_url
 end
+PactBroker::Client::PublicationTask.new(:pactflow_auto_on_nil_commit_nil_branch) do | task |
+  require 'pact_broker/client/version'
+  # publish with auto detected commit and branch
+  task.auto_detect_version_properties = true
+  task.branch = nil
+  task.consumer_version = nil
+  task.pact_broker_base_url = ENV['PACT_BROKER_BASE_URL']
+  task.pact_broker_token = ENV['PACT_BROKER_TOKEN']
+  task.build_url = PactBroker::Client::Git.build_url
+end
+PactBroker::Client::PublicationTask.new(:pactflow_auto_on_user_commit_user_branch) do | task |
+  require 'pact_broker/client/version'
+  # always accept user provided commit and branch
+  # even when auto_detect_version_properties enabled
+  task.auto_detect_version_properties = true
+  task.branch = 'user-provided-branch'
+  task.consumer_version = 'user-provided-version'
+  task.pact_broker_base_url = ENV['PACT_BROKER_BASE_URL']
+  task.pact_broker_token = ENV['PACT_BROKER_TOKEN']
+  task.build_url = PactBroker::Client::Git.build_url
+end
+
+PactBroker::Client::PublicationTask.new(:pactflow_auto_on_user_commit_nil_branch) do | task |
+  require 'pact_broker/client/version'
+  # auto detect branch, always accept user provided commit
+  # even where set to auto_detect_version_properties
+  task.auto_detect_version_properties = true
+  task.branch = nil
+  task.consumer_version = 'user-provided-version'
+  task.pact_broker_base_url = ENV['PACT_BROKER_BASE_URL']
+  task.pact_broker_token = ENV['PACT_BROKER_TOKEN']
+  task.build_url = PactBroker::Client::Git.build_url
+end
+PactBroker::Client::PublicationTask.new(:pactflow_auto_on_nil_commit_user_branch) do | task |
+  require 'pact_broker/client/version'
+  # auto detect commit, always accept user provided branch
+  # even where set to auto_detect_version_properties
+  task.auto_detect_version_properties = true
+  task.branch = 'user-provided-branch'
+  task.consumer_version = nil
+  task.pact_broker_base_url = ENV['PACT_BROKER_BASE_URL']
+  task.pact_broker_token = ENV['PACT_BROKER_TOKEN']
+  task.build_url = PactBroker::Client::Git.build_url
+end
+
+PactBroker::Client::PublicationTask.new(:pactflow_auto_off_user_commit_nil_branch) do | task |
+  require 'pact_broker/client/version'
+  # accept publish without branch, but has user provided commit
+  # auto_detect_version_properties off
+  task.auto_detect_version_properties = false
+  task.branch = nil
+  task.consumer_version = 'user-provided-version'
+  task.pact_broker_base_url = ENV['PACT_BROKER_BASE_URL']
+  task.pact_broker_token = ENV['PACT_BROKER_TOKEN']
+  task.build_url = PactBroker::Client::Git.build_url
+end
+
+PactBroker::Client::PublicationTask.new(:pactflow_auto_off_nil_commit_nil_branch) do | task |
+  require 'pact_broker/client/version'
+  # reject publish without user provided commit
+  # auto_detect_version_properties off
+  task.auto_detect_version_properties = false
+  task.branch = nil
+  task.consumer_version = nil
+  task.pact_broker_base_url = ENV['PACT_BROKER_BASE_URL']
+  task.pact_broker_token = ENV['PACT_BROKER_TOKEN']
+  task.build_url = PactBroker::Client::Git.build_url
+end
+PactBroker::Client::PublicationTask.new(:pactflow_auto_off_empty_string_commit_nil_branch) do | task |
+  require 'pact_broker/client/version'
+  # reject publish without user provided commit
+  # auto_detect_version_properties off
+  task.auto_detect_version_properties = false
+  task.branch = nil
+  task.consumer_version = ''
+  task.pact_broker_base_url = ENV['PACT_BROKER_BASE_URL']
+  task.pact_broker_token = ENV['PACT_BROKER_TOKEN']
+  task.build_url = PactBroker::Client::Git.build_url
+end

@@ -1,4 +1,5 @@
 require "pact_broker/client/hash_refinements"
+require 'pact_broker/client/string_refinements'
 
 module PactBroker
   module Client
@@ -8,13 +9,14 @@ module PactBroker
 
       module PactCommands
         using PactBroker::Client::HashRefinements
+        using PactBroker::Client::StringRefinements
 
         def self.included(thor)
           thor.class_eval do
             desc 'publish PACT_DIRS_OR_FILES ...', "Publish pacts to a Pact Broker."
-            method_option :consumer_app_version, required: true, aliases: "-a", desc: "The consumer application version"
+            method_option :consumer_app_version, aliases: "-a", desc: "The consumer application version"
             method_option :branch, aliases: "-h", desc: "Repository branch of the consumer version"
-            method_option :auto_detect_version_properties, type: :boolean, default: false, desc: "Automatically detect the repository branch from known CI environment variables or git CLI. Supports Buildkite, Circle CI, Travis CI, GitHub Actions, Jenkins, Hudson, AppVeyor, GitLab, CodeShip, Bitbucket and Azure DevOps."
+            method_option :auto_detect_version_properties, aliases: "-r", type: :boolean, default: false, desc: "Automatically detect the repository commit, branch and build URL from known CI environment variables or git CLI. Supports Buildkite, Circle CI, Travis CI, GitHub Actions, Jenkins, Hudson, AppVeyor, GitLab, CodeShip, Bitbucket and Azure DevOps."
             method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for consumer version. Can be specified multiple times."
             method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Supports Buildkite, Circle CI, Travis CI, GitHub Actions, Jenkins, Hudson, AppVeyor, GitLab, CodeShip, Bitbucket and Azure DevOps. Default: false"
             method_option :build_url, desc: "The build URL that created the pact"
@@ -23,8 +25,10 @@ module PactBroker
             shared_authentication_options
 
             def publish(*pact_files)
-              require 'pact_broker/client/error'
+              require "pact_broker/client/error"
+              require "pact_broker/client/git"
               validate_credentials
+              validate_consumer_version
               validate_pact_files(pact_files)
               result = publish_pacts(pact_files)
               $stdout.puts result.message
@@ -50,16 +54,21 @@ module PactBroker
                 end
               end
 
+              def validate_consumer_version
+                if consumer_app_version.blank?
+                  raise ::Thor::RequiredArgumentMissingError, "No value provided for required option --consumer-app-version"
+                end
+              end
 
               def publish_pacts pact_files
                 require 'pact_broker/client/publish_pacts'
 
                 write_options = options[:merge] ? { write: :merge } : {}
                 consumer_version_params = {
-                  number: options.consumer_app_version,
+                  number: consumer_app_version,
                   branch: branch,
                   tags: tags,
-                  build_url: options.build_url
+                  build_url: build_url
                 }.compact
 
                 PactBroker::Client::PublishPacts.call(
@@ -98,25 +107,38 @@ module PactBroker
               end
 
               def tags
-                require 'pact_broker/client/git'
-
                 t = [*options.tag]
                 t << PactBroker::Client::Git.branch(raise_error: true) if options.tag_with_git_branch
                 t.compact.uniq
               end
 
               def branch
-                require 'pact_broker/client/git'
-
                 if options.branch.nil? && options.auto_detect_version_properties
-                  PactBroker::Client::Git.branch(raise_error: explict_auto_detect_version_properties)
+                  PactBroker::Client::Git.branch(raise_error: true)
                 else
                   options.branch
                 end
               end
 
-              def explict_auto_detect_version_properties
-                @explict_auto_detect_version_properties ||= ARGV.include?("--auto-detect-version-properties")
+              def consumer_app_version
+                if defined?(@consumer_app_version)
+                  @consumer_app_version
+                else
+                  @consumer_app_version = if options.consumer_app_version.blank? && options.auto_detect_version_properties
+                                            PactBroker::Client::Git.commit(raise_error: true)
+                                          else
+                                            options.consumer_app_version
+                                          end
+                end
+
+              end
+
+              def build_url
+                if options.build_url.blank? && options.auto_detect_version_properties
+                  PactBroker::Client::Git.build_url
+                else
+                  options.build_url
+                end
               end
             end
           end

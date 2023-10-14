@@ -1,0 +1,10 @@
+#!/bin/bash
+# assumes you've set PACT_BROKER_BASE_URL, PACT_BROKER_TOKEN already
+
+bundle exec rake pact:publish:pactflow_auto_on_nil_commit_nil_branch
+bundle exec rake pact:publish:pactflow_auto_on_user_commit_user_branch
+bundle exec rake pact:publish:pactflow_auto_on_user_commit_nil_branch
+bundle exec rake pact:publish:pactflow_auto_on_nil_commit_user_branch
+bundle exec rake pact:publish:pactflow_auto_off_user_commit_nil_branch
+bundle exec rake pact:publish:pactflow_auto_off_nil_commit_nil_branch
+bundle exec rake pact:publish:pactflow_auto_off_empty_string_commit_nil_branch

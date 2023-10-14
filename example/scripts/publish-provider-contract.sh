@@ -1,4 +1,5 @@
-# assumes you've set PACT_BROKER_BASE_URL, PACT_BROKER_USERNAME and PACT_BROKER_PASSWORD already
+# Assumes you've set PACT_BROKER_BASE_URL, PACT_BROKER_USERNAME and PACT_BROKER_PASSWORD already
+# Must be executed from root directory of project.
 
 bundle exec bin/pactflow publish-provider-contract $(dirname "$0")/oas.yml \
     --provider pactflow-cli-test-provider \

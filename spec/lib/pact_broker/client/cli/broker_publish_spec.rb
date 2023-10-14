@@ -4,10 +4,12 @@ require 'pact_broker/client/git'
 
 module PactBroker::Client::CLI
   describe Broker do
-    describe ".broker" do
+    describe '.broker' do
       before do
         allow(PactBroker::Client::PublishPacts).to receive(:call).and_return(result)
-        allow(PactBroker::Client::Git).to receive(:branch).and_return("bar")
+        allow(PactBroker::Client::Git).to receive(:branch).and_return('bar')
+        allow(PactBroker::Client::Git).to receive(:commit).and_return('6.6.6')
+        allow(PactBroker::Client::Git).to receive(:build_url).and_return('build_url')
         subject.options = OpenStruct.new(minimum_valid_options)
         allow($stdout).to receive(:puts)
       end
@@ -159,12 +161,11 @@ module PactBroker::Client::CLI
         end
       end
 
-      context "with --auto-detect-version-properties specified explicitly" do
+      context "with --auto-detect-version-properties specified" do
         before do
           subject.options = OpenStruct.new(
-            minimum_valid_options.merge(auto_detect_version_properties: true)
+            minimum_valid_options.merge(auto_detect_version_properties: true, consumer_app_version: nil)
           )
-          allow(subject).to receive(:explict_auto_detect_version_properties).and_return(true)
         end
 
         it "determines the git branch name" do
@@ -177,6 +178,38 @@ module PactBroker::Client::CLI
             anything,
             anything,
             hash_including(branch: "bar"),
+            anything,
+            anything
+          )
+          invoke_broker
+        end
+
+        it 'determines the commit sha' do
+          expect(PactBroker::Client::Git).to receive(:commit).with(raise_error: true)
+          invoke_broker
+        end
+
+        it 'passes in the auto detected commit sha option' do
+          expect(PactBroker::Client::PublishPacts).to receive(:call).with(
+            anything,
+            anything,
+            hash_including(number: '6.6.6'),
+            anything,
+            anything
+          )
+          invoke_broker
+        end
+
+        it 'determines the build URL' do
+          expect(PactBroker::Client::Git).to receive(:build_url)
+          invoke_broker
+        end
+
+        it 'passes in the auto detected build URL' do
+          expect(PactBroker::Client::PublishPacts).to receive(:call).with(
+            anything,
+            anything,
+            hash_including(build_url: 'build_url'),
             anything,
             anything
           )
@@ -219,6 +252,16 @@ module PactBroker::Client::CLI
             anything
           )
           invoke_broker
+        end
+      end
+
+      context "with no consumer_app_version" do
+        before do
+          subject.options.consumer_app_version = nil
+        end
+
+        it "raises an error" do
+          expect { invoke_broker }.to raise_error ::Thor::RequiredArgumentMissingError, /--consumer-app-version/
         end
       end
 
