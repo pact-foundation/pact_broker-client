@@ -39,7 +39,7 @@ module Pactflow
         end
 
         def publish_provider_contracts
-          @response_entity = index_resource._link(PUBLISH_RELATION).expand(provider: provider_name).post!(contract_params, headers: { "Accept" => "application/hal+json,application/problem+json" })
+          @response_entity = index_resource._link(PUBLISH_RELATION).expand(provider: provider_name).post!(contract_params, { "Accept" => "application/hal+json,application/problem+json" })
         end
 
         def contract_params

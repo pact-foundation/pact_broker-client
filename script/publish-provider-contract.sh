@@ -6,7 +6,6 @@ bundle exec bin/pactflow publish-provider-contract  \
   --branch main \
   --tag dev \
   --specification oas \
-  --content-type application/yml \
   --verification-exit-code 0 \
   --verification-results script/verification-results.txt \
   --verification-results-content-type text/plain \

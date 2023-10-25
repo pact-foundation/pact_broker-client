@@ -210,7 +210,7 @@ Upon receiving **a request to publish a provider contract** from Pact Broker Cli
   "path": "/HAL-REL-PLACEHOLDER-PF-PUBLISH-PROVIDER-CONTRACT-Bar",
   "headers": {
     "Content-Type": "application/json",
-    "Accept": "application/hal+json"
+    "Accept": "application/hal+json,application/problem+json"
   },
   "body": {
     "pacticipantVersionNumber": "1",

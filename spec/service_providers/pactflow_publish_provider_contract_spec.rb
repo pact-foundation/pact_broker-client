@@ -123,7 +123,7 @@ RSpec.describe "publishing a provider contract to PactFlow", pact: true do
         .with(
             method: :post,
             path: placeholder_path("pf:publish-provider-contract", ["Bar"]),
-            headers: post_request_headers,
+            headers: post_request_headers.merge("Accept" => "application/hal+json,application/problem+json"),
             body: request_body
         ).will_respond_with(success_response)
     end
