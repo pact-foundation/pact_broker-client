@@ -5,8 +5,8 @@ module PactBroker
     module Branches
       class DeleteBranch < PactBroker::Client::BaseCommand
 
-        NOT_SUPPORTED_MESSAGE_PACT_BROKER = "This version of the Pact Broker does not support deleting branches. Please upgrade to version X or later."
-        NOT_SUPPORTED_MESSAGE_PACTFLOW = "This version of PactFlow does not support deleting branches. Please upgrade to version X or later."
+        NOT_SUPPORTED_MESSAGE_PACT_BROKER = "This version of the Pact Broker does not support deleting branches. Please upgrade to version 2.108.0 or later."
+        NOT_SUPPORTED_MESSAGE_PACTFLOW = "This version of PactFlow does not support deleting branches. Please upgrade to the latest version."
 
         def initialize(params, options, pact_broker_client_options)
         	super

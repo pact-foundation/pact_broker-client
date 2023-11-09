@@ -84,6 +84,19 @@ module PactBroker
             end
           end
         end
+
+        context "when deleting branches is not supported" do
+          let(:index_response_body) do
+            {
+              _links: {}
+            }.to_json
+          end
+
+          it "returns an error" do
+            expect(subject.success).to be false
+            expect(subject.message).to include "not support"
+          end
+        end
       end
     end
   end
