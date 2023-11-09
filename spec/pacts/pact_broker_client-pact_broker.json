@@ -7,6 +7,49 @@
   },
   "interactions": [
     {
+      "description": "a request for the index resource",
+      "providerState": "the pb:pacticipant-branch relation exists in the index resource",
+      "request": {
+        "method": "GET",
+        "path": "/",
+        "headers": {
+          "Accept": "application/hal+json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "_links": {
+            "pb:pacticipant-branch": {
+              "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-BRANCH-{pacticipant}-{branch}"
+            }
+          }
+        },
+        "matchingRules": {
+          "$.body._links.pb:pacticipant-branch.href": {
+            "match": "regex",
+            "regex": "http:\\/\\/.*{pacticipant}.*{branch}"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to delete a pacticipant branch",
+      "providerState": "a branch named main exists for pacticipant Foo",
+      "request": {
+        "method": "DELETE",
+        "path": "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-BRANCH-Foo-main"
+      },
+      "response": {
+        "status": 204,
+        "headers": {
+        }
+      }
+    },
+    {
       "description": "a request to list the latest pacts",
       "providerState": "a pact between Condor and the Pricing Service exists",
       "request": {

@@ -25,6 +25,7 @@ end
 
 module PactBrokerPactHelperMethods
 
+  # Use this for the path in the Pact request expectation.
   # @param [String] relation eg "pb:pacticipant"
   # @param [Array<String>] params eg ["Foo"]
   def placeholder_path(relation, params = [])
