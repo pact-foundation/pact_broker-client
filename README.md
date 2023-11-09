@@ -71,6 +71,7 @@ Options:
                 URL from known CI environment variables or git CLI. Supports
                 Buildkite, Circle CI, Travis CI, GitHub Actions, Jenkins,
                 Hudson, AppVeyor, GitLab, CodeShip, Bitbucket and Azure DevOps.
+              # Default: false
   -t, [--tag=TAG]
               # Tag name for consumer version. Can be specified multiple
                 times.
@@ -78,13 +79,15 @@ Options:
               # Tag consumer version with the name of the current git branch.
                 Supports Buildkite, Circle CI, Travis CI, GitHub Actions,
                 Jenkins, Hudson, AppVeyor, GitLab, CodeShip, Bitbucket and
-                Azure DevOps. Default: false
+                Azure DevOps.
+              # Default: false
       [--build-url=BUILD_URL]
               # The build URL that created the pact
       [--merge], [--no-merge]
               # If a pact already exists for this consumer version and
                 provider, merge the contents. Useful when running Pact tests
                 concurrently on different build nodes.
+              # Default: false
   -o, [--output=OUTPUT]
               # json or text
               # Default: text
@@ -97,7 +100,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Publish pacts to a Pact Broker.
@@ -118,7 +122,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
   -o, [--output=OUTPUT]
               # json or table
               # Default: table
@@ -142,7 +147,8 @@ Options:
               # The display name of the environment
       [--production], [--no-production]
               # Whether or not this environment is a production environment.
-                This is currently informational only. Default: false
+                This is currently informational only.
+              # Default: false
       [--contact-name=CONTACT_NAME]
               # The name of the team/person responsible for this environment
       [--contact-email-address=CONTACT_EMAIL_ADDRESS]
@@ -160,7 +166,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Create an environment resource in the Pact Broker to represent a real world deployment or release environment.
@@ -181,7 +188,8 @@ Options:
               # The display name of the environment
       [--production], [--no-production]
               # Whether or not this environment is a production environment.
-                This is currently informational only. Default: false
+                This is currently informational only.
+              # Default: false
       [--contact-name=CONTACT_NAME]
               # The name of the team/person responsible for this environment
       [--contact-email-address=CONTACT_EMAIL_ADDRESS]
@@ -199,7 +207,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Update an environment resource in the Pact Broker.
@@ -225,7 +234,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Describe an environment
@@ -251,7 +261,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Delete an environment
@@ -275,7 +286,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 List environments
@@ -316,7 +328,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Record deployment of a pacticipant version to an environment. See https://docs.pact.io/record-deployment for more information.
@@ -356,7 +369,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Description:
@@ -392,7 +406,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Record release of a pacticipant version to an environment. See See https://docs.pact.io/record-release for more information.
@@ -422,7 +437,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Record the end of support for a pacticipant version in an environment. See https://docs.pact.io/record-support-ended for more information.
@@ -459,6 +475,7 @@ Options:
               # Use the latest version of the configured main branch of the
                 pacticipant as the version for which you want to check the
                 verification results
+              # Default: false
       [--to-environment=ENVIRONMENT]
               # The environment into which the pacticipant(s) are to be
                 deployed
@@ -488,6 +505,7 @@ Options:
                 is recommended to use the environment variable and just set it
                 for the build required to deploy that particular version, so
                 you don't accidentally leave the dry run mode enabled.
+              # Default: false
   -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
   -u, [--broker-username=BROKER_USERNAME]
@@ -497,7 +515,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Description:
@@ -575,6 +594,7 @@ Options:
                 is recommended to use the environment variable and just set it
                 for the build required to deploy that particular version, so
                 you don't accidentally leave the dry run mode enabled.
+              # Default: false
   -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
   -u, [--broker-username=BROKER_USERNAME]
@@ -584,7 +604,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Description:
@@ -619,7 +640,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Create or update pacticipant by name
@@ -645,7 +667,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Describe a pacticipant
@@ -669,7 +692,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 List pacticipants
@@ -731,7 +755,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Description:
@@ -796,7 +821,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
       --uuid=UUID
               # Specify the uuid for the webhook
 ```
@@ -827,7 +853,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Test the execution of a webhook
@@ -850,10 +877,12 @@ Options:
                 times.
       [--auto-create-version], [--no-auto-create-version]
               # Automatically create the pacticipant version if it does not
-                exist. Default: false
+                exist.
+              # Default: false
   -g, [--tag-with-git-branch], [--no-tag-with-git-branch]
               # Tag pacticipant version with the name of the current git
-                branch. Default: false
+                branch.
+              # Default: false
   -b, --broker-base-url=BROKER_BASE_URL
               # The base URL of the Pact Broker
   -u, [--broker-username=BROKER_USERNAME]
@@ -863,7 +892,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Add a tag to a pacticipant version
@@ -896,7 +926,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Describes a pacticipant version. If no version or tag is specified, the latest version is described.
@@ -926,7 +957,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
   -o, [--output=OUTPUT]
               # json or text
               # Default: text
@@ -1002,7 +1034,8 @@ Options:
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
   -v, [--verbose], [--no-verbose]
-              # Verbose output. Default: false
+              # Verbose output.
+              # Default: false
 ```
 
 Publish provider contract to PactFlow

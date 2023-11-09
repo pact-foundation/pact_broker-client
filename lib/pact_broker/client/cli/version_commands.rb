@@ -59,8 +59,8 @@ module PactBroker
             method_option :pacticipant, required: true, aliases: "-a", desc: "The pacticipant name"
             method_option :version, required: true, aliases: "-e", desc: "The pacticipant version"
             method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for pacticipant version. Can be specified multiple times."
-            method_option :auto_create_version, type: :boolean, default: false, desc: "Automatically create the pacticipant version if it does not exist. Default: false"
-            method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag pacticipant version with the name of the current git branch. Default: false"
+            method_option :auto_create_version, type: :boolean, default: false, desc: "Automatically create the pacticipant version if it does not exist."
+            method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag pacticipant version with the name of the current git branch."
             shared_authentication_options
 
             def create_version_tag

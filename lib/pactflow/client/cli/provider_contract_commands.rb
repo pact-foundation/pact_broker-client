@@ -16,7 +16,7 @@ module Pactflow
             method_option :branch, aliases: "-h", desc: "Repository branch of the provider version"
             #method_option :auto_detect_version_properties, hidden: true, type: :boolean, default: false, desc: "Automatically detect the repository branch from known CI environment variables or git CLI."
             method_option :tag, aliases: "-t", type: :array, banner: "TAG", desc: "Tag name for provider version. Can be specified multiple times."
-            #method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch. Default: false"
+            #method_option :tag_with_git_branch, aliases: "-g", type: :boolean, default: false, required: false, desc: "Tag consumer version with the name of the current git branch."
             method_option :specification, default: "oas", desc: "The contract specification"
             method_option :content_type, desc: "The content type. eg. application/yml"
             method_option :verification_success, type: :boolean, desc: "Whether or not the self verification passed successfully."
