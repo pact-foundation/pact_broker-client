@@ -859,6 +859,38 @@ Options:
 
 Test the execution of a webhook
 
+### Branches
+
+#### delete-branch
+
+```
+Usage:
+  pact-broker delete-branch --branch=BRANCH -a, --pacticipant=PACTICIPANT -b, --broker-base-url=BROKER_BASE_URL
+
+Options:
+  -a, --pacticipant=PACTICIPANT
+              # The name of the pacticipant that the branch belongs to.
+      --branch=BRANCH
+              # The pacticipant branch name.
+      [--error-when-not-found], [--no-error-when-not-found]
+              # Raise an error if the branch that is to be deleted is not
+                found.
+              # Default: true
+  -b, --broker-base-url=BROKER_BASE_URL
+              # The base URL of the Pact Broker
+  -u, [--broker-username=BROKER_USERNAME]
+              # Pact Broker basic auth username
+  -p, [--broker-password=BROKER_PASSWORD]
+              # Pact Broker basic auth password
+  -k, [--broker-token=BROKER_TOKEN]
+              # Pact Broker bearer token
+  -v, [--verbose], [--no-verbose]
+              # Verbose output.
+              # Default: false
+```
+
+Deletes a pacticipant branch.
+
 ### Tags
 
 #### create-version-tag
