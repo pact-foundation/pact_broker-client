@@ -889,7 +889,7 @@ Options:
               # Default: false
 ```
 
-Deletes a pacticipant branch.
+Deletes a pacticipant branch. Does not delete the versions or pacts associated with the branch, but does make them inaccessible for verification via consumer versions selectors or WIP pacts.
 
 ### Tags
 
