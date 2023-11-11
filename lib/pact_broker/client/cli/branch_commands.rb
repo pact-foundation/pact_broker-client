@@ -9,7 +9,8 @@ module PactBroker
             method_option :error_when_not_found, type: :boolean, default: true, desc: "Raise an error if the branch that is to be deleted is not found."
             shared_authentication_options
 
-            desc "delete-branch", "Deletes a pacticipant branch. Does not delete the versions or pacts associated with the branch, but does make them inaccessible for verification via consumer versions selectors or WIP pacts."
+            desc "delete-branch", "Deletes a pacticipant branch. Does not delete the versions or pacts/verifications associated with the branch, but does make the pacts inaccessible for verification via consumer versions selectors or WIP pacts."
+
             def delete_branch
               require "pact_broker/client/branches/delete_branch"
 
