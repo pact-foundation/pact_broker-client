@@ -8,7 +8,7 @@ require "pact_broker/client/cli/pacticipant_commands"
 require "pact_broker/client/cli/version_commands"
 require "pact_broker/client/cli/webhook_commands"
 require "pact_broker/client/cli/matrix_commands"
-
+require "pact_broker/client/cli/branch_commands"
 module PactBroker
   module Client
     module CLI
@@ -19,6 +19,7 @@ module PactBroker
         include PactBroker::Client::CLI::MatrixCommands
         include PactBroker::Client::CLI::PacticipantCommands
         include PactBroker::Client::CLI::VersionCommands
+        include PactBroker::Client::CLI::BranchCommands
         include PactBroker::Client::CLI::WebhookCommands
 
         ignored_and_hidden_potential_options_from_environment_variables

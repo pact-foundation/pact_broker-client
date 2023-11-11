@@ -23,6 +23,7 @@ PACT_BROKER_COMMAND_GROUPS = [
   [PactBroker::Client::CLI::Broker, "Matrix", %w[can-i-deploy can-i-merge]],
   [PactBroker::Client::CLI::Broker, "Pacticipants", %w[create-or-update-pacticipant describe-pacticipant list-pacticipants]],
   [PactBroker::Client::CLI::Broker, "Webhooks", %w[create-webhook create-or-update-webhook test-webhook]],
+  [PactBroker::Client::CLI::Broker, "Branches", %w[delete-branch]],
   [PactBroker::Client::CLI::Broker, "Tags", %w[create-version-tag]],
   [PactBroker::Client::CLI::Broker, "Versions", %w[describe-version create-or-update-version]],
   [PactBroker::Client::CLI::Broker, "Miscellaneous", %w[generate-uuid]]

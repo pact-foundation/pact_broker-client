@@ -38,6 +38,8 @@
 
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:latest-version_relation_exists_in_the_index_resource) given the pb:latest-version relation exists in the index resource
 
+* [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:pacticipant-branch_relation_exists_in_the_index_resource) given the pb:pacticipant-branch relation exists in the index resource
+
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:pacticipant-version_and_pb:environments_relations_exist_in_the_index_resource) given the pb:pacticipant-version and pb:environments relations exist in the index resource
 
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:publish-contracts_relations_exists_in_the_index_resource) given the pb:publish-contracts relations exists in the index resource
@@ -75,6 +77,8 @@
 * [A request to create a webhook with a non-JSON body for a consumer and provider](#a_request_to_create_a_webhook_with_a_non-JSON_body_for_a_consumer_and_provider_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker) given the 'Pricing Service' and 'Condor' already exist in the pact-broker
 
 * [A request to create a webhook with every possible event type](#a_request_to_create_a_webhook_with_every_possible_event_type_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker) given the 'Pricing Service' and 'Condor' already exist in the pact-broker
+
+* [A request to delete a pacticipant branch](#a_request_to_delete_a_pacticipant_branch_given_a_branch_named_main_exists_for_pacticipant_Foo) given a branch named main exists for pacticipant Foo
 
 * [A request to determine if Bar can be deployed with all Foo tagged prod, ignoring the verification for Foo version 3.4.5](#a_request_to_determine_if_Bar_can_be_deployed_with_all_Foo_tagged_prod,_ignoring_the_verification_for_Foo_version_3.4.5_given_provider_Bar_version_4.5.6_has_a_successful_verification_for_Foo_version_1.2.3_tagged_prod_and_a_failed_verification_for_version_3.4.5_tagged_prod) given provider Bar version 4.5.6 has a successful verification for Foo version 1.2.3 tagged prod and a failed verification for version 3.4.5 tagged prod
 
@@ -822,6 +826,33 @@ Pact Broker will respond with:
     "_links": {
       "pb:latest-version": {
         "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-VERSION-{pacticipant}"
+      }
+    }
+  }
+}
+```
+<a name="a_request_for_the_index_resource_given_the_pb:pacticipant-branch_relation_exists_in_the_index_resource"></a>
+Given **the pb:pacticipant-branch relation exists in the index resource**, upon receiving **a request for the index resource** from Pact Broker Client, with
+```json
+{
+  "method": "GET",
+  "path": "/",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "pb:pacticipant-branch": {
+        "href": "http://localhost:1234/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-BRANCH-{pacticipant}-{branch}"
       }
     }
   }
@@ -1764,6 +1795,20 @@ Pact Broker will respond with:
       }
     }
   }
+}
+```
+<a name="a_request_to_delete_a_pacticipant_branch_given_a_branch_named_main_exists_for_pacticipant_Foo"></a>
+Given **a branch named main exists for pacticipant Foo**, upon receiving **a request to delete a pacticipant branch** from Pact Broker Client, with
+```json
+{
+  "method": "DELETE",
+  "path": "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-BRANCH-Foo-main"
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 204
 }
 ```
 <a name="a_request_to_determine_if_Bar_can_be_deployed_with_all_Foo_tagged_prod,_ignoring_the_verification_for_Foo_version_3.4.5_given_provider_Bar_version_4.5.6_has_a_successful_verification_for_Foo_version_1.2.3_tagged_prod_and_a_failed_verification_for_version_3.4.5_tagged_prod"></a>
