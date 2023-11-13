@@ -1,3 +1,14 @@
+<a name="v1.75.0"></a>
+### v1.75.0 (2023-11-11)
+
+#### Features
+
+* add support for delete-branch command (#151)	 ([6da6202](/../../commit/6da6202))
+
+#### Bug Fixes
+
+* set correct Accept header when publishing provider contracts	 ([abc8ea3](/../../commit/abc8ea3))
+
 <a name="v1.74.0"></a>
 ### v1.74.0 (2023-10-14)
 
