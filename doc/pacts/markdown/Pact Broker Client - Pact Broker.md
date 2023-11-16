@@ -90,7 +90,7 @@
 
 * [A request to list the latest pacts](#a_request_to_list_the_latest_pacts_given_a_pact_between_Condor_and_the_Pricing_Service_exists) given a pact between Condor and the Pricing Service exists
 
-* [A request to list the versions deployed to an environment for a pacticipant name and target](#a_request_to_list_the_versions_deployed_to_an_environment_for_a_pacticipant_name_and_target_given_an_version_is_deployed_to_environment_with_UUID_16926ef3-590f-4e3f-838e-719717aa88c9_with_target_customer-1) given an version is deployed to environment with UUID 16926ef3-590f-4e3f-838e-719717aa88c9 with target customer-1
+* [A request to list the versions deployed to an environment for a pacticipant name and application instance](#a_request_to_list_the_versions_deployed_to_an_environment_for_a_pacticipant_name_and_application_instance_given_an_version_is_deployed_to_environment_with_UUID_16926ef3-590f-4e3f-838e-719717aa88c9_with_target_customer-1) given an version is deployed to environment with UUID 16926ef3-590f-4e3f-838e-719717aa88c9 with target customer-1
 
 * [A request to mark a deployed version as not currently deploye](#a_request_to_mark_a_deployed_version_as_not_currently_deploye_given_a_currently_deployed_version_exists) given a currently deployed version exists
 
@@ -2052,8 +2052,8 @@ Pact Broker will respond with:
   }
 }
 ```
-<a name="a_request_to_list_the_versions_deployed_to_an_environment_for_a_pacticipant_name_and_target_given_an_version_is_deployed_to_environment_with_UUID_16926ef3-590f-4e3f-838e-719717aa88c9_with_target_customer-1"></a>
-Given **an version is deployed to environment with UUID 16926ef3-590f-4e3f-838e-719717aa88c9 with target customer-1**, upon receiving **a request to list the versions deployed to an environment for a pacticipant name and target** from Pact Broker Client, with
+<a name="a_request_to_list_the_versions_deployed_to_an_environment_for_a_pacticipant_name_and_application_instance_given_an_version_is_deployed_to_environment_with_UUID_16926ef3-590f-4e3f-838e-719717aa88c9_with_target_customer-1"></a>
+Given **an version is deployed to environment with UUID 16926ef3-590f-4e3f-838e-719717aa88c9 with target customer-1**, upon receiving **a request to list the versions deployed to an environment for a pacticipant name and application instance** from Pact Broker Client, with
 ```json
 {
   "method": "GET",
@@ -2075,7 +2075,7 @@ Pact Broker will respond with:
     "_embedded": {
       "deployedVersions": [
         {
-          "target": "customer-1",
+          "applicationInstance": "customer-1",
           "_links": {
             "self": {
               "href": "http://localhost:1234/PLACEHOLDER-DEPLOYED-VERSION-ff3adecf-cfc5-4653-a4e3-f1861092f8e0"

@@ -86,7 +86,7 @@ RSpec.describe "recording an undeployment", pact: true do
   def mock_deployed_versions_search_results
     pact_broker
       .given("an version is deployed to environment with UUID 16926ef3-590f-4e3f-838e-719717aa88c9 with target customer-1")
-      .upon_receiving("a request to list the versions deployed to an environment for a pacticipant name and target")
+      .upon_receiving("a request to list the versions deployed to an environment for a pacticipant name and application instance")
       .with(
         method: "GET",
         path: currently_deployed_versions_placeholder_path,
@@ -100,7 +100,7 @@ RSpec.describe "recording an undeployment", pact: true do
           _embedded: {
             deployedVersions: [
               {
-                target: application_instance,
+                applicationInstance: application_instance,
                 _links: {
                   self: {
                     href: Pact.term(pact_broker.mock_service_base_url + deployed_version_placeholder_path, /^http/)

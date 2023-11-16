@@ -1928,7 +1928,7 @@
       }
     },
     {
-      "description": "a request to list the versions deployed to an environment for a pacticipant name and target",
+      "description": "a request to list the versions deployed to an environment for a pacticipant name and application instance",
       "providerState": "an version is deployed to environment with UUID 16926ef3-590f-4e3f-838e-719717aa88c9 with target customer-1",
       "request": {
         "method": "GET",
@@ -1947,7 +1947,7 @@
           "_embedded": {
             "deployedVersions": [
               {
-                "target": "customer-1",
+                "applicationInstance": "customer-1",
                 "_links": {
                   "self": {
                     "href": "http://localhost:1234/PLACEHOLDER-DEPLOYED-VERSION-ff3adecf-cfc5-4653-a4e3-f1861092f8e0"
