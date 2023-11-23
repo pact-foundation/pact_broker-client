@@ -88,7 +88,7 @@ module PactBroker
                 selectors = VersionSelectorOptionsParser.call(ARGV)
                 validate_can_i_deploy_selectors(selectors)
                 verification_required_options = { output: options.output, verbose: options.verbose, retry_while_unknown: 0 }
-                result = VerificationRequired.call(options.broker_base_url, selectors, { to_tag: options.to, to_environment: options.in_environment, ignore_selectors: [] }, verification_required_options, pact_broker_client_options)
+                result = VerificationRequired.call(selectors, { to_tag: options.to, to_environment: options.in_environment, ignore_selectors: [] }, verification_required_options, pact_broker_client_options)
                 $stdout.puts result.message
                 $stdout.flush
                 exit(1) unless result.success
