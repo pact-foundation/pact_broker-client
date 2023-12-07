@@ -1,3 +1,10 @@
+<a name="v1.75.1"></a>
+### v1.75.1 (2023-11-23)
+
+#### Bug Fixes
+
+* verification-required command invalid arg number	 ([fa3b1ca](/../../commit/fa3b1ca))
+
 <a name="v1.75.0"></a>
 ### v1.75.0 (2023-11-11)
 
