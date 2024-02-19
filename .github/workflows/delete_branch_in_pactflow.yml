@@ -15,7 +15,7 @@ jobs:
       # Requires Ruby to encode the URL path correctly - could use any other scripting language here
       - uses: ruby/setup-ruby@v1
 
-      - name: Delete branch ${GIT_BRANCH} for application ${PACTICIPANT} in Pactflow
+      - name: Delete branch in Pactflow
         run: script/ci/delete-branch-in-pactflow.sh
         env:
           GIT_BRANCH: ${{ github.event.ref }}
