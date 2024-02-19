@@ -18,26 +18,6 @@ PactBroker::Client::PublicationTask.new(:remote) do | task |
   task.pact_broker_basic_auth = { username: ENV.fetch("PACT_BROKER_USERNAME"), password: ENV.fetch("PACT_BROKER_PASSWORD") }
 end
 
-PactBroker::Client::PublicationTask.new(:pactflow_oss) do | task |
-  version = ENV.fetch("GITHUB_SHA")
-  branch = ENV.fetch("GITHUB_REF").gsub("refs/heads/", "")
-  feature = ENV.fetch("TEST_FEATURE", "")
-  tag = branch
-
-  if feature != ''
-    version = "#{version}+#{feature}"
-    tag = "#{tag}+#{feature}"
-  end
-
-  require "pact_broker/client/version"
-  task.auto_detect_version_properties = false
-  task.tags = [tag]
-  task.branch = nil
-  task.consumer_version = version
-  task.pact_broker_base_url = "https://pact-oss.pactflow.io"
-  task.pact_broker_token = ENV['PACT_BROKER_TOKEN']
-  task.build_url = PactBroker::Client::Git.build_url
-end
 
 PactBroker::Client::PublicationTask.new(:pactflow_pact_foundation) do | task |
   version = ENV.fetch("GITHUB_SHA")
@@ -53,7 +33,7 @@ PactBroker::Client::PublicationTask.new(:pactflow_pact_foundation) do | task |
   require "pact_broker/client/version"
   task.auto_detect_version_properties = false
   task.tags = [tag]
-  task.branch = nil
+  task.branch = branch
   task.consumer_version = version
   task.pact_broker_base_url = "https://pact-foundation.pactflow.io"
   task.pact_broker_token = ENV["PACT_BROKER_TOKEN_PACT_FOUNDATION"]

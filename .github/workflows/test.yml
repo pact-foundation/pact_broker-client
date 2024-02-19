@@ -34,13 +34,12 @@ jobs:
           ruby-version: "3.2"
       - run: "bundle install"
       # Publish to old and new account until we can disable the old account
-      - run: |
+      - name: Generate and publish pacts
+        run: |
           rm -rf spec/pacts/*
           bundle exec rspec spec/service_providers/
-          VERBOSE=true bundle exec rake pact:publish:pactflow_oss
-          VERBOSE=true bundle exec rake pact:publish:pactflow_pact_foundation
+          bundle exec rake pact:publish:pactflow_pact_foundation
         env:
-          PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_PACT_OSS_TOKEN }}
           PACT_BROKER_TOKEN_PACT_FOUNDATION: ${{ secrets.PACT_BROKER_TOKEN_PACT_FOUNDATION }}
           PACT_BROKER_FEATURES: ${{ matrix.feature }}
           TEST_FEATURE: ${{ matrix.feature }}
