@@ -21,4 +21,4 @@ jobs:
           GIT_BRANCH: ${{ github.event.ref }}
           PACTICIPANT: "Pact Broker Client"
           PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN_PACT_FOUNDATION }}
-          PACT_BROKER_BASE_URL=https://pact-foundation.pactflow.io
+          PACT_BROKER_BASE_URL: "https://pact-foundation.pactflow.io"
