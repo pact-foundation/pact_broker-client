@@ -1,0 +1,24 @@
+name: Delete application branch in Pactflow
+
+on:
+  delete:
+    branches:
+      - "*"
+
+jobs:
+  delete-branch-in-pactflow:
+    name: delete
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      # Requires Ruby to encode the URL path correctly - could use any other scripting language here
+      - uses: ruby/setup-ruby@v1
+
+      - name: Delete branch ${GIT_BRANCH} for application ${PACTICIPANT} in Pactflow
+        run: script/ci/delete-branch-in-pactflow.sh
+        env:
+          GIT_BRANCH: ${{ github.event.ref }}
+          PACTICIPANT: "Pact Broker Client"
+          PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN_PACT_FOUNDATION }}
+          PACT_BROKER_BASE_URL=https://pact-foundation.pactflow.io
