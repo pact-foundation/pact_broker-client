@@ -1,5 +1,6 @@
 require 'pact_broker/client/cli/broker'
 require 'pact_broker/client/webhooks/create'
+require 'ostruct'
 
 module PactBroker
   module Client

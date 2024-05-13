@@ -1,6 +1,7 @@
 require 'pact_broker/client/cli/broker'
 require 'pact_broker/client/publish_pacts'
 require 'pact_broker/client/git'
+require 'ostruct'
 
 module PactBroker::Client::CLI
   describe Broker do
