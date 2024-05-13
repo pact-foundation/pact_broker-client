@@ -1,4 +1,5 @@
 require "pactflow/client/provider_contracts/publish"
+require 'ostruct'
 
 module Pactflow
   module Client

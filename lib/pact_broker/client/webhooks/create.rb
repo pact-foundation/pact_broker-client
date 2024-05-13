@@ -5,6 +5,7 @@ require 'json'
 require 'pact_broker/client/command_result'
 require "pact_broker/client/backports"
 require "pact_broker/client/hash_refinements"
+require 'ostruct'
 
 module PactBroker
   module Client

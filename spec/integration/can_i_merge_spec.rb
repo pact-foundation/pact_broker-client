@@ -1,4 +1,5 @@
 require "pact_broker/client/cli/broker"
+require 'ostruct'
 
 module PactBroker
   module Client

@@ -1,6 +1,7 @@
 require 'pact_broker/client/hal'
 require 'pact_broker/client/command_result'
 require 'pact_broker/client/hal_client_methods'
+require 'ostruct'
 
 module PactBroker
   module Client

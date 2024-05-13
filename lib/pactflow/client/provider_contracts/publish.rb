@@ -2,6 +2,7 @@ require "base64"
 require "pact_broker/client/base_command"
 require "pact_broker/client/colorize_notices"
 require "pactflow/client/provider_contracts/publish_the_old_way"
+require 'ostruct'
 
 module Pactflow
   module Client
