@@ -1,3 +1,10 @@
+<a name="v1.75.2"></a>
+### v1.75.2 (2024-05-13)
+
+#### Bug Fixes
+
+* explicitly require openstruct	 ([fdb70cf](/../../commit/fdb70cf))
+
 <a name="v1.75.1"></a>
 ### v1.75.1 (2023-11-23)
 
