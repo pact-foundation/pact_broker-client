@@ -32,11 +32,16 @@ if __FILE__ == $0
   require "webrick"
   require "webrick/https"
   require "rack"
-  require "rackup/handler/webrick"
-
-  opts = webrick_opts(4444)
-
-  Rack::Handler::WEBrick.run(app, **opts) do |server|
+  begin
+    require 'rackup/handler/webrick'
+    opts = webrick_opts(4444)
+    PactWEBrick = Rackup::Handler::WEBrick
+  rescue LoadError
+      require 'rack/handler/webrick'
+      PactWEBrick = Rack::Handler::WEBrick
+      opts = webrick_opts(4444)
+  end
+  server = PactWEBrick.run(app, **opts) do |server|
     @server = server
   end
 end

@@ -25,5 +25,10 @@ end
 group :test do
   gem 'faraday', '~>2.0'
   gem 'faraday-retry', '~>2.0'
-  gem 'rackup', '~> 2.1'
+  if ENV['RACK_VERSION'] == '2'
+    gem 'rack', '>= 2.0', '< 3.0'
+  else
+    gem 'rack', '>= 2.0'
+    gem 'rackup', '~> 2.1'
+  end
 end
