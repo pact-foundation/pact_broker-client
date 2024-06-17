@@ -36,7 +36,7 @@ if __FILE__ == $0
 
   opts = webrick_opts(4444)
 
-  Rack::Handler::WEBrick.run(app, **opts) do |server|
+  Rackup::Handler::WEBrick.run(app, **opts) do |server|
     @server = server
   end
 end
