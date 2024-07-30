@@ -1,3 +1,10 @@
+<a name="v1.75.4"></a>
+### v1.75.4 (2024-07-30)
+
+#### Bug Fixes
+
+* remove test files from built gem	 ([4bb7bac](/../../commit/4bb7bac))
+
 <a name="v1.75.3"></a>
 ### v1.75.3 (2024-06-17)
 
