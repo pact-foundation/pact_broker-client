@@ -12,12 +12,9 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Client for the Pact Broker. Publish, retrieve and query pacts and verification results. Manage webhooks and environments.}
   gem.summary       = %q{See description}
   gem.homepage      = "https://github.com/pact-foundation/pact_broker-client.git"
+  gem.files         = `git ls-files`.split($/).reject { |file| file.match(/(test|spec|features)/) }
 
-  gem.required_ruby_version = '>= 2.0'
-
-  gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
   gem.license       = 'MIT'
 
