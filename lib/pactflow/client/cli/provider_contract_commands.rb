@@ -72,7 +72,7 @@ module Pactflow
                   tags: (options.tag && options.tag.collect(&:strip)) || [],
                   build_url: options.build_url,
                   contract: {
-                    content: File.read(provider_contract_path),
+                    content: get_oas_contents(provider_contract_path),
                     content_type: options.content_type,
                     specification: options.specification
                   },
@@ -85,6 +85,22 @@ module Pactflow
                     verifier_version: options.verifier_version
                   }
                 }
+              end
+
+              def get_oas_contents(input)
+                if input.is_a?(String)
+                  if URI.parse(input).is_a?(URI::HTTP) || URI.parse(input).is_a?(URI::HTTPS)
+                    require 'net/http'
+                    uri = URI.parse(input)
+                    response = Net::HTTP.get_response(uri)
+                    response.is_a?(Net::HTTPSuccess) ? nil : raise(StandardError, "Failed to retrieve CONTRACT_FILE from URL: #{uri}")
+                    response.body
+                  else
+                    File.read(input)
+                  end
+                else
+                  raise ArgumentError, "CONTRACT_FILE #{input} must be a filepath or a URI"
+                end
               end
             end
           end
