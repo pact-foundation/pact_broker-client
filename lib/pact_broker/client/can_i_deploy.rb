@@ -109,7 +109,7 @@ module PactBroker
 
       def fetch_matrix_with_retries
         matrix = fetch_matrix
-        if retry_while_unknown?
+        if retry_while_unknown? && !dry_run_or_false
           check_if_retry_while_unknown_supported(matrix)
           if matrix.any_unknown?
             results = matrix.unknown_count == 1 ? "result" : "results"
