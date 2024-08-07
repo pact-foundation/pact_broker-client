@@ -163,9 +163,9 @@ module PactBroker
               expect(subject.success).to be true
             end
 
-            it "returns a failure message" do
+            it "returns a success message" do
               expect(subject.message).to include "[dry-run]"
-              expect(subject.message).to match /does not provide a count/
+              expect(subject.message).to match /Dry run enabled - ignoring any failures/
             end
           end
         end
