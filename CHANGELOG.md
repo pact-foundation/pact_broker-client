@@ -1,3 +1,10 @@
+<a name="v1.76.1"></a>
+### v1.76.1 (2024-08-21)
+
+#### Bug Fixes
+
+* missing list_latest_versions due to loose regex on gem files (#170)	 ([c5776fc](/../../commit/c5776fc))
+
 <a name="v1.76.0"></a>
 ### v1.76.0 (2024-08-07)
 
