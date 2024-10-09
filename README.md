@@ -66,7 +66,7 @@ Options:
               # The consumer application version
   -h, [--branch=BRANCH]
               # Repository branch of the consumer version
-  -r, [--auto-detect-version-properties], [--no-auto-detect-version-properties]
+  -r, [--auto-detect-version-properties], [--no-auto-detect-version-properties], [--skip-auto-detect-version-properties]
               # Automatically detect the repository commit, branch and build
                 URL from known CI environment variables or git CLI. Supports
                 Buildkite, Circle CI, Travis CI, GitHub Actions, Jenkins,
@@ -75,7 +75,7 @@ Options:
   -t, [--tag=TAG]
               # Tag name for consumer version. Can be specified multiple
                 times.
-  -g, [--tag-with-git-branch], [--no-tag-with-git-branch]
+  -g, [--tag-with-git-branch], [--no-tag-with-git-branch], [--skip-tag-with-git-branch]
               # Tag consumer version with the name of the current git branch.
                 Supports Buildkite, Circle CI, Travis CI, GitHub Actions,
                 Jenkins, Hudson, AppVeyor, GitLab, CodeShip, Bitbucket and
@@ -83,7 +83,7 @@ Options:
               # Default: false
       [--build-url=BUILD_URL]
               # The build URL that created the pact
-      [--merge], [--no-merge]
+      [--merge], [--no-merge], [--skip-merge]
               # If a pact already exists for this consumer version and
                 provider, merge the contents. Useful when running Pact tests
                 concurrently on different build nodes.
@@ -99,7 +99,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -121,7 +121,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
   -o, [--output=OUTPUT]
@@ -145,7 +145,7 @@ Options:
                 deployment code
       [--display-name=DISPLAY_NAME]
               # The display name of the environment
-      [--production], [--no-production]
+      [--production], [--no-production], [--skip-production]
               # Whether or not this environment is a production environment.
                 This is currently informational only.
               # Default: false
@@ -165,7 +165,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -186,7 +186,7 @@ Options:
                 deployment code
       [--display-name=DISPLAY_NAME]
               # The display name of the environment
-      [--production], [--no-production]
+      [--production], [--no-production], [--skip-production]
               # Whether or not this environment is a production environment.
                 This is currently informational only.
               # Default: false
@@ -206,7 +206,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -233,7 +233,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -260,7 +260,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -285,7 +285,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -327,7 +327,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -368,7 +368,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -405,7 +405,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -436,7 +436,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -471,7 +471,7 @@ Options:
       [--branch=BRANCH]
               # The branch of the version for which you want to check the
                 verification results.
-      [--main-branch], [--no-main-branch]
+      [--main-branch], [--no-main-branch], [--skip-main-branch]
               # Use the latest version of the configured main branch of the
                 pacticipant as the version for which you want to check the
                 verification results
@@ -495,7 +495,7 @@ Options:
               # The time between retries in seconds. Use in conjuction with
                 --retry-while-unknown
               # Default: 10
-      [--dry-run], [--no-dry-run]
+      [--dry-run], [--no-dry-run], [--skip-dry-run]
               # When dry-run is enabled, always exit process with a success
                 code. Can also be enabled by setting the environment variable
                 PACT_BROKER_CAN_I_DEPLOY_DRY_RUN=true. This mode is useful when
@@ -514,7 +514,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -572,6 +572,13 @@ Options:
   -e, [--version=VERSION]
               # The pacticipant version. Must be entered after the
                 --pacticipant that it relates to.
+      [--ignore=PACTICIPANT]
+              # The pacticipant name to ignore. Use once for each pacticipant
+                being ignored. A specific version can be ignored by also
+                specifying a --version after the pacticipant name option. The
+                environment variable PACT_BROKER_CAN_I_MERGE_IGNORE may also be
+                used to specify a pacticipant name to ignore, with commas to
+                separate multiple pacticipant names if necessary.
   -o, [--output=OUTPUT]
               # json or table
               # Default: table
@@ -584,7 +591,7 @@ Options:
               # The time between retries in seconds. Use in conjuction with
                 --retry-while-unknown
               # Default: 10
-      [--dry-run], [--no-dry-run]
+      [--dry-run], [--no-dry-run], [--skip-dry-run]
               # When dry-run is enabled, always exit process with a success
                 code. Can also be enabled by setting the environment variable
                 PACT_BROKER_CAN_I_MERGE_DRY_RUN=true. This mode is useful when
@@ -603,7 +610,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -639,7 +646,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -666,7 +673,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -691,7 +698,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -727,20 +734,20 @@ Options:
               # Provider label, mutually exclusive with provider name
       [--description=DESCRIPTION]
               # Webhook description
-      [--contract-content-changed], [--no-contract-content-changed]
+      [--contract-content-changed], [--no-contract-content-changed], [--skip-contract-content-changed]
               # Trigger this webhook when the pact content changes
-      [--contract-published], [--no-contract-published]
+      [--contract-published], [--no-contract-published], [--skip-contract-published]
               # Trigger this webhook when a pact is published
-      [--provider-verification-published], [--no-provider-verification-published]
+      [--provider-verification-published], [--no-provider-verification-published], [--skip-provider-verification-published]
               # Trigger this webhook when a provider verification result is
                 published
-      [--provider-verification-failed], [--no-provider-verification-failed]
+      [--provider-verification-failed], [--no-provider-verification-failed], [--skip-provider-verification-failed]
               # Trigger this webhook when a failed provider verification
                 result is published
-      [--provider-verification-succeeded], [--no-provider-verification-succeeded]
+      [--provider-verification-succeeded], [--no-provider-verification-succeeded], [--skip-provider-verification-succeeded]
               # Trigger this webhook when a successful provider verification
                 result is published
-      [--contract-requiring-verification-published], [--no-contract-requiring-verification-published]
+      [--contract-requiring-verification-published], [--no-contract-requiring-verification-published], [--skip-contract-requiring-verification-published]
               # Trigger this webhook when a contract is published that
                 requires verification
       [--team-uuid=UUID]
@@ -754,7 +761,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -793,20 +800,20 @@ Options:
               # Provider label, mutually exclusive with provider name
       [--description=DESCRIPTION]
               # Webhook description
-      [--contract-content-changed], [--no-contract-content-changed]
+      [--contract-content-changed], [--no-contract-content-changed], [--skip-contract-content-changed]
               # Trigger this webhook when the pact content changes
-      [--contract-published], [--no-contract-published]
+      [--contract-published], [--no-contract-published], [--skip-contract-published]
               # Trigger this webhook when a pact is published
-      [--provider-verification-published], [--no-provider-verification-published]
+      [--provider-verification-published], [--no-provider-verification-published], [--skip-provider-verification-published]
               # Trigger this webhook when a provider verification result is
                 published
-      [--provider-verification-failed], [--no-provider-verification-failed]
+      [--provider-verification-failed], [--no-provider-verification-failed], [--skip-provider-verification-failed]
               # Trigger this webhook when a failed provider verification
                 result is published
-      [--provider-verification-succeeded], [--no-provider-verification-succeeded]
+      [--provider-verification-succeeded], [--no-provider-verification-succeeded], [--skip-provider-verification-succeeded]
               # Trigger this webhook when a successful provider verification
                 result is published
-      [--contract-requiring-verification-published], [--no-contract-requiring-verification-published]
+      [--contract-requiring-verification-published], [--no-contract-requiring-verification-published], [--skip-contract-requiring-verification-published]
               # Trigger this webhook when a contract is published that
                 requires verification
       [--team-uuid=UUID]
@@ -820,7 +827,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
       --uuid=UUID
@@ -852,7 +859,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -872,7 +879,7 @@ Options:
               # The name of the pacticipant that the branch belongs to.
       --branch=BRANCH
               # The pacticipant branch name.
-      [--error-when-not-found], [--no-error-when-not-found]
+      [--error-when-not-found], [--no-error-when-not-found], [--skip-error-when-not-found]
               # Raise an error if the branch that is to be deleted is not
                 found.
               # Default: true
@@ -884,7 +891,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -907,11 +914,11 @@ Options:
   -t, [--tag=TAG]
               # Tag name for pacticipant version. Can be specified multiple
                 times.
-      [--auto-create-version], [--no-auto-create-version]
+      [--auto-create-version], [--no-auto-create-version], [--skip-auto-create-version]
               # Automatically create the pacticipant version if it does not
                 exist.
               # Default: false
-  -g, [--tag-with-git-branch], [--no-tag-with-git-branch]
+  -g, [--tag-with-git-branch], [--no-tag-with-git-branch], [--skip-tag-with-git-branch]
               # Tag pacticipant version with the name of the current git
                 branch.
               # Default: false
@@ -923,7 +930,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -957,7 +964,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
@@ -988,7 +995,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
   -o, [--output=OUTPUT]
@@ -1034,7 +1041,7 @@ Options:
               # Default: oas
       [--content-type=CONTENT_TYPE]
               # The content type. eg. application/yml
-      [--verification-success], [--no-verification-success]
+      [--verification-success], [--no-verification-success], [--skip-verification-success]
               # Whether or not the self verification passed successfully.
       [--verification-exit-code=N]
               # The exit code of the verification process. Can be used instead
@@ -1065,7 +1072,7 @@ Options:
               # Pact Broker basic auth password
   -k, [--broker-token=BROKER_TOKEN]
               # Pact Broker bearer token
-  -v, [--verbose], [--no-verbose]
+  -v, [--verbose], [--no-verbose], [--skip-verbose]
               # Verbose output.
               # Default: false
 ```
