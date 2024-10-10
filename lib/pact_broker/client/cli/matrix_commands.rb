@@ -48,6 +48,7 @@ module PactBroker
             long_desc "Checks if the specified pacticipant version is compatible with the configured main branch of each of the pacticipants with which it is integrated."
             method_option :pacticipant, required: true, aliases: "-a", desc: "The pacticipant name. Use once for each pacticipant being checked."
             method_option :version, required: false, aliases: "-e", desc: "The pacticipant version. Must be entered after the --pacticipant that it relates to."
+            method_option :ignore, required: false, banner: "PACTICIPANT", desc: "The pacticipant name to ignore. Use once for each pacticipant being ignored. A specific version can be ignored by also specifying a --version after the pacticipant name option. The environment variable PACT_BROKER_CAN_I_MERGE_IGNORE may also be used to specify a pacticipant name to ignore, with commas to separate multiple pacticipant names if necessary."
             method_option :output, aliases: "-o", desc: "json or table", default: "table"
             method_option :retry_while_unknown, banner: "TIMES", type: :numeric, default: 0, required: false, desc: "The number of times to retry while there is an unknown verification result (ie. the provider verification is likely still running)"
             method_option :retry_interval, banner: "SECONDS", type: :numeric, default: 10, required: false, desc: "The time between retries in seconds. Use in conjuction with --retry-while-unknown"
@@ -59,11 +60,12 @@ module PactBroker
               require "pact_broker/client/can_i_deploy"
 
               validate_credentials
-              selectors = VersionSelectorOptionsParser.call(ARGV)
+              selectors = VersionSelectorOptionsParser.call(ARGV).select { |s| !s[:ignore] }
+              ignore_selectors = VersionSelectorOptionsParser.call(ARGV).select { |s| s[:ignore] } + ignore_merge_selectors_from_environment_variable
               validate_can_i_deploy_selectors(selectors)
               dry_run = options.dry_run || ENV["PACT_BROKER_CAN_I_MERGE_DRY_RUN"] == "true"
               can_i_merge_options = { output: options.output, retry_while_unknown: options.retry_while_unknown, retry_interval: options.retry_interval, dry_run: dry_run, verbose: options.verbose }
-              result = CanIDeploy.call(selectors, { with_main_branches: true  }, can_i_merge_options, pact_broker_client_options)
+              result = CanIDeploy.call(selectors, { with_main_branches: true, ignore_selectors: ignore_selectors}, can_i_merge_options, pact_broker_client_options)
               $stdout.puts result.message
               $stdout.flush
               exit(1) unless result.success
@@ -120,6 +122,9 @@ module PactBroker
 
               def ignore_selectors_from_environment_variable
                 ENV.fetch("PACT_BROKER_CAN_I_DEPLOY_IGNORE", "").split(",").collect(&:strip).collect{ |i| { pacticipant: i } }
+              end
+              def ignore_merge_selectors_from_environment_variable
+                ENV.fetch("PACT_BROKER_CAN_I_MERGE_IGNORE", "").split(",").collect(&:strip).collect{ |i| { pacticipant: i } }
               end
             end
           end
