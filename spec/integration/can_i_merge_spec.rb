@@ -41,14 +41,14 @@ module PactBroker
 
 
         it "ignores pacticipant if --ignore flag is provided" do
-          stub_request(:get, "http://pact-broker/matrix?latest=true&latestby=cvp&mainBranch=true&q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Bversion%5D=3.4.5&ignore%5B%5D%5Bpacticipant%5D=Foo").
+          stub_request(:get, "http://pact-broker/matrix?latest=true&latestby=cvp&mainBranch=true&q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Bversion%5D=5&ignore%5B%5D%5Bpacticipant%5D=Foo").
             with(
               headers: {
               'Accept'=>'application/hal+json',
               }).
-            to_return(status: 200, body: File.read("spec/support/matrix.json"), headers: { "Content-Type" => "application/hal+json" })     
-          stub_const("ARGV", %w[--pacticipant Bar --version 3.4.5 --ignore Foo])
-          expect($stdout).to receive(:puts).with(/Computer says yes/)
+            to_return(status: 200, body: File.read("spec/support/matrix_with_ignored_failure.json"), headers: { "Content-Type" => "application/hal+json" })     
+          stub_const("ARGV", %w[--pacticipant Bar --version 5 --ignore Foo])
+          expect($stdout).to receive(:puts).with(/Computer says yes.*false \[ignored\]/m)
           invoke_can_i_merge
         end
       end
