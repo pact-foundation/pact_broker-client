@@ -1,3 +1,11 @@
+<a name="v1.76.2"></a>
+### v1.76.2 (2024-10-13)
+
+#### Bug Fixes
+
+* Add dependency of ostruct to gem, to fix warning ostruct was loaded	 ([eb61c27](/../../commit/eb61c27))
+* Dockerfile to reduce vulnerabilities (#172)	 ([79482c2](/../../commit/79482c2))
+
 <a name="v1.76.1"></a>
 ### v1.76.1 (2024-08-21)
 
