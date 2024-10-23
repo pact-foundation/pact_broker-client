@@ -1,0 +1,61 @@
+{
+  "summary": {
+    "deployable": false,
+    "ignored": 0,
+    "unknown": 0
+  },
+  "matrix": [
+    {
+      "consumer": {
+        "name": "Baz",
+        "version": {
+          "number": "4"
+        }
+      },
+      "provider": {
+        "name": "Bar",
+        "version": {
+          "number": "5"
+        }
+      },
+      "verificationResult": {
+        "verifiedAt": "2017-10-10T12:49:04+11:00",
+        "success": true,
+        "_links": {
+          "self": {
+            "href": "http://result"
+          }
+        }
+      },
+      "pact": {
+        "createdAt": "2017-10-10T12:49:04+11:00"
+      }
+    },
+    {
+      "consumer": {
+        "name": "Foo",
+        "version": {
+          "number": "4"
+        }
+      },
+      "provider": {
+        "name": "Bar",
+        "version": {
+          "number": "5"
+        }
+      },
+      "verificationResult": {
+        "verifiedAt": "2017-10-10T12:49:04+11:00",
+        "success": false,
+        "_links": {
+          "self": {
+            "href": "http://result"
+          }
+        }
+      },
+      "pact": {
+        "createdAt": "2017-10-10T12:49:04+11:00"
+      }
+    }
+  ]
+}

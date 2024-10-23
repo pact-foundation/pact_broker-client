@@ -39,6 +39,17 @@ module PactBroker
           invoke_can_i_merge
         end
 
+        it "exits with failure if one pacticipant has a failing result" do
+          stub_request(:get, "http://pact-broker/matrix?latest=true&latestby=cvp&mainBranch=true&q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Bversion%5D=5").
+            with(
+              headers: {
+              'Accept'=>'application/hal+json',
+              }).
+            to_return(status: 200, body: File.read("spec/support/matrix_with_failure.json"), headers: { "Content-Type" => "application/hal+json" })     
+          stub_const("ARGV", %w[--pacticipant Bar --version 5])
+          expect($stdout).to receive(:puts).with(/Computer says no.*(success).*(failure)/m)
+          expect { invoke_can_i_merge }.to raise_error(SystemExit)
+        end
 
         it "ignores pacticipant if --ignore flag is provided" do
           stub_request(:get, "http://pact-broker/matrix?latest=true&latestby=cvp&mainBranch=true&q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Bversion%5D=5&ignore%5B%5D%5Bpacticipant%5D=Foo").
