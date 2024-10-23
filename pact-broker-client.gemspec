@@ -25,4 +25,5 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'rake', '~> 13.0' #For FileList
   gem.add_runtime_dependency 'dig_rb', '~> 1.0'
   gem.add_runtime_dependency 'base64', '~> 0.2'
+  gem.add_runtime_dependency 'ostruct'
 end
