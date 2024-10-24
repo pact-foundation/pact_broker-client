@@ -572,6 +572,13 @@ Options:
   -e, [--version=VERSION]
               # The pacticipant version. Must be entered after the
                 --pacticipant that it relates to.
+      [--ignore=PACTICIPANT]
+              # The pacticipant name to ignore. Use once for each pacticipant
+                being ignored. A specific version can be ignored by also
+                specifying a --version after the pacticipant name option. The
+                environment variable PACT_BROKER_CAN_I_MERGE_IGNORE may also be
+                used to specify a pacticipant name to ignore, with commas to
+                separate multiple pacticipant names if necessary.
   -o, [--output=OUTPUT]
               # json or table
               # Default: table
