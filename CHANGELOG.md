@@ -1,3 +1,10 @@
+<a name="v1.77.0"></a>
+### v1.77.0 (2024-10-08)
+
+#### Features
+
+* support --ignore flag in can-i-merge command	 ([1349bd0](/../../commit/1349bd0))
+
 <a name="v1.76.2"></a>
 ### v1.76.2 (2024-10-13)
 
