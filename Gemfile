@@ -12,7 +12,7 @@ if ENV['X_PACT_DEVELOPMENT'] == 'true'
 end
 
 group :development do
-  gem 'fakefs', '~> 2.4'
+  gem 'fakefs', '~> 3.0'
   gem 'webmock', '~> 3.0'
   gem 'conventional-changelog', '~>1.3'
   gem 'pact', '~> 1.16'
