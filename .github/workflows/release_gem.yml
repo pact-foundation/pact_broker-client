@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: ruby/setup-ruby@v1
     - run: |
         gem install bundler -v 2.4
@@ -26,7 +26,7 @@ jobs:
       version: ${{ steps.release.outputs.version }}
       increment: ${{ steps.release.outputs.increment }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         fetch-depth: 0
     - uses: pact-foundation/release-gem@v1
@@ -40,7 +40,7 @@ jobs:
     needs: release
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: ruby/setup-ruby@v1
     - name: Bundle install
       run: |

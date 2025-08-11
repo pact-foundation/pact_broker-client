@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       # Requires Ruby to encode the URL path correctly - could use any other scripting language here
       - uses: ruby/setup-ruby@v1
 
