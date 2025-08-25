@@ -23,5 +23,4 @@ _yardoc
 # Editor files
 *.sublime*
 log
-Gemfile.lock
 spec/examples.txt
