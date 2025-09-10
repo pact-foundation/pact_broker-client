@@ -110,7 +110,7 @@
         "matchingRules": {
           "$.headers.Content-Type": {
             "match": "regex",
-            "regex": "application\\/hal\\+json"
+            "regex": "application\\/hal\\+json.*"
           }
         }
       }
@@ -165,7 +165,7 @@
         "matchingRules": {
           "$.headers.Content-Type": {
             "match": "regex",
-            "regex": "application\\/hal\\+json"
+            "regex": "application\\/hal\\+json.*"
           }
         }
       }
@@ -209,7 +209,7 @@
         "matchingRules": {
           "$.headers.Content-Type": {
             "match": "regex",
-            "regex": "application\\/hal\\+json"
+            "regex": "application\\/hal\\+json.*"
           }
         }
       }
@@ -828,8 +828,7 @@
             "name": "Pricing Service"
           },
           "interactions": [
-
-          ]
+        ]
         }
       },
       "response": {
@@ -863,8 +862,7 @@
             "name": "Pricing Service"
           },
           "interactions": [
-
-          ]
+        ]
         }
       },
       "response": {
@@ -898,8 +896,7 @@
             "name": "Pricing Service"
           },
           "interactions": [
-
-          ]
+        ]
         }
       },
       "response": {
@@ -933,8 +930,7 @@
             "name": "Pricing Service"
           },
           "interactions": [
-
-          ]
+        ]
         }
       },
       "response": {
@@ -968,8 +964,7 @@
             "name": "Pricing Service"
           },
           "interactions": [
-
-          ]
+        ]
         }
       },
       "response": {
@@ -985,7 +980,7 @@
         "matchingRules": {
           "$.headers.Content-Type": {
             "match": "regex",
-            "regex": "application\\/.*json"
+            "regex": "application\\/.*json.*"
           },
           "$.body.error.message": {
             "match": "regex",
@@ -1126,8 +1121,7 @@
             "name": "Pricing Service"
           },
           "interactions": [
-
-          ]
+        ]
         }
       }
     },
@@ -1154,13 +1148,12 @@
             "name": "Pricing Service"
           },
           "interactions": [
-
-          ]
+        ]
         },
         "matchingRules": {
           "$.headers.Content-Type": {
             "match": "regex",
-            "regex": "application\\/.*json"
+            "regex": "application\\/.*json.*"
           }
         }
       }
@@ -1203,8 +1196,7 @@
             "name": "Pricing Service"
           },
           "interactions": [
-
-          ]
+        ]
         }
       }
     },
@@ -1323,7 +1315,7 @@
         "matchingRules": {
           "$.body._links.pb:latest-version.href": {
             "match": "regex",
-            "regex": "http:\\/\\/.*{pacticipant}"
+            "regex": "http:\\/\\/.*{pacticipant}.*"
           }
         }
       }
@@ -1960,7 +1952,7 @@
         "matchingRules": {
           "$.body._embedded.deployedVersions[0]._links.self.href": {
             "match": "regex",
-            "regex": "^http"
+            "regex": "^http.*"
           }
         }
       }

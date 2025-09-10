@@ -1,0 +1,292 @@
+{
+  "consumer": {
+    "name": "Pact Broker Client V2"
+  },
+  "interactions": [
+    {
+      "description": "a request for the index resource",
+      "request": {
+        "headers": {
+          "Accept": "application/hal+json"
+        },
+        "method": "GET",
+        "path": "/"
+      },
+      "response": {
+        "body": {
+          "_links": {
+            "pb:pacticipant": {
+              "href": "http://127.0.0.1:9998/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-{pacticipant}"
+            },
+            "pb:pacticipants": {
+              "href": "http://127.0.0.1:9998/HAL-REL-PLACEHOLDER-PB-PACTICIPANTS"
+            },
+            "pb:webhooks": {
+              "href": "http://127.0.0.1:9998/HAL-REL-PLACEHOLDER-PB-WEBHOOKS"
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "matchingRules": {
+          "$.body._links['pb:pacticipant'].href": {
+            "match": "regex",
+            "regex": "(?-mix:http:\\/\\/.*{pacticipant})"
+          },
+          "$.body._links['pb:pacticipants'].href": {
+            "match": "regex",
+            "regex": "(?-mix:http:\\/\\/.*)"
+          },
+          "$.body._links['pb:webhooks'].href": {
+            "match": "regex",
+            "regex": "(?-mix:http:\\/\\/.*)"
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request for the index resource",
+      "providerState": "the pb:publish-provider-contract relation exists in the index resource",
+      "request": {
+        "headers": {
+          "Accept": "application/hal+json"
+        },
+        "method": "GET",
+        "path": "/"
+      },
+      "response": {
+        "body": {
+          "_links": {
+            "pf:publish-provider-contract": {
+              "href": "http://127.0.0.1:9998/HAL-REL-PLACEHOLDER-PF-PUBLISH-PROVIDER-CONTRACT-{provider}"
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "matchingRules": {
+          "$.body._links['pf:publish-provider-contract'].href": {
+            "match": "regex",
+            "regex": "(?-mix:http:\\/\\/.*{provider})"
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to create a provider contract",
+      "request": {
+        "body": {
+          "content": "LS0tCnNvbWU6IGNvbnRyYWN0Cg==",
+          "contentType": "application/yaml",
+          "contractType": "oas",
+          "verificationResults": {
+            "content": "c29tZSByZXN1bHRz",
+            "contentType": "text/plain",
+            "format": "text",
+            "success": true,
+            "verifier": "my custom tool",
+            "verifierVersion": "1.0"
+          }
+        },
+        "headers": {
+          "Accept": "application/hal+json",
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "path": "/contracts/provider/Bar/version/1"
+      },
+      "response": {
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "status": 201
+      }
+    },
+    {
+      "description": "a request to create a provider contract",
+      "providerState": "there is a pf:ui href in the response",
+      "request": {
+        "body": {
+          "content": "LS0tCnNvbWU6IGNvbnRyYWN0Cg==",
+          "contentType": "application/yaml",
+          "contractType": "oas",
+          "verificationResults": {
+            "content": "c29tZSByZXN1bHRz",
+            "contentType": "text/plain",
+            "format": "text",
+            "success": true,
+            "verifier": "my custom tool",
+            "verifierVersion": "1.0"
+          }
+        },
+        "headers": {
+          "Accept": "application/hal+json",
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "path": "/contracts/provider/Bar/version/1"
+      },
+      "response": {
+        "body": {
+          "_links": {
+            "pf:ui": {
+              "href": "some-url"
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "matchingRules": {
+          "$.body._links['pf:ui'].href": {
+            "match": "type"
+          }
+        },
+        "status": 201
+      }
+    },
+    {
+      "description": "a request to create a webhook for a team",
+      "providerState": "a team with UUID 2abbc12a-427d-432a-a521-c870af1739d9 exists",
+      "request": {
+        "body": {
+          "description": "a webhook",
+          "events": [
+            {
+              "name": "contract_content_changed"
+            }
+          ],
+          "request": {
+            "body": {
+              "some": "body"
+            },
+            "headers": {
+              "Bar": "foo",
+              "Foo": "bar"
+            },
+            "method": "POST",
+            "url": "https://webhook"
+          },
+          "teamUuid": "2abbc12a-427d-432a-a521-c870af1739d9"
+        },
+        "headers": {
+          "Accept": "application/hal+json",
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS"
+      },
+      "response": {
+        "body": {
+          "_links": {
+            "self": {
+              "href": "http://localhost:1234/some-url",
+              "title": "A title"
+            }
+          },
+          "description": "a webhook",
+          "teamUuid": "2abbc12a-427d-432a-a521-c870af1739d9"
+        },
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": "(?-mix:http:\\/\\/.*)"
+          },
+          "$.body._links.self.title": {
+            "match": "type"
+          },
+          "$.body.description": {
+            "match": "type"
+          }
+        },
+        "status": 201
+      }
+    },
+    {
+      "description": "a request to publish a provider contract",
+      "request": {
+        "body": {
+          "branch": "main",
+          "buildUrl": "http://build",
+          "contract": {
+            "content": "LS0tCnNvbWU6IGNvbnRyYWN0Cg==",
+            "contentType": "application/yaml",
+            "selfVerificationResults": {
+              "content": "c29tZSByZXN1bHRz",
+              "contentType": "text/plain",
+              "format": "text",
+              "success": true,
+              "verifier": "my custom tool",
+              "verifierVersion": "1.0"
+            },
+            "specification": "oas"
+          },
+          "pacticipantVersionNumber": "1",
+          "tags": [
+            "dev"
+          ]
+        },
+        "headers": {
+          "Accept": "application/hal+json, application/problem+json",
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/HAL-REL-PLACEHOLDER-PF-PUBLISH-PROVIDER-CONTRACT-Bar"
+      },
+      "response": {
+        "body": {
+          "_embedded": {
+            "version": {
+              "number": "1"
+            }
+          },
+          "_links": {
+            "pb:branch-version": {},
+            "pb:pacticipant-version-tags": [
+              {}
+            ]
+          },
+          "notices": [
+            {
+              "text": "some notice",
+              "type": "info"
+            }
+          ]
+        },
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "matchingRules": {
+          "$.body.notices": {
+            "match": "type",
+            "min": 1
+          }
+        },
+        "status": 200
+      }
+    }
+  ],
+  "metadata": {
+    "pact-ruby-v2": {
+      "pact-ffi": "0.4.28"
+    },
+    "pactRust": {
+      "ffi": "0.4.28",
+      "mockserver": "1.2.16",
+      "models": "1.3.5"
+    },
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  },
+  "provider": {
+    "name": "PactFlow"
+  }
+}
