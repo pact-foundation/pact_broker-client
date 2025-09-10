@@ -38,3 +38,8 @@ task 'pact:list_provider_states' do
     JSON.parse(File.read(pact_file))['interactions'].collect{ | interaction| interaction['providerState'] }
   }.flatten.compact.sort.uniq
 end
+
+RSpec::Core::RakeTask.new('pact:v2:spec') do |task|
+  task.pattern = 'spec/pact/providers/**/*_spec.rb'
+  task.rspec_opts = ['-t pact']
+end
