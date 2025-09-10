@@ -2613,6 +2613,7 @@
       "description": "a request to tag the production version of Condor",
       "providerState": "'Condor' does not exist in the pact-broker",
       "request": {
+        "body": {},
         "headers": {
           "Content-Type": "application/json"
         },
@@ -2643,6 +2644,7 @@
       "description": "a request to tag the production version of Condor",
       "providerState": "'Condor' exists in the pact-broker",
       "request": {
+        "body": {},
         "headers": {
           "Content-Type": "application/json"
         },
@@ -2673,6 +2675,7 @@
       "description": "a request to tag the production version of Condor",
       "providerState": "'Condor' exists in the pact-broker with version 1.3.0, tagged with 'prod'",
       "request": {
+        "body": {},
         "headers": {
           "Content-Type": "application/json"
         },

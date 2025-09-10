@@ -107,7 +107,8 @@ RSpec.describe "recording a release", pact: true do
       .with(
         method: "POST",
         path: "/HAL-REL-PLACEHOLDER-PB-RECORD-RELEASE-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST",
-        headers: post_request_headers
+        headers: post_request_headers,
+        body: {}
       )
       .will_respond_with(
         status: 201,

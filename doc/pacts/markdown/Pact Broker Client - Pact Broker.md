@@ -94,16 +94,6 @@
 
 * [A request to mark a deployed version as not currently deploye](#a_request_to_mark_a_deployed_version_as_not_currently_deploye_given_a_currently_deployed_version_exists) given a currently deployed version exists
 
-* [A request to publish a pact](#a_request_to_publish_a_pact_given_&#39;Condor&#39;_already_exist_in_the_pact-broker,_but_the_&#39;Pricing_Service&#39;_does_not) given 'Condor' already exist in the pact-broker, but the 'Pricing Service' does not
-
-* [A request to publish a pact](#a_request_to_publish_a_pact_given_the_&#39;Pricing_Service&#39;_already_exists_in_the_pact-broker) given the 'Pricing Service' already exists in the pact-broker
-
-* [A request to publish a pact](#a_request_to_publish_a_pact_given_an_error_occurs_while_publishing_a_pact) given an error occurs while publishing a pact
-
-* [A request to publish a pact with method patch](#a_request_to_publish_a_pact_with_method_patch_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker,_and_Condor_already_has_a_pact_published_for_version_1.3.0) given the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0
-
-* [A request to publish a pact with method put](#a_request_to_publish_a_pact_with_method_put_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker,_and_Condor_already_has_a_pact_published_for_version_1.3.0) given the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0
-
 * [A request to publish contracts](#a_request_to_publish_contracts)
 
 * [A request to record a deployment](#a_request_to_record_a_deployment_given_version_5556b8149bf8bac76bc30f50a8a2dd4c22c85f30_of_pacticipant_Foo_exists_with_a_test_environment_available_for_deployment) given version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for deployment
@@ -2117,189 +2107,6 @@ Pact Broker will respond with:
   }
 }
 ```
-<a name="a_request_to_publish_a_pact_given_&#39;Condor&#39;_already_exist_in_the_pact-broker,_but_the_&#39;Pricing_Service&#39;_does_not"></a>
-Given **'Condor' already exist in the pact-broker, but the 'Pricing Service' does not**, upon receiving **a request to publish a pact** from Pact Broker Client, with
-```json
-{
-  "method": "put",
-  "path": "/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
-  "headers": {
-    "Content-Type": "application/json"
-  },
-  "body": {
-    "consumer": {
-      "name": "Condor"
-    },
-    "provider": {
-      "name": "Pricing Service"
-    },
-    "interactions": [
-        ]
-  }
-}
-```
-Pact Broker will respond with:
-```json
-{
-  "status": 201,
-  "headers": {
-    "Content-Type": "application/hal+json;charset=utf-8"
-  },
-  "body": {
-    "_links": {
-      "pb:latest-pact-version": {
-        "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest"
-      }
-    }
-  }
-}
-```
-<a name="a_request_to_publish_a_pact_given_the_&#39;Pricing_Service&#39;_already_exists_in_the_pact-broker"></a>
-Given **the 'Pricing Service' already exists in the pact-broker**, upon receiving **a request to publish a pact** from Pact Broker Client, with
-```json
-{
-  "method": "put",
-  "path": "/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
-  "headers": {
-    "Content-Type": "application/json"
-  },
-  "body": {
-    "consumer": {
-      "name": "Condor"
-    },
-    "provider": {
-      "name": "Pricing Service"
-    },
-    "interactions": [
-        ]
-  }
-}
-```
-Pact Broker will respond with:
-```json
-{
-  "status": 201,
-  "headers": {
-    "Content-Type": "application/hal+json;charset=utf-8"
-  },
-  "body": {
-    "_links": {
-      "pb:latest-pact-version": {
-        "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest"
-      }
-    }
-  }
-}
-```
-<a name="a_request_to_publish_a_pact_given_an_error_occurs_while_publishing_a_pact"></a>
-Given **an error occurs while publishing a pact**, upon receiving **a request to publish a pact** from Pact Broker Client, with
-```json
-{
-  "method": "put",
-  "path": "/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
-  "headers": {
-    "Content-Type": "application/json"
-  },
-  "body": {
-    "consumer": {
-      "name": "Condor"
-    },
-    "provider": {
-      "name": "Pricing Service"
-    },
-    "interactions": [
-        ]
-  }
-}
-```
-Pact Broker will respond with:
-```json
-{
-  "status": 500,
-  "headers": {
-    "Content-Type": "application/hal+json"
-  },
-  "body": {
-    "error": {
-      "message": "An error occurred"
-    }
-  }
-}
-```
-<a name="a_request_to_publish_a_pact_with_method_patch_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker,_and_Condor_already_has_a_pact_published_for_version_1.3.0"></a>
-Given **the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0**, upon receiving **a request to publish a pact with method patch** from Pact Broker Client, with
-```json
-{
-  "method": "patch",
-  "path": "/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
-  "headers": {
-    "Content-Type": "application/json"
-  },
-  "body": {
-    "consumer": {
-      "name": "Condor"
-    },
-    "provider": {
-      "name": "Pricing Service"
-    },
-    "interactions": [
-        ]
-  }
-}
-```
-Pact Broker will respond with:
-```json
-{
-  "status": 200,
-  "headers": {
-    "Content-Type": "application/hal+json;charset=utf-8"
-  },
-  "body": {
-    "_links": {
-      "pb:latest-pact-version": {
-        "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest"
-      }
-    }
-  }
-}
-```
-<a name="a_request_to_publish_a_pact_with_method_put_given_the_&#39;Pricing_Service&#39;_and_&#39;Condor&#39;_already_exist_in_the_pact-broker,_and_Condor_already_has_a_pact_published_for_version_1.3.0"></a>
-Given **the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0**, upon receiving **a request to publish a pact with method put** from Pact Broker Client, with
-```json
-{
-  "method": "put",
-  "path": "/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0",
-  "headers": {
-    "Content-Type": "application/json"
-  },
-  "body": {
-    "consumer": {
-      "name": "Condor"
-    },
-    "provider": {
-      "name": "Pricing Service"
-    },
-    "interactions": [
-        ]
-  }
-}
-```
-Pact Broker will respond with:
-```json
-{
-  "status": 200,
-  "headers": {
-    "Content-Type": "application/hal+json;charset=utf-8"
-  },
-  "body": {
-    "_links": {
-      "pb:latest-pact-version": {
-        "href": "http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest"
-      }
-    }
-  }
-}
-```
 <a name="a_request_to_publish_contracts"></a>
 Upon receiving **a request to publish contracts** from Pact Broker Client, with
 ```json
@@ -2405,7 +2212,9 @@ Given **version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exis
   "headers": {
     "Content-Type": "application/json",
     "Accept": "application/hal+json"
-  }
+  },
+  "body": {
+        }
 }
 ```
 Pact Broker will respond with:
@@ -2643,7 +2452,9 @@ Given **'Condor' exists in the pact-broker with version 1.3.0, tagged with 'prod
   "path": "/pacticipants/Condor/versions/1.3.0/tags/prod",
   "headers": {
     "Content-Type": "application/json"
-  }
+  },
+  "body": {
+        }
 }
 ```
 Pact Broker will respond with:
@@ -2670,7 +2481,9 @@ Given **'Condor' does not exist in the pact-broker**, upon receiving **a request
   "path": "/pacticipants/Condor/versions/1.3.0/tags/prod",
   "headers": {
     "Content-Type": "application/json"
-  }
+  },
+  "body": {
+        }
 }
 ```
 Pact Broker will respond with:
@@ -2697,7 +2510,9 @@ Given **'Condor' exists in the pact-broker**, upon receiving **a request to tag 
   "path": "/pacticipants/Condor/versions/1.3.0/tags/prod",
   "headers": {
     "Content-Type": "application/json"
-  }
+  },
+  "body": {
+        }
 }
 ```
 Pact Broker will respond with:

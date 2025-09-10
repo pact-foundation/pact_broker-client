@@ -18,7 +18,7 @@ describe PactBroker::Client::Versions, pact: true do
         with(
             method: :put,
             path: '/pacticipants/Condor/versions/1.3.0/tags/prod',
-            headers: default_request_headers).
+            headers: default_request_headers, body: {}).
           will_respond_with(
             status: 201,
             headers: pact_broker_response_headers,
@@ -46,7 +46,7 @@ describe PactBroker::Client::Versions, pact: true do
         with(
           method: :put,
           path: '/pacticipants/Condor/versions/1.3.0/tags/prod',
-          headers: default_request_headers).
+          headers: default_request_headers, body: {}).
           will_respond_with(
             status: 201,
             headers: pact_broker_response_headers,
@@ -75,7 +75,7 @@ describe PactBroker::Client::Versions, pact: true do
         with(
             method: :put,
             path: '/pacticipants/Condor/versions/1.3.0/tags/prod',
-            headers: default_request_headers).
+            headers: default_request_headers, body: {}).
           will_respond_with(
             status: 200,
             headers: pact_broker_response_headers,

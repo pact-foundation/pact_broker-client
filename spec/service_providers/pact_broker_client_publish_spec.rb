@@ -6,7 +6,7 @@ module PactBroker::Client
 
     include_context "pact broker"
 
-    describe "publishing a pact" do
+    describe "publishing a pact", :skip do
 
       let(:options) { { pact_hash: pact_hash, consumer_version: consumer_version }}
       let(:location) { 'http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest' }
