@@ -117,7 +117,7 @@ module PactBroker::Client
               body: pact_hash ).
             will_respond_with(
               status: 500,
-              headers: {'Content-Type' => Pact.term(generate: 'application/hal+json', matcher: %r{application/.*json})},
+              headers: {'Content-Type' => Pact.term(generate: 'application/hal+json', matcher: %r{application/.*json.*})},
               body: {
                 error: {
                   message: Pact::Term.new(matcher: /.*/, generate: 'An error occurred')

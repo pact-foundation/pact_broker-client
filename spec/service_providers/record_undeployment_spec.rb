@@ -103,7 +103,7 @@ RSpec.describe "recording an undeployment", pact: true do
                 applicationInstance: application_instance,
                 _links: {
                   self: {
-                    href: Pact.term(pact_broker.mock_service_base_url + deployed_version_placeholder_path, /^http/)
+                    href: Pact.term(pact_broker.mock_service_base_url + deployed_version_placeholder_path, /^http.*/)
                   }
                 }
               }

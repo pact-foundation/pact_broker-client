@@ -25,7 +25,7 @@ describe PactBroker::Client::Versions, pact: true do
             body: {
               _links: {
                 :'pb:latest-version' => {
-                  href: Pact.term(latest_version_url, /http:\/\/.*{pacticipant}/)
+                  href: Pact.term(latest_version_url, /http:\/\/.*{pacticipant}.*/)
                 }
               }
             }
