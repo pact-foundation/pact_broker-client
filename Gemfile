@@ -16,7 +16,7 @@ group :development do
   gem 'webmock', '~> 3.0'
   gem 'conventional-changelog', '~>1.3'
   gem 'pact', '~> 1.16'
-  gem 'pact-support', '~> 1.16'
+  gem "pact-support", github: "pact-foundation/pact-support", branch: "fix/json_load_regression"
   gem 'approvals', '0.1.7'
   gem 'rspec-its', '~> 2.0'
   gem 'pry-byebug'
