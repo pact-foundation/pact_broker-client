@@ -23,7 +23,7 @@ group :development do
   if ENV['X_PACT_DEVELOPMENT'] == 'true'
     gem 'pact', path: '../pact-ruby'
   else
-    gem 'pact', git: 'https://github.com/safdotdev/pact-ruby.git', branch: 'feat/pact-ruby-v2-conditional-install'
+    gem 'pact', git: 'https://github.com/safdotdev/pact-ruby.git', branch: 'feat/v2'
   end
   # pact-ruby v2 required components
   # gem 'combustion'
