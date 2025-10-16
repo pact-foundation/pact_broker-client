@@ -91,13 +91,22 @@ module PactBrokerPactHelperMethods
           body: {
             _links: {
               :'pb:webhooks' => {
-                href: placeholder_url_term('pb:webhooks', [], mock_service_url)
+                href: generate_mock_server_url(
+                  regex: ".*(\\/webhooks)$",
+                  example: "/webhooks"
+                )
               },
               :'pb:pacticipants' => {
-                href: placeholder_url_term('pb:pacticipants', [], mock_service_url)
+                href: generate_mock_server_url(
+                  regex: ".*(\\/pacticipants)$",
+                  example: "/pacticipants"
+                )
               },
               :'pb:pacticipant' => {
-                href: placeholder_url_term('pb:pacticipant', ['pacticipant'], mock_service_url)
+                href: generate_mock_server_url(
+                  regex: ".*(\\/pacticipants\\/{pacticipant})$",
+                  example: "/pacticipants/{pacticipant}"
+                )
               }
             }
           }

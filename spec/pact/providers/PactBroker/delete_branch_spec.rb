@@ -42,7 +42,10 @@ RSpec.describe "delete a branch", pact: true do
         body: {
           _links: {
             :'pb:pacticipant-branch' => {
-              href: placeholder_url_term("pb:pacticipant-branch", ["pacticipant", "branch"], pact_broker_base_url)
+                href: generate_mock_server_url(
+                  regex: ".*(\\/pacticipants\\/.*\\/branches\\/.*)$",
+                  example: "/pacticipants/{pacticipant}/branches/{branch}"
+                ),
             }
           }
         }
@@ -55,7 +58,7 @@ RSpec.describe "delete a branch", pact: true do
       .upon_receiving("a request to delete a pacticipant branch")
       .with_request(
         method: "DELETE",
-        path: placeholder_path("pb:pacticipant-branch", ["Foo", "main"])
+        path: "/pacticipants/Foo/branches/main",
       )
       .will_respond_with(
         status: 204

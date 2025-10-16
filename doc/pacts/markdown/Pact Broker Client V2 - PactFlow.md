@@ -37,13 +37,13 @@ PactFlow will respond with:
   "body": {
     "_links": {
       "pb:pacticipant": {
-        "href": "http://127.0.0.1:9998/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-{pacticipant}"
+        "href": "/pacticipants/{pacticipant}"
       },
       "pb:pacticipants": {
-        "href": "http://127.0.0.1:9998/HAL-REL-PLACEHOLDER-PB-PACTICIPANTS"
+        "href": "/pacticipants"
       },
       "pb:webhooks": {
-        "href": "http://127.0.0.1:9998/HAL-REL-PLACEHOLDER-PB-WEBHOOKS"
+        "href": "/webhooks"
       }
     }
   }
@@ -70,7 +70,7 @@ PactFlow will respond with:
   "body": {
     "_links": {
       "pf:publish-provider-contract": {
-        "href": "http://127.0.0.1:9998/HAL-REL-PLACEHOLDER-PF-PUBLISH-PROVIDER-CONTRACT-{provider}"
+        "href": "/provider-contracts/provider/{provider}/publish"
       }
     }
   }
@@ -156,7 +156,7 @@ Given **a team with UUID 2abbc12a-427d-432a-a521-c870af1739d9 exists**, upon rec
 ```json
 {
   "method": "POST",
-  "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+  "path": "/webhooks",
   "headers": {
     "Accept": "application/hal+json",
     "Content-Type": "application/json"
@@ -207,7 +207,7 @@ Upon receiving **a request to publish a provider contract** from Pact Broker Cli
 ```json
 {
   "method": "POST",
-  "path": "/HAL-REL-PLACEHOLDER-PF-PUBLISH-PROVIDER-CONTRACT-Bar",
+  "path": "/provider-contracts/provider/Bar/publish",
   "headers": {
     "Accept": "application/hal+json, application/problem+json",
     "Content-Type": "application/json"

@@ -207,7 +207,7 @@ Given **version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exis
 ```json
 {
   "method": "GET",
-  "path": "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-Foo-5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
+  "path": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
   "headers": {
     "Accept": "application/hal+json"
   }
@@ -224,7 +224,7 @@ Pact Broker will respond with:
     "_links": {
       "pb:record-release": [
         {
-          "href": "http://127.0.0.1:9999/HAL-REL-PLACEHOLDER-PB-RECORD-RELEASE-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST",
+          "href": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30/released-versions/environment/cb632df3-0a0d-4227-aac3-60114dd36479",
           "name": "test"
         }
       ]
@@ -237,7 +237,7 @@ Given **an environment with name test and UUID 16926ef3-590f-4e3f-838e-719717aa8
 ```json
 {
   "method": "GET",
-  "path": "/HAL-REL-PLACEHOLDER-PB-ENVIRONMENT-16926ef3-590f-4e3f-838e-719717aa88c9",
+  "path": "/environments/16926ef3-590f-4e3f-838e-719717aa88c9",
   "headers": {
     "Accept": "application/hal+json"
   }
@@ -253,7 +253,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "pb:currently-deployed-deployed-versions": {
-        "href": "http://127.0.0.1:9999/PLACEHOLDER-ENVIRONMENT-CURRENTLY-DEPLOYED-16926ef3-590f-4e3f-838e-719717aa88c9"
+        "href": "http://127.0.0.1:9999/environments/16926ef3-590f-4e3f-838e-719717aa88c9/deployed-versions/currently-deployed"
       }
     }
   }
@@ -731,13 +731,13 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "pb:pacticipant": {
-        "href": "http://127.0.0.1:9999/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-{pacticipant}"
+        "href": "/pacticipants/{pacticipant}"
       },
       "pb:pacticipants": {
-        "href": "http://127.0.0.1:9999/HAL-REL-PLACEHOLDER-PB-PACTICIPANTS"
+        "href": "/pacticipants"
       },
       "pb:webhooks": {
-        "href": "http://127.0.0.1:9999/HAL-REL-PLACEHOLDER-PB-WEBHOOKS"
+        "href": "/webhooks"
       }
     }
   }
@@ -794,7 +794,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "pb:environments": {
-        "href": "http://127.0.0.1:9999/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS"
+        "href": "/environments"
       }
     }
   }
@@ -821,7 +821,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "pb:latest-tagged-version": {
-        "href": "http://127.0.0.1:9999/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-TAGGED-VERSION-{pacticipant}-{tag}"
+        "href": "http://127.0.0.1:9999/pacticipants/Condor/latest-version/production"
       }
     }
   }
@@ -848,7 +848,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "pb:latest-version": {
-        "href": "http://127.0.0.1:9999/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-VERSION-{pacticipant}"
+        "href": "http://127.0.0.1:9999/pacticipants/Condor/latest-version"
       }
     }
   }
@@ -875,7 +875,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "pb:pacticipant-branch": {
-        "href": "http://127.0.0.1:9999/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-BRANCH-{pacticipant}-{branch}"
+        "href": "/pacticipants/{pacticipant}/branches/{branch}"
       }
     }
   }
@@ -902,10 +902,10 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "pb:environments": {
-        "href": "http://127.0.0.1:9999/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS"
+        "href": "/environments"
       },
       "pb:pacticipant-version": {
-        "href": "http://127.0.0.1:9999/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-{pacticipant}-{version}"
+        "href": "/pacticipants/{pacticipant}/versions/{version}"
       }
     }
   }
@@ -932,7 +932,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "pb:publish-contracts": {
-        "href": "http://127.0.0.1:9999/HAL-REL-PLACEHOLDER-PB-PUBLISH-CONTRACTS"
+        "href": "/contracts/publish"
       }
     }
   }
@@ -1115,7 +1115,7 @@ Upon receiving **a request to create a global webhook with a JSON body** from Pa
 ```json
 {
   "method": "POST",
-  "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+  "path": "/webhooks",
   "headers": {
     "Accept": "application/hal+json",
     "Content-Type": "application/json"
@@ -1319,7 +1319,7 @@ Given **the 'Pricing Service' and 'Condor' already exist in the pact-broker**, u
 ```json
 {
   "method": "POST",
-  "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+  "path": "/webhooks",
   "headers": {
     "Accept": "application/hal+json",
     "Content-Type": "application/json"
@@ -1444,7 +1444,7 @@ Upon receiving **a request to create a webhook with a JSON body for a consumer s
 ```json
 {
   "method": "POST",
-  "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+  "path": "/webhooks",
   "headers": {
     "Accept": "application/hal+json",
     "Content-Type": "application/json"
@@ -1508,7 +1508,7 @@ Upon receiving **a request to create a webhook with a JSON body for a consumer t
 ```json
 {
   "method": "POST",
-  "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+  "path": "/webhooks",
   "headers": {
     "Accept": "application/hal+json",
     "Content-Type": "application/json"
@@ -1560,7 +1560,7 @@ Given **the 'Pricing Service' and 'Condor' already exist in the pact-broker**, u
 ```json
 {
   "method": "POST",
-  "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+  "path": "/webhooks",
   "headers": {
     "Accept": "application/hal+json",
     "Content-Type": "application/json"
@@ -1624,7 +1624,7 @@ Upon receiving **a request to create a webhook with a JSON body for a provider s
 ```json
 {
   "method": "POST",
-  "path": "/HAL-REL-PLACEHOLDER-PB-WEBHOOKS",
+  "path": "/webhooks",
   "headers": {
     "Accept": "application/hal+json",
     "Content-Type": "application/json"
@@ -1830,7 +1830,7 @@ Upon receiving **a request to create an environment** from Pact Broker Client V2
 ```json
 {
   "method": "POST",
-  "path": "/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS",
+  "path": "/environments",
   "headers": {
     "Accept": "application/hal+json",
     "Content-Type": "application/json"
@@ -1878,7 +1878,7 @@ Given **a branch named main exists for pacticipant Foo**, upon receiving **a req
 ```json
 {
   "method": "DELETE",
-  "path": "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-BRANCH-Foo-main"
+  "path": "/pacticipants/Foo/branches/main"
 }
 ```
 Pact Broker will respond with:
@@ -2072,7 +2072,7 @@ Given **an environment exists**, upon receiving **a request to list the environm
 ```json
 {
   "method": "GET",
-  "path": "/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS",
+  "path": "/environments",
   "headers": {
     "Accept": "application/hal+json"
   }
@@ -2173,7 +2173,7 @@ Given **an version is deployed to environment with UUID 16926ef3-590f-4e3f-838e-
 ```json
 {
   "method": "GET",
-  "path": "/PLACEHOLDER-ENVIRONMENT-CURRENTLY-DEPLOYED-16926ef3-590f-4e3f-838e-719717aa88c9",
+  "path": "/environments/16926ef3-590f-4e3f-838e-719717aa88c9/deployed-versions/currently-deployed",
   "query": "pacticipant=Foo",
   "headers": {
     "Accept": "application/hal+json"
@@ -2193,7 +2193,7 @@ Pact Broker will respond with:
         {
           "_links": {
             "self": {
-              "href": "http://127.0.0.1:9999/PLACEHOLDER-DEPLOYED-VERSION-ff3adecf-cfc5-4653-a4e3-f1861092f8e0"
+              "href": "http://127.0.0.1:9999/deployed-versions/ff3adecf-cfc5-4653-a4e3-f1861092f8e0"
             }
           },
           "applicationInstance": "customer-1"
@@ -2208,7 +2208,7 @@ Given **a currently deployed version exists**, upon receiving **a request to mar
 ```json
 {
   "method": "PATCH",
-  "path": "/PLACEHOLDER-DEPLOYED-VERSION-ff3adecf-cfc5-4653-a4e3-f1861092f8e0",
+  "path": "/deployed-versions/ff3adecf-cfc5-4653-a4e3-f1861092f8e0",
   "headers": {
     "Content-Type": "application/merge-patch+json"
   },
@@ -2239,7 +2239,7 @@ Upon receiving **a request to publish contracts** from Pact Broker Client V2, wi
 ```json
 {
   "method": "POST",
-  "path": "/HAL-REL-PLACEHOLDER-PB-PUBLISH-CONTRACTS",
+  "path": "/contracts/publish",
   "headers": {
     "Accept": "application/hal+json",
     "Content-Type": "application/json"
@@ -2335,7 +2335,7 @@ Given **version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exis
 ```json
 {
   "method": "POST",
-  "path": "/HAL-REL-PLACEHOLDER-PB-RECORD-RELEASE-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST",
+  "path": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30/released-versions/environment/cb632df3-0a0d-4227-aac3-60114dd36479",
   "headers": {
     "Accept": "application/hal+json",
     "Content-Type": "application/json"
@@ -2448,7 +2448,7 @@ Given **'Condor' exists in the pact-broker with the latest tagged 'production' v
 ```json
 {
   "method": "GET",
-  "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-TAGGED-VERSION-Condor-production",
+  "path": "/pacticipants/Condor/latest-version/production",
   "headers": {
     "Accept": "application/hal+json, application/json"
   }
@@ -2518,7 +2518,7 @@ Given **'Condor' exists in the pact-broker with the latest version 1.2.3**, upon
 ```json
 {
   "method": "GET",
-  "path": "/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-VERSION-Condor",
+  "path": "/pacticipants/Condor/latest-version",
   "headers": {
     "Accept": "application/hal+json, application/json"
   }

@@ -67,7 +67,10 @@ RSpec.describe "publishing contracts", pact: true do
           body: {
             _links: {
               :'pb:publish-contracts' => {
-                href: placeholder_url_term("pb:publish-contracts", [], pact_broker_base_url)
+                href: generate_mock_server_url(
+                  regex: ".*(\\/contracts\\/publish)$",
+                  example: "/contracts/publish"
+                )
               }
             }
           }
@@ -79,7 +82,7 @@ RSpec.describe "publishing contracts", pact: true do
       .upon_receiving("a request to publish contracts")
       .with_request(
           method: "POST",
-          path: '/HAL-REL-PLACEHOLDER-PB-PUBLISH-CONTRACTS',
+          path: '/contracts/publish',
           headers: post_request_headers,
           body: request_body).
         will_respond_with(

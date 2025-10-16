@@ -57,7 +57,10 @@ RSpec.describe "create an environment", pact: true do
         body: {
           _links: {
             :'pb:environments' => {
-              href: placeholder_url_term("pb:environments", [], pact_broker_base_url)
+              href: generate_mock_server_url(
+                regex: ".*(\\/environments)$",
+                example: "/environments"
+              )
             }
           }
         }
@@ -69,7 +72,7 @@ RSpec.describe "create an environment", pact: true do
       .upon_receiving("a request to create an environment")
       .with_request(
         method: "POST",
-        path: "/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS",
+        path: "/environments",
         headers: post_request_headers,
         body: request_body
       )

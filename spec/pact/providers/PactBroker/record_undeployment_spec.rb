@@ -28,9 +28,9 @@ RSpec.describe "recording an undeployment", pact: true do
   let(:webmock_base_url) { "http://broker" }
   let(:pact_broker_client_options) { { pact_broker_base_url: webmock_base_url } }
   
-  let(:test_environment_placeholder_path) { "/HAL-REL-PLACEHOLDER-PB-ENVIRONMENT-16926ef3-590f-4e3f-838e-719717aa88c9" }
-  let(:currently_deployed_versions_placeholder_path) { "/PLACEHOLDER-ENVIRONMENT-CURRENTLY-DEPLOYED-16926ef3-590f-4e3f-838e-719717aa88c9" }
-  let(:deployed_version_placeholder_path) { "/PLACEHOLDER-DEPLOYED-VERSION-ff3adecf-cfc5-4653-a4e3-f1861092f8e0"}
+  let(:test_environment_placeholder_path) { "/environments/16926ef3-590f-4e3f-838e-719717aa88c9" }
+  let(:currently_deployed_versions_placeholder_path) { "/environments/16926ef3-590f-4e3f-838e-719717aa88c9/deployed-versions/currently-deployed" }
+  let(:deployed_version_placeholder_path) { "/deployed-versions/ff3adecf-cfc5-4653-a4e3-f1861092f8e0"}
 
   subject { PactBroker::Client::Deployments::RecordUndeployment.call(params, options, pact_broker_client_options) }
 

@@ -74,7 +74,7 @@ RSpec.describe "creating a webhook in PactFlow", pact: true do
         .upon_receiving("a request to create a webhook for a team")
         .with_request(
             method: :post,
-            path: '/HAL-REL-PLACEHOLDER-PB-WEBHOOKS',
+            path: '/webhooks',
             headers: post_request_headers,
             body: request_body)
         .will_respond_with(**success_response)

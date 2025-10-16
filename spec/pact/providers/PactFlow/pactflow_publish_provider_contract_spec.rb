@@ -115,7 +115,10 @@ RSpec.describe "publishing a provider contract to PactFlow", pact: true do
           body: {
             _links: {
               :'pf:publish-provider-contract' => {
-                href: placeholder_url_term("pf:publish-provider-contract", ['provider'], pactflow_mock_service_base_url)
+                href: generate_mock_server_url(
+                  regex: ".*(\\/provider-contracts\\/provider\\/.*\\/publish)$",
+                  example: "/provider-contracts/provider/{provider}/publish"
+                ),
               }
             }
           }
@@ -125,7 +128,7 @@ RSpec.describe "publishing a provider contract to PactFlow", pact: true do
         .upon_receiving("a request to publish a provider contract")
         .with_request(
             method: :post,
-            path: placeholder_path("pf:publish-provider-contract", ["Bar"]),
+            path: '/provider-contracts/provider/Bar/publish',
             headers: post_request_headers.merge("Accept" => "application/hal+json,application/problem+json"),
             body: request_body
         ).will_respond_with(**success_response)

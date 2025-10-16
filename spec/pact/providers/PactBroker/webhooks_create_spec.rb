@@ -219,7 +219,7 @@ RSpec.describe "creating a webhook", pact: true do
         .upon_receiving("a request to create a webhook with a JSON body for a consumer")
         .with_request(
             method: :post,
-            path: placeholder_path('pb:webhooks'),
+            path: '/webhooks',
             headers: post_request_headers,
             body: request_body)
         .will_respond_with(**success_response)
@@ -245,7 +245,7 @@ RSpec.describe "creating a webhook", pact: true do
         .upon_receiving("a request to create a webhook with a JSON body for a consumer specified by a label")
         .with_request(
           method: :post,
-          path: placeholder_path('pb:webhooks'),
+          path: '/webhooks',
           headers: post_request_headers,
           body: request_body)
         .will_respond_with(**success_response)
@@ -269,7 +269,7 @@ RSpec.describe "creating a webhook", pact: true do
         .upon_receiving("a request to create a webhook with a JSON body for a consumer that does not exist")
         .with_request(
             method: :post,
-            path: placeholder_path('pb:webhooks'),
+            path: '/webhooks',
             headers: post_request_headers,
             body: request_body)
         .will_respond_with(
@@ -300,7 +300,7 @@ RSpec.describe "creating a webhook", pact: true do
         .upon_receiving("a request to create a webhook with a JSON body for a provider")
         .with_request(
             method: :post,
-            path: placeholder_path('pb:webhooks'),
+            path: '/webhooks',
             headers: post_request_headers,
             body: request_body)
         .will_respond_with(**success_response)
@@ -325,7 +325,7 @@ RSpec.describe "creating a webhook", pact: true do
         .upon_receiving("a request to create a webhook with a JSON body for a provider specified by a label")
         .with_request(
           method: :post,
-          path: placeholder_path('pb:webhooks'),
+          path: '/webhooks',
           headers: post_request_headers,
           body: request_body)
         .will_respond_with(**success_response)
@@ -349,7 +349,7 @@ RSpec.describe "creating a webhook", pact: true do
         .upon_receiving("a request to create a global webhook with a JSON body")
         .with_request(
             method: :post,
-            path: placeholder_path('pb:webhooks'),
+            path: '/webhooks',
             headers: post_request_headers,
             body: request_body)
         .will_respond_with(**success_response)

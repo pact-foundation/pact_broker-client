@@ -12,7 +12,7 @@ describe PactBroker::Client::Versions, pact: true do
   let(:pact_broker_base_url) { "http://127.0.0.1:9999" }
 
   describe "retrieving the latest pacticipant version" do
-    let(:latest_version_path) { "/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-VERSION-{pacticipant}" }
+    let(:latest_version_path) { "/pacticipants/Condor/latest-version" }
     let(:latest_version_url) { pact_broker_base_url + latest_version_path }
 
     let(:interaction) do
@@ -29,7 +29,10 @@ describe PactBroker::Client::Versions, pact: true do
             body: {
               _links: {
                 :'pb:latest-version' => {
-                  href: match_regex(/http:\/\/.*{pacticipant}.*/, latest_version_url)
+                  href: generate_mock_server_url(
+                    regex: ".*(\\/pacticipants\\/.*\\/latest-version)$",
+                    example: latest_version_url
+                  )
                 }
               }
             }
@@ -40,7 +43,7 @@ describe PactBroker::Client::Versions, pact: true do
         .upon_receiving("a request to retrieve the latest version of Condor")
         .with_request(
             method: :get,
-            path: '/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-VERSION-Condor',
+            path: '/pacticipants/Condor/latest-version',
             headers: get_headers).
           will_respond_with(
             status: 200,
@@ -66,7 +69,7 @@ describe PactBroker::Client::Versions, pact: true do
   end
 
   describe "retrieving the latest pacticipant version for a tag" do
-    let(:latest_tagged_version_path) { "/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-TAGGED-VERSION-{pacticipant}-{tag}" }
+    let(:latest_tagged_version_path) { "/pacticipants/Condor/latest-version/production" }
     let(:latest_tagged_version_url) { pact_broker_base_url + latest_tagged_version_path }
 
     let(:interaction) do
@@ -83,7 +86,10 @@ describe PactBroker::Client::Versions, pact: true do
             body: {
               _links: {
                 :'pb:latest-tagged-version' => {
-                  href: match_regex(/http:\/\/.*{pacticipant}.*{tag}/, latest_tagged_version_url)
+                  href: generate_mock_server_url(
+                    regex: ".*(\\/pacticipants\\/.*\\/latest-version\\/.*)$",
+                    example: latest_tagged_version_url
+                  )
                 }
               }
             }
@@ -94,7 +100,7 @@ describe PactBroker::Client::Versions, pact: true do
         .upon_receiving("a request to retrieve the latest 'production' version of Condor")
         .with_request(
             method: :get,
-            path: '/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-TAGGED-VERSION-Condor-production',
+            path: '/pacticipants/Condor/latest-version/production',
             headers: get_headers).
           will_respond_with(
             status: 200,
