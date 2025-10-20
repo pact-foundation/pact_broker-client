@@ -20,10 +20,16 @@ end
 
 def trace_command(tracer, command_details, command)
   tracer.in_span(command_details[:subcommand]) do |span|
-    span.set_attribute('binary.name', command_details[:binary_name])
-    span.set_attribute('subcommand', command_details[:subcommand])
+    span.add_attributes(
+      {
+        'binary.name' => command_details[:binary_name],
+        'binary.version' => PactBroker::Client::VERSION,
+        'subcommand' => command_details[:subcommand],
+        'args' => command_details[:args]
+      }
+    )
     PactBroker::Client::Observability.execute_with_observability do
-      command
+      command.call
     end
   end
 end
@@ -31,8 +37,8 @@ end
 def get_command_details
   binary_name = Pathname.new($0).basename.to_s
   subcommand = ARGV[0] || 'none'
-  exit_code = 0
-  { binary_name: binary_name, subcommand: subcommand, exit_code: exit_code }
+  args = ARGV.join(' ')
+  { binary_name: binary_name, subcommand: subcommand, args: args }
 end
 
 enable_otel = ENV['PACT_BROKER_CLIENT_ENABLE_OTEL'] == 'true'
@@ -102,11 +108,11 @@ if enable_otel
         def self.get_command_details
           binary_name = Pathname.new($0).basename.to_s
           subcommand = ARGV[0] || 'none'
-          exit_code = 0
-          { binary_name: binary_name, subcommand: subcommand, exit_code: exit_code }
+          { binary_name: binary_name, subcommand: subcommand }
         end
   
         def self.execute_with_observability(&block)
+          require "opentelemetry/sdk"
           exit_code = 0
           begin 
             block.call
@@ -117,12 +123,14 @@ if enable_otel
             # get current span
             span = OpenTelemetry::Trace.current_span
             PactBroker::Client::Observability.set_exit_code(span, exit_code)
-          end
-        end
+            # set a success status otherwise
+            span.status = OpenTelemetry::Trace::Status.error(exit_code) if exit_code != 0
+            span.status = OpenTelemetry::Trace::Status.ok if exit_code == 0
+          end 
+        end 
   
         def self.set_exit_code(span, exit_code)
           span&.set_attribute('exit_code', exit_code)
-          # span&.finish
         end
         
         at_exit do
@@ -141,15 +149,16 @@ if enable_bugsnag || enable_otel
   MyTracer = PactBroker::Client::Observability.setup(enable_otel: enable_otel, enable_bugsnag: enable_bugsnag)
 end
 
-command_to_execute = if command_details[:subcommand] == 'pactflow'
-  pactflow_cli
-else
-  pact_broker_cli
+def command_to_execute(command_details)
+  if command_details[:subcommand] == 'pactflow'
+    method(:pactflow_cli)
+  else
+    method(:pact_broker_cli)
+  end
 end
 
-
 if enable_otel
-  trace_command(MyTracer, command_details, command_to_execute)
+  trace_command(MyTracer, command_details, command_to_execute(command_details))
 else
-  command_to_execute
+  command_to_execute(command_details)
 end
