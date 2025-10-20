@@ -22,8 +22,6 @@ group :development do
 
   if ENV['X_PACT_DEVELOPMENT'] == 'true'
     gem 'pact', path: '../pact-ruby'
-  else
-    gem 'pact', git: 'https://github.com/safdotdev/pact-ruby.git', branch: 'feat/v2'
   end
   # pact-ruby v2 required components
   # gem 'combustion'
@@ -36,3 +34,13 @@ group :test do
   gem 'faraday-retry', '~>2.0'
   gem 'rack', '~> 2.1'
 end
+
+# OpenTelemetry for Tracing
+gem 'opentelemetry-api'
+gem 'opentelemetry-common'
+gem 'opentelemetry-instrumentation-net_http'
+gem 'opentelemetry-sdk'
+gem 'opentelemetry-exporter-otlp'
+
+# Bugsnag Error Reporting
+gem 'bugsnag'
