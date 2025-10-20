@@ -32,11 +32,11 @@ if __FILE__ == $0
   require "webrick"
   require "webrick/https"
   require "rack"
-  require "rackup/handler/webrick"
+  require "rack/handler/webrick"
 
   opts = webrick_opts(4444)
 
-  Rackup::Handler::WEBrick.run(app, **opts) do |server|
+  Rack::Handler::WEBrick.run(app, **opts) do |server|
     @server = server
   end
 end

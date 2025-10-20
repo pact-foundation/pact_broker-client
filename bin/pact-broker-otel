@@ -1,0 +1,164 @@
+#!/usr/bin/env ruby
+
+def pact_broker_cli
+  require 'pact_broker/client/cli/broker'
+
+  if ENV['PACT_BROKER_DISABLE_SSL_VERIFICATION'] == 'true' || ENV['PACT_DISABLE_SSL_VERIFICATION'] == 'true'
+    require 'openssl'
+    # OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+    $stderr.puts "WARN: SSL verification has been disabled by a dodgy hack (reassigning the VERIFY_PEER constant to VERIFY_NONE). You acknowledge that you do this at your own risk!"
+  end
+
+  PactBroker::Client::CLI::Broker.start
+end
+
+def pactflow_cli
+  require "pactflow/client/cli/pactflow"
+  ARGV.shift
+  Pactflow::Client::CLI::Pactflow.start
+end
+
+def trace_command(tracer, command_details, command)
+  tracer.in_span(command_details[:subcommand]) do |span|
+    span.add_attributes(
+      {
+        'binary.name' => command_details[:binary_name],
+        'binary.version' => PactBroker::Client::VERSION,
+        'subcommand' => command_details[:subcommand],
+        'args' => command_details[:args]
+      }
+    )
+    PactBroker::Client::Observability.execute_with_observability do
+      command.call
+    end
+  end
+end
+
+def get_command_details
+  binary_name = Pathname.new($0).basename.to_s
+  subcommand = ARGV[0] || 'none'
+  args = ARGV.join(' ')
+  { binary_name: binary_name, subcommand: subcommand, args: args }
+end
+
+enable_otel = ENV['PACT_BROKER_CLIENT_ENABLE_OTEL'] == 'true'
+enable_bugsnag = ENV['PACT_BROKER_CLIENT_ENABLE_BUGSNAG'] == 'true'
+if enable_bugsnag
+  module PactBroker
+    module Client
+      class Bugsnag
+        def self.setup
+          if ENV["BUGSNAG_API_KEY"].nil? || ENV["BUGSNAG_API_KEY"].empty?
+            warn "BUGSNAG_API_KEY environment variable is not set. Bugsnag error reporting is disabled."
+            return
+          end
+          require "bugsnag"
+          require 'pact_broker/client/cli/broker'
+          ::Bugsnag.configure do |config|
+            config.api_key = ENV["BUGSNAG_API_KEY"]
+            config.app_version = PactBroker::Client::VERSION
+          end
+        end
+  
+        at_exit do
+          if $!
+            ::Bugsnag.notify($!)
+          end
+        end
+      end
+    end
+  end
+end
+
+if enable_otel
+  module PactBroker
+    module Client
+      class Observability
+  
+        def initialize
+          @tracer ||= @tracer
+        end
+  
+        def self.setup(enable_otel: false, enable_bugsnag: false)
+          if enable_otel
+            @tracer = self.setup_otel
+          end
+          if enable_bugsnag
+            PactBroker::Client::Bugsnag.setup
+          end
+        @tracer 
+        end
+  
+        def self.setup_otel
+            ENV['OTEL_SERVICE_NAME'] ||= 'pact_broker-client'
+            ENV['OTEL_TRACES_EXPORTER'] ||= 'otlp'
+            ENV['OTEL_EXPORTER_OTLP_ENDPOINT'] ||= "http://localhost:4318"
+            require 'opentelemetry/sdk'
+            require "opentelemetry/exporter/otlp"
+            @tracer = ::OpenTelemetry.tracer_provider.tracer('pact_broker-client')
+            require 'net/http'
+            require "opentelemetry/instrumentation/net/http"
+            ::OpenTelemetry::SDK.configure do |c|
+              c.use 'OpenTelemetry::Instrumentation::Net::HTTP'
+              c.service_name = 'pact_broker-client'
+            end
+        @tracer
+        end
+  
+        def self.get_command_details
+          binary_name = Pathname.new($0).basename.to_s
+          subcommand = ARGV[0] || 'none'
+          { binary_name: binary_name, subcommand: subcommand }
+        end
+  
+        def self.execute_with_observability(&block)
+          require "opentelemetry/sdk"
+          exit_code = 0
+          begin 
+            block.call
+          rescue SystemExit => e
+            exit_code = e.status
+            raise
+          ensure
+            # get current span
+            span = OpenTelemetry::Trace.current_span
+            PactBroker::Client::Observability.set_exit_code(span, exit_code)
+            # set a success status otherwise
+            span.status = OpenTelemetry::Trace::Status.error(exit_code) if exit_code != 0
+            span.status = OpenTelemetry::Trace::Status.ok if exit_code == 0
+          end 
+        end 
+  
+        def self.set_exit_code(span, exit_code)
+          span&.set_attribute('exit_code', exit_code)
+        end
+        
+        at_exit do
+          ::OpenTelemetry.tracer_provider.shutdown if defined?(OpenTelemetry) && OpenTelemetry.respond_to?(:tracer_provider)
+        end
+      end
+    end
+  end
+end
+
+# Setup Observability Wrapper for OpenTelemetry
+# Then invoke spans around the CLI commands
+command_details = get_command_details
+
+if enable_bugsnag || enable_otel
+  MyTracer = PactBroker::Client::Observability.setup(enable_otel: enable_otel, enable_bugsnag: enable_bugsnag)
+end
+
+def command_to_execute(command_details)
+  if command_details[:subcommand] == 'pactflow'
+    method(:pactflow_cli)
+  else
+    method(:pact_broker_cli)
+  end
+end
+
+if enable_otel
+  trace_command(MyTracer, command_details, command_to_execute(command_details))
+else
+  command_to_execute(command_details)
+end

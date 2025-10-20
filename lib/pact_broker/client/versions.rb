@@ -29,7 +29,7 @@ module PactBroker
       end
 
       def tag options
-        response = put(tag_url(options), headers: default_put_headers.merge("Content-Length" => "0"))
+        response = put(tag_url(options), headers: default_put_headers, body: {}.to_json)
         handle_response(response) do
           true
         end
