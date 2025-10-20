@@ -26,4 +26,5 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'dig_rb', '~> 1.0'
   gem.add_runtime_dependency 'base64', '~> 0.2'
   gem.add_runtime_dependency 'ostruct'
+  gem.add_runtime_dependency 'pact-v2', '~> 2.0.0.pre.preview2'
 end
