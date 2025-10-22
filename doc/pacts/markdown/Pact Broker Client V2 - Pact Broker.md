@@ -32,6 +32,8 @@
 
 * [A request for the index resource](#a_request_for_the_index_resource)
 
+* [A request for the index resource](#a_request_for_the_index_resource_given_the_pacticipant_relations_are_present) given the pacticipant relations are present
+
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:environments_relation_exists_in_the_index_resource) given the pb:environments relation exists in the index resource
 
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:latest-tagged-version_relation_exists_in_the_index_resource) given the pb:latest-tagged-version relation exists in the index resource
@@ -736,6 +738,36 @@ Pact Broker will respond with:
       },
       "pb:webhooks": {
         "href": "/webhooks"
+      }
+    }
+  }
+}
+```
+<a name="a_request_for_the_index_resource_given_the_pacticipant_relations_are_present"></a>
+Given **the pacticipant relations are present**, upon receiving **a request for the index resource** from Pact Broker Client V2, with
+```json
+{
+  "method": "GET",
+  "path": "/",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "pb:pacticipant": {
+        "href": "/pacticipants/{pacticipant}"
+      },
+      "pb:pacticipants": {
+        "href": "/pacticipants"
       }
     }
   }

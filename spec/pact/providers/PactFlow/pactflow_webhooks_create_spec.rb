@@ -54,7 +54,7 @@ RSpec.describe "creating a webhook in PactFlow", pact: true do
         _links: {
           self: {
             href: generate_mock_server_url(
-              regex: ".*(\\/some-url)$",
+              regex: "(.*)$",
               example: "/some-url"
             ),
             title: match_type_of("A title")

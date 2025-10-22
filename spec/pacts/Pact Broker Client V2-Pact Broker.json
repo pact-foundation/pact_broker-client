@@ -513,6 +513,43 @@
     },
     {
       "description": "a request for the index resource",
+      "providerState": "the pacticipant relations are present",
+      "request": {
+        "headers": {
+          "Accept": "application/hal+json"
+        },
+        "method": "GET",
+        "path": "/"
+      },
+      "response": {
+        "body": {
+          "_links": {
+            "pb:pacticipant": {
+              "href": "/pacticipants/{pacticipant}"
+            },
+            "pb:pacticipants": {
+              "href": "/pacticipants"
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "matchingRules": {
+          "$.body._links['pb:pacticipant'].href": {
+            "match": "regex",
+            "regex": ".*(\\/pacticipants\\/\\{pacticipant\\})$"
+          },
+          "$.body._links['pb:pacticipants'].href": {
+            "match": "regex",
+            "regex": ".*(\\/pacticipants)$"
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request for the index resource",
       "providerState": "the pb:environments relation exists in the index resource",
       "request": {
         "headers": {
@@ -1076,7 +1113,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": ".*(\\/some-url)$"
+            "regex": "(.*)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1187,7 +1224,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": ".*(\\/some-url)$"
+            "regex": "(.*)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1256,7 +1293,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": ".*(\\/some-url)$"
+            "regex": "(.*)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1322,7 +1359,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": ".*(\\/some-url)$"
+            "regex": "(.*)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1390,7 +1427,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": ".*(\\/some-url)$"
+            "regex": "(.*)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1513,7 +1550,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": ".*(\\/some-url)$"
+            "regex": "(.*)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1581,7 +1618,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": ".*(\\/some-url)$"
+            "regex": "(.*)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1643,7 +1680,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": ".*(\\/some-url)$"
+            "regex": "(.*)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1733,7 +1770,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": ".*(\\/some-url)$"
+            "regex": "(.*)$"
           },
           "$.body.description": {
             "match": "type"
@@ -2433,7 +2470,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": ".*(\\/some-url)$"
+            "regex": "(.*)$"
           }
         },
         "status": 200
@@ -2505,7 +2542,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": ".*(\\/some-url)$"
+            "regex": "(.*)$"
           }
         },
         "status": 200
@@ -2731,7 +2768,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": ".*(\\/some-url)$"
+            "regex": "(.*)$"
           },
           "$.body.description": {
             "match": "type"

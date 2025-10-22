@@ -4,6 +4,8 @@
 
 * [A request for the index resource](#a_request_for_the_index_resource)
 
+* [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:publish-provider-contract_relation_exists_in_the_index_resource) given the pb:publish-provider-contract relation exists in the index resource
+
 * [A request to create a provider contract](#a_request_to_create_a_provider_contract)
 
 * [A request to create a provider contract](#a_request_to_create_a_provider_contract_given_there_is_a_pf:ui_href_in_the_response) given there is a pf:ui href in the response
@@ -42,6 +44,33 @@ PactFlow will respond with:
       },
       "pb:webhooks": {
         "href": "/webhooks"
+      }
+    }
+  }
+}
+```
+<a name="a_request_for_the_index_resource_given_the_pb:publish-provider-contract_relation_exists_in_the_index_resource"></a>
+Given **the pb:publish-provider-contract relation exists in the index resource**, upon receiving **a request for the index resource** from Pact Broker Client V2, with
+```json
+{
+  "method": "GET",
+  "path": "/",
+  "headers": {
+    "Accept": "application/hal+json"
+  }
+}
+```
+PactFlow will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "_links": {
+      "pf:publish-provider-contract": {
+        "href": "/provider-contracts/provider/{provider}/publish"
       }
     }
   }

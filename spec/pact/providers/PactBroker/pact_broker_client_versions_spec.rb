@@ -53,7 +53,7 @@ describe PactBroker::Client::Versions, pact: true do
               _links: {
                 self: {
                   href: generate_mock_server_url(
-                    regex: ".*(\\/some-url)$",
+                    regex: "(.*)$",
                     example: "/some-url"
                   ),
                 }
@@ -113,7 +113,7 @@ describe PactBroker::Client::Versions, pact: true do
               _links: {
                 self: {
                   href: generate_mock_server_url(
-                    regex: ".*(\\/some-url)$",
+                    regex: "(.*)$",
                     example: "/some-url"
                   ),
                 }

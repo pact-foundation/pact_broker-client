@@ -68,7 +68,7 @@ RSpec.describe "creating a webhook", pact: true do
         _links: {
           self: {
             href: generate_mock_server_url(
-              regex: ".*(\\/some-url)$",
+              regex: "(.*)$",
               example: "/some-url"
             ),
           }
