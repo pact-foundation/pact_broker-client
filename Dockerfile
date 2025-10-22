@@ -1,4 +1,4 @@
-FROM ruby:3.4.4-alpine
+FROM ruby:3.4.7-alpine
 
 RUN apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing hub
 RUN apk add --update --no-cache git openssh bash
