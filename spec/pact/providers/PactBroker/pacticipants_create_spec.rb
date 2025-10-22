@@ -12,10 +12,33 @@ RSpec.describe "creating or updating a pacticipant", pact: true do
 
   before do
     index_links = {
-      'pb:pacticipants' => match_regex(%r{http://.*}, 'http://localhost:9999/pacticipants'),
-      'pb:pacticipant' => match_regex(%r{http://.*\{pacticipant\}}, 'http://localhost:9999/pacticipants/{pacticipant}'),
+      'pb:pacticipants' => {
+      href: generate_mock_server_url(
+        regex: ".*(\\/pacticipants)$",
+        example: "/pacticipants"
+      )
+      },
+      'pb:pacticipant' => {
+      href: generate_mock_server_url(
+        regex: ".*(\\/pacticipants\\/\\{pacticipant\\})$",
+        example: "/pacticipants/{pacticipant}"
+      )
+      }
     }
-    mock_pact_broker_index_with_relations(self, index_links, "the pacticipant relations are present")
+    new_interaction
+      .given("the pacticipant relations are present")
+      .upon_receiving("a request for the index resource")
+      .with_request(
+          method: :get,
+          path: '/',
+          headers: get_request_headers).
+        will_respond_with(
+          status: 200,
+          headers: pact_broker_response_headers,
+          body: {
+            _links: index_links
+          }
+        )
   end
 
   let(:params) do
@@ -38,7 +61,10 @@ RSpec.describe "creating or updating a pacticipant", pact: true do
         repositoryUrl: "http://foo",
         _links: {
           self: {
-            href: match_regex(%r{http://.*}, 'http://localhost:9999/pacticipants/Foo'),
+            href: generate_mock_server_url(
+              regex: ".*(\\/pacticipants\\/Foo)$",
+              example: "/pacticipants/Foo"
+            ),
           }
         }
       }
@@ -52,7 +78,10 @@ RSpec.describe "creating or updating a pacticipant", pact: true do
       body: {
         _links: {
           self: {
-            href: match_regex(%r{http://.*}, 'http://localhost:9999/pacticipants/Foo'),
+            href: generate_mock_server_url(
+              regex: ".*(\\/pacticipants\\/Foo)$",
+              example: "/pacticipants/Foo"
+            ),
           }
         }
       }

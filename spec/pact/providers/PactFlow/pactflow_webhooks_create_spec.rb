@@ -53,7 +53,10 @@ RSpec.describe "creating a webhook in PactFlow", pact: true do
         teamUuid: "2abbc12a-427d-432a-a521-c870af1739d9",
         _links: {
           self: {
-            href: match_regex(%r{http://.*},'http://localhost:1234/some-url'),
+            href: generate_mock_server_url(
+              regex: ".*(\\/some-url)$",
+              example: "/some-url"
+            ),
             title: match_type_of("A title")
           }
         }

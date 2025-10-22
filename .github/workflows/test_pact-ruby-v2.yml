@@ -17,8 +17,6 @@ jobs:
       matrix:
         ruby_version: ["3.2", "3.3", "3.4"]
         os: ["ubuntu-latest","windows-latest","macos-latest"]
-    env:
-      PACT_RUBY_V2_ENABLE: 'true'
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1

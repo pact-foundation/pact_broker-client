@@ -22,13 +22,13 @@ group :development do
 
   if ENV['X_PACT_DEVELOPMENT'] == 'true'
     gem 'pact', path: '../pact-ruby'
+    gem 'pact-ffi', path: '../pact-ffi'
   else
-    gem 'pact', git: 'https://github.com/safdotdev/pact-ruby.git', branch: 'feat/v2'
+    gem 'pact'
+    gem 'pact-ffi'
   end
-  # pact-ruby v2 required components
-  # gem 'combustion'
+  # for pact/v2 with non rail apps
   gem 'activesupport'
-  # gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 end
 
 group :test do

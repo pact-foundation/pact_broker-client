@@ -32,8 +32,6 @@
 
 * [A request for the index resource](#a_request_for_the_index_resource)
 
-* [A request for the index resource](#a_request_for_the_index_resource_given_the_pacticipant_relations_are_present) given the pacticipant relations are present
-
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:environments_relation_exists_in_the_index_resource) given the pb:environments relation exists in the index resource
 
 * [A request for the index resource](#a_request_for_the_index_resource_given_the_pb:latest-tagged-version_relation_exists_in_the_index_resource) given the pb:latest-tagged-version relation exists in the index resource
@@ -143,7 +141,7 @@ Given **version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exis
 ```json
 {
   "method": "GET",
-  "path": "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-Foo-5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
+  "path": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
   "headers": {
     "Accept": "application/hal+json"
   }
@@ -177,7 +175,7 @@ Given **version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exis
 ```json
 {
   "method": "GET",
-  "path": "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-Foo-5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
+  "path": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
   "headers": {
     "Accept": "application/hal+json"
   }
@@ -194,7 +192,7 @@ Pact Broker will respond with:
     "_links": {
       "pb:record-deployment": [
         {
-          "href": "http://127.0.0.1:9999/HAL-REL-PLACEHOLDER-PB-RECORD-DEPLOYMENT-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST",
+          "href": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30/deployed-versions/environment/cb632df3-0a0d-4227-aac3-60114dd36479",
           "name": "test"
         }
       ]
@@ -253,7 +251,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "pb:currently-deployed-deployed-versions": {
-        "href": "http://127.0.0.1:9999/environments/16926ef3-590f-4e3f-838e-719717aa88c9/deployed-versions/currently-deployed"
+        "href": "/environments/16926ef3-590f-4e3f-838e-719717aa88c9/deployed-versions/currently-deployed"
       }
     }
   }
@@ -685,7 +683,7 @@ Given **an environment with name test exists**, upon receiving **a request for t
 ```json
 {
   "method": "GET",
-  "path": "/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS",
+  "path": "/environments",
   "headers": {
     "Accept": "application/hal+json"
   }
@@ -738,36 +736,6 @@ Pact Broker will respond with:
       },
       "pb:webhooks": {
         "href": "/webhooks"
-      }
-    }
-  }
-}
-```
-<a name="a_request_for_the_index_resource_given_the_pacticipant_relations_are_present"></a>
-Given **the pacticipant relations are present**, upon receiving **a request for the index resource** from Pact Broker Client V2, with
-```json
-{
-  "method": "GET",
-  "path": "/",
-  "headers": {
-    "Accept": "application/hal+json"
-  }
-}
-```
-Pact Broker will respond with:
-```json
-{
-  "status": 200,
-  "headers": {
-    "Content-Type": "application/hal+json;charset=utf-8"
-  },
-  "body": {
-    "_links": {
-      "pb:pacticipant": {
-        "href": "http://localhost:9999/pacticipants/{pacticipant}"
-      },
-      "pb:pacticipants": {
-        "href": "http://localhost:9999/pacticipants"
       }
     }
   }
@@ -959,7 +927,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "pb:webhook": {
-        "href": "http://127.0.0.1:9999/webhooks/{uuid}",
+        "href": "/webhooks/{uuid}",
         "templated": true
       }
     }
@@ -1153,8 +1121,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/some-url",
-        "title": "A title"
+        "href": "/some-url"
       }
     },
     "description": "a webhook",
@@ -1197,7 +1164,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/pacticipants/Foo"
+        "href": "/pacticipants/Foo"
       }
     },
     "name": "Foo",
@@ -1296,8 +1263,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/some-url",
-        "title": "A title"
+        "href": "/some-url"
       }
     },
     "description": "a webhook",
@@ -1360,8 +1326,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/some-url",
-        "title": "A title"
+        "href": "/some-url"
       }
     },
     "description": "a webhook",
@@ -1421,8 +1386,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/some-url",
-        "title": "A title"
+        "href": "/some-url"
       }
     },
     "description": "a webhook",
@@ -1485,8 +1449,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/some-url",
-        "title": "A title"
+        "href": "/some-url"
       }
     },
     "description": "a webhook",
@@ -1601,8 +1564,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/some-url",
-        "title": "A title"
+        "href": "/some-url"
       }
     },
     "description": "a webhook",
@@ -1665,8 +1627,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/some-url",
-        "title": "A title"
+        "href": "/some-url"
       }
     },
     "description": "a webhook",
@@ -1724,8 +1685,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/some-url",
-        "title": "A title"
+        "href": "/some-url"
       }
     },
     "description": "a webhook",
@@ -1795,8 +1755,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/some-url",
-        "title": "A title"
+        "href": "/some-url"
       }
     },
     "description": "a webhook",
@@ -2193,7 +2152,7 @@ Pact Broker will respond with:
         {
           "_links": {
             "self": {
-              "href": "http://127.0.0.1:9999/deployed-versions/ff3adecf-cfc5-4653-a4e3-f1861092f8e0"
+              "href": "/deployed-versions/ff3adecf-cfc5-4653-a4e3-f1861092f8e0"
             }
           },
           "applicationInstance": "customer-1"
@@ -2307,7 +2266,7 @@ Given **version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exis
 ```json
 {
   "method": "POST",
-  "path": "/HAL-REL-PLACEHOLDER-PB-RECORD-DEPLOYMENT-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST",
+  "path": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30/deployed-versions/environment/cb632df3-0a0d-4227-aac3-60114dd36479",
   "headers": {
     "Accept": "application/hal+json",
     "Content-Type": "application/json"
@@ -2420,7 +2379,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/pacticipants/Foo"
+        "href": "/pacticipants/Foo"
       }
     }
   }
@@ -2464,7 +2423,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/some-url"
+        "href": "/some-url"
       }
     },
     "number": "1.2.3"
@@ -2534,7 +2493,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/some-url"
+        "href": "/some-url"
       }
     },
     "number": "1.2.3"
@@ -2594,7 +2553,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/pacticipants/Condor/versions/1.3.0/tags/prod"
+        "href": "/pacticipants/Condor/versions/1.3.0/tags/prod"
       }
     }
   }
@@ -2623,7 +2582,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/pacticipants/Condor/versions/1.3.0/tags/prod"
+        "href": "/pacticipants/Condor/versions/1.3.0/tags/prod"
       }
     }
   }
@@ -2652,7 +2611,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/pacticipants/Condor/versions/1.3.0/tags/prod"
+        "href": "/pacticipants/Condor/versions/1.3.0/tags/prod"
       }
     }
   }
@@ -2684,7 +2643,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/pacticipants/Foo"
+        "href": "/pacticipants/Foo"
       }
     },
     "name": "Foo",
@@ -2741,8 +2700,7 @@ Pact Broker will respond with:
   "body": {
     "_links": {
       "self": {
-        "href": "http://localhost:9999/some-url",
-        "title": "A title"
+        "href": "/some-url"
       }
     },
     "description": "a webhook",

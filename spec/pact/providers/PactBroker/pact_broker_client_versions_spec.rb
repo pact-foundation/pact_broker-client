@@ -52,7 +52,10 @@ describe PactBroker::Client::Versions, pact: true do
               number: '1.2.3',
               _links: {
                 self: {
-                  href: match_regex(%r{http://.*}, 'http://localhost:9999/some-url')
+                  href: generate_mock_server_url(
+                    regex: ".*(\\/some-url)$",
+                    example: "/some-url"
+                  ),
                 }
               }
             }
@@ -63,7 +66,7 @@ describe PactBroker::Client::Versions, pact: true do
       interaction.execute do | mockserver |        
         version_hash = pact_broker_client.pacticipants.versions.latest(pacticipant: 'Condor')
         expect(version_hash[:number]).to eq '1.2.3'
-        expect(version_hash[:_links][:self][:href]).to eq 'http://localhost:9999/some-url'
+        expect(version_hash[:_links][:self][:href]).to eq 'http://127.0.0.1:9999/some-url'
       end
     end
   end
@@ -109,7 +112,10 @@ describe PactBroker::Client::Versions, pact: true do
               number: '1.2.3',
               _links: {
                 self: {
-                  href: match_regex( %r{http://.*}, 'http://localhost:9999/some-url')
+                  href: generate_mock_server_url(
+                    regex: ".*(\\/some-url)$",
+                    example: "/some-url"
+                  ),
                 }
               }
             }
@@ -120,7 +126,7 @@ describe PactBroker::Client::Versions, pact: true do
       interaction.execute do | mockserver |
         version_hash = pact_broker_client.pacticipants.versions.latest(pacticipant: 'Condor', tag: 'production')
         expect(version_hash[:number]).to eq '1.2.3'
-        expect(version_hash[:_links][:self][:href]).to eq 'http://localhost:9999/some-url'
+        expect(version_hash[:_links][:self][:href]).to eq 'http://127.0.0.1:9999/some-url'
       end
     end
   end

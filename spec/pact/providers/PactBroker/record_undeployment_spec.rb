@@ -48,10 +48,10 @@ RSpec.describe "recording an undeployment", pact: true do
     {
       _links: {
         :'pb:environments' => [
-          {
-            name: "test",
-            href: pact_broker_base_url + test_environment_placeholder_path
-          }
+            {
+              name: "test",
+              href: pact_broker_base_url + test_environment_placeholder_path
+            }
         ]
       }
     }
@@ -80,7 +80,10 @@ RSpec.describe "recording an undeployment", pact: true do
         body: {
           _links: {
             :'pb:currently-deployed-deployed-versions' => {
-              href: match_regex(/^http.*/, pact_broker_base_url + currently_deployed_versions_placeholder_path)
+                href: generate_mock_server_url(
+                  regex: ".*(\\/environments\\/.*\\/deployed-versions\\/currently-deployed)$",
+                  example: currently_deployed_versions_placeholder_path
+                ),
             }
           }
         }
@@ -107,7 +110,10 @@ RSpec.describe "recording an undeployment", pact: true do
                 applicationInstance: application_instance,
                 _links: {
                   self: {
-                    href: match_regex( /^http.*/, pact_broker_base_url + deployed_version_placeholder_path)
+                    href: generate_mock_server_url(
+                      regex: ".*(\\/deployed-versions\\/.*)$",
+                      example: deployed_version_placeholder_path
+                    ),
                   }
                 }
               }

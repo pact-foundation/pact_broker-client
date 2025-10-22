@@ -45,10 +45,16 @@ RSpec.describe "recording a deployment", pact: true do
           body: {
             _links: {
               :'pb:pacticipant-version' => {
-                href: placeholder_url_term("pb:pacticipant-version", ["pacticipant", "version"], pact_broker_base_url)
+                href: generate_mock_server_url(
+                  regex: ".*(\\/pacticipants\\/.*\\/versions\\/.*)$",
+                  example: "/pacticipants/{pacticipant}/versions/{version}"
+                ),
               },
               :'pb:environments' => {
-                href: placeholder_url_term("pb:environments", [], pact_broker_base_url)
+                href: generate_mock_server_url(
+                  regex: ".*(\\/environments)$",
+                  example: "/environments"
+                )
               }
             }
           }
@@ -61,7 +67,7 @@ RSpec.describe "recording a deployment", pact: true do
       .upon_receiving("a request for a pacticipant version")
       .with_request(
         method: "GET",
-        path: "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-Foo-5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
+        path: "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
         headers: get_request_headers
       )
       .will_respond_with(
@@ -72,7 +78,10 @@ RSpec.describe "recording a deployment", pact: true do
             "pb:record-deployment" => [
               {
                 name: "test",
-                href: placeholder_url_term("pb:record-deployment-#{pacticipant_name}-#{version_number}-#{environment_name}", [], pact_broker_base_url)
+                href: generate_mock_server_url(
+                  regex: ".*(\\/pacticipants\\/.*\\/versions\\/.*\\/deployed-versions\\/environment\\/.*)$",
+                  example: "/pacticipants/#{pacticipant_name}/versions/#{version_number}/deployed-versions/environment/cb632df3-0a0d-4227-aac3-60114dd36479"
+                ),
               }
             ]
           }
@@ -86,7 +95,7 @@ RSpec.describe "recording a deployment", pact: true do
       .upon_receiving("a request for a pacticipant version")
       .with_request(
         method: "GET",
-        path: "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-Foo-5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
+        path: "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30",
         headers: get_request_headers
       )
       .will_respond_with(
@@ -102,7 +111,7 @@ RSpec.describe "recording a deployment", pact: true do
               match_type_of(
                 name: "dev",
                 href: "href"
-              ),
+                ),
             ]
           }
         }
@@ -115,7 +124,7 @@ RSpec.describe "recording a deployment", pact: true do
       .upon_receiving("a request for the environments")
       .with_request(
         method: "GET",
-        path: "/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS",
+        path: "/environments",
         headers: get_request_headers
       )
       .will_respond_with(
@@ -140,7 +149,7 @@ RSpec.describe "recording a deployment", pact: true do
       .upon_receiving("a request to record a deployment")
       .with_request(
         method: "POST",
-        path: "/HAL-REL-PLACEHOLDER-PB-RECORD-DEPLOYMENT-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST",
+        path: "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30/deployed-versions/environment/cb632df3-0a0d-4227-aac3-60114dd36479",
         headers: post_request_headers,
         body: {
           applicationInstance: application_instance,

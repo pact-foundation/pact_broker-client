@@ -28,10 +28,10 @@ describe PactBroker::Client::Versions, pact: true do
             body: {
               _links: {
                 self: {
-                  href:
-                  match_regex(
-                    %r{http://.*/pacticipants/Condor/versions/1.3.0/tags/prod},
-                    'http://localhost:9999/pacticipants/Condor/versions/1.3.0/tags/prod')
+                    href: generate_mock_server_url(
+                      regex: ".*(\\/pacticipants\\/Condor\\/versions\\/1\\.3\\.0\\/tags\\/prod)$",
+                      example: "/pacticipants/Condor/versions/1.3.0/tags/prod"
+                    )
                 }
               }
             }
@@ -58,10 +58,9 @@ describe PactBroker::Client::Versions, pact: true do
             body: {
               _links: {
                 self: {
-                  href:
-                  match_regex(
-                    %r{http://.*/pacticipants/Condor/versions/1.3.0/tags/prod},
-                    'http://localhost:9999/pacticipants/Condor/versions/1.3.0/tags/prod'
+                    href: generate_mock_server_url(
+                      regex: ".*(\\/pacticipants\\/Condor\\/versions\\/1\\.3\\.0\\/tags\\/prod)$",
+                      example: "/pacticipants/Condor/versions/1.3.0/tags/prod"
                     )
                 }
               }
@@ -90,10 +89,9 @@ describe PactBroker::Client::Versions, pact: true do
             body: {
               _links: {
                 self: {
-                  href:
-                  match_regex(
-                    %r{http://.*/pacticipants/Condor/versions/1.3.0/tags/prod},
-                    'http://localhost:9999/pacticipants/Condor/versions/1.3.0/tags/prod'
+                      href: generate_mock_server_url(
+                      regex: ".*(\\/pacticipants\\/Condor\\/versions\\/1\\.3\\.0\\/tags\\/prod)$",
+                      example: "/pacticipants/Condor/versions/1.3.0/tags/prod"
                     )
                 }
               }

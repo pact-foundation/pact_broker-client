@@ -67,8 +67,10 @@ RSpec.describe "creating a webhook", pact: true do
         ],
         _links: {
           self: {
-            href: match_regex(%r{http://.*},'http://localhost:9999/some-url'),
-            title: match_type_of("A title")
+            href: generate_mock_server_url(
+              regex: ".*(\\/some-url)$",
+              example: "/some-url"
+            ),
           }
         }
       }
@@ -367,7 +369,28 @@ RSpec.describe "creating a webhook", pact: true do
       params.merge!(uuid: uuid)
       request_body["provider"] = { "name" => "Pricing Service" }
       request_body["consumer"] = { "name" => "Condor" }
-      mock_pact_broker_index_with_webhook_relation(self, pact_broker_base_url)
+        new_interaction
+          .upon_receiving("a request for the index resource with the webhook relation")
+          .with_request(
+            method: :get,
+            path: '/',
+            headers: get_request_headers
+          )
+          .will_respond_with(
+            status: 200,
+            headers: pact_broker_response_headers,
+            body: {
+              _links: {
+                :'pb:webhook' => {
+                  href: generate_mock_server_url(
+                    regex: ".*(\\/webhooks\\/\\{uuid\\})$",
+                    example: "/webhooks/{uuid}"
+                  ),
+                  templated: true
+                }
+              }
+            }
+          )
     end
 
     let(:uuid) { '696c5f93-1b7f-44bc-8d03-59440fcaa9a0' }

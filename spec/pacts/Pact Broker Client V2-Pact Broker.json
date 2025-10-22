@@ -17,7 +17,7 @@
         "body": {
           "_links": {
             "pb:currently-deployed-deployed-versions": {
-              "href": "http://127.0.0.1:9999/environments/16926ef3-590f-4e3f-838e-719717aa88c9/deployed-versions/currently-deployed"
+              "href": "/environments/16926ef3-590f-4e3f-838e-719717aa88c9/deployed-versions/currently-deployed"
             }
           }
         },
@@ -27,7 +27,7 @@
         "matchingRules": {
           "$.body._links['pb:currently-deployed-deployed-versions'].href": {
             "match": "regex",
-            "regex": "(?-mix:^http.*)"
+            "regex": ".*(\\/environments\\/.*\\/deployed-versions\\/currently-deployed)$"
           }
         },
         "status": 200
@@ -513,43 +513,6 @@
     },
     {
       "description": "a request for the index resource",
-      "providerState": "the pacticipant relations are present",
-      "request": {
-        "headers": {
-          "Accept": "application/hal+json"
-        },
-        "method": "GET",
-        "path": "/"
-      },
-      "response": {
-        "body": {
-          "_links": {
-            "pb:pacticipant": {
-              "href": "http://localhost:9999/pacticipants/{pacticipant}"
-            },
-            "pb:pacticipants": {
-              "href": "http://localhost:9999/pacticipants"
-            }
-          }
-        },
-        "headers": {
-          "Content-Type": "application/hal+json;charset=utf-8"
-        },
-        "matchingRules": {
-          "$.body._links['pb:pacticipant'].href": {
-            "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*\\{pacticipant\\})"
-          },
-          "$.body._links['pb:pacticipants'].href": {
-            "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
-          }
-        },
-        "status": 200
-      }
-    },
-    {
-      "description": "a request for the index resource",
       "providerState": "the pb:environments relation exists in the index resource",
       "request": {
         "headers": {
@@ -713,7 +676,7 @@
           "Accept": "application/hal+json"
         },
         "method": "GET",
-        "path": "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-Foo-5556b8149bf8bac76bc30f50a8a2dd4c22c85f30"
+        "path": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30"
       },
       "response": {
         "body": {
@@ -752,14 +715,14 @@
           "Accept": "application/hal+json"
         },
         "method": "GET",
-        "path": "/HAL-REL-PLACEHOLDER-PB-PACTICIPANT-VERSION-Foo-5556b8149bf8bac76bc30f50a8a2dd4c22c85f30"
+        "path": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30"
       },
       "response": {
         "body": {
           "_links": {
             "pb:record-deployment": [
               {
-                "href": "http://127.0.0.1:9999/HAL-REL-PLACEHOLDER-PB-RECORD-DEPLOYMENT-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST",
+                "href": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30/deployed-versions/environment/cb632df3-0a0d-4227-aac3-60114dd36479",
                 "name": "test"
               }
             ]
@@ -771,7 +734,7 @@
         "matchingRules": {
           "$.body._links['pb:record-deployment'][0].href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
+            "regex": ".*(\\/pacticipants\\/.*\\/versions\\/.*\\/deployed-versions\\/environment\\/.*)$"
           }
         },
         "status": 200
@@ -818,7 +781,7 @@
           "Accept": "application/hal+json"
         },
         "method": "GET",
-        "path": "/HAL-REL-PLACEHOLDER-PB-ENVIRONMENTS"
+        "path": "/environments"
       },
       "response": {
         "body": {
@@ -885,18 +848,19 @@
         "body": {
           "_links": {
             "pb:webhook": {
-              "href": "http://127.0.0.1:9999/webhooks/{uuid}",
+              "href": "/webhooks/{uuid}",
               "templated": true
             }
           }
         },
+        "generators": null,
         "headers": {
           "Content-Type": "application/hal+json;charset=utf-8"
         },
         "matchingRules": {
           "$.body._links['pb:webhook'].href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*\\/webhooks\\/{uuid})"
+            "regex": ".*(\\/webhooks\\/\\{uuid\\})$"
           }
         },
         "status": 200
@@ -1091,8 +1055,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/some-url",
-              "title": "A title"
+              "href": "/some-url"
             }
           },
           "description": "a webhook",
@@ -1113,10 +1076,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
-          },
-          "$.body._links.self.title": {
-            "match": "type"
+            "regex": ".*(\\/some-url)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1206,8 +1166,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/some-url",
-              "title": "A title"
+              "href": "/some-url"
             }
           },
           "description": "a webhook",
@@ -1228,10 +1187,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
-          },
-          "$.body._links.self.title": {
-            "match": "type"
+            "regex": ".*(\\/some-url)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1279,8 +1235,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/some-url",
-              "title": "A title"
+              "href": "/some-url"
             }
           },
           "description": "a webhook",
@@ -1301,10 +1256,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
-          },
-          "$.body._links.self.title": {
-            "match": "type"
+            "regex": ".*(\\/some-url)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1349,8 +1301,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/some-url",
-              "title": "A title"
+              "href": "/some-url"
             }
           },
           "description": "a webhook",
@@ -1371,10 +1322,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
-          },
-          "$.body._links.self.title": {
-            "match": "type"
+            "regex": ".*(\\/some-url)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1421,8 +1369,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/some-url",
-              "title": "A title"
+              "href": "/some-url"
             }
           },
           "description": "a webhook",
@@ -1443,10 +1390,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
-          },
-          "$.body._links.self.title": {
-            "match": "type"
+            "regex": ".*(\\/some-url)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1548,8 +1492,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/some-url",
-              "title": "A title"
+              "href": "/some-url"
             }
           },
           "description": "a webhook",
@@ -1570,10 +1513,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
-          },
-          "$.body._links.self.title": {
-            "match": "type"
+            "regex": ".*(\\/some-url)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1620,8 +1560,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/some-url",
-              "title": "A title"
+              "href": "/some-url"
             }
           },
           "description": "a webhook",
@@ -1642,10 +1581,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
-          },
-          "$.body._links.self.title": {
-            "match": "type"
+            "regex": ".*(\\/some-url)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1688,8 +1624,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/some-url",
-              "title": "A title"
+              "href": "/some-url"
             }
           },
           "description": "a webhook",
@@ -1708,10 +1643,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
-          },
-          "$.body._links.self.title": {
-            "match": "type"
+            "regex": ".*(\\/some-url)$"
           },
           "$.body.description": {
             "match": "type"
@@ -1768,8 +1700,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/some-url",
-              "title": "A title"
+              "href": "/some-url"
             }
           },
           "description": "a webhook",
@@ -1802,10 +1733,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
-          },
-          "$.body._links.self.title": {
-            "match": "type"
+            "regex": ".*(\\/some-url)$"
           },
           "$.body.description": {
             "match": "type"
@@ -2191,7 +2119,7 @@
               {
                 "_links": {
                   "self": {
-                    "href": "http://127.0.0.1:9999/deployed-versions/ff3adecf-cfc5-4653-a4e3-f1861092f8e0"
+                    "href": "/deployed-versions/ff3adecf-cfc5-4653-a4e3-f1861092f8e0"
                   }
                 },
                 "applicationInstance": "customer-1"
@@ -2205,7 +2133,7 @@
         "matchingRules": {
           "$.body._embedded.deployedVersions[0]._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:^http.*)"
+            "regex": ".*(\\/deployed-versions\\/.*)$"
           }
         },
         "status": 200
@@ -2330,7 +2258,7 @@
           "Content-Type": "application/json"
         },
         "method": "POST",
-        "path": "/HAL-REL-PLACEHOLDER-PB-RECORD-DEPLOYMENT-FOO-5556B8149BF8BAC76BC30F50A8A2DD4C22C85F30-TEST"
+        "path": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30/deployed-versions/environment/cb632df3-0a0d-4227-aac3-60114dd36479"
       },
       "response": {
         "body": {
@@ -2432,7 +2360,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/pacticipants/Foo"
+              "href": "/pacticipants/Foo"
             }
           },
           "name": "Foo",
@@ -2444,7 +2372,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
+            "regex": ".*(\\/pacticipants\\/Foo)$"
           }
         },
         "status": 201
@@ -2464,7 +2392,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/pacticipants/Foo"
+              "href": "/pacticipants/Foo"
             }
           }
         },
@@ -2474,7 +2402,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
+            "regex": ".*(\\/pacticipants\\/Foo)$"
           }
         },
         "status": 200
@@ -2494,7 +2422,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/some-url"
+              "href": "/some-url"
             }
           },
           "number": "1.2.3"
@@ -2505,7 +2433,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
+            "regex": ".*(\\/some-url)$"
           }
         },
         "status": 200
@@ -2566,7 +2494,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/some-url"
+              "href": "/some-url"
             }
           },
           "number": "1.2.3"
@@ -2577,7 +2505,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
+            "regex": ".*(\\/some-url)$"
           }
         },
         "status": 200
@@ -2624,7 +2552,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/pacticipants/Condor/versions/1.3.0/tags/prod"
+              "href": "/pacticipants/Condor/versions/1.3.0/tags/prod"
             }
           }
         },
@@ -2634,7 +2562,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*\\/pacticipants\\/Condor\\/versions\\/1.3.0\\/tags\\/prod)"
+            "regex": ".*(\\/pacticipants\\/Condor\\/versions\\/1\\.3\\.0\\/tags\\/prod)$"
           }
         },
         "status": 201
@@ -2655,7 +2583,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/pacticipants/Condor/versions/1.3.0/tags/prod"
+              "href": "/pacticipants/Condor/versions/1.3.0/tags/prod"
             }
           }
         },
@@ -2665,7 +2593,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*\\/pacticipants\\/Condor\\/versions\\/1.3.0\\/tags\\/prod)"
+            "regex": ".*(\\/pacticipants\\/Condor\\/versions\\/1\\.3\\.0\\/tags\\/prod)$"
           }
         },
         "status": 201
@@ -2686,7 +2614,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/pacticipants/Condor/versions/1.3.0/tags/prod"
+              "href": "/pacticipants/Condor/versions/1.3.0/tags/prod"
             }
           }
         },
@@ -2696,7 +2624,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*\\/pacticipants\\/Condor\\/versions\\/1.3.0\\/tags\\/prod)"
+            "regex": ".*(\\/pacticipants\\/Condor\\/versions\\/1\\.3\\.0\\/tags\\/prod)$"
           }
         },
         "status": 200
@@ -2721,7 +2649,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/pacticipants/Foo"
+              "href": "/pacticipants/Foo"
             }
           },
           "name": "Foo",
@@ -2733,7 +2661,7 @@
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
+            "regex": ".*(\\/pacticipants\\/Foo)$"
           }
         },
         "status": 200
@@ -2781,8 +2709,7 @@
         "body": {
           "_links": {
             "self": {
-              "href": "http://localhost:9999/some-url",
-              "title": "A title"
+              "href": "/some-url"
             }
           },
           "description": "a webhook",
@@ -2797,16 +2724,14 @@
             }
           }
         },
+        "generators": null,
         "headers": {
           "Content-Type": "application/hal+json;charset=utf-8"
         },
         "matchingRules": {
           "$.body._links.self.href": {
             "match": "regex",
-            "regex": "(?-mix:http:\\/\\/.*)"
-          },
-          "$.body._links.self.title": {
-            "match": "type"
+            "regex": ".*(\\/some-url)$"
           },
           "$.body.description": {
             "match": "type"
