@@ -35,7 +35,7 @@ jobs:
       - uses: actions/checkout@v5
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.4"
+          ruby-version: "3.4.7"
       - run: "bundle install"
       # Publish to old and new account until we can disable the old account
       - name: Generate and publish pacts
@@ -58,7 +58,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.4"
+          ruby-version: "3.4.7"
       - run: "bundle install"
       - name: Generate and publish pacts
         run: |
