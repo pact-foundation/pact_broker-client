@@ -1,22 +1,28 @@
 require 'pact_broker/client/pact_broker_client'
-require_relative 'pact_helper'
+require_relative '../../../pact_ruby_v2_spec_helper'
+
 
 module PactBroker::Client
   describe PactBrokerClient, :pact => true do
 
-    include_context "pact broker"
+  pact_broker
+  include_context "pact broker"
+  include_context "pact broker - pact-ruby-v2"
 
+    # This endpoint fails on the pact_broker
+    # it is the old end point only used with
+    # PACT_BROKER_FEATURES=publish_pacts_using_old_api=true
     describe "publishing a pact", :skip do
 
       let(:options) { { pact_hash: pact_hash, consumer_version: consumer_version }}
       let(:location) { 'http://example.org/pacts/provider/Pricing%20Service/consumer/Condor/latest' }
       context "when the provider already exists in the pact-broker" do
 
-        before do
-          pact_broker.
+        let(:interaction) do
+          new_interaction.
           given("the 'Pricing Service' already exists in the pact-broker").
           upon_receiving("a request to publish a pact").
-          with(
+          with_request(
             method: :put,
             path: '/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
             headers: default_request_headers,
@@ -34,17 +40,19 @@ module PactBroker::Client
           )
         end
         it "returns the URL to find the newly published pact" do
-          expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to eq location
+          interaction.execute do | mockserver |
+            expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to eq location
+          end
         end
       end
 
       context "when the provider, consumer, pact and version already exist in the pact-broker" do
         shared_examples "an already-existing pact" do |method|
-          before do
-            pact_broker.
+          let(:interaction) do
+            new_interaction.
               given("the 'Pricing Service' and 'Condor' already exist in the pact-broker, and Condor already has a pact published for version 1.3.0").
               upon_receiving("a request to publish a pact with method #{method}").
-              with(
+              with_request(
                 method: method,
                 path: '/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
                 headers: default_request_headers,
@@ -63,7 +71,9 @@ module PactBroker::Client
           end
 
           it "returns true" do
-            expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to be_truthy
+            interaction.execute do | mockserver |
+              expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to be_truthy
+            end
           end
         end
 
@@ -79,11 +89,11 @@ module PactBroker::Client
       end
 
       context "when the provider does not exist, but the consumer, pact and version already exist in the pact-broker" do
-        before do
-          pact_broker.
+        let(:interaction) do
+          new_interaction.
             given("'Condor' already exist in the pact-broker, but the 'Pricing Service' does not").
             upon_receiving("a request to publish a pact").
-            with(
+            with_request(
               method: :put,
               path: '/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
               headers: default_request_headers,
@@ -101,32 +111,36 @@ module PactBroker::Client
             )
         end
         it "returns true" do
-          expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to be_truthy
+          interaction.execute do | mockserver |
+            expect(pact_broker_client.pacticipants.versions.pacts.publish(options)).to be_truthy
+          end
         end
       end
 
       context "when publishing is not successful" do
-        before do
-          pact_broker.
+        let(:interaction) do
+          new_interaction.
             given("an error occurs while publishing a pact").
             upon_receiving("a request to publish a pact").
-            with(
+            with_request(
               method: :put,
               path: '/pacts/provider/Pricing%20Service/consumer/Condor/version/1.3.0',
               headers: default_request_headers,
               body: pact_hash ).
             will_respond_with(
               status: 500,
-              headers: {'Content-Type' => Pact.term(generate: 'application/hal+json', matcher: %r{application/.*json.*})},
+              headers: {'Content-Type' => match_regex(%r{application/.*json.*},'application/hal+json')},
               body: {
                 error: {
-                  message: Pact::Term.new(matcher: /.*/, generate: 'An error occurred')
+                  message: match_regex(/.*/,'An error occurred')
                 }
               }
             )
         end
         it "raises an error" do
-          expect { pact_broker_client.pacticipants.versions.pacts.publish options }.to raise_error /An error occurred/
+          interaction.execute do | mockserver |
+            expect { pact_broker_client.pacticipants.versions.pacts.publish options }.to raise_error /An error occurred/
+          end
         end
       end
 

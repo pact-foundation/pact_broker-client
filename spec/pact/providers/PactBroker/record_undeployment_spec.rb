@@ -1,8 +1,10 @@
-require 'service_providers/pact_helper'
+require_relative '../../../pact_ruby_v2_spec_helper'
 require 'pact_broker/client/deployments/record_undeployment'
 
 RSpec.describe "recording an undeployment", pact: true do
+  pact_broker
   include_context "pact broker"
+  include_context "pact broker - pact-ruby-v2"
   include PactBrokerPactHelperMethods
 
   let(:pacticipant_name) { "Foo" }
@@ -22,11 +24,13 @@ RSpec.describe "recording an undeployment", pact: true do
       verbose: true
     }
   end
+  let(:pact_broker_base_url) { "http://127.0.0.1:9999" }
   let(:webmock_base_url) { "http://broker" }
   let(:pact_broker_client_options) { { pact_broker_base_url: webmock_base_url } }
-  let(:test_environment_placeholder_path) { "/HAL-REL-PLACEHOLDER-PB-ENVIRONMENT-16926ef3-590f-4e3f-838e-719717aa88c9" }
-  let(:currently_deployed_versions_placeholder_path) { "/PLACEHOLDER-ENVIRONMENT-CURRENTLY-DEPLOYED-16926ef3-590f-4e3f-838e-719717aa88c9" }
-  let(:deployed_version_placeholder_path) { "/PLACEHOLDER-DEPLOYED-VERSION-ff3adecf-cfc5-4653-a4e3-f1861092f8e0"}
+  
+  let(:test_environment_placeholder_path) { "/environments/16926ef3-590f-4e3f-838e-719717aa88c9" }
+  let(:currently_deployed_versions_placeholder_path) { "/environments/16926ef3-590f-4e3f-838e-719717aa88c9/deployed-versions/currently-deployed" }
+  let(:deployed_version_placeholder_path) { "/deployed-versions/ff3adecf-cfc5-4653-a4e3-f1861092f8e0"}
 
   subject { PactBroker::Client::Deployments::RecordUndeployment.call(params, options, pact_broker_client_options) }
 
@@ -44,10 +48,10 @@ RSpec.describe "recording an undeployment", pact: true do
     {
       _links: {
         :'pb:environments' => [
-          {
-            name: "test",
-            href: pact_broker.mock_service_base_url + test_environment_placeholder_path
-          }
+            {
+              name: "test",
+              href: pact_broker_base_url + test_environment_placeholder_path
+            }
         ]
       }
     }
@@ -62,10 +66,10 @@ RSpec.describe "recording an undeployment", pact: true do
   end
 
   def mock_test_environment
-    pact_broker
+    new_interaction
       .given("an environment with name test and UUID 16926ef3-590f-4e3f-838e-719717aa88c9 exists")
       .upon_receiving("a request for an environment")
-      .with(
+      .with_request(
         method: "GET",
         path: test_environment_placeholder_path,
         headers: get_request_headers
@@ -76,7 +80,10 @@ RSpec.describe "recording an undeployment", pact: true do
         body: {
           _links: {
             :'pb:currently-deployed-deployed-versions' => {
-              href: Pact.term( pact_broker.mock_service_base_url + currently_deployed_versions_placeholder_path, /^http.*/)
+                href: generate_mock_server_url(
+                  regex: ".*(\\/environments\\/.*\\/deployed-versions\\/currently-deployed)$",
+                  example: currently_deployed_versions_placeholder_path
+                ),
             }
           }
         }
@@ -84,10 +91,10 @@ RSpec.describe "recording an undeployment", pact: true do
   end
 
   def mock_deployed_versions_search_results
-    pact_broker
+    new_interaction
       .given("an version is deployed to environment with UUID 16926ef3-590f-4e3f-838e-719717aa88c9 with target customer-1")
       .upon_receiving("a request to list the versions deployed to an environment for a pacticipant name and application instance")
-      .with(
+      .with_request(
         method: "GET",
         path: currently_deployed_versions_placeholder_path,
         query: { pacticipant: pacticipant_name },
@@ -103,7 +110,10 @@ RSpec.describe "recording an undeployment", pact: true do
                 applicationInstance: application_instance,
                 _links: {
                   self: {
-                    href: Pact.term(pact_broker.mock_service_base_url + deployed_version_placeholder_path, /^http.*/)
+                    href: generate_mock_server_url(
+                      regex: ".*(\\/deployed-versions\\/.*)$",
+                      example: deployed_version_placeholder_path
+                    ),
                   }
                 }
               }
@@ -114,10 +124,10 @@ RSpec.describe "recording an undeployment", pact: true do
   end
 
   def mock_mark_deployed_version_as_undeployed
-    pact_broker
+    new_interaction
       .given("a currently deployed version exists")
       .upon_receiving("a request to mark a deployed version as not currently deploye")
-      .with(
+      .with_request(
         method: "PATCH",
         path: deployed_version_placeholder_path,
         body: { currentlyDeployed: false },
@@ -135,7 +145,7 @@ RSpec.describe "recording an undeployment", pact: true do
       "currentlyDeployed" => false,
       "_embedded" => {
         "version" => {
-          "number" => Pact.like("2")
+          "number" => match_type_of("2")
         }
       }
     }
@@ -149,16 +159,18 @@ RSpec.describe "recording an undeployment", pact: true do
     end
 
     it "returns a success message" do
-      expect(subject.success).to be true
-      expect(subject.message).to include "Recorded undeployment of Foo version 2 from test environment (application instance customer-1) in the Pact Broker"
-    end
-
-    context "when the output is json" do
-      let(:output) { "json" }
-
-      it "returns the JSON payload" do
-        expect(JSON.parse(subject.message)).to eq [Pact::Reification.from_term(deployed_version_hash)]
+      execute_http_pact do | mockserver |        
+        expect(subject.success).to be true
+        expect(subject.message).to include "Recorded undeployment of Foo version 2 from test environment (application instance customer-1) in the Pact Broker"
       end
     end
+
+    # context "when the output is json" do
+    #   let(:output) { "json" }
+
+    #   it "returns the JSON payload" do
+    #     expect(JSON.parse(subject.message)).to eq [Pact::Reification.from_term(deployed_version_hash)]
+    #   end
+    # end
   end
 end

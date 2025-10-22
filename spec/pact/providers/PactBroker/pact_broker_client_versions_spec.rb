@@ -1,21 +1,25 @@
-require_relative 'pact_helper'
+require_relative '../../../pact_ruby_v2_spec_helper'
+
 require 'pact_broker/client'
 
 describe PactBroker::Client::Versions, pact: true do
 
+  pact_broker
   include_context "pact broker"
+  include_context "pact broker - pact-ruby-v2"
 
   let(:get_headers) { { "Accept" => "application/hal+json, application/json" } }
+  let(:pact_broker_base_url) { "http://127.0.0.1:9999" }
 
   describe "retrieving the latest pacticipant version" do
-    let(:latest_version_path) { "/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-VERSION-{pacticipant}" }
-    let(:latest_version_url) { pact_broker.mock_service_base_url + latest_version_path }
+    let(:latest_version_path) { "/pacticipants/Condor/latest-version" }
+    let(:latest_version_url) { pact_broker_base_url + latest_version_path }
 
-    before do
-      pact_broker
+    let(:interaction) do
+      new_interaction
         .given("the pb:latest-version relation exists in the index resource")
         .upon_receiving("a request for the index resource")
-        .with(
+        .with_request(
             method: :get,
             path: '/',
             headers: get_headers).
@@ -25,18 +29,21 @@ describe PactBroker::Client::Versions, pact: true do
             body: {
               _links: {
                 :'pb:latest-version' => {
-                  href: Pact.term(latest_version_url, /http:\/\/.*{pacticipant}.*/)
+                  href: generate_mock_server_url(
+                    regex: ".*(\\/pacticipants\\/.*\\/latest-version)$",
+                    example: latest_version_url
+                  )
                 }
               }
             }
           )
 
-      pact_broker
+      new_interaction
         .given("'Condor' exists in the pact-broker with the latest version 1.2.3")
         .upon_receiving("a request to retrieve the latest version of Condor")
-        .with(
+        .with_request(
             method: :get,
-            path: '/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-VERSION-Condor',
+            path: '/pacticipants/Condor/latest-version',
             headers: get_headers).
           will_respond_with(
             status: 200,
@@ -45,7 +52,10 @@ describe PactBroker::Client::Versions, pact: true do
               number: '1.2.3',
               _links: {
                 self: {
-                  href: Pact.term('http://localhost:1234/some-url', %r{http://.*})
+                  href: generate_mock_server_url(
+                    regex: "(.*)$",
+                    example: "/some-url"
+                  ),
                 }
               }
             }
@@ -53,21 +63,23 @@ describe PactBroker::Client::Versions, pact: true do
     end
 
     it "returns the version hash" do
-      version_hash = pact_broker_client.pacticipants.versions.latest(pacticipant: 'Condor')
-      expect(version_hash[:number]).to eq '1.2.3'
-      expect(version_hash[:_links][:self][:href]).to eq 'http://localhost:1234/some-url'
+      interaction.execute do | mockserver |        
+        version_hash = pact_broker_client.pacticipants.versions.latest(pacticipant: 'Condor')
+        expect(version_hash[:number]).to eq '1.2.3'
+        expect(version_hash[:_links][:self][:href]).to eq 'http://127.0.0.1:9999/some-url'
+      end
     end
   end
 
   describe "retrieving the latest pacticipant version for a tag" do
-    let(:latest_tagged_version_path) { "/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-TAGGED-VERSION-{pacticipant}-{tag}" }
-    let(:latest_tagged_version_url) { pact_broker.mock_service_base_url + latest_tagged_version_path }
+    let(:latest_tagged_version_path) { "/pacticipants/Condor/latest-version/production" }
+    let(:latest_tagged_version_url) { pact_broker_base_url + latest_tagged_version_path }
 
-    before do
-      pact_broker
+    let(:interaction) do
+      new_interaction
         .given("the pb:latest-tagged-version relation exists in the index resource")
         .upon_receiving("a request for the index resource")
-        .with(
+        .with_request(
             method: :get,
             path: '/',
             headers: get_headers).
@@ -77,18 +89,21 @@ describe PactBroker::Client::Versions, pact: true do
             body: {
               _links: {
                 :'pb:latest-tagged-version' => {
-                  href: Pact.term(latest_tagged_version_url, /http:\/\/.*{pacticipant}.*{tag}/)
+                  href: generate_mock_server_url(
+                    regex: ".*(\\/pacticipants\\/.*\\/latest-version\\/.*)$",
+                    example: latest_tagged_version_url
+                  )
                 }
               }
             }
           )
 
-      pact_broker
+      new_interaction
         .given("'Condor' exists in the pact-broker with the latest tagged 'production' version 1.2.3")
         .upon_receiving("a request to retrieve the latest 'production' version of Condor")
-        .with(
+        .with_request(
             method: :get,
-            path: '/HAL-REL-PLACEHOLDER-INDEX-PB-LATEST-TAGGED-VERSION-Condor-production',
+            path: '/pacticipants/Condor/latest-version/production',
             headers: get_headers).
           will_respond_with(
             status: 200,
@@ -97,7 +112,10 @@ describe PactBroker::Client::Versions, pact: true do
               number: '1.2.3',
               _links: {
                 self: {
-                  href: Pact.term('http://localhost:1234/some-url', %r{http://.*})
+                  href: generate_mock_server_url(
+                    regex: "(.*)$",
+                    example: "/some-url"
+                  ),
                 }
               }
             }
@@ -105,9 +123,11 @@ describe PactBroker::Client::Versions, pact: true do
     end
 
     it "returns the version hash" do
-      version_hash = pact_broker_client.pacticipants.versions.latest(pacticipant: 'Condor', tag: 'production')
-      expect(version_hash[:number]).to eq '1.2.3'
-      expect(version_hash[:_links][:self][:href]).to eq 'http://localhost:1234/some-url'
+      interaction.execute do | mockserver |
+        version_hash = pact_broker_client.pacticipants.versions.latest(pacticipant: 'Condor', tag: 'production')
+        expect(version_hash[:number]).to eq '1.2.3'
+        expect(version_hash[:_links][:self][:href]).to eq 'http://127.0.0.1:9999/some-url'
+      end
     end
   end
 end

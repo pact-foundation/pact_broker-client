@@ -15,15 +15,24 @@ group :development do
   gem 'fakefs', '~> 3.0'
   gem 'webmock', '~> 3.0'
   gem 'conventional-changelog', '~>1.3'
-  gem 'pact', '~> 1.16'
   gem 'pact-support', '~> 1.16'
   gem 'approvals', '0.1.7'
   gem 'rspec-its', '~> 2.0'
   gem 'pry-byebug'
+
+  if ENV['X_PACT_DEVELOPMENT'] == 'true'
+    gem 'pact', path: '../pact-ruby'
+    gem 'pact-ffi', path: '../pact-ffi'
+  else
+    gem 'pact'
+    gem 'pact-ffi'
+  end
+  # for pact/v2 with non rail apps
+  gem 'activesupport'
 end
 
 group :test do
   gem 'faraday', '~>2.0'
   gem 'faraday-retry', '~>2.0'
-  gem 'rackup', '~> 2.1'
+  gem 'rack', '~> 2.1'
 end
