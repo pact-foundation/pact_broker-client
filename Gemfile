@@ -17,6 +17,7 @@ group :development do
   gem 'conventional-changelog', '~>1.3'
   gem 'pact-support', '~> 1.16'
   gem 'approvals', '0.1.7'
+  gem 'pact-mock_service'
   gem 'rspec-its', '~> 2.0'
   gem 'pry-byebug'
 
@@ -24,7 +25,7 @@ group :development do
     gem 'pact', path: '../pact-ruby'
     gem 'pact-ffi', path: '../pact-ffi'
   else
-    gem 'pact'
+    gem 'pact', '~> 2.0'
     gem 'pact-ffi'
   end
   # for pact/v2 with non rail apps
