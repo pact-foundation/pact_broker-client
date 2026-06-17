@@ -3,6 +3,7 @@
 require 'erb'
 require 'httparty'
 require 'pact_broker/client/error'
+require 'pact_broker/client/user_agent'
 require 'cgi'
 
 module PactBroker
@@ -104,15 +105,16 @@ module PactBroker
       end
 
       def patch url, options
-        self.class.patch(url, @default_options.merge(options.merge(body: options[:body].to_json)))
+        enriched = enrich_options(options)
+        self.class.patch(url, @default_options.merge(enriched.merge(body: options[:body].to_json)))
       end
 
       def put url, options = {}, &block
-        self.class.put(url, @default_options.merge(options), &block)
+        self.class.put(url, @default_options.merge(enrich_options(options)), &block)
       end
 
       def get url, options = {}, &block
-        self.class.get(url, @default_options.merge(options), &block)
+        self.class.get(url, @default_options.merge(enrich_options(options)), &block)
       end
 
       def url_for_relation relation_name, params
@@ -132,6 +134,16 @@ module PactBroker
 
       def verbose?
         @verbose
+      end
+
+      private
+
+      def enrich_options(options)
+        options.merge(headers: user_agent_header.merge(options.fetch(:headers, {})))
+      end
+
+      def user_agent_header
+        { 'User-Agent' => PactBroker::Client.user_agent_string('httparty', HTTParty::VERSION) }
       end
     end
   end

@@ -1,5 +1,6 @@
 require 'pact_broker/client/retry'
 require 'pact_broker/client/hal/authorization_header_redactor'
+require 'pact_broker/client/user_agent'
 require 'net/http'
 require 'json'
 require 'openssl'
@@ -58,6 +59,9 @@ module PactBroker
           request.body = body if body
           request.basic_auth username, password if username
           request['Authorization'] = "Bearer #{token}" if token
+          unless headers.any? { |k, _| k.downcase == 'user-agent' }
+            request['User-Agent'] = PactBroker::Client.user_agent_string('net-http', Net::HTTP::VERSION)
+          end
           request
         end
 

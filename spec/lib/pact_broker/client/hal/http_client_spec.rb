@@ -7,6 +7,58 @@ module PactBroker::Client
     describe HttpClient do
       subject { HttpClient.new(username: 'foo', password: 'bar') }
 
+      describe "User-Agent header" do
+        before do
+          allow(subject).to receive(:until_truthy_or_max_times) { |&block| block.call }
+          PactBroker::Client.tool_identifier = nil
+        end
+
+        after { PactBroker::Client.tool_identifier = nil }
+
+        let(:expected_ua) { "pact_broker-client/#{PactBroker::Client::VERSION} net-http/#{Net::HTTP::VERSION} ruby/#{RUBY_VERSION}" }
+
+        context "without tool_identifier" do
+          let!(:request) do
+            stub_request(:get, "http://example.org/")
+              .with(headers: { 'User-Agent' => expected_ua })
+              .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
+          end
+
+          it "sends the default user agent" do
+            subject.get('http://example.org')
+            expect(request).to have_been_made
+          end
+        end
+
+        context "with tool_identifier set" do
+          before { PactBroker::Client.tool_identifier = 'pact-standalone/9.9.9' }
+
+          let!(:request) do
+            stub_request(:get, "http://example.org/")
+              .with(headers: { 'User-Agent' => "pact-standalone/9.9.9 #{expected_ua}" })
+              .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
+          end
+
+          it "prepends the tool identifier" do
+            subject.get('http://example.org')
+            expect(request).to have_been_made
+          end
+        end
+
+        context "when User-Agent is supplied in headers" do
+          let!(:request) do
+            stub_request(:get, "http://example.org/")
+              .with(headers: { 'User-Agent' => 'custom/1.0' })
+              .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
+          end
+
+          it "preserves the caller-supplied value" do
+            subject.get('http://example.org', {}, { 'User-Agent' => 'custom/1.0' })
+            expect(request).to have_been_made
+          end
+        end
+      end
+
       describe "get" do
         before do
           allow(subject).to receive(:until_truthy_or_max_times) { |&block| block.call }
