@@ -177,6 +177,61 @@ module PactBroker
           end
         end
       end
+
+      describe 'User-Agent header' do
+        around do |example|
+          original = PactBroker::Client.tool_identifier
+          example.run
+          PactBroker::Client.tool_identifier = original
+        end
+
+        let(:expected_ua) { "pact_broker-client/#{VERSION} httparty/#{HTTParty::VERSION} ruby/#{RUBY_VERSION}" }
+
+        context 'without tool_identifier' do
+          before { PactBroker::Client.tool_identifier = nil }
+
+          let!(:request) do
+            stub_request(:get, "#{base_url}/")
+              .with(headers: { 'User-Agent' => expected_ua })
+              .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
+          end
+
+          it 'sends the default user agent on GET requests' do
+            subject.get('/')
+            expect(request).to have_been_made
+          end
+        end
+
+        context 'with tool_identifier set' do
+          before { PactBroker::Client.tool_identifier = 'pact-standalone/9.9.9' }
+
+          let!(:request) do
+            stub_request(:get, "#{base_url}/")
+              .with(headers: { 'User-Agent' => "pact-standalone/9.9.9 #{expected_ua}" })
+              .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
+          end
+
+          it 'prepends the tool identifier' do
+            subject.get('/')
+            expect(request).to have_been_made
+          end
+        end
+
+        context 'when caller supplies a User-Agent header' do
+          before { PactBroker::Client.tool_identifier = nil }
+
+          let!(:request) do
+            stub_request(:get, "#{base_url}/")
+              .with(headers: { 'User-Agent' => 'custom/1.0' })
+              .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
+          end
+
+          it 'preserves the caller-supplied value' do
+            subject.get('/', headers: { 'User-Agent' => 'custom/1.0' })
+            expect(request).to have_been_made
+          end
+        end
+      end
     end
   end
 end
