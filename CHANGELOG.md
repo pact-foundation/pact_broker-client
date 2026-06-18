@@ -1,3 +1,15 @@
+<a name="v1.78.0"></a>
+### v1.78.0 (2026-06-18)
+
+#### Features
+
+* set user agent on requests	 ([de18d52](/../../commit/de18d52))
+
+#### Bug Fixes
+
+* **test**
+  * align specs with for verification with rust or ruby core	 ([bdeac32](/../../commit/bdeac32))
+
 <a name="v1.77.0"></a>
 ### v1.77.0 (2024-10-08)
 
