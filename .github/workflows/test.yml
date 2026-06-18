@@ -15,14 +15,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby_version: ["3.2", "3.3", "3.4"]
-        os: ["ubuntu-latest","windows-latest","macos-latest"]
+        ruby_version: ["3.3", "3.4", "4.0"]
+        os: ["ubuntu-latest", "windows-latest", "macos-latest"]
     steps:
-      - uses: actions/checkout@v6
-      - uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
+      - uses: ruby/setup-ruby@89f90524b88a01fe6e0b732220432cc6142926af  # v1.313.0
         with:
           ruby-version: ${{ matrix.ruby_version }}
-      - run: "bundle install"
+          bundler-cache: true
       - run: "bundle exec rake"
   pact:
     runs-on: "ubuntu-latest"
@@ -32,11 +32,11 @@ jobs:
       matrix:
         feature: [""]
     steps:
-      - uses: actions/checkout@v6
-      - uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
+      - uses: ruby/setup-ruby@89f90524b88a01fe6e0b732220432cc6142926af  # v1.313.0
         with:
           ruby-version: "3.4"
-      - run: "bundle install"
+          bundler-cache: true
       # Publish to old and new account until we can disable the old account
       - name: Generate and publish pacts
         run: |
@@ -55,11 +55,11 @@ jobs:
       matrix:
         feature: [""]
     steps:
-      - uses: actions/checkout@v6
-      - uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
+      - uses: ruby/setup-ruby@89f90524b88a01fe6e0b732220432cc6142926af  # v1.313.0
         with:
           ruby-version: "3.4"
-      - run: "bundle install"
+          bundler-cache: true
       - name: Generate and publish pacts
         run: |
           rm -rf spec/pacts/*
