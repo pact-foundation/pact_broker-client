@@ -14,7 +14,6 @@ end
 group :development do
   gem 'fakefs', '~> 3.0'
   gem 'webmock', '~> 3.0'
-  gem 'conventional-changelog', '~>1.3'
   gem 'pact-support', '~> 1.16'
   gem 'approvals', '0.1.7'
   gem 'rspec-its', '~> 2.0'

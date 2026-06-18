@@ -4,7 +4,6 @@ require "bundler/gem_tasks"
 # because they're not installed on the release Docker image
 
 require 'rspec/core/rake_task'
-require 'conventional_changelog'
 
 Dir.glob('lib/tasks/**/*.rake').each { |task| load "#{Dir.pwd}/#{task}" }
 Dir.glob('tasks/**/*.rake').each { |task| load "#{Dir.pwd}/#{task}" }
@@ -22,11 +21,6 @@ RSpec::Core::RakeTask.new('spec:integration') do | task |
 end
 
 task :default => [:spec, 'spec:providers', 'spec:integration']
-
-task :generate_changelog do
-  require 'pact_broker/client/version'
-  ConventionalChangelog::Generator.new.generate! version: "v#{PactBroker::Client::VERSION}"
-end
 
 desc 'List provider states'
 task 'pact:list_provider_states' do

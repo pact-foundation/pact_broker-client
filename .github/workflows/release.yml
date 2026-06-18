@@ -1,0 +1,171 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - master
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+
+jobs:
+  prepare:
+    name: Update release PR
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1  # v3.2.0
+        with:
+          app-id: ${{ vars.PACT_FOUNDATION_BOT_APP_ID }}
+          private-key: ${{ secrets.PACT_FOUNDATION_BOT_PRIVATE_KEY }}
+
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
+        with:
+          fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Configure git identity
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          git config user.name "${{ steps.app-token.outputs.app-slug }}[bot]"
+          git config user.email "$(gh api "/users/${{ steps.app-token.outputs.app-slug }}[bot]" --jq '.id')+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com"
+
+      - name: Install git-cliff
+        uses: taiki-e/install-action@7a79fe8c3a13344501c80d99cae481c1c9085912  # v2.81.10
+        with:
+          tool: git-cliff,typos
+
+      - name: Prepare release PR
+        run: ruby scripts/release.rb prepare
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+
+  dry-run-build:
+    name: Dry-run gem build
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.action != 'closed' &&
+      github.event.pull_request.head.ref == 'release/pact-broker-client'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
+      - uses: ruby/setup-ruby@89f90524b88a01fe6e0b732220432cc6142926af  # v1.313.0
+        with:
+          bundler-cache: true
+      - name: Build gem (dry run)
+        run: gem build pact-broker-client.gemspec
+
+  tag:
+    name: Create release tag
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.head.ref == 'release/pact-broker-client'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1  # v3.2.0
+        with:
+          app-id: ${{ vars.PACT_FOUNDATION_BOT_APP_ID }}
+          private-key: ${{ secrets.PACT_FOUNDATION_BOT_PRIVATE_KEY }}
+
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
+        with:
+          ref: master
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Configure git identity
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          git config user.name "${{ steps.app-token.outputs.app-slug }}[bot]"
+          git config user.email "$(gh api "/users/${{ steps.app-token.outputs.app-slug }}[bot]" --jq '.id')+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com"
+
+      - name: Tag release
+        run: ruby scripts/release.rb tag
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+
+  publish:
+    name: Publish gem
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment:
+      name: rubygems
+      url: https://rubygems.org/gems/pact_broker-client
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
+
+      - uses: ruby/setup-ruby@89f90524b88a01fe6e0b732220432cc6142926af  # v1.313.0
+        with:
+          bundler-cache: true
+
+      - name: Run tests
+        run: bundle exec rake
+
+      - name: Configure RubyGems credentials (OIDC)
+        uses: rubygems/configure-rubygems-credentials@dc5a8d8553e6ee01fc26761a49e99e733d17954a  # v2.1.0
+
+      - name: Build gem
+        run: gem build pact-broker-client.gemspec
+
+      - name: Extract release changelog
+        run: |
+          version="${{ github.ref_name }}"
+          version="${version#v}"
+          out="${{ runner.temp }}/release-changelog.md"
+          awk -v ver="$version" '
+            /^## / { if (found) exit; if ($0 ~ ("\\[" ver "\\]") || $0 ~ ("v" ver " ")) found=1; next }
+            found { print }
+          ' CHANGELOG.md > "$out"
+          if [ ! -s "$out" ]; then
+            printf "No changelog entry found for %s.\n" "$version" > "$out"
+          fi
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda  # v3.0.0
+        with:
+          files: '*.gem'
+          body_path: ${{ runner.temp }}/release-changelog.md
+          draft: false
+          prerelease: false
+
+      - name: Push to RubyGems
+        run: gem push *.gem
+
+      - name: Record release in PactFlow
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          bundle exec bin/pact-broker record-release \
+            --pacticipant "Pact Broker Client" \
+            --version "$version" \
+            --environment production
+        env:
+          PACT_BROKER_BASE_URL: https://pact-foundation.pactflow.io
+          PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN_PACT_FOUNDATION }}
