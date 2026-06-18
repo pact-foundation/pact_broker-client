@@ -26,5 +26,5 @@ end
 
 shared_context "pact broker - pact-ruby-v2" do
   let(:pact_hash) { PactBroker::Client::PactHash[consumer: {name: 'Condor'}, interactions: [], provider: {name: 'Pricing Service'}] }
-  let(:broker_base_url) { 'http://localhost:9999' }
+  let(:broker_base_url) { 'http://127.0.0.1:9999' }
 end
