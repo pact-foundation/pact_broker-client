@@ -10,11 +10,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
-    - uses: ruby/setup-ruby@v1
-    - run: |
-        gem install bundler -v 2.4
-        bundle install
+    - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
+    - uses: ruby/setup-ruby@89f90524b88a01fe6e0b732220432cc6142926af  # v1.313.0
+      with:
+        bundler-cache: true
     - name: Test
       run: bundle exec rake
 
@@ -26,10 +25,10 @@ jobs:
       version: ${{ steps.release.outputs.version }}
       increment: ${{ steps.release.outputs.increment }}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
       with:
         fetch-depth: 0
-    - uses: pact-foundation/release-gem@v1
+    - uses: pact-foundation/release-gem@b1b4ab9ad10605e41a34f13f1c2baae78d73bfa7  # v1
       id: release
       env:
         GEM_HOST_API_KEY: '${{ secrets.RUBYGEMS_API_KEY }}'
@@ -40,13 +39,10 @@ jobs:
     needs: release
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
-    - uses: ruby/setup-ruby@v1
-    - name: Bundle install
-      run: |
-        gem install bundler -v 2.4
-        bundle config set --local without development test
-        bundle install
+    - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
+    - uses: ruby/setup-ruby@89f90524b88a01fe6e0b732220432cc6142926af  # v1.313.0
+      with:
+        bundler-cache: true
     - name: Record release
       run: script/ci/record-release.sh
       env:
@@ -61,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Notify ${{ matrix.repository }} of gem release
-        uses: peter-evans/repository-dispatch@v4
+        uses: peter-evans/repository-dispatch@28959ce8df70de7be546dd1250a005dd32156697  # v4.0.1
         with:
           token: ${{ secrets.GHTOKENFORPACTCLIRELEASE }}
           repository: ${{ matrix.repository }}
