@@ -6,7 +6,7 @@ module PactBroker::Client
   describe PactBrokerClient, :pact => true do
 
     pact_broker
-    let(:pact_broker_client) { PactBrokerClient.new(base_url: 'http://localhost:9999') }
+    let(:pact_broker_client) { PactBrokerClient.new(base_url: 'http://127.0.0.1:9999') }
 
     describe "listing pacts" do
       context "when pacts exist" do
