@@ -7,7 +7,7 @@ module PactBroker
   module Client
     class Matrix < BaseClient
       def get selectors, options = {}
-        latestby = selectors.size == 1 ? 'cvp' : 'cvpv'
+        latestby = (options[:to_environment] || selectors.size > 1) ? 'cvpv' : 'cvp'
         query = {
           q: convert_selector_hashes_to_params(selectors),
           latestby: latestby
