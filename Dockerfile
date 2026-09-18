@@ -1,4 +1,4 @@
-FROM ruby:4.0.5-alpine@sha256:f48938e9ae72a4d32e728b03c306e7a7ff21f0cb6c2ed33f44a078c700b2aea6
+FROM ruby:4.0.7-alpine@sha256:79bf10b28c9d98b7b3cffda01aba8190aa1c1c48513d205ec93372a0e2f010e3
 
 RUN apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing hub
 RUN apk add --update --no-cache git openssh bash
