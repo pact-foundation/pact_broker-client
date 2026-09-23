@@ -26,7 +26,7 @@ module PactBroker
         end
 
         def query_params
-          latestby = selectors.size == 1 ? 'cvp' : 'cvpv'
+          latestby = (matrix_options[:to_environment] || selectors.size > 1) ? 'cvpv' : 'cvp'
           query = {
             q: convert_selector_hashes_to_params(selectors),
             latestby: latestby

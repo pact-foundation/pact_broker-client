@@ -285,7 +285,29 @@ module PactBroker::Client
       end
 
       context "with an environment name" do
-        it "passes the environment name in the options"
+        before do
+          pact_broker.
+            given("the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6").
+            upon_receiving("a request for the compatibility matrix for Foo version 1.2.3 to be deployed to the production environment").
+            with(
+              method: :get,
+              path: "/matrix",
+              query: "q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Bversion%5D=1.2.3&latestby=cvpv&environment=production"
+            ).
+            will_respond_with(
+              status: 200,
+              headers: pact_broker_response_headers,
+              body: matrix_response_body
+            )
+        end
+
+        let(:selectors) { [{ pacticipant: "Foo", version: "1.2.3" }] }
+        let(:options) { { to_environment: "production" } }
+
+        it "uses latestby=cvpv and passes the environment name" do
+          matrix = pact_broker_client.matrix.get(selectors, options)
+          expect(matrix[:matrix].size).to eq 1
+        end
       end
     end
   end
