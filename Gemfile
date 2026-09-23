@@ -13,6 +13,10 @@ end
 
 group :development do
   gem 'fakefs', '~> 3.0'
+  # fakefs/safe loads irb, whose reline Windows IO gate requires fiddle. Ruby
+  # 4.0 demoted fiddle from a default gem to a bundled one, so Bundler only
+  # sees it when it is declared.
+  gem 'fiddle', platforms: :windows
   gem 'webmock', '~> 3.0'
   gem 'conventional-changelog', '~>1.3'
   gem 'pact-support', '~> 1.16'
