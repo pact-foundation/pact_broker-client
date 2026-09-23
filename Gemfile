@@ -17,6 +17,7 @@ group :development do
   gem 'conventional-changelog', '~>1.3'
   gem 'pact-support', '~> 1.16'
   gem 'approvals', '0.1.7'
+  gem 'rspec', '~> 3.0'
   gem 'rspec-its', '~> 2.0'
   gem 'pry-byebug'
 
@@ -24,7 +25,10 @@ group :development do
     gem 'pact', path: '../pact-ruby'
     gem 'pact-ffi', path: '../pact-ffi'
   else
-    gem 'pact'
+    # pact 2.0 removed the v1 mock-service DSL that spec/service_providers uses,
+    # and renamed the pact/v2 namespace that spec/pact_ruby_v2_spec_helper.rb
+    # requires. This gem is in maintenance mode, so the pin stays.
+    gem 'pact', '~> 1.67'
     gem 'pact-ffi'
   end
   # for pact/v2 with non rail apps
