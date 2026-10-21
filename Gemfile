@@ -32,7 +32,7 @@ group :development do
     # pact 2.0 removed the v1 mock-service DSL that spec/service_providers uses,
     # and renamed the pact/v2 namespace that spec/pact_ruby_v2_spec_helper.rb
     # requires. This gem is in maintenance mode, so the pin stays.
-    gem 'pact', '~> 1.67'
+    gem 'pact', '~> 2.0'
     gem 'pact-ffi'
   end
   # for pact/v2 with non rail apps
