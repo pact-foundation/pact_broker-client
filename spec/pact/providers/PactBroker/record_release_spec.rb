@@ -1,4 +1,4 @@
-require_relative '../../../pact_ruby_v2_spec_helper'
+require_relative '../../../pact_ruby_spec_helper'
 require 'pact_broker/client/deployments/record_deployment'
 
 RSpec.describe "recording a release", pact: true do

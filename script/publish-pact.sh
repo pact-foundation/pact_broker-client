@@ -14,7 +14,7 @@ export PACT_BROKER_TOKEN=${PACT_BROKER_TOKEN:-"localhost"}
 #   --request POST \
 #   --contract-published
 
-# bundle exec bin/pact-broker publish spec/pacts/pact_broker_client-pact_broker.json spec/fixtures/foo-bar.json \
+# bundle exec bin/pact-broker publish "pact_broker-client/spec/pacts/Pact Broker Client-Pact Broker.json" spec/fixtures/foo-bar.json \
 #   --consumer-app-version 1.2.12 \
 #   --broker-base-url http://localhost:9292 \
 #    --broker-username localhost --broker-password localhost \

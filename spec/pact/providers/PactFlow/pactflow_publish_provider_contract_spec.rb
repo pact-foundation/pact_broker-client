@@ -1,5 +1,5 @@
 require "yaml"
-require_relative '../../../pact_ruby_v2_spec_helper'
+require_relative '../../../pact_ruby_spec_helper'
 require "pactflow/client/provider_contracts/publish"
 
 RSpec.describe "publishing a provider contract to PactFlow", pact: true do

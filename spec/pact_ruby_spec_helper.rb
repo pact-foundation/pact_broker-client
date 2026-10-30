@@ -1,6 +1,5 @@
-
-require 'pact/v2'
-require 'pact/v2/rspec'
+require 'pact/rspec'
+require 'pact/matchers'
 # for pact/v2 with non rail apps
 require 'active_support/core_ext/object/deep_dup'
 require 'active_support/core_ext/object/blank'
@@ -19,7 +18,7 @@ def bar_provider
 end
 
 def pact_broker
-  has_http_pact_between 'Pact Broker Client V2', 'Pact Broker', opts: {
+  has_http_pact_between 'Pact Broker Client', 'Pact Broker', opts: {
     pact_dir: "spec/pacts",
     log_level: :info,
     mock_port: 9999,
@@ -28,7 +27,7 @@ def pact_broker
 end
 
 def pactflow
-  has_http_pact_between 'Pact Broker Client V2', 'PactFlow', opts: {
+  has_http_pact_between 'Pact Broker Client', 'PactFlow', opts: {
     pact_dir: "spec/pacts",
     log_level: :debug,
     mock_port: 9998,

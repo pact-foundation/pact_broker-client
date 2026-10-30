@@ -1,4 +1,4 @@
-bundle exec bin/pact-broker publish spec/pacts/pact_broker_client-pact_broker.json \
+bundle exec bin/pact-broker publish "pact_broker-client/spec/pacts/Pact Broker Client-Pact Broker.json" \
   --consumer-app-version 1.2.26 \
   --branch main
 
