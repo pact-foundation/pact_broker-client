@@ -812,6 +812,61 @@
       }
     },
     {
+      "description": "a request for the compatibility matrix for Foo version 1.2.3 to be deployed to the production environment",
+      "providerState": "the pact for Foo version 1.2.3 has been verified by the versions of Bar in the production environment",
+      "request": {
+        "method": "get",
+        "path": "/matrix",
+        "query": "q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Bversion%5D=1.2.3&latestby=cvpv&environment=production"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "body": {
+          "summary": {
+            "deployable": true,
+            "reason": "some text",
+            "unknown": 1
+          },
+          "matrix": [
+            {
+              "consumer": {
+                "name": "Foo",
+                "version": {
+                  "number": "4"
+                }
+              },
+              "provider": {
+                "name": "Bar",
+                "version": {
+                  "number": "5"
+                }
+              },
+              "verificationResult": {
+                "verifiedAt": "2017-10-10T12:49:04+11:00",
+                "success": true,
+                "_links": {
+                  "self": {
+                    "href": "http://result"
+                  }
+                }
+              },
+              "pact": {
+                "createdAt": "2017-10-10T12:49:04+11:00"
+              }
+            }
+          ]
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
       "description": "a request to register the repository URL of a pacticipant",
       "providerState": "the 'Pricing Service' does not exist in the pact-broker",
       "request": {

@@ -24,6 +24,8 @@
 
 * [A request for the compatibility matrix for Foo version 1.2.3 and the latest version of Bar](#a_request_for_the_compatibility_matrix_for_Foo_version_1.2.3_and_the_latest_version_of_Bar_given_the_pact_for_Foo_version_1.2.3_has_been_successfully_verified_by_Bar_version_4.5.6,_and_1.2.4_unsuccessfully_by_9.9.9) given the pact for Foo version 1.2.3 has been successfully verified by Bar version 4.5.6, and 1.2.4 unsuccessfully by 9.9.9
 
+* [A request for the compatibility matrix for Foo version 1.2.3 to be deployed to the production environment](#a_request_for_the_compatibility_matrix_for_Foo_version_1.2.3_to_be_deployed_to_the_production_environment_given_the_pact_for_Foo_version_1.2.3_has_been_verified_by_the_versions_of_Bar_in_the_production_environment) given the pact for Foo version 1.2.3 has been verified by the versions of Bar in the production environment
+
 * [A request for the compatibility matrix where one or more versions does not exist](#a_request_for_the_compatibility_matrix_where_one_or_more_versions_does_not_exist_given_the_pact_for_Foo_version_1.2.3_has_been_verified_by_Bar_version_4.5.6) given the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6
 
 * [A request for the compatibility matrix where only the version of Foo is specified](#a_request_for_the_compatibility_matrix_where_only_the_version_of_Foo_is_specified_given_the_pact_for_Foo_version_1.2.3_has_been_verified_by_Bar_version_4.5.6_and_version_5.6.7) given the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6 and version 5.6.7
@@ -552,6 +554,59 @@ Given **the pact for Foo version 1.2.3 has been successfully verified by Bar ver
   "method": "get",
   "path": "/matrix",
   "query": "q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Bversion%5D=1.2.4&q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Blatest%5D=true&latestby=cvpv"
+}
+```
+Pact Broker will respond with:
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/hal+json;charset=utf-8"
+  },
+  "body": {
+    "summary": {
+      "deployable": true,
+      "reason": "some text",
+      "unknown": 1
+    },
+    "matrix": [
+      {
+        "consumer": {
+          "name": "Foo",
+          "version": {
+            "number": "4"
+          }
+        },
+        "provider": {
+          "name": "Bar",
+          "version": {
+            "number": "5"
+          }
+        },
+        "verificationResult": {
+          "verifiedAt": "2017-10-10T12:49:04+11:00",
+          "success": true,
+          "_links": {
+            "self": {
+              "href": "http://result"
+            }
+          }
+        },
+        "pact": {
+          "createdAt": "2017-10-10T12:49:04+11:00"
+        }
+      }
+    ]
+  }
+}
+```
+<a name="a_request_for_the_compatibility_matrix_for_Foo_version_1.2.3_to_be_deployed_to_the_production_environment_given_the_pact_for_Foo_version_1.2.3_has_been_verified_by_the_versions_of_Bar_in_the_production_environment"></a>
+Given **the pact for Foo version 1.2.3 has been verified by the versions of Bar in the production environment**, upon receiving **a request for the compatibility matrix for Foo version 1.2.3 to be deployed to the production environment** from Pact Broker Client, with
+```json
+{
+  "method": "get",
+  "path": "/matrix",
+  "query": "q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Bversion%5D=1.2.3&latestby=cvpv&environment=production"
 }
 ```
 Pact Broker will respond with:
