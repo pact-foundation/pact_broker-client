@@ -19,8 +19,9 @@ group :development do
   gem 'fiddle', platforms: :windows
   gem 'webmock', '~> 3.0'
   gem 'conventional-changelog', '~>1.3'
-  gem 'pact-support', '~> 1.16'
+  gem 'pact-support', '~> 2.0'
   gem 'approvals', '0.1.7'
+  gem 'rspec', '~> 3.0'
   gem 'pact-mock_service'
   gem 'rspec-its', '~> 2.0'
   gem 'pry-byebug'

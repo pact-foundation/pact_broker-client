@@ -41,5 +41,5 @@ end
 
 RSpec::Core::RakeTask.new('pact:v2:spec') do |task|
   task.pattern = 'spec/pact/providers/**/*_spec.rb'
-  task.rspec_opts = ['-t pact']
+  task.rspec_opts = ['-t pact', '--require pact_ruby_v2_spec_helper']
 end

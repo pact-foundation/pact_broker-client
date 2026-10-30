@@ -1,6 +1,5 @@
-
-require 'pact/v2'
-require 'pact/v2/rspec'
+require 'pact/rspec'
+require 'pact/matchers'
 # for pact/v2 with non rail apps
 require 'active_support/core_ext/object/deep_dup'
 require 'active_support/core_ext/object/blank'
