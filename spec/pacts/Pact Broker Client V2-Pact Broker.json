@@ -4,6 +4,111 @@
   },
   "interactions": [
     {
+      "description": "a request for a pacticipant version",
+      "providerState": "version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with 2 environments that aren't test available for deployment",
+      "request": {
+        "headers": {
+          "Accept": "application/hal+json"
+        },
+        "method": "GET",
+        "path": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30"
+      },
+      "response": {
+        "body": {
+          "_links": {
+            "pb:record-deployment": [
+              {
+                "href": "href",
+                "name": "prod"
+              },
+              {
+                "href": "href",
+                "name": "dev"
+              }
+            ]
+          }
+        },
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "matchingRules": {
+          "$.body._links['pb:record-deployment'][0]": {
+            "match": "type"
+          },
+          "$.body._links['pb:record-deployment'][1]": {
+            "match": "type"
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request for a pacticipant version",
+      "providerState": "version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for deployment",
+      "request": {
+        "headers": {
+          "Accept": "application/hal+json"
+        },
+        "method": "GET",
+        "path": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30"
+      },
+      "response": {
+        "body": {
+          "_links": {
+            "pb:record-deployment": [
+              {
+                "href": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30/deployed-versions/environment/cb632df3-0a0d-4227-aac3-60114dd36479",
+                "name": "test"
+              }
+            ]
+          }
+        },
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "matchingRules": {
+          "$.body._links['pb:record-deployment'][0].href": {
+            "match": "regex",
+            "regex": ".*(\\/pacticipants\\/.*\\/versions\\/.*\\/deployed-versions\\/environment\\/.*)$"
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request for a pacticipant version",
+      "providerState": "version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for release",
+      "request": {
+        "headers": {
+          "Accept": "application/hal+json"
+        },
+        "method": "GET",
+        "path": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30"
+      },
+      "response": {
+        "body": {
+          "_links": {
+            "pb:record-release": [
+              {
+                "href": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30/released-versions/environment/cb632df3-0a0d-4227-aac3-60114dd36479",
+                "name": "test"
+              }
+            ]
+          }
+        },
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "matchingRules": {
+          "$.body._links['pb:record-release'][0].href": {
+            "match": "regex",
+            "regex": ".*(\\/pacticipants\\/.*\\/versions\\/.*\\/released-versions\\/environment\\/.*)$"
+          }
+        },
+        "status": 200
+      }
+    },
+    {
       "description": "a request for an environment",
       "providerState": "an environment with name test and UUID 16926ef3-590f-4e3f-838e-719717aa88c9 exists",
       "request": {
@@ -469,6 +574,38 @@
       }
     },
     {
+      "description": "a request for the environments",
+      "providerState": "an environment with name test exists",
+      "request": {
+        "headers": {
+          "Accept": "application/hal+json"
+        },
+        "method": "GET",
+        "path": "/environments"
+      },
+      "response": {
+        "body": {
+          "_links": {
+            "pb:environments": [
+              {
+                "href": "href",
+                "name": "test"
+              }
+            ]
+          }
+        },
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "matchingRules": {
+          "$.body._links['pb:environments'][0].href": {
+            "match": "type"
+          }
+        },
+        "status": 200
+      }
+    },
+    {
       "description": "a request for the index resource",
       "request": {
         "headers": {
@@ -506,43 +643,6 @@
           "$.body._links['pb:webhooks'].href": {
             "match": "regex",
             "regex": ".*(\\/webhooks)$"
-          }
-        },
-        "status": 200
-      }
-    },
-    {
-      "description": "a request for the index resource",
-      "providerState": "the pacticipant relations are present",
-      "request": {
-        "headers": {
-          "Accept": "application/hal+json"
-        },
-        "method": "GET",
-        "path": "/"
-      },
-      "response": {
-        "body": {
-          "_links": {
-            "pb:pacticipant": {
-              "href": "/pacticipants/{pacticipant}"
-            },
-            "pb:pacticipants": {
-              "href": "/pacticipants"
-            }
-          }
-        },
-        "headers": {
-          "Content-Type": "application/hal+json;charset=utf-8"
-        },
-        "matchingRules": {
-          "$.body._links['pb:pacticipant'].href": {
-            "match": "regex",
-            "regex": ".*(\\/pacticipants\\/\\{pacticipant\\})$"
-          },
-          "$.body._links['pb:pacticipants'].href": {
-            "match": "regex",
-            "regex": ".*(\\/pacticipants)$"
           }
         },
         "status": 200
@@ -700,143 +800,6 @@
           "$.body._links['pb:pacticipant-version'].href": {
             "match": "regex",
             "regex": ".*(\\/pacticipants\\/.*\\/versions\\/.*)$"
-          }
-        },
-        "status": 200
-      }
-    },
-    {
-      "description": "a request for a pacticipant version",
-      "providerState": "version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with 2 environments that aren't test available for deployment",
-      "request": {
-        "headers": {
-          "Accept": "application/hal+json"
-        },
-        "method": "GET",
-        "path": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30"
-      },
-      "response": {
-        "body": {
-          "_links": {
-            "pb:record-deployment": [
-              {
-                "href": "href",
-                "name": "prod"
-              },
-              {
-                "href": "href",
-                "name": "dev"
-              }
-            ]
-          }
-        },
-        "headers": {
-          "Content-Type": "application/hal+json;charset=utf-8"
-        },
-        "matchingRules": {
-          "$.body._links['pb:record-deployment'][0]": {
-            "match": "type"
-          },
-          "$.body._links['pb:record-deployment'][1]": {
-            "match": "type"
-          }
-        },
-        "status": 200
-      }
-    },
-    {
-      "description": "a request for a pacticipant version",
-      "providerState": "version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for deployment",
-      "request": {
-        "headers": {
-          "Accept": "application/hal+json"
-        },
-        "method": "GET",
-        "path": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30"
-      },
-      "response": {
-        "body": {
-          "_links": {
-            "pb:record-deployment": [
-              {
-                "href": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30/deployed-versions/environment/cb632df3-0a0d-4227-aac3-60114dd36479",
-                "name": "test"
-              }
-            ]
-          }
-        },
-        "headers": {
-          "Content-Type": "application/hal+json;charset=utf-8"
-        },
-        "matchingRules": {
-          "$.body._links['pb:record-deployment'][0].href": {
-            "match": "regex",
-            "regex": ".*(\\/pacticipants\\/.*\\/versions\\/.*\\/deployed-versions\\/environment\\/.*)$"
-          }
-        },
-        "status": 200
-      }
-    },
-    {
-      "description": "a request for a pacticipant version",
-      "providerState": "version 5556b8149bf8bac76bc30f50a8a2dd4c22c85f30 of pacticipant Foo exists with a test environment available for release",
-      "request": {
-        "headers": {
-          "Accept": "application/hal+json"
-        },
-        "method": "GET",
-        "path": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30"
-      },
-      "response": {
-        "body": {
-          "_links": {
-            "pb:record-release": [
-              {
-                "href": "/pacticipants/Foo/versions/5556b8149bf8bac76bc30f50a8a2dd4c22c85f30/released-versions/environment/cb632df3-0a0d-4227-aac3-60114dd36479",
-                "name": "test"
-              }
-            ]
-          }
-        },
-        "headers": {
-          "Content-Type": "application/hal+json;charset=utf-8"
-        },
-        "matchingRules": {
-          "$.body._links['pb:record-release'][0].href": {
-            "match": "regex",
-            "regex": ".*(\\/pacticipants\\/.*\\/versions\\/.*\\/released-versions\\/environment\\/.*)$"
-          }
-        },
-        "status": 200
-      }
-    },
-    {
-      "description": "a request for the environments",
-      "providerState": "an environment with name test exists",
-      "request": {
-        "headers": {
-          "Accept": "application/hal+json"
-        },
-        "method": "GET",
-        "path": "/environments"
-      },
-      "response": {
-        "body": {
-          "_links": {
-            "pb:environments": [
-              {
-                "href": "href",
-                "name": "test"
-              }
-            ]
-          }
-        },
-        "headers": {
-          "Content-Type": "application/hal+json;charset=utf-8"
-        },
-        "matchingRules": {
-          "$.body._links['pb:environments'][0].href": {
-            "match": "type"
           }
         },
         "status": 200
@@ -1117,6 +1080,42 @@
           },
           "$.body.description": {
             "match": "type"
+          }
+        },
+        "status": 201
+      }
+    },
+    {
+      "description": "a request to create a pacticipant",
+      "request": {
+        "body": {
+          "name": "Foo",
+          "repositoryUrl": "http://foo"
+        },
+        "headers": {
+          "Accept": "application/hal+json",
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/pacticipants"
+      },
+      "response": {
+        "body": {
+          "_links": {
+            "self": {
+              "href": "/pacticipants/Foo"
+            }
+          },
+          "name": "Foo",
+          "repositoryUrl": "http://foo"
+        },
+        "headers": {
+          "Content-Type": "application/hal+json;charset=utf-8"
+        },
+        "matchingRules": {
+          "$.body._links.self.href": {
+            "match": "regex",
+            "regex": ".*(\\/pacticipants\\/Foo)$"
           }
         },
         "status": 201
@@ -2380,42 +2379,6 @@
       }
     },
     {
-      "description": "a request to create a pacticipant",
-      "request": {
-        "body": {
-          "name": "Foo",
-          "repositoryUrl": "http://foo"
-        },
-        "headers": {
-          "Accept": "application/hal+json",
-          "Content-Type": "application/json"
-        },
-        "method": "POST",
-        "path": "/pacticipants"
-      },
-      "response": {
-        "body": {
-          "_links": {
-            "self": {
-              "href": "/pacticipants/Foo"
-            }
-          },
-          "name": "Foo",
-          "repositoryUrl": "http://foo"
-        },
-        "headers": {
-          "Content-Type": "application/hal+json;charset=utf-8"
-        },
-        "matchingRules": {
-          "$.body._links.self.href": {
-            "match": "regex",
-            "regex": ".*(\\/pacticipants\\/Foo)$"
-          }
-        },
-        "status": 201
-      }
-    },
-    {
       "description": "a request to retrieve a pacticipant",
       "providerState": "a pacticipant with name Foo exists",
       "request": {
@@ -2831,12 +2794,12 @@
   ],
   "metadata": {
     "pact-ruby-v2": {
-      "pact-ffi": "0.4.28"
+      "pact-ffi": "0.5.8"
     },
     "pactRust": {
-      "ffi": "0.4.28",
-      "mockserver": "1.2.16",
-      "models": "1.3.5"
+      "ffi": "0.5.8",
+      "mockserver": "2.2.6",
+      "models": "1.3.16"
     },
     "pactSpecification": {
       "version": "2.0.0"
