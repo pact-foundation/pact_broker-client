@@ -39,7 +39,7 @@ task 'pact:list_provider_states' do
   }.flatten.compact.sort.uniq
 end
 
-RSpec::Core::RakeTask.new('pact:v2:spec') do |task|
+RSpec::Core::RakeTask.new('pact:spec') do |task|
   task.pattern = 'spec/pact/providers/**/*_spec.rb'
-  task.rspec_opts = ['-t pact', '--require pact_ruby_v2_spec_helper']
+  task.rspec_opts = ['-t pact', '--require pact_ruby_spec_helper']
 end

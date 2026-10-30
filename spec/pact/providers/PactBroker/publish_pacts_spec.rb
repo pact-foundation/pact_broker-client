@@ -1,5 +1,5 @@
 require 'pact_broker/client/publish_pacts'
-require_relative '../../../pact_ruby_v2_spec_helper'
+require_relative '../../../pact_ruby_spec_helper'
 
 RSpec.describe "publishing contracts", pact: true do
   before do

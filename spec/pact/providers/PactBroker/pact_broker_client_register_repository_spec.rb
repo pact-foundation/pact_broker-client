@@ -1,5 +1,5 @@
 require 'pact_broker/client/pact_broker_client'
-require_relative '../../../pact_ruby_v2_spec_helper'
+require_relative '../../../pact_ruby_spec_helper'
 
 module PactBroker::Client
   describe Pacticipants, :pact => true do
