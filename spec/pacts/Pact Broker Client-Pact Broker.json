@@ -1,6 +1,6 @@
 {
   "consumer": {
-    "name": "Pact Broker Client V2"
+    "name": "Pact Broker Client"
   },
   "interactions": [
     {
