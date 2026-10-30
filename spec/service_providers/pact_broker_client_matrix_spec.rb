@@ -287,7 +287,7 @@ module PactBroker::Client
       context "with an environment name" do
         before do
           pact_broker.
-            given("the pact for Foo version 1.2.3 has been verified by Bar version 4.5.6").
+            given("the pact for Foo version 1.2.3 has been verified by the versions of Bar in the production environment").
             upon_receiving("a request for the compatibility matrix for Foo version 1.2.3 to be deployed to the production environment").
             with(
               method: :get,
